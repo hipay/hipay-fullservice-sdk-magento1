@@ -1,0 +1,44 @@
+<?php $_code=$this->getMethodCode() ?>
+<div id="payment_form_<?php echo $_code ?>" style="display:none;">
+<?php if ($this->oneClickIsAllowed()) : ?>
+<ul class="form-list" id="oneclick_hosted_payment_form_<?php echo $_code ?>">
+ <li>
+
+			<?php if (!$this->getCustomerHasAlias() || ($this->getCustomerHasAlias() && !$this->ccExpDateIsValid())) :?>
+			<div class="input-box">
+				<input id="<?php echo $_code ?>_create_alias_oneclick"  value="create_oneclick"  type="checkbox" name="payment[oneclick]" />
+				<label style="float: none;" for="<?php echo $_code ?>_create_alias_oneclick"><?php echo $this->__('Record your card data for a next buy.') ?></label>
+			</div>
+		<?php elseif ($this->getCustomerHasAlias() && $this->ccExpDateIsValid()): ?>
+			<div class="input-box">
+				<input id="<?php echo $_code ?>_use_alias_oneclick" value="use_oneclick" checked="checked"   type="radio" name="payment[oneclick]"   />
+				<label style="float: none;" for="<?php echo $_code ?>_use_alias_oneclick"><?php echo $this->__('Use my recorded card') ?></label>
+			</div>
+			<div class="input-box info-card">
+				<label><?php echo $this->__('Actual card') ?> :</label>
+				<span><?php echo $this->getCustomer()->getHipayCcNumberEnc() ?></span>
+			</div>
+			<div class="input-box info-card">
+				<label><?php echo $this->__('Expiration date') ?> : <?php echo $this->getCustomer()->getHipayCcExpDate() ?></label>
+			</div>
+			
+			
+			
+			<div class="input-box">
+				<input id="<?php echo $_code ?>_create_alias_oneclick"  type="radio" name="payment[oneclick]" value="create_oneclick"/>
+				<label style="float: none;" for="<?php echo $_code ?>_create_alias_oneclick"><?php echo $this->__('Record new card data') ?></label>
+			</div>
+
+			<div class="input-box">
+				<input id="<?php echo $_code ?>_not_oneclick"  type="radio" name="payment[oneclick]" value="not_oneclick"  />
+				<label style="float: none;" for="<?php echo $_code ?>_not_oneclick"><?php echo $this->__('Not use record card data') ?></label>
+			</div>
+
+		<?php endif;?>
+</li>
+   
+</ul>
+ <?php endif; ?>
+<?php echo $this->__('You will be redirect to payment page after submit order.')?>
+
+ </div>
