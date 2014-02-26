@@ -68,4 +68,26 @@ class Allopass_Hipay_Model_Observer
 		}
 		
 	}
+	
+	public function displaySectionCheckoutIframe($observer)
+	{
+		/* @var $controller Mage_Checkout_OnepageController */
+		$controller = $observer->getControllerAction();
+		
+		$result = Mage::helper('core')->jsonDecode($controller->getResponse()->getBody());
+		
+		//TODO check if payment method is hosted and iframe active and is success
+		$methodInstance =  Mage::getSingleton('checkout/session')->getQuote()->getPayment()->getMethodInstance(); 
+		if($result['success'] 
+				&& $methodInstance->getCode() == 'hipay_hosted' 
+				&& $methodInstance->getConfigData('display_iframe'))
+		{
+			$result['iframeUrl'] = $result['redirect']; 
+		}
+		
+		Mage::log($result,null,"result.log");
+		
+		$controller->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
+		
+	}
 }

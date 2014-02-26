@@ -244,36 +244,37 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
                     'VI'  => '/^4[0-9]{12}([0-9]{3})?$/',
                     // Master Card
                     'MC'  => '/^5[1-5][0-9]{14}$/',
-	                            		// American Express
-	                            		'AE'  => '/^3[47][0-9]{13}$/',
-	                            		// Discovery
-	                            		'DI'  => '/^6011[0-9]{12}$/',
-	                            		// JCB
-	                            		'JCB' => '/^(3[0-9]{15}|(2131|1800)[0-9]{11})$/'
-	                            		);
+            		// American Express
+            		'AE'  => '/^3[47][0-9]{13}$/',
+            		// Discovery
+            		'DI'  => '/^6011[0-9]{12}$/',
+            		// JCB
+            		'JCB' => '/^(3[0-9]{15}|(2131|1800)[0-9]{11})$/',
+            		//Bancontact / mister cash
+	                'BCMC' =>  '/^[0-9]{17}$/'//'/^\\d+$/',
+	             );
 	
-	                            				foreach ($ccTypeRegExpList as $ccTypeMatch=>$ccTypeRegExp) {
+	       foreach ($ccTypeRegExpList as $ccTypeMatch=>$ccTypeRegExp) {
 				if (preg_match($ccTypeRegExp, $ccNumber)) {
-				$ccType = $ccTypeMatch;
+					$ccType = $ccTypeMatch;
 					break;
 				}
-				}
-	
-				if (!$this->OtherCcType($info->getCcType()) && $ccType!=$info->getCcType()) {
+			}
+			if (!$this->OtherCcType($info->getCcType()) && $ccType!=$info->getCcType()) {
 				$errorMsg = Mage::helper('payment')->__('Credit card number mismatch with credit card type.');
 			}
-			}
-			else {
+		}
+		else {
 			$errorMsg = Mage::helper('payment')->__('Invalid Credit Card Number');
-				}
-	
-				}
-				else {
-				$errorMsg = Mage::helper('payment')->__('Credit card type is not allowed for this payment method.');
 		}
 	
+	}
+	else {
+		$errorMsg = Mage::helper('payment')->__('Credit card type is not allowed for this payment method.');
+	}
+	
 		//validate credit card verification number
-		if ($errorMsg === false && $this->hasVerification()) {
+	if ($errorMsg === false && $this->hasVerification() && $info->getCcType() != 'BCMC') {
 		$verifcationRegEx = $this->getVerificationRegEx();
 			$regExp = isset($verifcationRegEx[$info->getCcType()]) ? $verifcationRegEx[$info->getCcType()] : '';
 			if (!$info->getCcCid() || !$regExp || !preg_match($regExp ,$info->getCcCid())){

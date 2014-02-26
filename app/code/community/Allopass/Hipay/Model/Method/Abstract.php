@@ -241,9 +241,9 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 						$order->setState(
 								Mage_Sales_Model_Order::STATE_PROCESSING, 'capture_requested', $message, null, false
 						);
-					
-						
-						break;
+
+						if(((int)$this->getConfigData('hipay_status_validate_order') == 117) === false )
+							break;
 						
 					case 118: //Capture
 						
