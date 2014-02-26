@@ -102,6 +102,22 @@
 </li>
    
 </ul>
+<script type="text/javascript">
+ 	//<![CDATA[
+
+        var ToogleOneclick<?php echo $_code ?> = function() {
+        	var elm = $('<?php echo $_code ?>_cc_type');
+            if (['VI','MC','AE'].indexOf(elm.value) != -1) {
+                $('oneclick_card_payment_form_<?php echo $_code ?>').show();
+            } else {
+                $('oneclick_card_payment_form_<?php echo $_code ?>').hide();
+            }
+        };
+        
+        Event.observe($('<?php echo $_code ?>_cc_type'), 'change', ToogleOneclick<?php echo $_code ?>);
+        ToogleOneclick<?php echo $_code ?>();
+ 	 //]]>
+ </script>
  <?php endif; ?>
  <?php echo $this->__('You will be debit of amount %s only after submit order.',Mage::app()->getStore()->getBaseCurrency()->format($this->getQuote()->getGrandTotal(), array(), true))?>
  <script type="text/javascript">

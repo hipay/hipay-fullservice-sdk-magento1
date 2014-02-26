@@ -77,6 +77,10 @@ class Allopass_Hipay_Model_Method_Hosted extends Allopass_Hipay_Model_Method_Abs
 			$gatewayParams['template'] = $this->getConfigData('display_iframe') ? 'iframe' :  $this->getConfigData('template');
 	    	$gatewayParams['display_selector'] = $this->getConfigData('display_selector');
 	    	$gatewayParams['payment_product_list'] = $this->getConfigData('cctypes');
+			
+			if ($gatewayParams['country'] == 'BE') 
+				$gatewayParams['payment_product_list'] = str_replace('bcmc', '', $gatewayParams['payment_product_list']);
+			
 	    	$gatewayParams['payment_product_category_list'] = "credit-card";
 	    	
 	    	if(Mage::getStoreConfig('general/store_information/name') != "")
