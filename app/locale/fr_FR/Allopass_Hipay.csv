@@ -84,3 +84,5 @@
 "Redirect page pending status","Page de redirection statut en attente"
 "Page to redirect when transaction is in pending status","Page de redirection quand le statut de transaction est en attente"
 "Record your card data for recurring.","Enregistrez une empreinte de carte bancaire pour la récurrence du paiement."
+"Hipay status to validate order","Statut Hipay validant la commande"
+"Display hosted page in Iframe","Affiche la page de paiement dans une Iframe"
