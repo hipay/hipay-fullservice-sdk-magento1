@@ -235,6 +235,8 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
 				*/
 				// Solo only
 				'SO' => '/(^(6334)[5-9](\d{11}$|\d{13,14}$))|(^(6767)(\d{12}$|\d{14,15}$))/',
+				//Bancontact / mister cash
+	            'BCMC' =>  '/^[0-9]{17}$/',
 				'SM' => '/(^(5[0678])\d{11,18}$)|(^(6[^05])\d{11,18}$)|(^(601)[^1]\d{9,16}$)|(^(6011)\d{9,11}$)'
                             . '|(^(6011)\d{13,16}$)|(^(65)\d{11,13}$)|(^(65)\d{15,18}$)'
                             . '|(^(49030)[2-9](\d{10}$|\d{12,13}$))|(^(49033)[5-9](\d{10}$|\d{12,13}$))'
@@ -250,13 +252,12 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
             		'DI'  => '/^6011[0-9]{12}$/',
             		// JCB
             		'JCB' => '/^(3[0-9]{15}|(2131|1800)[0-9]{11})$/',
-            		//Bancontact / mister cash
-	                'BCMC' =>  '/^[0-9]{17}$/'//'/^\\d+$/',
 	             );
 	
 	       foreach ($ccTypeRegExpList as $ccTypeMatch=>$ccTypeRegExp) {
 				if (preg_match($ccTypeRegExp, $ccNumber)) {
 					$ccType = $ccTypeMatch;
+					Mage::log("CCtype: ".$ccType." CCtypematch".$ccTypeMatch,null,"regex.log");
 					break;
 				}
 			}

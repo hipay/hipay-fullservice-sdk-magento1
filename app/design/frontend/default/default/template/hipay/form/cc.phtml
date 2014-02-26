@@ -107,9 +107,10 @@
 
         var ToogleOneclick<?php echo $_code ?> = function() {
         	var elm = $('<?php echo $_code ?>_cc_type');
-            if (['VI','MC','AE'].indexOf(elm.value) != -1) {
+            if (['','VI','MC','AE'].indexOf(elm.value) != -1) {
                 $('oneclick_card_payment_form_<?php echo $_code ?>').show();
             } else {
+            	$('<?php echo $_code ?>_create_alias_oneclick').checked = false;
                 $('oneclick_card_payment_form_<?php echo $_code ?>').hide();
             }
         };

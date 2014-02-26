@@ -182,7 +182,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 					
 					case 116: //Authorized
 						
-						if($order->getStatus() == 'capture_requested')// for logic process
+						if($order->getStatus() == 'capture_requested' || $order->getStatus() == 'processing' )// for logic process
 							break;
 						
 						$this->addTransaction(
@@ -244,6 +244,9 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
 						if(((int)$this->getConfigData('hipay_status_validate_order') == 117) === false )
 							break;
+						else {
+							$order->save();
+						}
 						
 					case 118: //Capture
 						
@@ -358,7 +361,9 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 				}
 				
 		
-				if(((int)$gatewayResponse->getEci() == 9 || $payment->getAdditionalInformation('create_oneclick')) && !$order->isNominal()) //Recurring E-commerce
+				if(in_array($gatewayResponse->getPaymentProduct(), array('visa',"amex",'mastercard')) 
+					&& ((int)$gatewayResponse->getEci() == 9 || $payment->getAdditionalInformation('create_oneclick')) 
+					&& !$order->isNominal()) //Recurring E-commerce
 				{
 						
 					if($customer->getId())
