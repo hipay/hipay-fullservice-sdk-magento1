@@ -14,7 +14,6 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
 	public function preDispatch() {
 		parent::preDispatch();
 		
-		//Mage::log($this->getRequest()->getParams(),null,$this->getRequest()->getActionName() . ".log");
 		if (!$this->_validateSignature()) {
 			$this->getResponse()->setBody("NOK. Wrong Signature!");
 			$this->setFlag('', 'no-dispatch', true);

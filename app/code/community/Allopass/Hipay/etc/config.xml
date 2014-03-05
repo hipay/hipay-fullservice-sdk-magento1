@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<Allopass_Hipay>
-			<version>0.1.4</version>
+			<version>0.1.5</version>
 		</Allopass_Hipay>
 	</modules>
 	<global>
@@ -19,7 +19,17 @@
 		<models>
 			<hipay>
 				<class>Allopass_Hipay_Model</class>
+				<resourceModel>hipay_resource</resourceModel>
 			</hipay>
+			 <hipay_resource>
+                <class>Allopass_Hipay_Model_Resource</class>
+                <!-- <deprecatedNode>hipay_mysql4</deprecatedNode> -->
+                <entities>
+                	 <rule>
+                        <table>hipay_rule</table>
+                    </rule>
+                </entities>
+            </hipay_resource>
 		</models>
 		<resources>
             <allopass_hipay_setup>
@@ -87,6 +97,70 @@
                     </DINERS>
                 </types>
             </cc>
+            <hosted>
+                <types>
+                    <AE>
+                        <code>AE</code>
+                        <code_hipay>amex</code_hipay>
+                        <name>American Express</name>
+                        <order>0</order>
+                    </AE>
+                    <VI>
+                        <code>VI</code>
+                        <code_hipay>visa</code_hipay>
+                        <name>Visa</name>
+                        <order>10</order>
+                    </VI>
+                    <MC>
+                        <code>MC</code>
+                        <code_hipay>mastercard</code_hipay>
+                        <name>MasterCard</name>
+                        <order>20</order>
+                    </MC>
+                    <SOFORT>
+                    	<code>SOFORT</code>
+                    	<code_hipay>sofort-uberweisung</code_hipay>
+                    	<name>Sofort Überweisung</name>
+                    	<order>30</order>
+                    </SOFORT>
+                    <SM>
+                        <code>SM</code>
+                        <code_hipay>maestro</code_hipay>
+                        <name>Maestro</name>
+                        <order>40</order>
+                    </SM>
+                    <JCB>
+                        <code>JCB</code>
+                        <code_hipay>jcb</code_hipay>
+                        <name>JCB</name>
+                        <order>50</order>
+                    </JCB>
+                    <BCMC>
+                        <code>BCMC</code>
+                        <code_hipay>bcmc</code_hipay>
+                        <name>Bancontact / Mister Cash</name>
+                        <order>60</order>
+                    </BCMC>
+                    <DANKORT>
+                        <code>DANKORT</code>
+                        <code_hipay>dankort</code_hipay>
+                        <name>Dankort</name>
+                        <order>70</order>
+                    </DANKORT>
+                    <ECARTE-BLEUE>
+                        <code>ECARTE-BLEUE</code>
+                        <code_hipay>ecarte-bleue</code_hipay>
+                        <name>e-Carte Bleue</name>
+                        <order>80</order>
+                    </ECARTE-BLEUE>
+                    <DINERS>
+                        <code>DINERS</code>
+                        <code_hipay>diners</code_hipay>
+                        <name>Diners Club International</name>
+                        <order>80</order>
+                    </DINERS>
+                </types>
+            </hosted>
     	</payment_hipay>
     	<sales>
             <order>
@@ -140,6 +214,15 @@
 		</events>
 	</frontend>
 	<adminhtml>
+		 <routers>
+            <hipay>
+                <use>admin</use>
+                <args>
+                    <module>Allopass_Hipay</module>
+                    <frontName>hipay</frontName>
+                </args>
+            </hipay>
+        </routers>
 		 <translate>
             <modules>
                 <Allopass_Hipay>
@@ -175,6 +258,13 @@
                 </admin>
             </resources>
         </acl>
+         <layout>
+			<updates>
+				<hipay>
+					<file>hipay.xml</file>
+				</hipay>
+			</updates>
+		</layout>
 	</adminhtml>
 	<default>
 		<hipay>

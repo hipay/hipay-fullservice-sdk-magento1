@@ -126,7 +126,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
 	 */
 	public function getCcTypesHipay()
 	{
-		$_types = Mage::getConfig()->getNode('global/payment_hipay/cc/types')->asArray();
+		$_types = Mage::getConfig()->getNode('global/payment_hipay/hosted/types')->asArray();
 		
 		$types = array();
 		foreach ($_types as $data) {
@@ -144,7 +144,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
 	 */
 	public function getCcTypesCodeHipay()
 	{
-		$_types = Mage::getConfig()->getNode('global/payment_hipay/cc/types')->asArray();
+		$_types = Mage::getConfig()->getNode('global/payment_hipay/hosted/types')->asArray();
 	
 		$types = array();
 		foreach ($_types as $data) {

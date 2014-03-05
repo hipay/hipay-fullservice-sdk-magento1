@@ -184,20 +184,19 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 						
 						if($order->getStatus() == 'capture_requested' || $order->getStatus() == 'processing' )// for logic process
 							break;
+						if(!$this->isPreauthorizeCapture($payment))
+							$this->addTransaction(
+									$payment,
+									$gatewayResponse->getTransactionReference(),
+									Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH,
+									array('is_transaction_closed' => 0),
+									array(),
+									Mage::helper('hipay')->getTransactionMessage(
+											$payment, self::OPERATION_AUTHORIZATION, /*$gatewayResponse->getTransactionReference()*/null, $amount
+									)
+							);
 						
-						$this->addTransaction(
-								$payment,
-								$gatewayResponse->getTransactionReference(),
-								Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH,
-								array('is_transaction_closed' => 0),
-								array(),
-								Mage::helper('hipay')->getTransactionMessage(
-										$payment, self::OPERATION_AUTHORIZATION, /*$gatewayResponse->getTransactionReference()*/null, $amount
-								)
-						);
-						
-						$order
-						->setState(
+						$order->setState(
 								Mage_Sales_Model_Order::STATE_PROCESSING,
 								'pending_capture',
 								Mage::helper('hipay')
@@ -206,21 +205,12 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 										$order->getBaseCurrency()->formatTxt($order->getBaseTotalDue())),
 								$notified = true);
 						
-						/*if ($this->getConfigData('invoice_create')) {
-							$invoice = $order->prepareInvoice();
-							$invoice->setTransactionId($gatewayResponse->getTransactionReference());
-							$invoice->register();
-							$invoice->setState(Mage_Sales_Model_Order_Invoice::STATE_OPEN);
-						
-							Mage::getModel('core/resource_transaction')
-							->addObject($invoice)->addObject($invoice->getOrder())
-							->save();
-						
-						}*/
-						
+						$order->save();
 						if (!$order->getEmailSent()) {
 							$order->sendNewOrderEmail();
 						}
+						
+						
 						
 						break;
 					case 117: //Capture Requested
@@ -487,88 +477,24 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		switch ($gatewayResponse->getState())
 		{
 			case self::STATE_COMPLETED:
-	
-				
-	
-				/*$this->addTransaction(
-						$payment,
-						$gatewayResponse->getTransactionReference(),
-						$newTransactionType,
-						array('is_transaction_closed' => 0),
-						array(),
-						Mage::helper('hipay')->getTransactionMessage(
-								$payment, $requestType, null, $amount
-						)
-				);
-	
-				
-				$order->save();*/
 				return Mage::getUrl('checkout/onepage/success');
 	
 			case self::STATE_FORWARDING:
-				/*$this->addTransaction(
-				$payment,
-				$gatewayResponse->getTransactionReference(),
-				$newTransactionType,
-				array('is_transaction_closed' => 0),
-				array(),
-				Mage::helper('hipay')->getTransactionMessage(
-				$payment, $requestType, $gatewayResponse->getTransactionReference(), $amount
-				)
-				);*/
-	
 				$payment->setIsTransactionPending(1);
 				$order->save();
 				return  $gatewayResponse->getForwardUrl();
 	
 			case self::STATE_PENDING:
-				
-				/*$this->addTransaction(
-						$payment,
-						$gatewayResponse->getTransactionReference(),
-						$newTransactionType,
-						array('is_transaction_closed' => 0),
-						array(
-								$this->_realTransactionIdKey => $gatewayResponse->getTransactionReference(),
-						),
-						Mage::helper('hipay')->getTransactionMessage(
-								$payment, $requestType, $gatewayResponse->getTransactionReference(), $amount,true
-						)
-				);
-				
-				$order->save();*/
-				
 				if($this->getConfigData('re_add_to_cart'))
 					$this->getHelper()->reAddToCart($order->getIncrementId());
 	
 				return Mage::getUrl($this->getConfigData('pending_redirect_page'));
 	
 			case self::STATE_DECLINED:
-	
-				/*$reason = $gatewayResponse->getReason();
-				$this->addTransaction(
-						$payment,
-						$gatewayResponse->getTransactionReference(),
-						$newTransactionType,
-						array('is_transaction_closed' => 0),
-						array(
-								$this->_realTransactionIdKey => $gatewayResponse->getTransactionReference(),
-								$this->_isTransactionFraud => true
-						),
-						Mage::helper('hipay')->getTransactionMessage(
-								$payment, $requestType, null, $amount,true,"Code: ".$reason['code']." " . Mage::helper('hipay')->__("Reason") . " : ".$reason['message']
-						)
-				);
-	
-				
-				
-				$order->save();*/
-				
+			
 				if($this->getConfigData('re_add_to_cart'))
 					$this->getHelper()->reAddToCart($order->getIncrementId());
-				
-				//$this->_getCheckout()->setErrorMessage(Mage::helper('hipay')->__("Reason") . ": " . $reason['message']);
-	
+
 				return Mage::getUrl('checkout/onepage/failure');
 	
 			case self::STATE_ERROR:
@@ -633,16 +559,6 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		{
 			case "124":
 			case "125":
-				/*$this->addTransaction(
-				$payment,
-				$gatewayResponse->getTransactionReference(),
-				Mage_Sales_Model_Order_Payment_Transaction::TYPE_REFUND,
-				array('is_transaction_closed' => 1),
-				array(),
-				Mage::helper('hipay')->getTransactionMessage(
-				$payment, self::OPERATION_MAINTENANCE_REFUND, $gatewayResponse->getTransactionReference(), $amount
-				)
-				);*/
 				
 				/* @var $creditmemo Mage_Sales_Model_Order_Creditmemo */
 				$creditmemo = $payment->getCreditmemo();		
@@ -692,7 +608,20 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		if(!is_null($token))
 			$params['cardtoken'] = $token;
 		
-		$params['authentication_indicator'] = $this->getConfigData('use_3d_secure');
+		$params['authentication_indicator'] = 0;
+		
+		switch ((int)$this->getConfigData('use_3d_secure')) {
+			case 1:
+				$params['authentication_indicator'] = 1;
+				break;
+			case 2:
+				/* @var $rule Allopass_Hipay_Model_Rule */
+				$rule = Mage::getModel('hipay/rule')->load($this->getConfigData('config_3ds_rules'));
+				if($rule->getId())
+					$params['authentication_indicator'] = (int)$rule->validate($payment->getOrder());
+				break;
+		}
+
 	
 		/**
 		 * Electronic Commerce Indicator

@@ -1,0 +1,17 @@
+<?php $_element = $this->getElement() ?>
+<?php $_htmlId = $this->getHtmlId() ? $this->getHtmlId() : '_' . uniqid(); ?>
+<input type="hidden" value="<?php echo $_element->getRule()->getId() ?>" name="<?php echo $_element->getName() ?>" />
+<div class="rule-tree">	
+	<div id="rule<?php echo $_htmlId ?>">
+	<?php if ($_element->getRule() && $_element->getRule()->getConditions()) : ?>
+		<?php echo $_element->getRule()->getConditions()->asHtmlRecursive(); ?>
+	<?php endif; ?>
+	</div>
+</div>
+<script type="text/javascript">
+var <?php  echo $_htmlId ?> = new VarienRulesForm('rule<?php echo $_htmlId ?>', '<?php echo $this->getNewChildUrl() ?>');
+<?php if ($_element->getReadonly()): ?>
+    <?php echo $_htmlId ?>.setReadonly(true);
+<?php endif; ?>
+</script>
+

@@ -257,7 +257,6 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
 	       foreach ($ccTypeRegExpList as $ccTypeMatch=>$ccTypeRegExp) {
 				if (preg_match($ccTypeRegExp, $ccNumber)) {
 					$ccType = $ccTypeMatch;
-					Mage::log("CCtype: ".$ccType." CCtypematch".$ccTypeMatch,null,"regex.log");
 					break;
 				}
 			}
