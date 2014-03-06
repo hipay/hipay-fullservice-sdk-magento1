@@ -138,6 +138,24 @@ class Allopass_Hipay_Model_Config extends Varien_Object
 	}
 	
 	/**
+	 * Retrieve array of template types to display in hosted page
+	 *
+	 * @return array
+	 */
+	public function getTemplateHosted()
+	{
+		$_templates = Mage::getConfig()->getNode('global/template_hipay/hosted')->asArray();
+
+		$templates = array();
+		foreach ($_templates as $data) {
+			if (isset($data['value']) && isset($data['label'])) {
+				$templates[$data['value']] = $data['label'];
+			}
+		}
+		return $templates;
+	}
+	
+	/**
 	 * Retrieve array of credit card types to get code hipay
 	 *
 	 * @return array

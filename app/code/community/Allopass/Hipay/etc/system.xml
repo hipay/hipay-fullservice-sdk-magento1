@@ -282,7 +282,7 @@
              	<hipay_hosted translate="label" module="hipay">
             		<label>Hipay Hosted</label>
                     <frontend_type>text</frontend_type>
-                    <sort_order>200</sort_order>
+                    <sort_order>210</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
@@ -516,6 +516,179 @@
                         </is_test_mode>
                       </fields> 
              	</hipay_hosted>
+             	<hipay_sofort translate="label" module="hipay">
+            		<label>Hipay Hosted Sofort</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>220</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+	                    <active translate="label">
+	                        <label>Enabled</label>
+	                        <frontend_type>select</frontend_type>
+	                        <source_model>adminhtml/system_config_source_yesno</source_model>
+	                        <sort_order>10</sort_order>
+	                        <show_in_default>1</show_in_default>
+	                        <show_in_website>1</show_in_website>
+	                        <show_in_store>1</show_in_store>
+	                    </active>
+	                    <title translate="label">
+	                        <label>Title</label>
+	                        <frontend_type>text</frontend_type>
+	                        <sort_order>20</sort_order>
+	                        <show_in_default>1</show_in_default>
+	                        <show_in_website>1</show_in_website>
+	                        <show_in_store>1</show_in_store>
+	                     </title>
+                        <order_status_payment_accepted translate="label">
+                            <label>Order status when payment accepted</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>hipay/source_order_status_accepted</source_model>
+                            <sort_order>23</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </order_status_payment_accepted>
+                        <order_status_payment_refused translate="label">
+                            <label>Order status when payment refused</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>hipay/source_order_status_refused</source_model>
+                            <sort_order>24</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </order_status_payment_refused>
+                        <order_status_payment_canceled translate="label">
+                            <label>Order status when payment canceled by customer</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>hipay/source_order_status_canceled</source_model>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </order_status_payment_canceled>
+                         <hipay_status_validate_order translate="label">
+                            <label>Hipay status to validate order</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>hipay/source_order_hipayStatusValidate</source_model>
+                            <sort_order>26</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </hipay_status_validate_order>
+                         <pending_redirect_page translate="label">
+                            <label>Redirect page pending status</label>
+                            <comment>Page to redirect when transaction is in pending status</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>hipay/source_pendingredirect</source_model>
+                            <sort_order>27</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </pending_redirect_page>
+                        <css_url translate="label coment">
+                        	<label>Css Url</label>
+                        	<comment>Important, HTTPS protocol is required</comment>
+	                        <frontend_type>text</frontend_type>
+	                        <sort_order>30</sort_order>
+	                        <show_in_default>1</show_in_default>
+	                        <show_in_website>1</show_in_website>
+	                        <show_in_store>1</show_in_store>
+                        </css_url>
+                        <template translate="label">
+                        	<label>Page payment template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>hipay/source_template</source_model>
+                            <sort_order>35</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </template>
+                         <re_add_to_cart translate="label comment">
+                        	<label>Add product to cart</label>
+                        	<comment>Fill cart when payment canceled or refused</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>95</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </re_add_to_cart>
+                        <cancel_pending_order translate="label comment">
+                         	<label>Cancel pending order</label>
+                        	<comment>Cancel orders stayed in pending because customer not validated payment</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>97</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                         </cancel_pending_order>
+                         <allowspecific translate="label">
+                            <label>Payment from applicable countries</label>
+                            <frontend_type>allowspecific</frontend_type>
+                            <sort_order>100</sort_order>
+                            <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </allowspecific>
+                        <specificcountry translate="label">
+                            <label>Payment from Specific countries</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <sort_order>110</sort_order>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </specificcountry>
+                        <min_order_total translate="label">
+                            <label>Minimum Order Total</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>120</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </min_order_total>
+                        <max_order_total translate="label">
+                            <label>Maximum Order Total</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>121</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </max_order_total>
+                        <sort_order translate="label">
+                            <label>Sort Order</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>130</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sort_order>
+                        <debug translate="label">
+                        	<label>Enable debug log</label>
+                        	<comment></comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>150</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </debug>
+	                      <is_test_mode translate="label comment">
+                        	<label>Enable test mode</label>
+                        	<comment></comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </is_test_mode>
+                      </fields> 
+             	</hipay_sofort>
              </groups>
 		</payment>
 	</sections>

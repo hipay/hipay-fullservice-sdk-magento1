@@ -11,7 +11,7 @@ class Allopass_Hipay_Model_Method_Hosted extends Allopass_Hipay_Model_Method_Abs
 	public function getOrderPlaceRedirectUrl()
 	{
 			
-		return Mage::getUrl('hipay/hosted/sendRequest',array('_secure' => true));
+		return Mage::getUrl(str_replace("_", "/", $this->getCode()).'/sendRequest',array('_secure' => true));
 	}
 	
 	/**
