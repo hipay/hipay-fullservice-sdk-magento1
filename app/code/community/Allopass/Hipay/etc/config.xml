@@ -63,7 +63,7 @@
                 <types>
                     <AE>
                         <code>AE</code>
-                        <code_hipay>amex</code_hipay>
+                        <code_hipay>american-express</code_hipay>
                         <name>American Express</name>
                         <order>0</order>
                     </AE>

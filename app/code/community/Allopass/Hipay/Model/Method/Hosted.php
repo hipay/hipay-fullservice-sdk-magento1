@@ -78,7 +78,7 @@ class Allopass_Hipay_Model_Method_Hosted extends Allopass_Hipay_Model_Method_Abs
 	    	$gatewayParams['display_selector'] = $this->getConfigData('display_selector');
 	    	$gatewayParams['payment_product_list'] = $this->getConfigData('cctypes');
 			
-			if ($gatewayParams['country'] == 'BE') 
+			if ($gatewayParams['country'] != 'BE') 
 				$gatewayParams['payment_product_list'] = str_replace('bcmc', '', $gatewayParams['payment_product_list']);
 			
 	    	$gatewayParams['payment_product_category_list'] = "credit-card";
