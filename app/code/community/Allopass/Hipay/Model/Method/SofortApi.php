@@ -4,7 +4,13 @@ class Allopass_Hipay_Model_Method_SofortApi extends Allopass_Hipay_Model_Method_
 	protected $_code  = 'hipay_sofortapi';
 	
 	protected $_formBlockType = 'hipay/form_hosted';
-	protected $_infoBlockType = 'hipay/info_hosted';	
+	protected $_infoBlockType = 'hipay/info_hosted';
+	
+	
+	public function getOrderPlaceRedirectUrl()
+	{
+		return Mage::getUrl(str_replace("_", "/", $this->getCode()).'/sendRequest',array('_secure' => true));
+	}	
 	
 	
 	/**
