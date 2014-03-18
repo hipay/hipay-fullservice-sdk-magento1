@@ -289,37 +289,9 @@
 				<cancel_url>hipay/hosted/cancel</cancel_url>
 				<use_3d_secure>1</use_3d_secure>
 			</hipay_hosted>
-			<hipay_sofort>
-				<active>0</active> <!-- Activé ou non -->
-				<title>HiPay Sofort</title> <!-- Titre par défaut modifiable en admin -->
-				<payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
-				<cctypes>sofort-uberweisung</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
-				<!-- <useccv>1</useccv> --> <!-- permet de rendre obligatoire la saisie du CCV (uniquement en mode API) -->
-				<order_status_payment_accepted>processing</order_status_payment_accepted><!-- valeur par défaut du statut quand le paiement est accepté -->
-				<order_status_payment_refused>canceled</order_status_payment_refused><!-- valeur par défaut du statut quand le paiement est refusé -->
-				<order_status_payment_canceled>canceled</order_status_payment_canceled><!-- valeur par défaut du statut quand le paiement est annulé -->
-				<hipay_status_validate_order>118</hipay_status_validate_order><!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
-				<pending_redirect_page>hipay/checkout/pending</pending_redirect_page><!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
-				<display_selector>0</display_selector><!-- valeur par défaut l'affichage du selecteur de carte (uniquement en mode Hosted)-->
-				<template>basic</template><!-- valeur par défaut du template de la page hénergé (uniquement en mode Hosted)-->
-				<allow_use_oneclick>0</allow_use_oneclick><!-- valeur par défaut de l'utilisation du oneclick -->
-				<invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
-				<re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
-				<cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
-				<display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
-				<is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
-				<debug>0</debug><!-- valeur par défaut du mode debug -->
-				<model>hipay/method_sofort</model><!-- Classe model de la méthode -->
-				<accept_url>hipay/sofort/accept</accept_url><!-- Url accept de la méthode -->
-				<pending_url>hipay/sofort/pending</pending_url><!-- Url pending de la méthode -->
-				<decline_url>hipay/sofort/decline</decline_url><!-- Url decline de la méthode -->
-				<exception_url>hipay/sofort/exception</exception_url><!-- Url execption de la méthode -->
-				<cancel_url>hipay/sofort/cancel</cancel_url><!-- Url cancel de la méthode -->
-				<use_3d_secure>0</use_3d_secure><!-- valeur par défaut pour activer le 3ds -->
-			</hipay_sofort>
 			<hipay_sofortapi>
 				<active>0</active> <!-- Activé ou non -->
-				<title>HiPay API Sofort</title> <!-- Titre par défaut modifiable en admin -->
+				<title>HiPay Sofort</title> <!-- Titre par défaut modifiable en admin -->
 				<payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
 				<cctypes>sofort-uberweisung</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
 				<!-- <useccv>1</useccv> --> <!-- permet de rendre obligatoire la saisie du CCV (uniquement en mode API) -->
@@ -511,7 +483,7 @@
 				<cancel_url>hipay/giropay/cancel</cancel_url><!-- Url cancel de la méthode -->
 				<use_3d_secure>0</use_3d_secure><!-- valeur par défaut pour activer le 3ds -->
 			</hipay_giropay>
-			<hipay_przelewy24>
+			<hipay_przelewy24api>
 				<active>0</active> <!-- Activé ou non -->
 				<title>HiPay Przelewy24</title> <!-- Titre par défaut modifiable en admin -->
 				<payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
@@ -531,15 +503,15 @@
 				<display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
 				<is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
 				<debug>0</debug><!-- valeur par défaut du mode debug -->
-				<model>hipay/method_przelewy24</model><!-- Classe model de la méthode -->
-				<accept_url>hipay/przelewy24/accept</accept_url><!-- Url accept de la méthode -->
-				<pending_url>hipay/przelewy24/pending</pending_url><!-- Url pending de la méthode -->
-				<decline_url>hipay/przelewy24/decline</decline_url><!-- Url decline de la méthode -->
-				<exception_url>hipay/przelewy24/exception</exception_url><!-- Url execption de la méthode -->
-				<cancel_url>hipay/przelewy24/cancel</cancel_url><!-- Url cancel de la méthode -->
+				<model>hipay/method_przelewy24Api</model><!-- Classe model de la méthode -->
+				<accept_url>hipay/przelewy24api/accept</accept_url><!-- Url accept de la méthode -->
+				<pending_url>hipay/przelewy24api/pending</pending_url><!-- Url pending de la méthode -->
+				<decline_url>hipay/przelewy24api/decline</decline_url><!-- Url decline de la méthode -->
+				<exception_url>hipay/przelewy24api/exception</exception_url><!-- Url execption de la méthode -->
+				<cancel_url>hipay/przelewy24api/cancel</cancel_url><!-- Url cancel de la méthode -->
 				<use_3d_secure>0</use_3d_secure><!-- valeur par défaut pour activer le 3ds -->
-			</hipay_przelewy24>
-			<hipay_sisal>
+			</hipay_przelewy24api>
+			<hipay_sisalapi>
 				<active>0</active> <!-- Activé ou non -->
 				<title>HiPay Sisal</title> <!-- Titre par défaut modifiable en admin -->
 				<payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
@@ -550,8 +522,6 @@
 				<order_status_payment_canceled>canceled</order_status_payment_canceled><!-- valeur par défaut du statut quand le paiement est annulé -->
 				<hipay_status_validate_order>118</hipay_status_validate_order><!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
 				<pending_redirect_page>hipay/checkout/pending</pending_redirect_page><!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
-				<display_selector>0</display_selector><!-- valeur par défaut l'affichage du selecteur de carte (uniquement en mode Hosted)-->
-				<template>basic</template><!-- valeur par défaut du template de la page hénergé (uniquement en mode Hosted)-->
 				<allow_use_oneclick>0</allow_use_oneclick><!-- valeur par défaut de l'utilisation du oneclick -->
 				<invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
 				<re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
@@ -559,14 +529,14 @@
 				<display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
 				<is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
 				<debug>0</debug><!-- valeur par défaut du mode debug -->
-				<model>hipay/method_sisal</model><!-- Classe model de la méthode -->
-				<accept_url>hipay/sisal/accept</accept_url><!-- Url accept de la méthode -->
-				<pending_url>hipay/sisal/pending</pending_url><!-- Url pending de la méthode -->
-				<decline_url>hipay/sisal/decline</decline_url><!-- Url decline de la méthode -->
-				<exception_url>hipay/sisal/exception</exception_url><!-- Url execption de la méthode -->
-				<cancel_url>hipay/sisal/cancel</cancel_url><!-- Url cancel de la méthode -->
+				<model>hipay/method_sisalApi</model><!-- Classe model de la méthode -->
+				<accept_url>hipay/sisalapi/accept</accept_url><!-- Url accept de la méthode -->
+				<pending_url>hipay/sisalapi/pending</pending_url><!-- Url pending de la méthode -->
+				<decline_url>hipay/sisalapi/decline</decline_url><!-- Url decline de la méthode -->
+				<exception_url>hipay/sisalapi/exception</exception_url><!-- Url execption de la méthode -->
+				<cancel_url>hipay/sisalapi/cancel</cancel_url><!-- Url cancel de la méthode -->
 				<use_3d_secure>0</use_3d_secure><!-- valeur par défaut pour activer le 3ds -->
-			</hipay_sisal>
+			</hipay_sisalapi>			
 			<hipay_qiwi>
 				<active>0</active> <!-- Activé ou non -->
 				<title>HiPay Visa Qiwi Wallet</title> <!-- Titre par défaut modifiable en admin -->
@@ -595,7 +565,7 @@
 				<cancel_url>hipay/qiwi/cancel</cancel_url><!-- Url cancel de la méthode -->
 				<use_3d_secure>0</use_3d_secure><!-- valeur par défaut pour activer le 3ds -->
 			</hipay_qiwi>
-			<hipay_webmoney>
+			<hipay_webmoneyapi>
 				<active>0</active> <!-- Activé ou non -->
 				<title>HiPay WebMoney Transfer</title> <!-- Titre par défaut modifiable en admin -->
 				<payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
@@ -615,15 +585,15 @@
 				<display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
 				<is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
 				<debug>0</debug><!-- valeur par défaut du mode debug -->
-				<model>hipay/method_webmoney</model><!-- Classe model de la méthode -->
-				<accept_url>hipay/webmoney/accept</accept_url><!-- Url accept de la méthode -->
-				<pending_url>hipay/webmoney/pending</pending_url><!-- Url pending de la méthode -->
-				<decline_url>hipay/webmoney/decline</decline_url><!-- Url decline de la méthode -->
-				<exception_url>hipay/webmoney/exception</exception_url><!-- Url execption de la méthode -->
-				<cancel_url>hipay/webmoney/cancel</cancel_url><!-- Url cancel de la méthode -->
+				<model>hipay/method_webmoneyApi</model><!-- Classe model de la méthode -->
+				<accept_url>hipay/webmoneyapi/accept</accept_url><!-- Url accept de la méthode -->
+				<pending_url>hipay/webmoneyapi/pending</pending_url><!-- Url pending de la méthode -->
+				<decline_url>hipay/webmoneyapi/decline</decline_url><!-- Url decline de la méthode -->
+				<exception_url>hipay/webmoneyapi/exception</exception_url><!-- Url execption de la méthode -->
+				<cancel_url>hipay/webmoneyapi/cancel</cancel_url><!-- Url cancel de la méthode -->
 				<use_3d_secure>0</use_3d_secure><!-- valeur par défaut pour activer le 3ds -->
-			</hipay_webmoney>
-			<hipay_yandex>
+			</hipay_webmoneyapi>
+			<hipay_yandexapi>
 				<active>0</active> <!-- Activé ou non -->
 				<title>HiPay Yandex.Money</title> <!-- Titre par défaut modifiable en admin -->
 				<payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
@@ -643,14 +613,14 @@
 				<display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
 				<is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
 				<debug>0</debug><!-- valeur par défaut du mode debug -->
-				<model>hipay/method_yandex</model><!-- Classe model de la méthode -->
-				<accept_url>hipay/yandex/accept</accept_url><!-- Url accept de la méthode -->
-				<pending_url>hipay/yandex/pending</pending_url><!-- Url pending de la méthode -->
-				<decline_url>hipay/yandex/decline</decline_url><!-- Url decline de la méthode -->
-				<exception_url>hipay/yandex/exception</exception_url><!-- Url execption de la méthode -->
-				<cancel_url>hipay/yandex/cancel</cancel_url><!-- Url cancel de la méthode -->
+				<model>hipay/method_yandexApi</model><!-- Classe model de la méthode -->
+				<accept_url>hipay/yandexapi/accept</accept_url><!-- Url accept de la méthode -->
+				<pending_url>hipay/yandexapi/pending</pending_url><!-- Url pending de la méthode -->
+				<decline_url>hipay/yandexapi/decline</decline_url><!-- Url decline de la méthode -->
+				<exception_url>hipay/yandexapi/exception</exception_url><!-- Url execption de la méthode -->
+				<cancel_url>hipay/yandexapi/cancel</cancel_url><!-- Url cancel de la méthode -->
 				<use_3d_secure>0</use_3d_secure><!-- valeur par défaut pour activer le 3ds -->
-			</hipay_yandex>
+			</hipay_yandexapi>
 		</payment>
 	</default>
 	<crontab>
