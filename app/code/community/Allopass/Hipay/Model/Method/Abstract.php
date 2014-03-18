@@ -351,7 +351,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 				}
 				
 		
-				if(in_array($gatewayResponse->getPaymentProduct(), array('visa',"amex",'mastercard')) 
+				if(in_array($gatewayResponse->getPaymentProduct(), array('visa','american-express','mastercard','cb')) 
 					&& ((int)$gatewayResponse->getEci() == 9 || $payment->getAdditionalInformation('create_oneclick')) 
 					&& !$order->isNominal()) //Recurring E-commerce
 				{
