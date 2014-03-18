@@ -51,12 +51,6 @@ class Allopass_Hipay_Model_Method_SofortApi extends Allopass_Hipay_Model_Method_
 		
 	}
 	
-	public function getOrderPlaceRedirectUrl()
-	{
-			
-		return Mage::getUrl('hipay/sofortapi/sendRequest',array('_secure' => true));
-
-	}
 	
 	protected function getCcTypeHipay($ccTypeMagento)
 	{
