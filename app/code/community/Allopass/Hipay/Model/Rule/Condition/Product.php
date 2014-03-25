@@ -3,7 +3,7 @@
 /**
  * 3ds Rule Product Condition data model
  */
-class Allopass_Hipay_Model_Rule_Condition_Product extends Mage_Rule_Model_Condition_Product_Abstract
+class Allopass_Hipay_Model_Rule_Condition_Product extends Mage_CatalogRule_Model_Rule_Condition_Product
 {
 	
 	

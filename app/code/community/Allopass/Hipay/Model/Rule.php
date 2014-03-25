@@ -1,5 +1,5 @@
 <?php
-class Allopass_Hipay_Model_Rule extends Mage_Rule_Model_Abstract
+class Allopass_Hipay_Model_Rule extends Mage_Rule_Model_Rule
 {
 
   /**
