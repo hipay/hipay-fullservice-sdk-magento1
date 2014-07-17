@@ -596,7 +596,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		$params['shipping'] = $payment->getOrder()->getShippingAmount();
 		$params['tax'] = $payment->getOrder()->getTaxAmount();
 		$params['cid'] = $payment->getOrder()->getCustomerId();//CUSTOMER ID
-		$params['ipaddr'] = $payment->getOrder()->getRemoteIp();
+		$params['ipaddr'] = !is_null($payment->getOrder()->getXForwardedFor()) ? $payment->getOrder()->getXForwardedFor() : $payment->getOrder()->getRemoteIp();
 	
 		$params['http_accept'] = "*/*";
 		$params['http_user_agent'] = Mage::helper('core/http')->getHttpUserAgent();
