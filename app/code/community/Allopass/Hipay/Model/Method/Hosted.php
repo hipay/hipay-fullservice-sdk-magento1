@@ -75,6 +75,7 @@ class Allopass_Hipay_Model_Method_Hosted extends Allopass_Hipay_Model_Method_Abs
 	    	$gatewayParams['operation'] = $this->getOperation();
 	    	$gatewayParams['css'] = $this->getConfigData('css_url');
 			$gatewayParams['template'] = $this->getConfigData('display_iframe') ? 'iframe' :  $this->getConfigData('template');
+	    	if ($this->getConfigData('template') == 'basic-js' && $gatewayParams['template'] == 'iframe') $gatewayParams['template'] .= '-js';
 	    	$gatewayParams['display_selector'] = $this->getConfigData('display_selector');
 	    	//$gatewayParams['payment_product_list'] = $this->getConfigData('cctypes');
 			
