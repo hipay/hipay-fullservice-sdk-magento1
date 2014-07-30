@@ -722,11 +722,12 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 	 * @param Mage_Sales_Model_Order_Payment $payment
 	 * @return bool
 	 */
-	static function isPreauthorizeCapture($payment)
+	protected function isPreauthorizeCapture($payment)
 	{
 		$lastTransaction = $payment->getTransaction($payment->getLastTransId());
 		if (!$lastTransaction
-		|| $lastTransaction->getTxnType() != Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH
+		|| (($this->getOperation() == self::OPERATION_SALE) && ($lastTransaction->getTxnType() == Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH ) )
+		|| $lastTransaction->getTxnType() != Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH 
 		) {
 			return false;
 		}

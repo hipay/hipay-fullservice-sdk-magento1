@@ -130,7 +130,7 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
 	{
 		parent::capture($payment, $amount);
 	
-		if (self::isPreauthorizeCapture($payment))
+		if ($this->isPreauthorizeCapture($payment))
 			$this->_preauthorizeCapture($payment, $amount);
 	
 		$payment->setSkipTransactionCreation(true);
