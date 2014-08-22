@@ -232,7 +232,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 								Mage_Sales_Model_Order::STATE_PROCESSING, 'capture_requested', $message, null, false
 						);
 
-						if(((int)$this->getConfigData('hipay_status_validate_order') == 117) === false )
+						if(((int)$this->getConfigData('hipay_status_validate_order') == 117) === false && $payment->getCcType() != 'AE' )
 							break;
 						else {
 							$order->save();
