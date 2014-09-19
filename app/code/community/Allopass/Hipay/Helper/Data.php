@@ -24,7 +24,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 		unset($parameters['hash']);
 		ksort($parameters);
 		foreach ($parameters as $name => $value) {
-			if (!empty($value)) {
+			if (strlen($value) > 0) {
 				$string2compute .= $name . $value . $passphrase;
 			}
 		}
