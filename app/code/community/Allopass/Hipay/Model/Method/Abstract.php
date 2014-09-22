@@ -252,27 +252,6 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 							$order->unhold();
 						}
 						
-						
-						if (!$status = $this->getConfigData('order_status_payment_accepted')) {
-							$status = $order->getStatus();
-						}
-						
-						$message = Mage::helper("hipay")->__('Payment accepted by Hipay.');
-						
-						if ($status == Mage_Sales_Model_Order::STATE_PROCESSING) {
-							$order->setState(
-									Mage_Sales_Model_Order::STATE_PROCESSING, $status, $message
-							);
-						} else if ($status == Mage_Sales_Model_Order::STATE_COMPLETE) {
-							$order->setState(
-									Mage_Sales_Model_Order::STATE_COMPLETE, $status, $message, null, false
-							);
-						} else {
-							$order->addStatusToHistory($status, $message, true);
-						}
-						
-						
-						
 						// Create invoice
 						if ($this->getConfigData('invoice_create',$order->getStoreId()) && !$order->hasInvoices()) {
 							
@@ -296,6 +275,31 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 								}
 							}
 						}
+						
+						
+						if (!$status = $this->getConfigData('order_status_payment_accepted')) {
+							$status = $order->getStatus();
+						}
+						
+						$message = Mage::helper("hipay")->__('Payment accepted by Hipay.');
+						
+						if ($status == Mage_Sales_Model_Order::STATE_PROCESSING) {
+							$order->setState(
+									Mage_Sales_Model_Order::STATE_PROCESSING, $status, $message
+							);
+						} else if ($status == Mage_Sales_Model_Order::STATE_COMPLETE) {
+							$order->setData('state',Mage_Sales_Model_Order::STATE_COMPLETE);
+							$order->addStatusToHistory($status, $message, true);
+							/*$order->setState(
+									Mage_Sales_Model_Order::STATE_COMPLETE, $status, $message, null, false
+							);*/
+						} else {
+							$order->addStatusToHistory($status, $message, true);
+						}
+						
+						
+						
+						
 
 						
 						if (!$order->getEmailSent()) {

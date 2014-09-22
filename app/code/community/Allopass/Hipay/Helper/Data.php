@@ -67,11 +67,13 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 	 *
 	 * @param Mage_Customer_Model_Customer $customer
 	 * @param Allopass_Hipay_Model_Api_Response_Gateway $response
+	 * @param boolean $isRecurring
 	 */
 	public function responseToCustomer($customer,$response,$isRecurring = false)
 	{
 	
 		$paymentMethod = $response->getPaymentMethod();
+		$paymentProduct = $response->getPaymentProduct();
 		$token = isset($paymentMethod['token']) ? $paymentMethod['token'] : $response->getData('cardtoken');
 		
 		if($isRecurring)
@@ -83,9 +85,10 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 			$customer->setHipayCcExpDate($paymentMethod['card_expiry_month'] . "-" . $paymentMethod['card_expiry_year'] );
 		else
 			$customer->setHipayCcExpDate(substr($response->getData('cardexpiry'), 4,2) . "-" . substr($response->getData('cardexpiry'), 0,4) );
+		
 		$customer->setHipayCcNumberEnc(isset($paymentMethod['pan']) ? $paymentMethod['pan'] : $response->getData('cardpan'));
-		$customer->setHipayCcType(isset($paymentMethod['brand']) ? strtolower($paymentMethod['brand']) : strtolower($response->getData('cardbrand')));
-			
+		//$customer->setHipayCcType(isset($paymentMethod['brand']) ? strtolower($paymentMethod['brand']) : strtolower($response->getData('cardbrand')));
+		$customer->setHipayCcType($paymentProduct);	
 			
 		$customer->getResource()->saveAttribute($customer, 'hipay_alias_oneclick');
 		$customer->getResource()->saveAttribute($customer, 'hipay_cc_exp_date');
