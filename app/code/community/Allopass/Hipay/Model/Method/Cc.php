@@ -111,7 +111,7 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
 		{
 			$request = Mage::getModel('hipay/api_request',array($this));
 			/* @var $request Allopass_Hipay_Model_Api_Request */
-			$vaultResponse = $request->vaultRequest(Allopass_Hipay_Model_Api_Request::VAULT_ACTION_CREATE, $this->getVaultParams($payment));		
+			$vaultResponse = $request->vaultRequest(Allopass_Hipay_Model_Api_Request::VAULT_ACTION_CREATE, $this->getVaultParams($payment),$payment->getOrder()->getStoreId());		
 			$this->_debug($vaultResponse->debug());
 			$token = $vaultResponse->getToken();
 		}
@@ -166,7 +166,7 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
     	$this->_debug($gatewayParams);
     	
     	
-    	$gatewayResponse = $request->gatewayRequest(Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_ORDER,$gatewayParams);
+    	$gatewayResponse = $request->gatewayRequest(Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_ORDER,$gatewayParams,$payment->getOrder()->getStoreId());
     	
     	$this->_debug($gatewayResponse->debug());
     	

@@ -22,6 +22,8 @@ class Allopass_Hipay_Model_Api_Request
 	
 	protected $_methodInstance = null;
 	
+	protected $_storeId = null;
+	
 	public function __construct( $methodInstance)
 	{
 		$this->_methodInstance = $methodInstance[0];
@@ -81,7 +83,7 @@ class Allopass_Hipay_Model_Api_Request
 	 * Get client HTTP
 	 * @return Zend_Http_Client
 	 */
-	public function getClient($storeId=null)
+	public function getClient()
 	{
 		if(is_null($this->_client))
 		{
@@ -105,8 +107,8 @@ class Allopass_Hipay_Model_Api_Request
 				$this->_client->setConfig($config);
 				$this->_client->setHeaders(array('Content-Type'=>'application/xml',
 						'Accept'=>'application/json'));
-				$this->_client->setAuth($this->getApiUsername($storeId),
-						$this->getApiPassword($storeId),
+				$this->_client->setAuth($this->getApiUsername($this->getStoreId()),
+						$this->getApiPassword($this->getStoreId()),
 						Zend_Http_Client::AUTH_BASIC);
 				$this->_client->setAdapter($adapter);
 	
@@ -192,6 +194,7 @@ class Allopass_Hipay_Model_Api_Request
 	 */
 	public function vaultRequest($action,$params,$storeId=null)
 	{
+		$this->setStoreId($storeId);
 		$uri = $this->getVaultApiEndpoint($storeId) . $action . "/";
 	
 		/* @var $response Allopass_Hipay_Model_Api_Response_Vault */
@@ -209,11 +212,23 @@ class Allopass_Hipay_Model_Api_Request
 	 */
 	public function gatewayRequest($action,$params,$storeId=null)
 	{
+		$this->setStoreId($storeId);
 		$uri = $this->getGatewayApiEndpoint($storeId) . $action;
 	
 		/* @var $response Allopass_Hipay_Model_Api_Response_Gateway */
 		$response  = Mage::getSingleton('hipay/api_response_gateway',$this->_request($uri,$params,$this->getMethodHttp($action),$storeId));
 		return $response;
+	}
+	
+	public function setStoreId($storeId)
+	{
+		$this->_storeId = $storeId;
+		return $this;
+	}
+	
+	public function getStoreId()
+	{
+		return $this->_storeId;
 	}
 	
 }

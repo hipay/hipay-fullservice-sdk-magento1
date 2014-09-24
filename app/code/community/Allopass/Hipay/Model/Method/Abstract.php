@@ -581,7 +581,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		
 		$this->_debug($gatewayParams);
 		
-		$gatewayResponse = $request->gatewayRequest($action,$gatewayParams);
+		$gatewayResponse = $request->gatewayRequest($action,$gatewayParams,$payment->getOrder()->getStoreId());
 		
 		$this->_debug($gatewayResponse->debug());
 		
@@ -781,7 +781,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		$request = Mage::getModel('hipay/api_request',array($this));
 		$uri = Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_MAINTENANCE . $transactionId;
 	
-		$gatewayResponse = $request->gatewayRequest($uri,$gatewayParams);
+		$gatewayResponse = $request->gatewayRequest($uri,$gatewayParams,$payment->getOrder()->getStoreId());
 	
 		$this->_debug($gatewayResponse->debug());
 	
