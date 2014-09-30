@@ -7,7 +7,8 @@ class Allopass_Hipay_Model_Observer
 	public function cancelOrdersInPending()
 	{
 		
-		$methodCodes = array('hipay_cc'=>'hipay/method_cc','hipay_hosted'=>'hipay/method_hosted');
+		//$methodCodes = array('hipay_cc'=>'hipay/method_cc','hipay_hosted'=>'hipay/method_hosted');
+		$methodCodes = Mage::helper('hipay')->getHipayMethods();
 		foreach ($methodCodes as $methodCode=>$model)
 		{
 			if(!Mage::getStoreConfig('payment/'.$methodCode."/cancel_pending_order"))

@@ -986,6 +986,11 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         return true;
     }
 	
+	protected function orderDue($order)
+	{
+		return $order->hasInvoices() && $order->getBaseTotalDue() > 0;
+	}
+	
 	
 	/**
 	 *

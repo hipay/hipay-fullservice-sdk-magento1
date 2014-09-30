@@ -2,6 +2,20 @@
 class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 {
 	
+	public function getHipayMethods()
+	{
+		$methods = array();
+		
+		foreach (Mage::getStoreConfig('payment') as $code => $data) {
+				if(strpos($code, 'hipay') !== false)
+				{
+					$methods[$code] = $data['model'];
+				}
+		}
+		
+		return $methods;
+		
+	}
 	
 	public function checkSignature($signature,$fromNotification = false)
 	{
