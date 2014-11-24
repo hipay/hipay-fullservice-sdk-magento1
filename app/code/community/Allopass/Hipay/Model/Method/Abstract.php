@@ -192,7 +192,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 									array('is_transaction_closed' => 0),
 									array(),
 									Mage::helper('hipay')->getTransactionMessage(
-											$payment, self::OPERATION_AUTHORIZATION, /*$gatewayResponse->getTransactionReference()*/null, $amount
+											$payment, self::OPERATION_AUTHORIZATION, null, $amount
 									)
 							);
 						
@@ -225,7 +225,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 								array('is_transaction_closed' => 0),
 								array(),
 								Mage::helper('hipay')->getTransactionMessage(
-										$payment, self::OPERATION_SALE, /*$gatewayResponse->getTransactionReference()*/null, $amount
+										$payment, self::OPERATION_SALE, null, $amount
 								)
 						);
 						
@@ -235,11 +235,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 								Mage_Sales_Model_Order::STATE_PROCESSING, 'capture_requested', $message, null, false
 						);
 
-						if(((int)$this->getConfigData('hipay_status_validate_order') == 117) === false /*&& $payment->getCcType() != 'AE'*/ )
+						if(((int)$this->getConfigData('hipay_status_validate_order') == 117) === false )
 							break;
-						/*else {
-							$order->save();
-						}*/
 						
 					case 118: //Capture
 						
@@ -265,7 +262,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 						{
 							foreach ($order->getInvoiceCollection() as $invoice)
 							{
-								if($invoice->getState() == Mage_Sales_Model_Order_Invoice::STATE_OPEN && $invoice->getBaseGrandTotal() == $gatewayResponse->getCapturedAmount())
+								if($invoice->getState() == Mage_Sales_Model_Order_Invoice::STATE_OPEN && round(($invoice->getBaseGrandTotal() + $order->getBaseTotalPaid()),2) == $gatewayResponse->getCapturedAmount())
 								{
 									$invoice->pay();
 									Mage::getModel('core/resource_transaction')
@@ -471,15 +468,12 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 	{
 		$invoice = $order->prepareInvoice();
 		$invoice->setTransactionId($transactionReference);	
-		if($capture)					
-		{
-			$invoice->register()->capture();
-		}
 		
-		if($paid)
-		{
-			$invoice->setIsPaid(1);
-		}
+		if($capture)					
+			$invoice->register()->capture();
+			
+		/*if($paid)
+			$invoice->setIsPaid(1);*/
 		
 		return $invoice;
 	}
@@ -760,12 +754,18 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 	protected function isPreauthorizeCapture($payment)
 	{
 		$lastTransaction = $payment->getTransaction($payment->getLastTransId());
-		if (!$lastTransaction
-		|| (($this->getOperation() == self::OPERATION_SALE) && ($lastTransaction->getTxnType() == Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH ) )
-		|| $lastTransaction->getTxnType() != Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH 
-		) {
+		
+		if(!$lastTransaction)
 			return false;
-		}
+		
+		if ($this->getOperation() == self::OPERATION_SALE && $lastTransaction->getTxnType() == Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH  )
+			return false;
+		
+		if($lastTransaction->getTxnType() == Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE && $this->orderDue($payment->getOrder()))
+			return true;
+		
+		if ($lastTransaction->getTxnType() != Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH  ) 
+			return false;
 	
 		return true;
 	}
