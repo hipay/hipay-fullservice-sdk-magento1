@@ -472,10 +472,14 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		$invoice = $order->prepareInvoice();
 		$invoice->setTransactionId($transactionReference);	
 		if($capture)					
+		{
 			$invoice->register()->capture();
+		}
 		
 		if($paid)
+		{
 			$invoice->setIsPaid(1);
+		}
 		
 		return $invoice;
 	}
