@@ -182,7 +182,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 					
 					case 116: //Authorized
 						
-						if($order->getStatus() == 'capture_requested' || $order->getStatus() == 'processing' )// for logic process
+						if($order->getStatus() == 'capture_requested' || $order->getStatus() == 'processing' 
+								|| $order->getStatus() == 'complete' || $order->getStatus() == 'closed' )// for logic process
 							break;
 						if(!$this->isPreauthorizeCapture($payment))
 							$this->addTransaction(
