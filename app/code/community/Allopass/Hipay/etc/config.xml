@@ -241,7 +241,7 @@
 				<active>0</active>
 				<title>HiPay Credit Card</title>
 				<payment_action>authorize_capture</payment_action>
-				<cctypes>AE,VI,MC</cctypes>
+				<cctypes>VI,MC,AE</cctypes>
 				<useccv>1</useccv>
 				<order_status_payment_accepted>processing</order_status_payment_accepted>
 				<order_status_payment_refused>canceled</order_status_payment_refused>

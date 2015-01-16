@@ -105,3 +105,6 @@
 "Orders count","Nombre de commande passées (inclu celle en cours)"
 "Customer is guest","Commande en tant qu'invité"
 "Billing and shipping addresses are differents","Adresses de facturation et de livraison différentes"
+
+
+"Sort the list by drag'n/drop credit card type","Vous pouvez choisir l'ordre d'affichage en faisant un glisser/déposer de chaque type de paiement."

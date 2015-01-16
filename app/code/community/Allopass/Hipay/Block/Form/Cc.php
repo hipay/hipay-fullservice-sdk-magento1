@@ -20,11 +20,25 @@ class Allopass_Hipay_Block_Form_Cc extends Allopass_Hipay_Block_Form_Abstract
             $availableTypes = $method->getConfigData('cctypes');
             if ($availableTypes) {
                 $availableTypes = explode(',', $availableTypes);
+                
+                
+                
                 foreach ($types as $code=>$name) {
                     if (!in_array($code, $availableTypes)) {
                         unset($types[$code]);
                     }
+
                 }
+                $ordered = array();
+                foreach($availableTypes as $key) {
+                	if(array_key_exists($key,$types)) {
+                		$ordered[$key] = $types[$key];
+                		unset($types[$key]);
+                	}
+                }
+                return $ordered;
+                
+                //todo order $types
             }
         }
         return $types;
