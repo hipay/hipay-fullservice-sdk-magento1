@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<layout>
+<layout version="0.1.0">
 
 <adminhtml_system_config_edit>
  	<reference name="head">
@@ -8,5 +8,23 @@
         <action method="addItem"><type>skin_js</type><name>hipay/js/rules.js</name></action>
     </reference>
 </adminhtml_system_config_edit>
+
+<hipay_adminhtml_paymentprofile_index>
+	<reference name="content">
+	    <block type="hipay/adminhtml_paymentProfile" name="paymentProfile.grid.container"></block>
+	</reference>
+</hipay_adminhtml_paymentprofile_index>
+
+<hipay_adminhtml_paymentprofile_edit>
+	<reference name="content">
+	    <block type="hipay/adminhtml_paymentProfile_edit" name="paymentProfile.edit.container"></block>
+	</reference>
+</hipay_adminhtml_paymentprofile_edit>
+
+<hipay_adminhtml_splitpayment_index>
+	<reference name="content">
+	    <block type="hipay/adminhtml_splitPayment" name="splitPayment.grid.container"></block>
+	</reference>
+</hipay_adminhtml_splitpayment_index>
 
 </layout>

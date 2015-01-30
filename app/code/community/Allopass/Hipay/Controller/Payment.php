@@ -187,40 +187,6 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
 						
 						
 						return $this->_order; //because only one nominal item in cart is authorized and Hipay not manage many profiles
-						
-						//$amount = $this->getAmountFromProfile($profile);
-						
-						/*$productItemInfo = new Varien_Object;
-						$type = "Regular";
-						if ($type == 'Trial') {
-							$productItemInfo->setPaymentType(Mage_Sales_Model_Recurring_Profile::PAYMENT_TYPE_TRIAL);
-						} elseif ($type == 'Regular') {
-							$productItemInfo->setPaymentType(Mage_Sales_Model_Recurring_Profile::PAYMENT_TYPE_REGULAR);
-						}
-
-						
-						if($this->isInitialProfileOrder($profile))// because is not additonned in prodile obj
-							$productItemInfo->setPrice($profile->getBillingAmount() + $profile->getInitAmount());
-						
-						$this->_order = $profile->createOrder($productItemInfo);
-
-						$additionalInfo = $profile->getAdditionalInfo();
-
-						$this->_order->getPayment()->setCcType($additionalInfo['ccType']);
-						$this->_order->getPayment()->setCcExpMonth($additionalInfo['ccExpMonth']);
-						$this->_order->getPayment()->setCcExpYear($additionalInfo['ccExpYear']);
-						$this->_order->getPayment()->setAdditionalInformation('token',$additionalInfo['token']);
-						$this->_order->getPayment()->setAdditionalInformation('create_oneclick',$additionalInfo['create_oneclick']);
-						$this->_order->getPayment()->setAdditionalInformation('use_oneclick',$additionalInfo['use_oneclick']);
-						
-						$orderId = 'create-recurring';					
-						$orderId .= "-".$profileId;
-						//$this->_order->setIncrementId($orderId);
-						$this->_order->save();
-						$profile->addOrderRelation($this->_order->getId());
-						$profile->save();*/
-						return $this->_order; //because only one nominal item in cart is authorized and Hipay not manage many profiles
-						//break;
 					}
 					
 					

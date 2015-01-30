@@ -2,6 +2,156 @@
 class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 {
 	
+	/**
+	 * 
+	 * @param Allopass_Hipay_Model_PaymentProfile|int $profile
+	 * @param float $amount
+	 */
+	public function splitPayment($profile,$amount)
+	{
+		$paymentsSplit = array();
+		
+		if(is_int($profile))
+			$profile = Mage::getModel('hipay/paymentProfile')->load($profile);
+		
+		if($profile)
+		{
+			$maxCycles = (int)$profile->getPeriodMaxCycles();
+			$periodFrequency = (int)$profile->getPeriodFrequency();
+			$periodUnit = $profile->getPeriodUnit();
+			
+			$todayDate = new Zend_Date();
+			
+			if($maxCycles < 1)
+				Mage::throwException("Period max cycles is equals zero or negative for Payment Profile ID: ".$profile->getId());
+			
+			
+			$part = (int)($amount / $maxCycles);
+			$reste = $amount%$maxCycles;
+			$fmod = fmod($amount, $maxCycles);
+			Mage::log("PART = ".$part." RESTE = ".$reste,null,'hipay_split_debug.log');
+			
+			for ($i=0;$i<$maxCycles;$i++)
+			{
+				$todayClone = clone $todayDate;
+				switch ($periodUnit)
+				{
+					case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_MONTH:
+					{
+						$dateToPay = $todayClone->addMonth($periodFrequency+$i)->getDate()->toString('yyyy-MM-dd');
+						break;
+					}
+					case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_DAY:
+						{
+							$dateToPay = $todayClone->addDay($periodFrequency+$i)->getDate()->toString('yyyy-MM-dd');
+					
+							break;
+						}
+					case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_SEMI_MONTH://TODO test this case !!!
+						{
+							$dateToPay = $todayClone->addDay(15 + $periodFrequency+$i)->getDate()->toString('yyyy-MM-dd');
+							break;
+						}
+					case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_WEEK:
+						{
+							$dateToPay = $todayClone->addWeek($periodFrequency+$i)->getDate()->toString('yyyy-MM-dd');
+							break;
+						}
+					case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_YEAR:
+						{
+							$dateToPay = $todayClone->addYear($periodFrequency+$i)->getDate()->toString('yyyy-MM-dd');
+							break;
+						}
+				}
+			
+				$amountToPay = $i==($maxCycles-1) ? ($part + $fmod) : $part;
+				$paymentsSplit[] = array('dateToPay'=>$dateToPay,'amountToPay'=>$amountToPay);
+			}
+			
+			return $paymentsSplit;
+				
+		}
+		
+		Mage::throwException("Payment Profile not found");
+		
+	}
+	
+	/**
+	 * 
+	 * @param Mage_Sales_Model_Order $order
+	 * @param Allopass_Hipay_Model_PaymentProfile|int $profile $profile
+	 */
+	public function insertSplitPayment($order,$profile,$customerId,$cardToken)
+	{
+		
+		
+		
+		if(is_int($profile))
+			$profile = Mage::getModel('hipay/paymentProfile')->load($profile);
+		
+		if(!$this->splitPaymentsExists($order->getId()))
+		{
+			
+			$paymentsSplit = $this->splitPayment($profile, $order->getBaseGrandTotal());
+			
+			//remove first element because is already paid
+			array_shift($paymentsSplit);
+			
+			foreach ($paymentsSplit as $split)
+			{
+				$splitPayment = Mage::getModel('hipay/splitPayment');
+				$data = array('order_id'=>$order->getId(),
+							  'real_order_id'=>(int)$order->getRealOrderId(),
+							  'customer_id'=>$customerId,
+							  'card_token'=>$cardToken,
+							  'total_amount'=>$order->getBaseGrandTotal(),
+							  'amount_to_pay'=>$split['amountToPay'],
+							  'date_to_pay'=>$split['dateToPay'],
+							  'status'=>Allopass_Hipay_Model_SplitPayment::SPLIT_PAYMENT_STATUS_PENDING,
+				);
+				
+				Mage::log($data,null,'hipay_split_debug.log');
+				
+				$splitPayment->setData($data);
+				
+				Mage::log($splitPayment->debug(),null,'hipay_split_debug.log');
+				
+				/*$splitPayment = Mage::getModel('hipay/splitPayment');
+				$splitPayment->setOrderId($order->getId());
+				$splitPayment->setRealOrderId((int)$order->getRealOrderId());
+				$splitPayment->setCustomerId((int)$customerId);
+				$splitPayment->setCardToken($cardToken);
+				$splitPayment->setTotalAmount($order->getBaseGrandTotal());
+				$splitPayment->setAmountToPay($split['amountToPay']);
+				$splitPayment->setDateToPay($split['dateToPay']);
+				$splitPayment->setStatus(Allopass_Hipay_Model_SplitPayment::SPLIT_PAYMENT_STATUS_PENDING);*/
+				
+				try {
+					$splitPayment->save();
+				} catch (Exception $e) {
+					
+					Mage::throwException("Error on save split payments!");
+				}
+			}
+
+		}
+	}
+
+	
+	/**
+	 * 
+	 * @param int $orderId
+	 * @return boolean
+	 */
+	public function splitPaymentsExists($orderId)
+	{
+		$collection = Mage::getModel('hipay/splitPayment')->getCollection()->addFieldToFilter('order_id',$orderId);
+		if($collection->count())
+			return true;
+		
+		return false;
+	}
+	
 	public function getHipayMethods()
 	{
 		$methods = array();

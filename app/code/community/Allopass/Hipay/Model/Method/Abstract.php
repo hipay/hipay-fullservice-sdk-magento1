@@ -69,6 +69,15 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		return $this;
 	}
 	
+	public function assignInfoData($info,$data)
+	{
+		$info->setAdditionalInformation('create_oneclick',$data->getOneclick() == "create_oneclick" ? 1 : 0)
+		->setAdditionalInformation('use_oneclick',$data->getOneclick() == "use_oneclick" ? 1 : 0)
+		->setAdditionalInformation('split_payment_id',$data->getSplitPaymentId() != "" ? $data->getSplitPaymentId() : 0);
+		
+		Mage::log("Split Payment Id = ".$data->getSplitPaymentId(),null,'hipay_split_debug.log');
+	}
+	
 	
 	
 	
@@ -274,6 +283,9 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 							}
 						}
 						
+						if(($profile = (int)$payment->getAdditionalInformation('split_payment_id')) && $customer->getId())
+							$this->getHelper()->insertSplitPayment($order, $profile,$customer->getId(),isset( $gatewayResponse->paymentMethod['token']) ? $gatewayResponse->paymentMethod['token'] : $gatewayResponse->getData('cardtoken'));
+						
 						
 						if (!$status = $this->getConfigData('order_status_payment_accepted')) {
 							$status = $order->getStatus();
@@ -295,10 +307,6 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 							$order->addStatusToHistory($status, $message, true);
 						}
 						
-						
-						
-						
-
 						
 						if (!$order->getEmailSent()) {
 							$order->sendNewOrderEmail();
@@ -618,9 +626,21 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		$params['orderid'] = $payment->getOrder()->getIncrementId();
 	
 		$paymentProduct = null;
-	
+		
+		$longDesc ="";
+		
+		if(($profile = $payment->getAdditionalInformation('split_payment_id')))
+		{
+			$longDesc = Mage::helper('hipay')->__('Split payment');
+			$paymentsSplit = $this->getHelper()->splitPayment((int)$profile, $amount);
+			Mage::log($paymentsSplit,null,'hipay_split_debug.log');
+			
+			$amount = $paymentsSplit[0]['amountToPay'];
+			
+		}
+		
 		$params['description'] = Mage::helper('hipay')->__("Order %s by %s",$payment->getOrder()->getIncrementId(),$payment->getOrder()->getCustomerEmail());//MANDATORY
-		$params['long_description'] = "";// optional
+		$params['long_description'] = $longDesc;// optional
 		$params['currency'] = $payment->getOrder()->getOrderCurrencyCode();
 		$params['amount'] = $amount;
 		$params['shipping'] = $payment->getOrder()->getShippingAmount();
@@ -906,13 +926,6 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 			if ($payment->hasIsTransactionClosed()) {
 				$transaction->setIsClosed((int)$payment->getIsTransactionClosed());
 			}
-	
-			//set transaction addition information
-			/*if ($payment->_transactionAdditionalInfo) {
-				foreach ($payment->_transactionAdditionalInfo as $key => $value) {
-					$transaction->setAdditionalInformation($key, $value);
-				}
-			}*/
 	
 			// link with sales entities
 			$payment->setLastTransId($transactionId);

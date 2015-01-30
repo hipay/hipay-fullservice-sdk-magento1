@@ -32,9 +32,9 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
 		->setCcSsIssue($data->getCcSsIssue())
 		->setCcSsStartMonth($data->getCcSsStartMonth())
 		->setCcSsStartYear($data->getCcSsStartYear())
-		->setAdditionalInformation('create_oneclick',$data->getOneclick() == "create_oneclick" ? 1 : 0)
-		->setAdditionalInformation('use_oneclick',$data->getOneclick() == "use_oneclick" ? 1 : 0)
 		;
+		
+		$this->assignInfoData($info, $data);
 		
 		return $this;
 	}

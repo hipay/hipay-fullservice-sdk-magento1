@@ -45,6 +45,25 @@ abstract class Allopass_Hipay_Block_Form_Abstract extends Mage_Payment_Block_For
     	return Mage::getSingleton('checkout/session')->getQuote();
     }
     
+    public function allowSplitPayment()
+    {
+    	
+    	$checkoutMethod = Mage::getSingleton('checkout/session')->getQuote()->getCheckoutMethod();
+    	
+    	if($checkoutMethod == Mage_Checkout_Model_Type_Onepage::METHOD_GUEST || !$this->getMethod()->getConfigData('allow_split_payment'))
+    		return false;
+    	
+    	return true;
+    }
+    
+    public function getSplitPaymentProfiles()
+    {
+    	$profileIds = explode(",", $this->getMethod()->getConfigData('split_payment_profile'));
+    	$profiles = Mage::getModel('hipay/paymentProfile')->getCollection()->addIdsToFilter($profileIds);
+    	return $profiles;
+    	
+    }
+    
     
     public function allowUseOneClick()
     {
