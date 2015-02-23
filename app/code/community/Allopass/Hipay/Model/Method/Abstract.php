@@ -284,7 +284,10 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 						}
 						
 						if(($profile = (int)$payment->getAdditionalInformation('split_payment_id')) && $customer->getId())
-							$this->getHelper()->insertSplitPayment($order, $profile,$customer->getId(),isset( $gatewayResponse->paymentMethod['token']) ? $gatewayResponse->paymentMethod['token'] : $gatewayResponse->getData('cardtoken'));
+						{
+							$token = isset( $gatewayResponse->paymentMethod['token']) ? $gatewayResponse->paymentMethod['token'] : $gatewayResponse->getData('cardtoken');
+							$this->getHelper()->insertSplitPayment($order, $profile,$customer->getId(),$token);
+						}
 						
 						
 						if (!$status = $this->getConfigData('order_status_payment_accepted')) {
@@ -631,11 +634,18 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		
 		if(($profile = $payment->getAdditionalInformation('split_payment_id')))
 		{
-			$longDesc = Mage::helper('hipay')->__('Split payment');
-			$paymentsSplit = $this->getHelper()->splitPayment((int)$profile, $amount);
-			Mage::log($paymentsSplit,null,'hipay_split_debug.log');
+			//Check if this order is already split
+			$spCollection = Mage::getModel('hipay/splitPayment')->getCollection()
+																->addFieldToFilter('order_id',$payment->getOrder()->getId());
 			
-			$amount = $paymentsSplit[0]['amountToPay'];
+			if(!$spCollection->count())
+			{
+				$longDesc = Mage::helper('hipay')->__('Split payment');
+				$paymentsSplit = $this->getHelper()->splitPayment((int)$profile, $amount);
+				Mage::log($paymentsSplit,null,'hipay_split_debug.log');
+			
+				$amount = $paymentsSplit[0]['amountToPay'];
+			}
 			
 		}
 		
@@ -764,6 +774,45 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		$params['shipto_country'] = $shippingAddress->getCountry();
 	
 		return $params;
+	}
+	
+	/**
+	 * 
+	 * @param Allopass_Hipay_Model_SplitPayment $spiltPayment
+	 */
+	public function paySplitPayment($splitPayment)
+	{
+		$request = Mage::getModel('hipay/api_request',array($this));
+		
+		$order = Mage::getModel('sales/order')->load($splitPayment->getOrderId());
+		if($order->getId())
+		{
+			$gatewayParams =  $this->getGatewayParams($order->getPayment(), $splitPayment->getAmountToPay());
+			$gatewayParams['orderid'] .= "-split-".$splitPayment->getId();//added because if the same order_id tpp respond "Max Attempts exceed!"
+			$gatewayParams['description'] = Mage::helper('hipay')->__("Order SPLIT %s by %s",$order->getIncrementId(),$order->getCustomerEmail());//MANDATORY;
+			$gatewayParams['eci'] = 9;
+			$gatewayParams['operation'] =self::OPERATION_SALE;
+			$gatewayParams['payment_product'] = $this->getCcTypeHipay($order->getPayment()->getCcType());
+			
+			/**
+			 * Parameters specific to the payment product
+			 */
+			$gatewayParams['cardtoken'] = $splitPayment->getCardToken();
+			
+			$gatewayParams['authentication_indicator'] = 0;//$this->getConfigData('use_3d_secure');
+			$this->_debug($gatewayParams);
+			
+			$gatewayResponse = $request->gatewayRequest(Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_ORDER,$gatewayParams);
+				
+			$this->_debug($gatewayResponse->debug());
+			
+			
+			return $gatewayResponse->getState();
+		}
+		
+		
+		
+		
 	}
 	
 	/**

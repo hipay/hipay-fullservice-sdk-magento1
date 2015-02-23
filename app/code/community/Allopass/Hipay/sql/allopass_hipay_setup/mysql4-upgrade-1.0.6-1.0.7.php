@@ -28,6 +28,7 @@ CREATE TABLE {$this->getTable('hipay_split_payment')} (
   `total_amount` decimal(12,4) NOT NULL,
   `amount_to_pay` decimal(12,4) NOT NULL,
   `date_to_pay` datetime NOT NULL ,
+  `method_code` varchar(150) NOT NULL,
   `attempts` int(4) unsigned NOT NULL DEFAULT '0' ,
   `status` varchar(60) NOT NULL default 'pending',
   PRIMARY KEY  (`split_payment_id`)

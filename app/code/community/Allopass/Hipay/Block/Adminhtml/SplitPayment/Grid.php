@@ -47,13 +47,13 @@ class Allopass_Hipay_Block_Adminhtml_SplitPayment_Grid extends Mage_Adminhtml_Bl
 						'index' => 'card_token',
 				));
 		
-		$this->addColumn('real_order_id',
+		/*$this->addColumn('real_order_id',
 				array(
 						'header'=> Mage::helper('sales')->__('Order #'),
 						'type'  => 'text',
 						'width'=>'20px',
 						'index' => 'real_order_id',
-				));
+				));*/
 
 	
 		$this->addColumn('total_amount',
@@ -85,17 +85,12 @@ class Allopass_Hipay_Block_Adminhtml_SplitPayment_Grid extends Mage_Adminhtml_Bl
 						'type'  => 'number',
 				));
 		
-		$statues = array('pending'=>Mage::helper('sales')->__('Pending'),
-						 'failed'=>Mage::helper('sales')->__('Failed'),
-						 'complete'=>Mage::helper('sales')->__('Complete')
-		);
-		
 		$this->addColumn('status',
 				array(
 						'header'=> Mage::helper('hipay')->__('Status'),
 						'index' => 'status',
 						'type'  => 'options',
-						'options' => 	$statues,
+						'options' => 	Allopass_Hipay_Model_SplitPayment::getStatues(),
 				));
 	
 		

@@ -17,6 +17,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 		if($profile)
 		{
 			$maxCycles = (int)$profile->getPeriodMaxCycles();
+
 			$periodFrequency = (int)$profile->getPeriodFrequency();
 			$periodUnit = $profile->getPeriodUnit();
 			
@@ -29,7 +30,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 			$part = (int)($amount / $maxCycles);
 			$reste = $amount%$maxCycles;
 			$fmod = fmod($amount, $maxCycles);
-			Mage::log("PART = ".$part." RESTE = ".$reste,null,'hipay_split_debug.log');
+			//Mage::log("PART = ".$part." RESTE = ".$reste,null,'hipay_split_debug.log');
 			
 			for ($i=0;$i<$maxCycles;$i++)
 			{
@@ -94,8 +95,14 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 			
 			$paymentsSplit = $this->splitPayment($profile, $order->getBaseGrandTotal());
 			
+			/**
+			 * Not used for now
 			//remove first element because is already paid
-			array_shift($paymentsSplit);
+			//array_shift($paymentsSplit);
+			*/
+			
+			//remove last element because the first split is already paid
+			array_pop($paymentsSplit);
 			
 			foreach ($paymentsSplit as $split)
 			{
@@ -107,24 +114,12 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 							  'total_amount'=>$order->getBaseGrandTotal(),
 							  'amount_to_pay'=>$split['amountToPay'],
 							  'date_to_pay'=>$split['dateToPay'],
+							  'method_code'=>$order->getPayment()->getMethod(),
 							  'status'=>Allopass_Hipay_Model_SplitPayment::SPLIT_PAYMENT_STATUS_PENDING,
 				);
 				
-				Mage::log($data,null,'hipay_split_debug.log');
-				
 				$splitPayment->setData($data);
 				
-				Mage::log($splitPayment->debug(),null,'hipay_split_debug.log');
-				
-				/*$splitPayment = Mage::getModel('hipay/splitPayment');
-				$splitPayment->setOrderId($order->getId());
-				$splitPayment->setRealOrderId((int)$order->getRealOrderId());
-				$splitPayment->setCustomerId((int)$customerId);
-				$splitPayment->setCardToken($cardToken);
-				$splitPayment->setTotalAmount($order->getBaseGrandTotal());
-				$splitPayment->setAmountToPay($split['amountToPay']);
-				$splitPayment->setDateToPay($split['dateToPay']);
-				$splitPayment->setStatus(Allopass_Hipay_Model_SplitPayment::SPLIT_PAYMENT_STATUS_PENDING);*/
 				
 				try {
 					$splitPayment->save();

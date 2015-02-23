@@ -27,4 +27,10 @@
 	</reference>
 </hipay_adminhtml_splitpayment_index>
 
+<hipay_adminhtml_splitpayment_edit>
+	<reference name="content">
+	    <block type="hipay/adminhtml_splitPayment_edit" name="splitPayment.edit.container"></block>
+	</reference>
+</hipay_adminhtml_splitpayment_edit>
+
 </layout>

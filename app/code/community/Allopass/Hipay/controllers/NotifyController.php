@@ -42,7 +42,7 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
 		/* @var $order Mage_Sales_Model_Order */
 		$order = Mage::getModel('sales/order')->loadByIncrementId($orderArr['id']);
 		
-		if(!$order->getId() && strpos($orderArr['id'], 'recurring') === false)
+		if(!$order->getId() && (strpos($orderArr['id'], 'recurring') === false && strpos($orderArr['id'], 'split') === false))
 			Mage::throwException("Order not found in notification");
 		
 		if(strpos($orderArr['id'], 'recurring') !== false)
@@ -73,6 +73,12 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
 			else 
 				Mage::throwException(Mage::helper('hipay')->__("Order Id not present (Recurring)."));
 				
+		}
+		elseif (strpos($orderArr['id'], 'split') !== false)
+		{
+			list($id,$type,$splitPaymentId) = explode("-", $orderArr['id']);
+			/* @var $order Mage_Sales_Model_Order */
+			$order = Mage::getModel('sales/order')->loadByIncrementId($id);
 		}
 		
 		$payment = $order->getPayment();
