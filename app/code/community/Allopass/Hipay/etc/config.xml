@@ -137,6 +137,17 @@
             </order>
         </sales>
 	</global>
+	<admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <allopass_hipay before="Mage_Adminhtml">Allopass_Hipay</allopass_hipay>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
 	<frontend>
 		<secure_url>
             <hipay_payment>/hipay/payment</hipay_payment>

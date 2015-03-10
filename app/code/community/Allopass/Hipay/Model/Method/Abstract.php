@@ -25,7 +25,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 	protected $_canRefund               = true;
 	protected $_canRefundInvoicePartial = true;
 	protected $_canVoid                 = true;
-	protected $_canUseInternal          = false;
+	protected $_canUseInternal          = true;
 	protected $_canUseCheckout          = true;
 	protected $_canUseForMultishipping  = false;
 	protected $_canSaveCc 				= false;
@@ -514,11 +514,16 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 				$defaultExceptionMessage = Mage::helper('hipay')->__('Payment capturing error.');
 				break;
 		}
+		
+		$urlAdmin = Mage::getUrl('admin/sales_order/index');
+		if (Mage::getSingleton('admin/session')->isAllowed('sales/order/actions/view')) {
+			$urlAdmin = Mage::getUrl('admin/sales_order/view', array('order_id' => $order->getId()));
+		} 
 	
 		switch ($gatewayResponse->getState())
 		{
 			case self::STATE_COMPLETED:
-				return Mage::getUrl('checkout/onepage/success');
+				return $this->isAdmin() ? $urlAdmin : Mage::getUrl('checkout/onepage/success');
 	
 			case self::STATE_FORWARDING:
 				$payment->setIsTransactionPending(1);
@@ -529,14 +534,14 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 				if($this->getConfigData('re_add_to_cart'))
 					$this->getHelper()->reAddToCart($order->getIncrementId());
 	
-				return Mage::getUrl($this->getConfigData('pending_redirect_page'));
+				return $this->isAdmin() ? $urlAdmin : Mage::getUrl($this->getConfigData('pending_redirect_page'));
 	
 			case self::STATE_DECLINED:
 			
 				if($this->getConfigData('re_add_to_cart'))
 					$this->getHelper()->reAddToCart($order->getIncrementId());
 
-				return Mage::getUrl('checkout/onepage/failure');
+				return $this->isAdmin() ? $urlAdmin : Mage::getUrl('checkout/onepage/failure');
 	
 			case self::STATE_ERROR:
 			default:
@@ -545,7 +550,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 					$this->getHelper()->reAddToCart($order->getIncrementId());
 	
 				$this->_getCheckout()->setErrorMessage($defaultExceptionMessage);
-				return Mage::getUrl('checkout/onepage/failure');
+				return $this->isAdmin() ? $urlAdmin : Mage::getUrl('checkout/onepage/failure');
 	
 		}
 	}
@@ -692,11 +697,12 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		/**
 		 * Redirect urls
 		 */
-		$params['accept_url'] = Mage::getUrl($this->getConfigData('accept_url'));
-		$params['decline_url'] = Mage::getUrl($this->getConfigData('decline_url'));
-		$params['pending_url'] = Mage::getUrl($this->getConfigData('pending_url'));
-		$params['exception_url'] = Mage::getUrl($this->getConfigData('exception_url'));
-		$params['cancel_url'] = Mage::getUrl($this->getConfigData('cancel_url'));
+		$isAdmin = $this->isAdmin();
+		$params['accept_url'] =  $isAdmin ? Mage::getUrl('hipay/adminhtml_payment/accept') : Mage::getUrl($this->getConfigData('accept_url'));
+		$params['decline_url'] = $isAdmin ? Mage::getUrl('hipay/adminhtml_payment/decline') : Mage::getUrl($this->getConfigData('decline_url'));
+		$params['pending_url'] = $isAdmin ? Mage::getUrl('hipay/adminhtml_payment/pending') : Mage::getUrl($this->getConfigData('pending_url'));
+		$params['exception_url'] = $isAdmin ? Mage::getUrl('hipay/adminhtml_payment/exception') : Mage::getUrl($this->getConfigData('exception_url'));
+		$params['cancel_url'] = $isAdmin ? Mage::getUrl('hipay/adminhtml_payment/cancel') : Mage::getUrl($this->getConfigData('cancel_url'));
 	
 		$params = $this->getCustomerParams($payment,$params);
 		$params = $this->getShippingParams($payment,$params);
@@ -1100,6 +1106,11 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 	public function debugData($debugData)
 	{
 		$this->_debug($debugData);
+	}
+	
+	public function isAdmin()
+	{
+		return Mage::app()->getStore()->isAdmin();
 	}
 	
 	

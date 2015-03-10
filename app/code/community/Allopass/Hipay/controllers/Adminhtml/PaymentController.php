@@ -1,5 +1,5 @@
 <?php
-class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Action
+class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controller_Action
 {
 	/**
 	 * 
@@ -36,7 +36,11 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
 	 */
 	protected function _getMethodInstance()
 	{
-		Mage::throwException("Method: '" . __METHOD__ . "' must be implemented!");
+		list($module,$method) = explode("_", $this->getCheckout()->getMethod());
+		$modelName = $module . "/method_" . $method; 
+		Mage::log($modelName,null,"debug_bo_hipay.log");
+		return Mage::getSingleton($modelName);
+		//Mage::throwException("Method: '" . __METHOD__ . "' must be implemented!");
 	}
 
 	public function sendRequestAction()
@@ -53,8 +57,8 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
 		catch (Exception $e)
 		{
 			Mage::logException($e);
-			$this->getCheckout()->addError($e->getMessage());
-			$this->_redirect('checkout/cart');
+			$this->_getSession()->addError($e->getMessage());
+			$this->_redirect('admin/sales_order/index');
 			return $this;
 		}
 		
@@ -99,7 +103,12 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
 			$this->processResponse();
 		}*/
 		$this->processResponse();
-		$this->_redirect('checkout/onepage/success');
+		if (Mage::getSingleton('admin/session')->isAllowed('sales/order/actions/view')) {
+                 $this->_redirect('admin/sales_order/view', array('order_id' => $this->getOrder()->getId()));
+            } else {
+                $this->_redirect('admin/sales_order/index');
+            }
+		//$this->_redirect('checkout/onepage/success');
 		
 		return $this;
 	}
@@ -115,14 +124,16 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
 	public function declineAction()
 	{
 		$this->processResponse();
-		$this->_redirect('checkout/onepage/failure');
+		$this->_redirect('admin/sales_order_create/');
+		//$this->_redirect('checkout/onepage/failure');
 		return $this;
 	}
 
 	
 	public function exceptionAction()
 	{
-		$this->_redirect('checkout/onepage/failure');
+		//$this->_redirect('checkout/onepage/failure');
+		$this->_redirect('admin/sales_order_create/');
 		return $this;
 	}
 	
@@ -130,7 +141,8 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
 	public function cancelAction()
 	{
 		$this->processResponse();
-		$this->_redirect('checkout/cart');
+		//$this->_redirect('checkout/cart');
+		$this->_redirect('admin/sales_order_create/');
 		return $this;
 	}
 	
@@ -200,7 +212,9 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
 			}
 			else
 			{
+				Mage::log($this->getCheckout()->getLastOrderId(),null,'debug_bo_hipay.log');
 				$this->_order = Mage::getModel('sales/order')->load($this->getCheckout()->getLastOrderId());
+
 			}
 		}
 		
