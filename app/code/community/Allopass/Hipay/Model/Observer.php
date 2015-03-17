@@ -111,6 +111,7 @@ class Allopass_Hipay_Model_Observer
 			try {
 				$splitPayment->pay();
 			} catch (Exception $e) {
+				$splitPayment->sendErrorEmail();
 				Mage::logException($e);
 			}
 		}

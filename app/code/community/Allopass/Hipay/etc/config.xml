@@ -327,6 +327,7 @@
 				<order_status_payment_canceled>canceled</order_status_payment_canceled>
 				<hipay_status_validate_order>118</hipay_status_validate_order>
 				<pending_redirect_page>hipay/checkout/pending</pending_redirect_page>
+				<allow_split_payment>0</allow_split_payment>
 				<display_selector>1</display_selector>
 				<template>basic</template>
 				<allow_use_oneclick>0</allow_use_oneclick>

@@ -79,7 +79,85 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 	}
 	
 	
+	public function acceptPayment(Mage_Payment_Model_Info $payment)
+	{
+		$transactionId = $payment->getLastTransId();
+		
+		$gatewayParams = array();
+		$this->_debug($gatewayParams);
+		/* @var $request Allopass_Hipay_Model_Api_Request */
+		$request = Mage::getModel('hipay/api_request',array($this));
+		$uri = Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_ACCEPT_CHALLENGE . $transactionId;
+		
+		$gatewayResponse = $request->gatewayRequest($uri,$gatewayParams,$payment->getOrder()->getStoreId());
+		
+		$this->_debug($gatewayResponse->debug());
+		
+		switch ($gatewayResponse->getStatus())
+		{
+			case "117": //Capture requested
+			case "118": //Capture
+			case "119": //Partially Capture
+				$this->addTransaction(
+				$payment,
+				$gatewayResponse->getTransactionReference(),
+				Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE,
+				array('is_transaction_closed' => 0),
+				array(),
+				Mage::helper('hipay')->getTransactionMessage(
+				$payment, self::OPERATION_MAINTENANCE_CAPTURE, $gatewayResponse->getTransactionReference(), $amount
+				)
+				);
+		
+				$payment->setIsTransactionPending(true);
+				break;
+			default:
+				Mage::throwException( $gatewayResponse->getStatus() . " ==> " .$gatewayResponse->getMessage());
+				break;
+		}
+		
+		return $this;
+	}
 	
+	public function denyPayment(Mage_Payment_Model_Info $payment)
+	{
+		$transactionId = $payment->getLastTransId();
+		
+		$gatewayParams = array();
+		$this->_debug($gatewayParams);
+		/* @var $request Allopass_Hipay_Model_Api_Request */
+		$request = Mage::getModel('hipay/api_request',array($this));
+		$uri = Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_DENY_CHALLENGE . $transactionId;
+		
+		$gatewayResponse = $request->gatewayRequest($uri,$gatewayParams,$payment->getOrder()->getStoreId());
+		
+		$this->_debug($gatewayResponse->debug());
+		
+		switch ($gatewayResponse->getStatus())
+		{
+			case "117": //Capture requested
+			case "118": //Capture
+			case "119": //Partially Capture
+				$this->addTransaction(
+				$payment,
+				$gatewayResponse->getTransactionReference(),
+				Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE,
+				array('is_transaction_closed' => 0),
+				array(),
+				Mage::helper('hipay')->getTransactionMessage(
+				$payment, self::OPERATION_MAINTENANCE_CAPTURE, $gatewayResponse->getTransactionReference(), $amount
+				)
+				);
+		
+				$payment->setIsTransactionPending(true);
+				break;
+			default:
+				Mage::throwException( $gatewayResponse->getStatus() . " ==> " .$gatewayResponse->getMessage());
+				break;
+		}
+		
+		return $this;
+	}
 	
 	/**
 	 * 
@@ -175,10 +253,14 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 						{
 						
 							if(isset($fraudScreening['result'])
-							&& ($fraudScreening['result'] == 'pending' || $fraudScreening['result'] == 'challenged') )
+							&& isset($fraudScreening['scoring'])
+									/*&& ($fraudScreening['result'] == 'pending' || $fraudScreening['result'] == 'challenged') */)
 							{
 								if(defined('Mage_Sales_Model_Order::STATUS_FRAUD'))
 									$status = Mage_Sales_Model_Order::STATUS_FRAUD;
+								
+								$payment->setAdditionalInformation('fraud_type',$fraudScreening['result']);
+								$payment->setAdditionalInformation('fraud_score',$fraudScreening['scoring']);
 						
 							}
 						
@@ -429,12 +511,16 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 				if($fraudScreening = $gatewayResponse->getFraudScreening())
 				{
 
-					if(isset($fraudScreening['result']) && $fraudScreening['result'] == 'blocked' )
+					if(isset($fraudScreening['result']) && isset($fraudScreening['scoring'])
+							/* && $fraudScreening['result'] == 'blocked' */)
 					{
 						$payment->setIsFraudDetected(true);
 						
 						if(defined('Mage_Sales_Model_Order::STATUS_FRAUD'))
 							$status = Mage_Sales_Model_Order::STATUS_FRAUD;
+						
+						$payment->setAdditionalInformation('fraud_type',$fraudScreening['result']);
+						$payment->setAdditionalInformation('fraud_score',$fraudScreening['scoring']);
 
 						$order->addStatusToHistory($status, Mage::helper('hipay')->getTransactionMessage(
 								$payment, $this->getOperation(), null, $amount,true,$gatewayResponse->getMessage()
@@ -1057,6 +1143,19 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
             return false;
         }*/
         return true;
+    }
+    
+    /**
+     * Whether this method can accept or deny payment
+     *
+     * @param Mage_Payment_Model_Info $payment
+     *
+     * @return bool
+     */
+    public function canReviewPayment(Mage_Payment_Model_Info $payment)
+    {
+    	$fraud_type = $payment->getAdditionalInformation('fraud_type');
+    	return $this->_canReviewPayment || $fraud_type == 'challenged';
     }
 	
 	protected function orderDue($order)

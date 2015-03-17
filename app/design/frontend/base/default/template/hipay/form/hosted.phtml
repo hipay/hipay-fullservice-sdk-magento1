@@ -1,5 +1,20 @@
 <?php $_code=$this->getMethodCode() ?>
 <div id="payment_form_<?php echo $_code ?>" style="display:none;">
+<?php if($this->allowSplitPayment()) : ?>
+<ul class="form-list" id="splitpayment_card_payment_form_<?php echo $_code ?>" >
+	 <li>
+		 <div class="input-box">
+		 	<select id="<?php echo $_code ?>_split_payment" name="payment[split_payment_id]">
+		 		<option value=""><?php echo $this->__('-- Please Select --')?></option>
+		 		<?php foreach ($this->getSplitPaymentProfiles() as $profile) : ?>
+		 			<option value="<?php echo $profile->getId()?>"><?php echo $profile->getName()?></option>
+		 		<?php endforeach;?>
+		 	</select>
+			<label style="float: none;" for="<?php echo $_code ?>_split_payment"><?php echo $this->__('Split Payment') ?></label>
+		 </div>
+	 </li>
+ </ul>
+<?php endif; ?>
 <?php if ($this->oneClickIsAllowed()) : ?>
 <ul class="form-list" id="oneclick_hosted_payment_form_<?php echo $_code ?>">
  <li>
