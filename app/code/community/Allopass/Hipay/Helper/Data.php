@@ -427,7 +427,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 			$mailTemplate->setDesignConfig(array('area'=>'frontend', 'store'=>$order->getStoreId()))
 			->sendTransactional(
 					$template,
-					Mage::getStoreConfig('checkout/payment_failed/identity', $order->getStoreId()),
+					Mage::getStoreConfig('hipay/fraud_payment/identity', $order->getStoreId()),
 					$recipient['email'],
 					$recipient['name'],
 					array(
