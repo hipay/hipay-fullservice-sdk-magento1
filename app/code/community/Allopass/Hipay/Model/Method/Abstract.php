@@ -525,6 +525,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 						$order->addStatusToHistory($status, Mage::helper('hipay')->getTransactionMessage(
 								$payment, $this->getOperation(), null, $amount,true,$gatewayResponse->getMessage()
 						));
+						$message = "";
+						$this->getHelper()->sendFraudPaymentEmail($customer, $order, $message);
 					}
 	
 				}

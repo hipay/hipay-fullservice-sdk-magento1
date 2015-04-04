@@ -362,4 +362,100 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 	{
 		return $payment->getOrder()->getBaseCurrency()->formatTxt($amount);
 	}
+	
+	
+	/**
+	 * Send email id payment is in Fraud status
+	 * @param Mage_Customer_Model_Customer $receiver
+	 * @param Mage_Sales_Model_Order $order
+	 * @param string $message
+	 * @return Mage_Checkout_Helper_Data
+	 */
+	public function sendFraudPaymentEmail($receiver,$order, $message)
+	{
+		$translate = Mage::getSingleton('core/translate');
+		/* @var $translate Mage_Core_Model_Translate */
+		$translate->setTranslateInline(false);
+	
+		$mailTemplate = Mage::getModel('core/email_template');
+		/* @var $mailTemplate Mage_Core_Model_Email_Template */
+	
+		$template = Mage::getStoreConfig('hipay/fraud_payment/template', $order->getStoreId());
+	
+		$copyTo = $this->_getEmails('hipay/fraud_payment/copy_to', $order->getStoreId());
+		$copyMethod = Mage::getStoreConfig('hipay/fraud_payment/copy_method', $order->getStoreId());
+		if ($copyTo && $copyMethod == 'bcc') {
+			$mailTemplate->addBcc($copyTo);
+		}
+	
+		$sendTo = array(
+				array(
+						'email' => $receiver->getEmail(),
+						'name'  => $receiver->getName()
+				)
+		);
+	
+		if ($copyTo && $copyMethod == 'copy') {
+			foreach ($copyTo as $email) {
+				$sendTo[] = array(
+						'email' => $email,
+						'name'  => null
+				);
+			}
+		}
+		$shippingMethod = '';
+		if ($shippingInfo = $order->getShippingAddress()->getShippingMethod()) {
+			$data = explode('_', $shippingInfo);
+			$shippingMethod = $data[0];
+		}
+	
+		$paymentMethod = '';
+		if ($paymentInfo = $order->getPayment()) {
+			$paymentMethod = $paymentInfo->getMethod();
+		}
+	
+		$items = '';
+		foreach ($order->getAllVisibleItems() as $_item) {
+			/* @var $_item Mage_Sales_Model_Quote_Item */
+			$items .= $_item->getProduct()->getName() . '  x '. $_item->getQty() . '  '
+					. $order->getStoreCurrencyCode() . ' '
+							. $_item->getProduct()->getFinalPrice($_item->getQty()) . "\n";
+		}
+		$total = $order->getStoreCurrencyCode() . ' ' . $order->getGrandTotal();
+	
+		foreach ($sendTo as $recipient) {
+			$mailTemplate->setDesignConfig(array('area'=>'frontend', 'store'=>$order->getStoreId()))
+			->sendTransactional(
+					$template,
+					Mage::getStoreConfig('checkout/payment_failed/identity', $order->getStoreId()),
+					$recipient['email'],
+					$recipient['name'],
+					array(
+							'reason' => $message,
+							'dateAndTime' => Mage::app()->getLocale()->date(),
+							'customer' => $order->getCustomerFirstname() . ' ' . $order->getCustomerLastname(),
+							'customerEmail' => $order->getCustomerEmail(),
+							'billingAddress' => $order->getBillingAddress(),
+							'shippingAddress' => $order->getShippingAddress(),
+							'shippingMethod' => Mage::getStoreConfig('carriers/'.$shippingMethod.'/title'),
+							'paymentMethod' => Mage::getStoreConfig('payment/'.$paymentMethod.'/title'),
+							'items' => nl2br($items),
+							'total' => $total
+					)
+			);
+		}
+	
+		$translate->setTranslateInline(true);
+	
+		return $this;
+	}
+	
+	protected function _getEmails($configPath, $storeId)
+	{
+		$data = Mage::getStoreConfig($configPath, $storeId);
+		if (!empty($data)) {
+			return explode(',', $data);
+		}
+		return false;
+	}
 }

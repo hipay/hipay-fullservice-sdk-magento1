@@ -65,6 +65,53 @@
                         </api_password_test>
                     </fields>
    				</hipay_api>
+   				 <fraud_payment translate="label">
+                    <label>Fraud Payment Email</label>
+                    <comment>This email is sended to customer, if his payment is in fraud state</comment> 
+                    <frontend_type>text</frontend_type>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <identity translate="label">
+                            <label>Payment Fraud Email Sender</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_identity</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </identity>
+                        <template translate="label">
+                            <label>Payment Fraud Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </template>
+                        <copy_to translate="label comment">
+                            <label>Send Payment Fraud Email Copy To</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Separate by ",".</comment>
+                        </copy_to>
+                        <copy_method translate="label">
+                            <label>Send Payment Fraud Email Copy Method</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_method</source_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </copy_method>
+                    </fields>
+                </fraud_payment>
    			</groups>
 		</hipay>
 		<payment>
@@ -189,6 +236,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </config_3ds_rules>
+                        <send_fraud_payment_email translate="label">
+	                        <label>Send fraud payment email</label>
+	                        <frontend_type>select</frontend_type>
+	                        <source_model>adminhtml/system_config_source_yesno</source_model>
+	                        <sort_order>63</sort_order>
+	                        <show_in_default>1</show_in_default>
+	                        <show_in_website>1</show_in_website>
+	                        <show_in_store>1</show_in_store>
+	                    </send_fraud_payment_email>
                          <allow_split_payment translate="label">
                         	 <label>Use Split Payment</label>
                             <frontend_type>select</frontend_type>
@@ -245,6 +301,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                          </cancel_pending_order>
+                         <send_fraud_payment_email translate="label">
+	                        <label>Send fraud payment email</label>
+	                        <frontend_type>select</frontend_type>
+	                        <source_model>adminhtml/system_config_source_yesno</source_model>
+	                        <sort_order>99</sort_order>
+	                        <show_in_default>1</show_in_default>
+	                        <show_in_website>1</show_in_website>
+	                        <show_in_store>1</show_in_store>
+	                    </send_fraud_payment_email>
                          <allowspecific translate="label">
                             <label>Payment from applicable countries</label>
                             <frontend_type>allowspecific</frontend_type>
@@ -480,6 +545,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </config_3ds_rules>
+                        <send_fraud_payment_email translate="label">
+	                        <label>Send fraud payment email</label>
+	                        <frontend_type>select</frontend_type>
+	                        <source_model>adminhtml/system_config_source_yesno</source_model>
+	                        <sort_order>63</sort_order>
+	                        <show_in_default>1</show_in_default>
+	                        <show_in_website>1</show_in_website>
+	                        <show_in_store>1</show_in_store>
+	                    </send_fraud_payment_email>
                          <allow_split_payment translate="label">
                         	 <label>Use Split Payment</label>
                             <frontend_type>select</frontend_type>
@@ -536,6 +610,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                          </cancel_pending_order>
+                         <send_fraud_payment_email translate="label">
+	                        <label>Send fraud payment email</label>
+	                        <frontend_type>select</frontend_type>
+	                        <source_model>adminhtml/system_config_source_yesno</source_model>
+	                        <sort_order>99</sort_order>
+	                        <show_in_default>1</show_in_default>
+	                        <show_in_website>1</show_in_website>
+	                        <show_in_store>1</show_in_store>
+	                    </send_fraud_payment_email>
                          <allowspecific translate="label">
                             <label>Payment from applicable countries</label>
                             <frontend_type>allowspecific</frontend_type>
@@ -709,6 +792,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                          </cancel_pending_order>
+                         <send_fraud_payment_email translate="label">
+	                        <label>Send fraud payment email</label>
+	                        <frontend_type>select</frontend_type>
+	                        <source_model>adminhtml/system_config_source_yesno</source_model>
+	                        <sort_order>99</sort_order>
+	                        <show_in_default>1</show_in_default>
+	                        <show_in_website>1</show_in_website>
+	                        <show_in_store>1</show_in_store>
+	                    </send_fraud_payment_email>
                          <allowspecific translate="label">
                             <label>Payment from applicable countries</label>
                             <frontend_type>allowspecific</frontend_type>
@@ -882,6 +974,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                          </cancel_pending_order>
+                         <send_fraud_payment_email translate="label">
+	                        <label>Send fraud payment email</label>
+	                        <frontend_type>select</frontend_type>
+	                        <source_model>adminhtml/system_config_source_yesno</source_model>
+	                        <sort_order>99</sort_order>
+	                        <show_in_default>1</show_in_default>
+	                        <show_in_website>1</show_in_website>
+	                        <show_in_store>1</show_in_store>
+	                    </send_fraud_payment_email>
                          <allowspecific translate="label">
                             <label>Payment from applicable countries</label>
                             <frontend_type>allowspecific</frontend_type>
@@ -1055,6 +1156,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                          </cancel_pending_order>
+                         <send_fraud_payment_email translate="label">
+	                        <label>Send fraud payment email</label>
+	                        <frontend_type>select</frontend_type>
+	                        <source_model>adminhtml/system_config_source_yesno</source_model>
+	                        <sort_order>99</sort_order>
+	                        <show_in_default>1</show_in_default>
+	                        <show_in_website>1</show_in_website>
+	                        <show_in_store>1</show_in_store>
+	                    </send_fraud_payment_email>
                          <allowspecific translate="label">
                             <label>Payment from applicable countries</label>
                             <frontend_type>allowspecific</frontend_type>
@@ -1228,6 +1338,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                          </cancel_pending_order>
+                         <send_fraud_payment_email translate="label">
+	                        <label>Send fraud payment email</label>
+	                        <frontend_type>select</frontend_type>
+	                        <source_model>adminhtml/system_config_source_yesno</source_model>
+	                        <sort_order>99</sort_order>
+	                        <show_in_default>1</show_in_default>
+	                        <show_in_website>1</show_in_website>
+	                        <show_in_store>1</show_in_store>
+	                    </send_fraud_payment_email>
                          <allowspecific translate="label">
                             <label>Payment from applicable countries</label>
                             <frontend_type>allowspecific</frontend_type>
@@ -1401,6 +1520,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                          </cancel_pending_order>
+                         <send_fraud_payment_email translate="label">
+	                        <label>Send fraud payment email</label>
+	                        <frontend_type>select</frontend_type>
+	                        <source_model>adminhtml/system_config_source_yesno</source_model>
+	                        <sort_order>99</sort_order>
+	                        <show_in_default>1</show_in_default>
+	                        <show_in_website>1</show_in_website>
+	                        <show_in_store>1</show_in_store>
+	                    </send_fraud_payment_email>
                          <allowspecific translate="label">
                             <label>Payment from applicable countries</label>
                             <frontend_type>allowspecific</frontend_type>
@@ -1574,6 +1702,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                          </cancel_pending_order>
+                         <send_fraud_payment_email translate="label">
+	                        <label>Send fraud payment email</label>
+	                        <frontend_type>select</frontend_type>
+	                        <source_model>adminhtml/system_config_source_yesno</source_model>
+	                        <sort_order>99</sort_order>
+	                        <show_in_default>1</show_in_default>
+	                        <show_in_website>1</show_in_website>
+	                        <show_in_store>1</show_in_store>
+	                    </send_fraud_payment_email>
                          <allowspecific translate="label">
                             <label>Payment from applicable countries</label>
                             <frontend_type>allowspecific</frontend_type>
@@ -1747,6 +1884,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                          </cancel_pending_order>
+                         <send_fraud_payment_email translate="label">
+	                        <label>Send fraud payment email</label>
+	                        <frontend_type>select</frontend_type>
+	                        <source_model>adminhtml/system_config_source_yesno</source_model>
+	                        <sort_order>99</sort_order>
+	                        <show_in_default>1</show_in_default>
+	                        <show_in_website>1</show_in_website>
+	                        <show_in_store>1</show_in_store>
+	                    </send_fraud_payment_email>
                          <allowspecific translate="label">
                             <label>Payment from applicable countries</label>
                             <frontend_type>allowspecific</frontend_type>
@@ -1920,6 +2066,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                          </cancel_pending_order>
+                         <send_fraud_payment_email translate="label">
+	                        <label>Send fraud payment email</label>
+	                        <frontend_type>select</frontend_type>
+	                        <source_model>adminhtml/system_config_source_yesno</source_model>
+	                        <sort_order>99</sort_order>
+	                        <show_in_default>1</show_in_default>
+	                        <show_in_website>1</show_in_website>
+	                        <show_in_store>1</show_in_store>
+	                    </send_fraud_payment_email>
                          <allowspecific translate="label">
                             <label>Payment from applicable countries</label>
                             <frontend_type>allowspecific</frontend_type>
@@ -2093,6 +2248,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                          </cancel_pending_order>
+                         <send_fraud_payment_email translate="label">
+	                        <label>Send fraud payment email</label>
+	                        <frontend_type>select</frontend_type>
+	                        <source_model>adminhtml/system_config_source_yesno</source_model>
+	                        <sort_order>99</sort_order>
+	                        <show_in_default>1</show_in_default>
+	                        <show_in_website>1</show_in_website>
+	                        <show_in_store>1</show_in_store>
+	                    </send_fraud_payment_email>
                          <allowspecific translate="label">
                             <label>Payment from applicable countries</label>
                             <frontend_type>allowspecific</frontend_type>
@@ -2266,6 +2430,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                          </cancel_pending_order>
+                         <send_fraud_payment_email translate="label">
+	                        <label>Send fraud payment email</label>
+	                        <frontend_type>select</frontend_type>
+	                        <source_model>adminhtml/system_config_source_yesno</source_model>
+	                        <sort_order>99</sort_order>
+	                        <show_in_default>1</show_in_default>
+	                        <show_in_website>1</show_in_website>
+	                        <show_in_store>1</show_in_store>
+	                    </send_fraud_payment_email>
                          <allowspecific translate="label">
                             <label>Payment from applicable countries</label>
                             <frontend_type>allowspecific</frontend_type>
@@ -2421,6 +2594,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                          </cancel_pending_order>
+                         <send_fraud_payment_email translate="label">
+	                        <label>Send fraud payment email</label>
+	                        <frontend_type>select</frontend_type>
+	                        <source_model>adminhtml/system_config_source_yesno</source_model>
+	                        <sort_order>99</sort_order>
+	                        <show_in_default>1</show_in_default>
+	                        <show_in_website>1</show_in_website>
+	                        <show_in_store>1</show_in_store>
+	                    </send_fraud_payment_email>
                          <allowspecific translate="label">
                             <label>Payment from applicable countries</label>
                             <frontend_type>allowspecific</frontend_type>
@@ -2576,6 +2758,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                          </cancel_pending_order>
+                         <send_fraud_payment_email translate="label">
+	                        <label>Send fraud payment email</label>
+	                        <frontend_type>select</frontend_type>
+	                        <source_model>adminhtml/system_config_source_yesno</source_model>
+	                        <sort_order>99</sort_order>
+	                        <show_in_default>1</show_in_default>
+	                        <show_in_website>1</show_in_website>
+	                        <show_in_store>1</show_in_store>
+	                    </send_fraud_payment_email>
                          <allowspecific translate="label">
                             <label>Payment from applicable countries</label>
                             <frontend_type>allowspecific</frontend_type>
