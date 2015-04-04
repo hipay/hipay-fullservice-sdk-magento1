@@ -5,6 +5,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 	const OPERATION_AUTHORIZATION = "Authorization";
 	const OPERATION_MAINTENANCE_CAPTURE = "Capture";
 	const OPERATION_MAINTENANCE_REFUND = "Refund";
+	const OPERATION_MAINTENANCE_ACCEPT_CHALLENGE = 'acceptChallenge';
+	const OPERATION_MAINTENANCE_DENY_CHALLENGE = 'denyChallenge';
 	
 	
 	const STATE_COMPLETED = "completed";
@@ -81,80 +83,39 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 	
 	public function acceptPayment(Mage_Payment_Model_Info $payment)
 	{
-		$transactionId = $payment->getLastTransId();
 		
-		$gatewayParams = array();
+		$gatewayParams = array('operation'=>self::OPERATION_MAINTENANCE_ACCEPT_CHALLENGE,'amount'=>$amount);
 		$this->_debug($gatewayParams);
 		/* @var $request Allopass_Hipay_Model_Api_Request */
 		$request = Mage::getModel('hipay/api_request',array($this));
-		$uri = Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_ACCEPT_CHALLENGE . $transactionId;
+		$uri = Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_MAINTENANCE . $transactionId;
 		
 		$gatewayResponse = $request->gatewayRequest($uri,$gatewayParams,$payment->getOrder()->getStoreId());
 		
 		$this->_debug($gatewayResponse->debug());
-		
-		switch ($gatewayResponse->getStatus())
-		{
-			case "117": //Capture requested
-			case "118": //Capture
-			case "119": //Partially Capture
-				$this->addTransaction(
-				$payment,
-				$gatewayResponse->getTransactionReference(),
-				Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE,
-				array('is_transaction_closed' => 0),
-				array(),
-				Mage::helper('hipay')->getTransactionMessage(
-				$payment, self::OPERATION_MAINTENANCE_CAPTURE, $gatewayResponse->getTransactionReference(), $amount
-				)
-				);
-		
-				$payment->setIsTransactionPending(true);
-				break;
-			default:
-				Mage::throwException( $gatewayResponse->getStatus() . " ==> " .$gatewayResponse->getMessage());
-				break;
-		}
 		
 		return $this;
 	}
 	
 	public function denyPayment(Mage_Payment_Model_Info $payment)
 	{
+		
+		/*@var $payment Mage_Sales_Model_Order_Payment */
+		parent::denyPayment($payment);
+		$transactionId = $payment->getLastTransId();
+		$amount = $payment->getAmountOrdered();
+		
 		$transactionId = $payment->getLastTransId();
 		
-		$gatewayParams = array();
+		$gatewayParams = array('operation'=>self::OPERATION_MAINTENANCE_DENY_CHALLENGE,'amount'=>$amount);
 		$this->_debug($gatewayParams);
 		/* @var $request Allopass_Hipay_Model_Api_Request */
 		$request = Mage::getModel('hipay/api_request',array($this));
-		$uri = Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_DENY_CHALLENGE . $transactionId;
+		$uri = Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_MAINTENANCE . $transactionId;
 		
 		$gatewayResponse = $request->gatewayRequest($uri,$gatewayParams,$payment->getOrder()->getStoreId());
 		
 		$this->_debug($gatewayResponse->debug());
-		
-		switch ($gatewayResponse->getStatus())
-		{
-			case "117": //Capture requested
-			case "118": //Capture
-			case "119": //Partially Capture
-				$this->addTransaction(
-				$payment,
-				$gatewayResponse->getTransactionReference(),
-				Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE,
-				array('is_transaction_closed' => 0),
-				array(),
-				Mage::helper('hipay')->getTransactionMessage(
-				$payment, self::OPERATION_MAINTENANCE_CAPTURE, $gatewayResponse->getTransactionReference(), $amount
-				)
-				);
-		
-				$payment->setIsTransactionPending(true);
-				break;
-			default:
-				Mage::throwException( $gatewayResponse->getStatus() . " ==> " .$gatewayResponse->getMessage());
-				break;
-		}
 		
 		return $this;
 	}
