@@ -257,6 +257,62 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 		return $this;
 	}
 	
+	protected function _cardTokenExist($ccToken,$customer_id=0)
+	{
+		$cards = Mage::getResourceModel('hipay/card_collection')
+		->addFieldToSelect('card_id')
+		->addFieldToFilter('cc_token', $ccToken);
+		
+		if($customer_id > 0)
+		{
+			$cards->addFieldToFilter('customer_id', $customer_id);
+		}
+		
+		return $cards->count() > 0;
+	}
+	
+	public function createCustomerCardFromResponse($customerId,$response,$isRecurring = false)
+	{
+		
+		$paymentMethod = $response->getPaymentMethod();
+		$paymentProduct = $response->getPaymentProduct();
+		$token = isset($paymentMethod['token']) ? $paymentMethod['token'] : $response->getData('cardtoken');
+		
+		if($this->_cardTokenExist($token,$customerId))
+		{
+			return null;
+		}
+		
+		$pan = isset($paymentMethod['pan']) ? $paymentMethod['pan'] : $response->getData('cardpan');
+		
+		$newCard = Mage::getModel('hipay/card');
+		$newCard->setCustomerId($customerId); 
+		$newCard->setCcToken($token);
+		$newCard->setCcNumberEnc($pan);
+		$newCard->setCcType($paymentProduct);
+		$newCard->setCcStatus(Allopass_Hipay_Model_Card::STATUS_ENABLED);
+		$newCard->setName($this->__('Card %s - %s',$paymentProduct,$pan));
+		
+		if(isset($paymentMethod['card_expiry_month']) && $paymentMethod['card_expiry_year'])
+		{
+			$newCard->setCcExpMonth($paymentMethod['card_expiry_month']);
+			$newCard->setCcExpYear($paymentMethod['card_expiry_year'] );
+		}
+		else
+		{
+			$newCard->setCcExpMonth(substr($response->getData('cardexpiry'), 4,2));
+			$newCard->setCcExpYear(substr($response->getData('cardexpiry'), 0,4));
+		}
+		
+		try {
+			$newCard->save();
+			return $newCard;
+		} catch (Exception $e) {
+			Mage::logException($e);
+		}
+
+	}
+	
 	public function reAddToCart($incrementId) {
 	
 		$cart = Mage::getSingleton('checkout/cart');

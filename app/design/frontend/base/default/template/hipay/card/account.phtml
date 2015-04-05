@@ -1,0 +1,49 @@
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<?php $_cards = $this->getCards(); ?>
+<div class="page-title">
+    <h1><?php echo $this->__("My hipay credit cards") ?></h1>
+</div>
+<?php echo $this->getPagerHtml(); ?>
+<?php if($_cards->getSize()): ?>
+<table class="data-table" id="my-hipay-cards-table">
+    <col  />
+    <col width="1" />
+    <col />
+    <col width="1" />
+    <col width="1" />
+    <col width="1" />
+    <thead>
+        <tr>
+            <th><?php echo $this->__('Card name') ?></th>
+            <th><?php echo $this->__('Card type') ?></th>
+            <th><?php echo $this->__('Exp. Month') ?></th>
+            <th><?php echo $this->__('Exp. Year') ?></th>
+            <th><span class="nobr"><?php echo $this->__('Card Number') ?></span></th>
+            <th><span class="nobr"><?php echo $this->__('Card Status') ?></span></th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php $_odd = ''; ?>
+        <?php foreach ($_cards as $_card): ?>
+        <tr>
+            <td><span class="nobr"><?php echo $_card->getName() ?></span></td>
+            <td><span style="text-transform: capitalize;"><?php echo $_card->getCcType() ?><span></span></td>
+            <td><?php echo $_card->getCcExpMonth() ?></td>
+            <td><?php echo $_card->getCcExpYear() ?></td>
+            <td><?php echo $_card->getCcNumberEnc() ?></td>
+            <td><em><?php echo $_card->getCcStatus() == Allopass_Hipay_Model_Card::STATUS_ENABLED ? $this->__('Enabled') : $this->__('Disabled') ?></em></td>
+            <td class="a-center">
+                <span class="nobr"><a href="<?php echo $this->getViewUrl($_card) ?>"><?php echo $this->__('View Card') ?></a>
+                <span class="separator">|</span> <a href="<?php echo $this->getDeleteUrl($_card) ?>" class="link-delete link-remove"><?php echo $this->__('Delete') ?></a>
+                </span>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+<script type="text/javascript">decorateTable('my-hipay-cards-table');</script>
+<?php echo $this->getPagerHtml(); ?>
+<?php else: ?>
+    <p><?php echo $this->__('You have saved no cards.'); ?></p>
+<?php endif ?>

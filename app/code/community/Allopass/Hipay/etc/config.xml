@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<Allopass_Hipay>
-			<version>1.0.8</version>
+			<version>1.0.9</version>
 		</Allopass_Hipay>
 	</modules>
 	<global>
@@ -34,6 +34,9 @@
                     <splitPayment>
                         <table>hipay_split_payment</table>
                     </splitPayment>
+                    <card>
+                        <table>hipay_customer_card</table>
+                    </card>
                 </entities>
             </hipay_resource>
 		</models>

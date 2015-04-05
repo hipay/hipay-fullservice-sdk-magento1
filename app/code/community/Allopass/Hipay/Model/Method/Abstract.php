@@ -623,6 +623,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 	protected function responseToCustomer($customer,$response)
 	{
 		$this->getHelper()->responseToCustomer($customer,$response);
+		$this->getHelper()->createCustomerCardFromResponse($customer->getId(), $response);
 		return $this;
 	}
 	

@@ -9,4 +9,27 @@
             <block type="hipay/checkout_pending" name="checkout.pending" template="hipay/checkout/pending.phtml"/>
         </reference>
     </hipay_checkout_pending>
+    
+	<customer_account>
+        <!-- Allopass_Hipay -->
+        <reference name="customer_account_navigation">
+            <!-- @TODO Add config for enable it -->
+            <!--  ifconfig="hipay/general/card_front_active"-->
+            <action method="addLink" translate="label" module="hipay" ><name>hipay</name><path>hipay/card/</path><label>Hipay's cards</label></action>
+        </reference>
+    </customer_account>
+    
+	<hipay_card_index>
+	    <label>Customer My Account Hipay's Card</label>
+        <!-- Mage_Wishlist -->
+        <update handle="customer_account" />
+        <reference name="my.account.wrapper">
+        	 <block type="hipay/card" name="hipay.card.account">
+                <block type="core/text_list" name="hipay.card.account.info" as="info" translate="label">
+                    <label>Cards account Info</label>
+                </block>
+            </block>
+            <block type="customer/account_dashboard" name="customer.account.link.back" template="customer/account/link/back.phtml"/>
+        </reference>
+	</hipay_card_index>
 </layout>
