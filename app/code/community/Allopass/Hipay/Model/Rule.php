@@ -19,7 +19,7 @@ class Allopass_Hipay_Model_Rule extends Mage_Rule_Model_Rule
      */
     public function getConditionsInstance()
     {
-    	 return Mage::getModel('hipay/rule_condition_combine')->setPaymentMethodCode($this->getMethodCode());
+    	return Mage::getModel('hipay/rule_condition_combine')->setPaymentMethodCode($this->_getPaymentMethodCode());
     }
 	
 	/**
@@ -36,9 +36,14 @@ class Allopass_Hipay_Model_Rule extends Mage_Rule_Model_Rule
     {
     	parent::getConditions();
     	
-    	$this->_conditions->setPaymentMethodCode($this->getMethodCode());
+    	$this->_conditions->setPaymentMethodCode($this->_getPaymentMethodCode());
 
 		return $this->_conditions;
+    }
+    
+    protected function _getPaymentMethodCode()
+    {
+    	return str_replace("/", "_", $this->getConfigPath());
     }
 	
 }

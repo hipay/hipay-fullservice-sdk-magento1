@@ -7,6 +7,7 @@ class Allopass_Hipay_Adminhtml_RuleController extends Mage_Adminhtml_Controller_
     public function newConditionHtmlAction()
     {
         $id = $this->getRequest()->getParam('id');
+
         $typeArr = explode('|', str_replace('-', '/', $this->getRequest()->getParam('type')));
         $type = $typeArr[0];
 		$method_code = $typeArr[2];

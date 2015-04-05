@@ -30,9 +30,13 @@ class Allopass_Hipay_Model_Rule_Config extends Mage_Core_Model_Config_Data
 		$rule = Mage::getModel('hipay/rule');
 		$rule->setMethodCode($this->_getMethodCode());
 		
+		
 		if($this->getValue())
 			$rule->load($this->getValue());
-			
+		
+		if($rule->getConfigPath() == "")
+			$rule->setConfigPath($this->_getConfigPath());
+		
 		$this->setRule($rule);
 		
 		return $this;
@@ -54,6 +58,8 @@ class Allopass_Hipay_Model_Rule_Config extends Mage_Core_Model_Config_Data
         }
 		
 		$rule->setMethodCode($this->_getMethodCode());
+		$rule->setConfigPath($this->_getConfigPath());
+		
 		$rule->loadPost($this->_getRuleData());
 	
 		try{
@@ -78,14 +84,27 @@ class Allopass_Hipay_Model_Rule_Config extends Mage_Core_Model_Config_Data
 		return $group;
 	}
 	
+	protected function _getConfigPath()
+	{
+		return $this->getData('path');
+	}
+	
+	protected function _getFormName()
+	{
+		return str_replace("/", "_", $this->_getConfigPath());
+	}
+	
 	protected function _getRuleData()
 	{
 		if(is_null($this->_ruleData))
 		{
 			$post = Mage::app()->getRequest()->getPost();
+
 			$this->_ruleData = array();
-			if(isset($post['rule_' . $this->_getMethodCode()]['conditions']))
-				$this->_ruleData['conditions'] = $post['rule_' . $this->_getMethodCode()]['conditions'];
+			
+			if(isset($post['rule_' . $this->_getFormName()]['conditions']))
+				$this->_ruleData['conditions'] = $post['rule_' . $this->_getFormName()]['conditions'];
+			
 		}
 		
 		return $this->_ruleData;

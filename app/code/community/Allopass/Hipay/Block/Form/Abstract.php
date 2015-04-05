@@ -40,6 +40,10 @@ abstract class Allopass_Hipay_Block_Form_Abstract extends Mage_Payment_Block_For
     	 
     }
     
+    /**
+     * @return Mage_Sales_Model_Quote 
+     *  
+     * */
     public function getQuote()
     {
     	return Mage::getSingleton('checkout/session')->getQuote();
@@ -48,7 +52,7 @@ abstract class Allopass_Hipay_Block_Form_Abstract extends Mage_Payment_Block_For
     public function allowSplitPayment()
     {
     	
-    	$checkoutMethod = Mage::getSingleton('checkout/session')->getQuote()->getCheckoutMethod();
+    	$checkoutMethod = $this->getQuote()->getCheckoutMethod();
     	$minAmount = $this->getMethod()->getConfigData('min_order_total_split_payment');
     	
     	if($checkoutMethod == Mage_Checkout_Model_Type_Onepage::METHOD_GUEST || 
@@ -70,7 +74,22 @@ abstract class Allopass_Hipay_Block_Form_Abstract extends Mage_Payment_Block_For
     
     public function allowUseOneClick()
     {
-    	return $this->getMethod()->getConfigData('allow_use_oneclick');
+    	switch ((int)$this->getMethod()->getConfigData('allow_use_oneclick')) {
+    		case 0:
+    			return false;
+    			
+    		case 1:
+    			/* @var $rule Allopass_Hipay_Model_Rule */
+    			
+    			$rule = Mage::getModel('hipay/rule')->load($this->getMethod()->getConfigData('filter_oneclick'));
+    			if($rule->getId())
+    			{
+    				
+    				return (int)$rule->validate(new Varien_Object(array("quote_id"=>$this->getQuote()->getId(),"created_at"=>$this->getQuote()->getCreatedAt())));
+    			}
+    			return true;
+    			
+    	}
     }
 
     public function getIframeConfig()

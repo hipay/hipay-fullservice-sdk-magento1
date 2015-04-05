@@ -29,12 +29,17 @@ class Allopass_Hipay_Block_Adminhtml_System_Config_Form_Field_3dsRule extends  M
 	 */
 	protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
 	{
+
 		$partsId = explode("_", $element->getId());
 		$method_code = $partsId[1]. "_" . $partsId[2];
 		$rule = Mage::getModel('hipay/rule');
 		$rule->setMethodCode($method_code);
+		
 		if($element->getValue())
 			$rule->load($element->getValue());
+		
+		if($rule->getConfigPath() == "")
+			$rule->setConfigPath($element->getId());
 
 		$element->setRule($rule);
 		
