@@ -33,8 +33,8 @@
 "Expiration Date","Expiration Date"
 "Card Verification Number","Card Verification Number"
 "Record your card data for a next buy.","Record your card data for a next buy."
-"Use my recorded card","Use my recorded card"
-"Record new card data","Record new card data"
+"Use my recorded card","Select your favorite credit card"
+"Record new card data","Record new credit card data"
 "Not use record card data","Not use record card data"
 "You will be redirect to payment page after submit order.","You will be redirect to payment page after submit order."
 "Hipay Credit Card","Hipay Credit Card"
@@ -104,6 +104,6 @@
 "Orders count","Orders count"
 "Customer is guest","Customer is guest"
 "Billing and shipping addresses are differents","Billing and shipping addresses are differents"
-
-
 "Sort the list by drag'n/drop credit card type","Sort the list by drag'n/drop credit card type"
+"Split your Payment","Split your Payment"
+"-- Please select your card --","-- Please select your card --"

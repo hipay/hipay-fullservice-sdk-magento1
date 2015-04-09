@@ -38,9 +38,9 @@
 "Expiration Date","Date d'expiration"
 "Card Verification Number","Numéro de vérification"
 "Record your card data for a next buy.","Enregistrez une empreinte de carte bancaire pour un prochain achat."
-"Use my recorded card","Utiliser ma carte pré-enregistrée."
+"Use my recorded card","Sélectionner une de mes cartes pré-enregistrées."
 "Actual card","Carte actuelle"
-"Record new card data","Remplacer vos données de Carte Bancaire."
+"Record new card data","Enregistrer l'empreinte d'une nouvelle carte"
 "Not use record card data","Payer directement avec une autre Carte Bancaire."
 "You will be redirect to payment page after submit order.","Vous serez redirigé vers la page de paiment après la validation de la commande."
 "Order status when payment accepted","Statut de la commande quand le paiement est accepté."
@@ -105,6 +105,9 @@
 "Orders count","Nombre de commande passées (inclu celle en cours)"
 "Customer is guest","Commande en tant qu'invité"
 "Billing and shipping addresses are differents","Adresses de facturation et de livraison différentes"
-
-
 "Sort the list by drag'n/drop credit card type","Vous pouvez choisir l'ordre d'affichage en faisant un glisser/déposer de chaque type de paiement."
+"Split your Payment","Payer en plusieurs fois"
+"-- Please select your split payment --","-- Sélectionnez votre mode de paiement --"
+
+
+
