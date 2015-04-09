@@ -15,6 +15,13 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 	const STATE_DECLINED = "declined";
 	const STATE_ERROR = "error";
 	
+	const STATUS_AUTHORIZATION_REQUESTED = 'authorization_requested';
+	const STATUS_EXPIRED = 'expired';
+	const STATUS_PARTIAL_REFUND = 'partial_refund';
+	const STATUS_PARTIAL_CAPTURE = 'partial_capture';
+	const STATUS_CAPTURE_REQUESTED = 'capture_requested';
+	const STATUS_PENDING_CAPTURE = 'pending_capture';
+	
 	//const STATUS_PENDING_CAPTURE = 'pending_capture';
 	
 	/**
@@ -217,6 +224,58 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 						
 						$order->save();
 						break;
+						
+					case 142: //Authorized Requested
+						if($order->getStatus() == self::STATUS_CAPTURE_REQUESTED || $order->getStatus() == Mage_Sales_Model_Order::STATE_PROCESSING
+								|| $order->getStatus() == Mage_Sales_Model_Order::STATE_COMPLETE || $order->getStatus() == Mage_Sales_Model_Order::STATE_CLOSED
+								|| $order->getStatus() == self::STATUS_PENDING_CAPTURE )// for logic process
+							break;
+						
+							$this->addTransaction(
+							$payment,
+							$gatewayResponse->getTransactionReference(),
+							Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH,
+							array('is_transaction_closed' => 0),
+							array(
+							$this->_realTransactionIdKey => $gatewayResponse->getTransactionReference(),
+							),
+							Mage::helper('hipay')->getTransactionMessage(
+							$payment, self::OPERATION_AUTHORIZATION, $gatewayResponse->getTransactionReference(), $amount,true
+							)
+							);
+							$state = Mage_Sales_Model_Order::STATE_PENDING_PAYMENT;
+							if(defined('Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW'))
+								$state = Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW;
+							$status = self::STATUS_AUTHORIZATION_REQUESTED;
+						
+							$order->setState($state,$status,$gatewayResponse->getMessage());
+						
+							$order->save();
+							break;
+							
+					case 114: //Expired
+						if($order->getStatus() != self::STATUS_PENDING_CAPTURE)// for logic process
+							break;
+					
+							$this->addTransaction(
+									$payment,
+									$gatewayResponse->getTransactionReference(),
+									Mage_Sales_Model_Order_Payment_Transaction::TYPE_VOID,
+									array('is_transaction_closed' => 1),
+									array(
+											$this->_realTransactionIdKey => $gatewayResponse->getTransactionReference(),
+									),
+									Mage::helper('hipay')->getTransactionMessage(
+											$payment, self::OPERATION_AUTHORIZATION, $gatewayResponse->getTransactionReference(), $amount,true
+									)
+							);
+							$state = Mage_Sales_Model_Order::STATE_CLOSED;
+							$status = self::STATUS_EXPIRED;
+					
+							$order->setState($state,$status,$gatewayResponse->getMessage());
+					
+							$order->save();
+							break;
 					
 					case 116: //Authorized
 						
@@ -237,7 +296,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 						
 						$order->setState(
 								Mage_Sales_Model_Order::STATE_PROCESSING,
-								'pending_capture',
+								self::STATUS_PENDING_CAPTURE,
 								Mage::helper('hipay')
 								->__("Waiting for capture transaction ID '%s' of amount %s",
 										$gatewayResponse->getTransactionReference(),
@@ -396,19 +455,26 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 						}
 						
 						break;
+					default:
+						$message = Mage::helper("hipay")->__('Message Hipay: %s. Status: %s',$gatewayResponse->getMessage(),$gatewayResponse->getStatus());						
+						$order->addStatusToHistory($order->getStatus(), $message);
+						break;
 				}
 				
 		
-				if(in_array($gatewayResponse->getPaymentProduct(), array('visa','american-express','mastercard','cb')) 
-					&& ((int)$gatewayResponse->getEci() == 9 || $payment->getAdditionalInformation('create_oneclick')) 
-					&& !$order->isNominal()) //Recurring E-commerce
-				{
-						
-					if($customer->getId())
-					{
-						$this->responseToCustomer($customer,$gatewayResponse);
-							
-					}
+				if($gatewayResponse->getState() == self::STATE_COMPLETED)
+				{				
+						if(in_array($gatewayResponse->getPaymentProduct(), array('visa','american-express','mastercard','cb')) 
+							&& ((int)$gatewayResponse->getEci() == 9 || $payment->getAdditionalInformation('create_oneclick')) 
+							&& !$order->isNominal()) //Recurring E-commerce
+						{
+								
+							if($customer->getId())
+							{
+								$this->responseToCustomer($customer,$gatewayResponse);
+									
+							}
+						}
 				}
 				$order->save();
 				break;

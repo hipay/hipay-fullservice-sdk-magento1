@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<Allopass_Hipay>
-			<version>1.0.9</version>
+			<version>1.1.0</version>
 		</Allopass_Hipay>
 	</modules>
 	<global>
@@ -145,6 +145,10 @@
                     <pending_capture translate="label"><label>Pending Capture</label></pending_capture>
                     <capture_requested translate="label"><label>Capture Requested</label></capture_requested>
                     <refund_requested translate="label"><label>Refund Requested</label></refund_requested>
+                    <authorization_requested translate="label"><label>Authorization Requested</label></authorization_requested>
+                    <expired translate="label"><label>Transaction Expired</label></expired>
+                    <partial_refund translate="label"><label>Partial Refund</label></partial_refund>
+                    <partial_capture translate="label"><label>Partial capture</label></partial_capture>
                 </statuses>
             </order>
         </sales>
