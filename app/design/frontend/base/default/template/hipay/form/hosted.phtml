@@ -7,16 +7,17 @@ $_cards = $this->getCards();
 <ul class="form-list" id="splitpayment_card_payment_form_<?php echo $_code ?>" >
 	 <li>
 		 <div class="input-box">
+		 	<label style="float: none;" for="<?php echo $_code ?>_split_payment"><?php echo $this->__('Split your Payment') ?></label><br />
 		 	<select id="<?php echo $_code ?>_split_payment" name="payment[split_payment_id]">
 		 		<option value=""><?php echo $this->__('-- Please Select --')?></option>
 		 		<?php foreach ($this->getSplitPaymentProfiles() as $profile) : ?>
 		 			<option value="<?php echo $profile->getId()?>"><?php echo $profile->getName()?></option>
 		 		<?php endforeach;?>
 		 	</select>
-			<label style="float: none;" for="<?php echo $_code ?>_split_payment"><?php echo $this->__('Split Payment') ?></label>
 		 </div>
 	 </li>
  </ul>
+ <br />
 <?php endif; ?>
 <?php if ($this->oneClickIsAllowed()) : ?>
 <ul class="form-list" id="oneclick_hosted_payment_form_<?php echo $_code ?>">
@@ -65,6 +66,7 @@ $_cards = $this->getCards();
 </li>
    
 </ul>
+ <br />
  <?php endif; ?>
 <?php echo $this->__('You will be redirect to payment page after submit order.')?>
 <script type="text/javascript">
