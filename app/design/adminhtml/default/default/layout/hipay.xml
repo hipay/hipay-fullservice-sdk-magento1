@@ -33,4 +33,11 @@
 	</reference>
 </hipay_adminhtml_splitpayment_edit>
 
+<adminhtml_customer_edit>
+  <reference name="customer_edit_tabs">
+	<block type="hipay/adminhtml_customer_edit_tab_card" name="customer_edit_tab_card" />
+	<action method="addTab"><name>customer_edit_tab_card</name><block>customer_edit_tab_card</block></action>
+  </reference>
+</adminhtml_customer_edit>
+
 </layout>

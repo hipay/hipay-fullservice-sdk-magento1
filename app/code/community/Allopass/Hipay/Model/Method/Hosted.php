@@ -61,7 +61,11 @@ class Allopass_Hipay_Model_Method_Hosted extends Allopass_Hipay_Model_Method_Abs
 		$token = null;
 		if($payment->getAdditionalInformation('use_oneclick'))
 		{
-			$token = Mage::getSingleton('customer/session')->getCustomer()->getHipayAliasOneclick();
+			$cardId = $payment->getAdditionalInformation('selected_oneclick_card');
+			$card = Mage::getModel('hipay/card')->load($cardId);
+			if($card->getId())
+				$token = $card->getCcToken();//Mage::getSingleton('customer/session')->getCustomer()->getHipayAliasOneclick();
+			
 		}
 		
     	$gatewayParams = $this->getGatewayParams($payment, $amount,$token);

@@ -34,9 +34,13 @@
             <td><?php echo $_card->getCcNumberEnc() ?></td>
             <td><em><?php echo $_card->getCcStatus() == Allopass_Hipay_Model_Card::STATUS_ENABLED ? $this->__('Enabled') : $this->__('Disabled') ?></em></td>
             <td class="a-center">
-                <span class="nobr"><a href="<?php echo $this->getViewUrl($_card) ?>"><?php echo $this->__('View Card') ?></a>
-                <span class="separator">|</span> <a href="<?php echo $this->getDeleteUrl($_card) ?>" class="link-delete link-remove"><?php echo $this->__('Delete') ?></a>
-                </span>
+                <span class="nobr">
+                <!-- <a href="<?php echo $this->getViewUrl($_card) ?>"><?php echo $this->__('View Card') ?></a>
+                <span class="separator">|</span> -->
+                <?php if ($this->canDelete()) :?>
+                 <a href="<?php echo $this->getDeleteUrl($_card) ?>" class="link-delete link-remove"><?php echo $this->__('Delete') ?></a>
+               <?php endif; ?>
+               </span>
             </td>
         </tr>
         <?php endforeach; ?>

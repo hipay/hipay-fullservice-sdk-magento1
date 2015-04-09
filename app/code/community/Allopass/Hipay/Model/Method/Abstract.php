@@ -75,9 +75,10 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 	{
 		$info->setAdditionalInformation('create_oneclick',$data->getOneclick() == "create_oneclick" ? 1 : 0)
 		->setAdditionalInformation('use_oneclick',$data->getOneclick() == "use_oneclick" ? 1 : 0)
+		->setAdditionalInformation('selected_oneclick_card',$data->getOneclickCard() == "" ? 0 : $data->getOneclickCard())
 		->setAdditionalInformation('split_payment_id',$data->getSplitPaymentId() != "" ? $data->getSplitPaymentId() : 0);
 		
-		Mage::log("Split Payment Id = ".$data->getSplitPaymentId(),null,'hipay_split_debug.log');
+		
 	}
 	
 	

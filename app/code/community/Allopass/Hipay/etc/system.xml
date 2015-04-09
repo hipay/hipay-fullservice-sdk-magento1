@@ -282,7 +282,7 @@
                             <show_in_store>0</show_in_store>
                         </allow_use_oneclick>
                          <filter_oneclick translate="label comment">
-                        	<label>Filter Oneclick</label>
+                        	<label>Rules Oneclick</label>
                         	<comment>Configure Rules to activate oneclick</comment>
                             <frontend_model>hipay/adminhtml_system_config_form_field_3dsRule</frontend_model>
                             <backend_model>hipay/rule_config</backend_model>
@@ -601,7 +601,7 @@
                             <show_in_store>0</show_in_store>
                         </allow_use_oneclick>
                         <filter_oneclick translate="label comment">
-                        	<label>Filter Oneclick</label>
+                        	<label>Rules Oneclick</label>
                         	<comment>Configure Rules to activate oneclick</comment>
                             <frontend_model>hipay/adminhtml_system_config_form_field_3dsRule</frontend_model>
                             <backend_model>hipay/rule_config</backend_model>

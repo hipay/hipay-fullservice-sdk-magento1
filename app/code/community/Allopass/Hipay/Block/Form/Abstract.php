@@ -1,6 +1,8 @@
 <?php
 abstract class Allopass_Hipay_Block_Form_Abstract extends Mage_Payment_Block_Form
 {
+	
+	protected $_cards = null;
 
     /**
      * Retrieve payment configuration object
@@ -11,12 +13,47 @@ abstract class Allopass_Hipay_Block_Form_Abstract extends Mage_Payment_Block_For
     {
         return Mage::getSingleton('hipay/config');
     }
-
     
+    public function getCards()
+    {
+    	if(is_null($this->_cards))
+    	{
+    		$today = new Zend_Date(Mage::app()->getLocale()->storeTimeStamp());
+		
+			$currentYear = (int)$today->getYear()->toString("YY");
+			$currentMonth = (int)$today->getMonth()->toString("MM");
+    		
+	    	$this->_cards = Mage::getResourceModel('hipay/card_collection')
+	    	->addFieldToSelect('*')
+	    	->addFieldToFilter('customer_id', $this->getCustomer()->getId())
+	    	->addFieldToFilter('cc_status', Allopass_Hipay_Model_Card::STATUS_ENABLED)
+	    	->addFieldToFilter('cc_exp_year', array("gteq"=>$currentYear))
+	    	->setOrder('card_id', 'desc');
+	    	
+	    	foreach ($this->_cards as $card)
+	    	{
+	    		if($card->ccExpYear == $currentYear && $currentMonth < $card->ccExpMonth)
+	    			$this->_cards->removeItemByKey($card->getId());
+	    	}
+    	}
+    	
+    	return $this->_cards;
+    }
+
+    /**
+     * @deprecated since v1.0.9
+     * @return boolean
+     */
     public function getCustomerHasAlias()
     {
     	return $this->getCustomer()->getHipayAliasOneclick() != "";
     	 
+    }
+    
+    public function getCustomerHasCard()
+    {
+    	return $this->getCards()->count() > 0;
+    
     }
     
     public function getCustomer()
@@ -29,6 +66,11 @@ abstract class Allopass_Hipay_Block_Form_Abstract extends Mage_Payment_Block_For
     	return $this->helper('hipay')->checkIfCcExpDateIsValid((int)Mage::getSingleton('customer/session')->getCustomerId());
     }
     
+    /**
+     * If checkout method is GUEST oneclick is not allowed
+     * Or We check method configuration
+     * @return boolean
+     */
     public function oneClickIsAllowed()
     {
     	$checkoutMethod = Mage::getSingleton('checkout/session')->getQuote()->getCheckoutMethod();
@@ -72,7 +114,7 @@ abstract class Allopass_Hipay_Block_Form_Abstract extends Mage_Payment_Block_For
     }
     
     
-    public function allowUseOneClick()
+    protected function allowUseOneClick()
     {
     	switch ((int)$this->getMethod()->getConfigData('allow_use_oneclick')) {
     		case 0:
@@ -84,8 +126,11 @@ abstract class Allopass_Hipay_Block_Form_Abstract extends Mage_Payment_Block_For
     			$rule = Mage::getModel('hipay/rule')->load($this->getMethod()->getConfigData('filter_oneclick'));
     			if($rule->getId())
     			{
-    				
-    				return (int)$rule->validate(new Varien_Object(array("quote_id"=>$this->getQuote()->getId(),"created_at"=>$this->getQuote()->getCreatedAt())));
+    				/*$objToValidate = new Varien_Object();
+    				$objToValidate->setQuoteId($this->getQuote()->getId());
+    				$objToValidate->setQuote($this->getQuote());
+    				$objToValidate->setCreatedAt($this->getQuote()->getCreatedAt());*/
+    				return (int)$rule->validate($this->getQuote());
     			}
     			return true;
     			

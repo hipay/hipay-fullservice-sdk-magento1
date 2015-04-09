@@ -54,22 +54,24 @@ class Allopass_Hipay_Model_Rule_Condition_Customer extends Mage_Rule_Model_Condi
     /**
      * Validate Address Rule Condition
      *
-     * @param Varien_Object $object
+     * @param Varien_Object|Mage_Sales_Model_Order|Mage_Sales_Model_Quote $object
      * @return bool
      */
     public function validate(Varien_Object $object)
     {
-    	/* @var $order Mage_Sales_Model_Order */
-    	$order = $object;
+    	
+    	
+    	/* @var $object Mage_Sales_Model_Order|Mage_Sales_Model_Quote */
+    	
 		
 		//Get infos from billing address
 		$toValidate = new Varien_Object();
 		
 		$customer_id = $object->getCustomerId();
-		$orders_count = $order->getCollection()->addAttributeToFilter('customer_id',$customer_id)->count();
+		$orders_count = Mage::getModel('sales/order')->getCollection()->addAttributeToFilter('customer_id',$customer_id)->count();
 		$toValidate->setOrdersCount($orders_count);
-		$toValidate->setCustomerIsGuest(is_null($order->getCustomerIsGuest()) ? 0 : $order->getCustomerIsGuest());
-		$toValidate->setDiffAddresses($this->_addressesesAreDifferent($order));
+		$toValidate->setCustomerIsGuest(is_null($object->getCustomerIsGuest()) ? 0 : $object->getCustomerIsGuest());
+		$toValidate->setDiffAddresses($this->_addressesesAreDifferent($object));
 		
 		return parent::validate($toValidate);
 
@@ -81,7 +83,7 @@ class Allopass_Hipay_Model_Rule_Condition_Customer extends Mage_Rule_Model_Condi
 	 */
 	protected function _addressesesAreDifferent($order)
 	{
-		$isDifferent = false;
+		$isDifferent = 0;
 		if($order->getIsVirtual())
 			return $isDifferent;
 		
@@ -96,7 +98,7 @@ class Allopass_Hipay_Model_Rule_Condition_Customer extends Mage_Rule_Model_Condi
 			$shippingValue = call_user_func(array($shippingAddress,$method_name));
 			if($billingValue != $shippingValue)
 			{
-				$isDifferent =  true;
+				$isDifferent =  1;
 				break;
 			}
 		}

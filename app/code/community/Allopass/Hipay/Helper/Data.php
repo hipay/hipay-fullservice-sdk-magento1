@@ -204,7 +204,10 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 		if(!empty($expDate) && !empty($alias))
 		{
 			list($expMonth,$expYear) = explode("-", $expDate);
-			$today = new Zend_Date(Mage::app()->getLocale()->storeTimeStamp());
+			
+			return $this->checkIfCcIsExpired($expMonth, $expYear);
+			
+			/*$today = new Zend_Date(Mage::app()->getLocale()->storeTimeStamp());
 				
 			$currentYear = (int)$today->getYear()->toString("YY");
 			$currentMonth = (int)$today->getMonth()->toString("MM");
@@ -215,11 +218,27 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 			if($currentYear == (int)$expYear && $currentMonth > (int)$expMonth)
 				return false;
 				
-			return true;
+			return true;*/
 	
 		}
 	
 		return false;
+	}
+	
+	public function checkIfCcIsExpired($expMonth,$expYear)
+	{
+		$today = new Zend_Date(Mage::app()->getLocale()->storeTimeStamp());
+		
+		$currentYear = (int)$today->getYear()->toString("YY");
+		$currentMonth = (int)$today->getMonth()->toString("MM");
+		
+		if($currentYear > (int)$expYear)
+			return false;
+		
+		if($currentYear == (int)$expYear && $currentMonth > (int)$expMonth)
+			return false;
+		
+		return true;
 	}
 	
 	/**

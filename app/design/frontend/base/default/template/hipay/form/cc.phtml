@@ -1,4 +1,7 @@
-<?php $_code=$this->getMethodCode() ?>
+<?php 
+$_code=$this->getMethodCode();
+$_cards = $this->getCards();
+?>
 <div id="payment_form_<?php echo $_code ?>" style="display:none;">
 
 <ul class="form-list" id="card_payment_form_<?php echo $_code ?>" >
@@ -75,24 +78,34 @@
 <ul class="form-list" id="oneclick_card_payment_form_<?php echo $_code ?>">
  <li>
 
-			<?php if (!$this->getCustomerHasAlias() || ($this->getCustomerHasAlias() && !$this->ccExpDateIsValid())) :?>
+			<?php if (!$this->getCustomerHasCard()) :?>
 			<div class="input-box">
 				<input id="<?php echo $_code ?>_create_alias_oneclick"  value="create_oneclick"  type="checkbox" name="payment[oneclick]" />
 				<label style="float: none;" for="<?php echo $_code ?>_create_alias_oneclick"><?php echo $this->__('Record your card data for a next buy.') ?></label>
 			</div>
-		<?php elseif ($this->getCustomerHasAlias() && $this->ccExpDateIsValid()): ?>
+		<?php else :?>
 			<script type="text/javascript">$('card_payment_form_<?php echo $_code ?>').hide();</script>
+			
 			<div class="input-box">
 				<input id="<?php echo $_code ?>_use_alias_oneclick" value="use_oneclick" checked="checked"   type="radio" name="payment[oneclick]" onclick="$('card_payment_form_<?php echo $_code ?>').hide();"   />
 				<label style="float: none;" for="<?php echo $_code ?>_use_alias_oneclick"><?php echo $this->__('Use my recorded card') ?></label>
 			</div>
+			
 			<div class="input-box info-card">
+				<select id="<?php echo $_code ?>_oneclick_selected_card" name="payment[oneclick_card]" >
+					<?php foreach ($_cards as $card):?>
+						<option value="<?php echo $card->getId()?>"><?php echo $card->getName()?></option>
+					<?php endforeach;?>
+			 	</select>
+		 	</div>
+			
+			<!-- <div class="input-box info-card">
 				<label><?php echo $this->__('Actual card') ?> :</label>
 				<span><?php echo $this->getCustomer()->getHipayCcNumberEnc() ?></span>
 			</div>
 			<div class="input-box info-card">
 				<label><?php echo $this->__('Expiration date') ?> : <?php echo $this->getCustomer()->getHipayCcExpDate() ?></label>
-			</div>
+			</div>-->
 			
 			
 			
@@ -124,7 +137,10 @@
         };
         
         Event.observe($('<?php echo $_code ?>_cc_type'), 'change', ToogleOneclick<?php echo $_code ?>);
-        ToogleOneclick<?php echo $_code ?>();
+        document.observe("dom:loaded", function() {
+        	 ToogleOneclick<?php echo $_code ?>();
+        });
+       
  	 //]]>
  </script>
  <?php endif; ?>

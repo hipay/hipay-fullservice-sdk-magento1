@@ -92,12 +92,16 @@ class Allopass_Hipay_Model_Rule_Condition_Address extends Mage_Rule_Model_Condit
     /**
      * Validate Address Rule Condition
      *
-     * @param Varien_Object $object
+     * @param Varien_Object|Mage_Sales_Model_Order|Mage_Sales_Model_Quote $object
      * @return bool
      */
     public function validate(Varien_Object $object)
     {
-    	$quote = Mage::getModel('sales/quote')->load($object->getQuoteId());
+    	$quote = $object;
+    	
+    	if (!($object instanceof Mage_Sales_Model_Quote))
+    		$quote = Mage::getModel('sales/quote')->load($object->getQuoteId());
+    	
 		$address = $quote->getBillingAddress();
 		
 		//Get infos from billing address

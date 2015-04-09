@@ -183,6 +183,7 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
 							$this->_order->getPayment()->setAdditionalInformation('token',isset($additionalInfo['token']) ? $additionalInfo['token'] : "");
 							$this->_order->getPayment()->setAdditionalInformation('create_oneclick',isset($additionalInfo['create_oneclick']) ? $additionalInfo['create_oneclick'] : 1);
 							$this->_order->getPayment()->setAdditionalInformation('use_oneclick',isset($additionalInfo['use_oneclick']) ? $additionalInfo['use_oneclick'] : 0);
+							$this->_order->getPayment()->setAdditionalInformation('selected_oneclick_card',isset($additionalInfo['selected_oneclick_card']) ? $additionalInfo['selected_oneclick_card'] : 0);
 						}
 						
 						

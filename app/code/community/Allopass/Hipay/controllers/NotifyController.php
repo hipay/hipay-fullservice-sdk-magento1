@@ -143,7 +143,8 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
 		$order->getPayment()->setAdditionalInformation('token',$additionalInfo['token']);
 		$order->getPayment()->setAdditionalInformation('create_oneclick',$additionalInfo['create_oneclick']);
 		$order->getPayment()->setAdditionalInformation('use_oneclick',$additionalInfo['use_oneclick']);
-	
+		//$order->getPayment()->setAdditionalInformation('selected_oneclick_card', $additionalInfo['selected_oneclick_card']);
+		
 		$order->setState(Mage_Sales_Model_Order::STATE_NEW,'pending',Mage::helper('hipay')->__("New Order Recurring!"));
 		
 		$order->save();
