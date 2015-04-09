@@ -632,9 +632,9 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 				break;
 		}
 		
-		$urlAdmin = Mage::getUrl('admin/sales_order/index');
+		$urlAdmin = Mage::getUrl('adminhtml/sales_order/index');
 		if (Mage::getSingleton('admin/session')->isAllowed('sales/order/actions/view')) {
-			$urlAdmin = Mage::getUrl('admin/sales_order/view', array('order_id' => $order->getId()));
+			$urlAdmin = Mage::getUrl('adminhtml/sales_order/view', array('order_id' => $order->getId()));
 		} 
 	
 		switch ($gatewayResponse->getState())
