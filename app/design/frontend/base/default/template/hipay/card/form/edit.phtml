@@ -14,7 +14,7 @@
                 </div>
             </li>
             <li class="control">
-                <input type="checkbox" name="is_default" id="is_default" value="<?php echo $this->getCard()->getIsDefault()?>" title="<?php echo $this->__('Is default') ?>"<?php if($this->getCard()->getIsDefault()==1): ?> checked="checked"<?php endif; ?> class="checkbox" />
+                <input type="checkbox" name="is_default" id="is_default" value="1" title="<?php echo $this->__('Is default') ?>"<?php if($this->getCard()->getIsDefault()==1): ?> checked="checked"<?php endif; ?> class="checkbox" />
                 <label for="is_default"><?php echo $this->__('Is default') ?></label> 
            </li>
         </ul>

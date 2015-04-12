@@ -11,6 +11,8 @@ class Allopass_Hipay_Model_Config extends Varien_Object
 	
 	const SECRET_PASSPHRASE = 'secret_passphrase';
 	
+	const SECRET_PASSPHRASE_TEST = 'secret_passphrase_test';
+	
 	const VAULT_ENDPOINT_TEST = 'vault_endpoint_stage';
 	
 	const VAULT_ENDPOINT = 'vault_endpoint_production';
@@ -55,8 +57,13 @@ class Allopass_Hipay_Model_Config extends Varien_Object
 	}
 	
 	public function getSecretPassphrase($storeId =null)
-	{
+	{	
 		return $this->getConfigData(self::SECRET_PASSPHRASE,$storeId);
+	}
+	
+	public function getSecretPassphraseTest($storeId =null)
+	{
+		return $this->getConfigData(self::SECRET_PASSPHRASE_TEST,$storeId);
 	}
 	
 	public function getApiUsername($storeId =null)

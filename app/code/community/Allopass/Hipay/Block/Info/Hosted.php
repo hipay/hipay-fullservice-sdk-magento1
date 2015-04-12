@@ -47,6 +47,12 @@ class Allopass_Hipay_Block_Info_Hosted extends Mage_Payment_Block_Info
 			$data[Mage::helper('payment')->__('Credit Card Number')] = sprintf('xxxx-%s', $this->getInfo()->getCcLast4());
 		}
 		
+		if($this->getInfo()->getAdditionalInformation('fraud_type') && $this->getInfo()->getAdditionalInformation('fraud_score'))
+		{
+			$data[Mage::helper('hipay')->__('Fraud result')] = ucfirst($this->getInfo()->getAdditionalInformation('fraud_type'));
+			$data[Mage::helper('hipay')->__('Fraud scoring')] = $this->getInfo()->getAdditionalInformation('fraud_score');
+		}
+		
 		return $transport->setData(array_merge($data, $transport->getData()));
 	}
 }

@@ -26,9 +26,11 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
 		/* @var $_helper Allopass_Hipay_Helper_Data */
 		$_helper = Mage::helper('hipay');
 		
+		/* @var $response Allopass_Hipay_Model_Api_Response_Notification */
+		$response  = Mage::getSingleton('hipay/api_response_notification',$this->getRequest()->getParams());
 		
 		$signature = $this->getRequest()->getServer('HTTP_X_ALLOPASS_SIGNATURE');
-		return $_helper->checkSignature($signature,true);
+		return $_helper->checkSignature($signature,true,$response);
 	}
 	
 

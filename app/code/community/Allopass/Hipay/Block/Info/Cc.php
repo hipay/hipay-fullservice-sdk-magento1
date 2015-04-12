@@ -83,6 +83,13 @@ class Allopass_Hipay_Block_Info_Cc extends Mage_Payment_Block_Info
         if ($this->getInfo()->getCcLast4()) {
             $data[Mage::helper('payment')->__('Credit Card Number')] = sprintf('xxxx-%s', $this->getInfo()->getCcLast4());
         }
+        
+        if($this->getInfo()->getAdditionalInformation('fraud_type') && $this->getInfo()->getAdditionalInformation('fraud_score'))
+        {
+        	$data[Mage::helper('hipay')->__('Fraud result')] = ucfirst($this->getInfo()->getAdditionalInformation('fraud_type'));
+        	$data[Mage::helper('hipay')->__('Fraud scoring')] = $this->getInfo()->getAdditionalInformation('fraud_score');
+        } 
+        
         if (!$this->getIsSecureMode()) {
             if ($ccSsIssue = $this->getInfo()->getCcSsIssue()) {
                 $data[Mage::helper('payment')->__('Switch/Solo/Maestro Issue Number')] = $ccSsIssue;

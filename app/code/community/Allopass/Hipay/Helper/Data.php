@@ -162,9 +162,27 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 		
 	}
 	
-	public function checkSignature($signature,$fromNotification = false)
+	public function checkSignature($signature,$fromNotification = false,$response = null)
 	{
-		$passphrase = Mage::getStoreConfig('hipay/hipay_api/secret_passphrase');
+		$passphrase =$this->getConfig()->getSecretPassphrase();
+		if(!is_null($response))
+		{
+			$orderArr = $response->getOrder();
+			
+			/* @var $order Mage_Sales_Model_Order */
+			$order = Mage::getModel('sales/order')->loadByIncrementId($orderArr['id']);
+			
+			if($order->getId())
+			{
+				$method = $order->getPayment()->getMethodInstance();
+				if($method->getConfigData('is_test_mode'))
+				{
+					$passphrase = $this->getConfig()->getSecretPassphraseTest();
+				}
+			}
+		}
+		
+		
 		if(empty($passphrase) || empty($signature))
 			return true;
 		
@@ -408,21 +426,21 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 		}
 	
 		$card = $this->__('Credit Card: xxxx-%s', $payment->getCcLast4());
-		$cardType = $this->__('Card type: %s',$payment->getCcType());
+		$cardType = $this->__('Card type: %s',ucfirst($this->getCcTypeHipay($payment->getCcType())));
 	
 		$pattern = '%s - %s.<br /> %s<br /> %s.<br /> %s';
 		$texts = array($operation,$result,$card, $amount,$cardType);
 	
 		if (!is_null($lastTransactionId)) {
-			$pattern .= ' %s.';
+			$pattern .= '<br />%s.';
 			$texts[] = $this->__('Hipay Transaction ID %s', $lastTransactionId);
 		}
 	
 		if ($additionalMessage) {
-			$pattern .= ' %s.';
+			$pattern .= '<br />%s.';
 			$texts[] = $additionalMessage;
 		}
-		$pattern .= ' %s';
+		$pattern .= '<br />%s';
 		$texts[] = $exception;
 	
 		return call_user_func_array(array($this, '__'), array_merge(array($pattern), $texts));
@@ -533,5 +551,27 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 			return explode(',', $data);
 		}
 		return false;
+	}
+	
+	/**
+	 * 
+	 * @return Allopass_Hipay_Model_Config
+	 */
+	protected function getConfig()
+	{
+		return Mage::getSingleton('hipay/config');
+	}
+	
+	public function getCcTypeHipay($ccTypeMagento,$exceptionIfNotFound = false)
+	{
+		$ccTypes = Mage::getSingleton('hipay/config')->getCcTypesHipay();
+	
+		if(isset($ccTypes[$ccTypeMagento]))
+			return $ccTypes[$ccTypeMagento];
+		
+		if($exceptionIfNotFound)
+			Mage::throwException(Mage::helper('hipay')->__("Code Credit Card Type Hipay not found!"));
+		
+		return $ccTypeMagento;
 	}
 }

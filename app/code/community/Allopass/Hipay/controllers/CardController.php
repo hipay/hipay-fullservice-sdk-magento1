@@ -90,6 +90,7 @@ class Allopass_Hipay_CardController extends Mage_Core_Controller_Front_Action
             }
            
             try {
+
                 $is_default = $this->getRequest()->getPost('is_default');
             	if($is_default)
             	{
