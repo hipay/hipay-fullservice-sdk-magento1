@@ -12,14 +12,16 @@
     <col width="1" />
     <col width="1" />
     <col width="1" />
+    <col width="1" />
     <thead>
         <tr>
-            <th><?php echo $this->__('Card name') ?></th>
+            <th><span class="nobr"><?php echo $this->__('Card name') ?></span></th>
             <th><?php echo $this->__('Card type') ?></th>
             <th><?php echo $this->__('Exp. Month') ?></th>
             <th><?php echo $this->__('Exp. Year') ?></th>
             <th><span class="nobr"><?php echo $this->__('Card Number') ?></span></th>
             <th><span class="nobr"><?php echo $this->__('Card Status') ?></span></th>
+            <th><?php echo $this->__('Is default')?></th>
             <th>&nbsp;</th>
         </tr>
     </thead>
@@ -33,10 +35,11 @@
             <td><?php echo $_card->getCcExpYear() ?></td>
             <td><?php echo $_card->getCcNumberEnc() ?></td>
             <td><em><?php echo $_card->getCcStatus() == Allopass_Hipay_Model_Card::STATUS_ENABLED ? $this->__('Enabled') : $this->__('Disabled') ?></em></td>
+            <td><?php echo $_card->getIsDefault() == 1 ? $this->__('Yes') : $this->__('No')?></td>
             <td class="a-center">
                 <span class="nobr">
-                <!-- <a href="<?php echo $this->getViewUrl($_card) ?>"><?php echo $this->__('View Card') ?></a>
-                <span class="separator">|</span> -->
+                <a href="<?php echo $this->getEditUrl($_card) ?>"><?php echo $this->__('Edit Card') ?></a>
+                <span class="separator">|</span>
                 <?php if ($this->canDelete()) :?>
                  <a href="<?php echo $this->getDeleteUrl($_card) ?>" class="link-delete link-remove"><?php echo $this->__('Delete') ?></a>
                <?php endif; ?>

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<layout version="0.1.0">
+<?xml version="1.0" encoding="UTF-8"?><layout version="0.1.0">
 	<hipay_checkout_pending translate="label">
         <label>Hipay Checkout Pending</label>
         <reference name="root">
@@ -19,9 +18,8 @@
         </reference>
     </customer_account>
     
-	<hipay_card_index>
+	<hipay_card_index translate="label">
 	    <label>Customer My Account Hipay's Card</label>
-        <!-- Mage_Wishlist -->
         <update handle="customer_account" />
         <reference name="my.account.wrapper">
         	 <block type="hipay/card" name="hipay.card.account">
@@ -32,4 +30,12 @@
             <block type="customer/account_dashboard" name="customer.account.link.back" template="customer/account/link/back.phtml"/>
         </reference>
 	</hipay_card_index>
+	
+	<hipay_card_edit translate="label">
+	    <label>Customer Edit Hipay Card</label>
+	    <update handle="customer_account" />
+        <reference name="my.account.wrapper">
+             <block type="hipay/card_edit" name="hipay.card.account.edit" template="hipay/card/form/edit.phtml" />
+        </reference>
+	</hipay_card_edit>
 </layout>

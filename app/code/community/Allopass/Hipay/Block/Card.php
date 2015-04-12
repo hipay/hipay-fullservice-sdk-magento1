@@ -36,14 +36,14 @@ class Allopass_Hipay_Block_Card extends Mage_Core_Block_Template
         return $this->getChildHtml('pager');
     }
 
-    public function getViewUrl($card)
+    public function getEditUrl($card)
     {
-        return $this->getUrl('*/*/view', array('card_id' => $card->getId()));
+        return $this->getUrl('*/*/edit', array('card_id' => $card->getId()));
     }
     
     public function canDelete()
     {
-    	return true;
+    	return false;
     }
 
 

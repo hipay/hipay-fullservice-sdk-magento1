@@ -20,6 +20,7 @@ CREATE TABLE {$this->getTable('hipay_customer_card')} (
   `cc_number_enc` varchar(40) NOT NULL COMMENT 'Cc Number Enc',
   `cc_status` TINYINT( 1 ) NOT NULL COMMENT 'Cc Status',
   `cc_token` varchar(255) NOT NULL COMMENT 'Cc Token',
+  `is_default` TINYINT( 1 ) NOT NULL DEFAULT '0' COMMENT 'Cc is default',
   PRIMARY KEY  (`card_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
