@@ -5,6 +5,13 @@
  */
 class Allopass_Hipay_Block_Info_Cc extends Mage_Payment_Block_Info
 {
+	
+	protected function _construct()
+	{
+		parent::_construct();
+		$this->setTemplate('hipay/info/cc.phtml');
+	}
+	
     /**
      * Retrieve credit card type name
      *

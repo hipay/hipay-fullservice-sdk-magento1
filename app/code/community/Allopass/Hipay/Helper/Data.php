@@ -408,9 +408,10 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 		}
 	
 		$card = $this->__('Credit Card: xxxx-%s', $payment->getCcLast4());
+		$cardType = $this->__('Card type: %s',$payment->getCcType());
 	
-		$pattern = '%s - %s. %s %s.';
-		$texts = array($operation,$result,$card, $amount);
+		$pattern = '%s - %s.<br /> %s<br /> %s.<br /> %s';
+		$texts = array($operation,$result,$card, $amount,$cardType);
 	
 		if (!is_null($lastTransactionId)) {
 			$pattern .= ' %s.';

@@ -154,6 +154,12 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 				$defaultExceptionMessage = Mage::helper('hipay')->__('Payment capturing error.');
 				break;
 		}
+		
+		//add data to payment object
+		if($payment->getCcType() == "")
+		{
+			$payment->setCcType($gatewayResponse->getPaymentProduct());
+		}
 
 		switch ($gatewayResponse->getState())
 		{
@@ -222,6 +228,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 						
 						$order->setState($state,$status,$gatewayResponse->getMessage());
 						
+						$payment->setAmountAuthorized($gatewayResponse->getAuthorizedAmount());
+						
 						$order->save();
 						break;
 						
@@ -249,7 +257,9 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 							$status = self::STATUS_AUTHORIZATION_REQUESTED;
 						
 							$order->setState($state,$status,$gatewayResponse->getMessage());
-						
+							
+							$payment->setAmountAuthorized($gatewayResponse->getAuthorizedAmount());
+							
 							$order->save();
 							break;
 							
@@ -308,6 +318,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 							$order->sendNewOrderEmail();
 						}
 						
+						$payment->setAmountAuthorized($gatewayResponse->getAuthorizedAmount());
 						
 						
 						break;
@@ -332,6 +343,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 						$order->setState(
 								Mage_Sales_Model_Order::STATE_PROCESSING, 'capture_requested', $message, null, false
 						);
+						
+						$payment->setAmountAuthorized($gatewayResponse->getAuthorizedAmount());
 
 						if(((int)$this->getConfigData('hipay_status_validate_order') == 117) === false )
 							break;
@@ -397,6 +410,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 						} else {
 							$order->addStatusToHistory($status, $message, true);
 						}
+						
+						$payment->setAmountAuthorized($gatewayResponse->getAuthorizedAmount());
 						
 						
 						if (!$order->getEmailSent()) {
