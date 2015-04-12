@@ -1,7 +1,10 @@
 <?php
 abstract class Allopass_Hipay_Block_Form_Abstract extends Mage_Payment_Block_Form
 {
-	
+	/**
+	 * 
+	 * @var Allopass_Hipay_Model_Resource_Card_Collection
+	 */
 	protected $_cards = null;
 
     /**
@@ -28,8 +31,9 @@ abstract class Allopass_Hipay_Block_Form_Abstract extends Mage_Payment_Block_For
 	    	->addFieldToFilter('customer_id', $this->getCustomer()->getId())
 	    	->addFieldToFilter('cc_status', Allopass_Hipay_Model_Card::STATUS_ENABLED)
 	    	->addFieldToFilter('cc_exp_year', array("gteq"=>$currentYear))
-	    	->setOrder('card_id', 'desc');
-	    	
+	    	->setOrder('card_id', 'desc')
+	    	->setOrder('is_default', 'desc');
+
 	    	foreach ($this->_cards as $card)
 	    	{
 	    		if($card->ccExpYear == $currentYear && $currentMonth < $card->ccExpMonth)
