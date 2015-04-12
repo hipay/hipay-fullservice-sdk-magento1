@@ -2,4 +2,6 @@
 class Allopass_Hipay_Model_Method_Ideal extends Allopass_Hipay_Model_Method_Hosted
 {	
 	protected $_code  = 'hipay_ideal';	
+	protected $_canRefund               = false;
+	protected $_canRefundInvoicePartial = false;
 }

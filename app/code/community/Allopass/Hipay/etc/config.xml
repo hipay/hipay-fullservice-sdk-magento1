@@ -293,6 +293,16 @@
 				</hipay>
 			</updates>
 		</layout>
+		<events>
+		    <adminhtml_widget_container_html_before>
+		            <observers>
+						<set_order_can_refund>
+	                        <class>hipay/observer</class>
+	                        <method>orderCanRefund</method>
+	                    </set_order_can_refund>
+					</observers>
+		    </adminhtml_widget_container_html_before>
+		</events>
 	</adminhtml>
 	<default>
 		<hipay>

@@ -1189,6 +1189,11 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
     	$fraud_type = $payment->getAdditionalInformation('fraud_type');
     	return $this->_canReviewPayment || $fraud_type == 'challenged';
     }
+    
+    public function canRefund()
+    {
+    	return $this->_canRefund;
+    }
 	
 	protected function orderDue($order)
 	{

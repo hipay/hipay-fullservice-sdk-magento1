@@ -116,4 +116,32 @@ class Allopass_Hipay_Model_Observer
 			}
 		}
 	}
+	
+	public function orderCanRefund($observer)
+	{
+		/* @var $block Mage_Adminhtml_Block_Sales_Order_Invoice_View|Mage_Adminhtml_Block_Sales_Transactions_Detail */
+		$block = $observer->getBlock();
+		
+		
+		if($block instanceof Mage_Adminhtml_Block_Sales_Order_Invoice_View)
+		{
+			$order = $block->getInvoice()->getOrder();
+		}
+		elseif($block instanceof Mage_Adminhtml_Block_Sales_Transactions_Detail)
+		{
+			$txnId = $block->getTxnIdHtml();
+			$orderIncrementId = $block->getOrderIncrementIdHtml();
+			
+			/* @var $order Mage_Sales_Model_Order */
+			$order = Mage::getModel('sales/order')->loadByIncrementId(trim($orderIncrementId));
+			if($order->getId() && strpos($order->getPayment()->getMethod(), 'hipay') !== false)
+			{
+				$link = '<a href="https://merchant.hipay-tpp.com//transaction/detail/index/trxid/'.$txnId.'" target="_blank">'.$txnId.'</a>';
+				$block->setTxnIdHtml($link);
+			}
+			
+			
+			
+		}
+	}
 }
