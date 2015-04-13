@@ -65,7 +65,7 @@
                         </api_password_test>
                          <secret_passphrase_test translate="label comment">
                         	<label>Secret passphrase (test account)</label>
-                        	<comment>The same of your HiPay Fullservice production account</comment>
+                        	<comment>The same of your HiPay Fullservice test account</comment>
                            	<frontend_type>obscure</frontend_type>
                             <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
                             <sort_order>50</sort_order>

@@ -91,6 +91,11 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 	
 	public function acceptPayment(Mage_Payment_Model_Info $payment)
 	{
+		parent::acceptPayment($payment);
+		$transactionId = $payment->getLastTransId();
+		$amount = $payment->getAmountOrdered();
+		
+		$transactionId = $payment->getLastTransId();
 		
 		$gatewayParams = array('operation'=>self::OPERATION_MAINTENANCE_ACCEPT_CHALLENGE,'amount'=>$amount);
 		$this->_debug($gatewayParams);
@@ -220,15 +225,20 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 								)
 						);
 						$state = Mage_Sales_Model_Order::STATE_PENDING_PAYMENT;
-						if(defined('Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW'))
-							$state = Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW;
 						$status = Mage_Sales_Model_Order::STATE_PENDING_PAYMENT;
+						if(defined('Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW'))
+						{
+							$state = Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW;
+							$status = Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW;
+						}
+						
 						
 						$this->_setFraudDetected($gatewayResponse,$customer, $payment);
 						
 						$order->setState($state,$status,$gatewayResponse->getMessage());
 						
 						$payment->setAmountAuthorized($gatewayResponse->getAuthorizedAmount());
+						$payment->setBaseAmountAuthorized($gatewayResponse->getAuthorizedAmount());
 						
 						$order->save();
 						break;
@@ -259,6 +269,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 							$order->setState($state,$status,$gatewayResponse->getMessage());
 							
 							$payment->setAmountAuthorized($gatewayResponse->getAuthorizedAmount());
+							$payment->setBaseAmountAuthorized($gatewayResponse->getAuthorizedAmount());
 							
 							$order->save();
 							break;
@@ -319,6 +330,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 						}
 						
 						$payment->setAmountAuthorized($gatewayResponse->getAuthorizedAmount());
+						$payment->setBaseAmountAuthorized($gatewayResponse->getAuthorizedAmount());
 						
 						
 						break;
@@ -345,6 +357,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 						);
 						
 						$payment->setAmountAuthorized($gatewayResponse->getAuthorizedAmount());
+						$payment->setBaseAmountAuthorized($gatewayResponse->getAuthorizedAmount());
 
 						if(((int)$this->getConfigData('hipay_status_validate_order') == 117) === false )
 							break;
@@ -412,6 +425,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 						}
 						
 						$payment->setAmountAuthorized($gatewayResponse->getAuthorizedAmount());
+						$payment->setBaseAmountAuthorized($gatewayResponse->getAuthorizedAmount());
 						
 						
 						if (!$order->getEmailSent()) {
