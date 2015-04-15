@@ -60,7 +60,7 @@
                     <type>html</type>
                 </hipay_fraud_payment_accept_template>
                 <hipay_fraud_payment_deny_template translate="label" module="hipay">
-                    <label>Fraud Payment</label>
+                    <label>Fraud Payment Deny</label>
                     <file>hipay_fraud_payment_deny.html</file>
                     <type>html</type>
                 </hipay_fraud_payment_deny_template>

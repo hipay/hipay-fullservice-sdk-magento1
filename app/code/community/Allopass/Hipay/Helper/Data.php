@@ -440,8 +440,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 			$pattern .= '<br />%s.';
 			$texts[] = $additionalMessage;
 		}
-		$pattern .= '<br />%s';
-		$texts[] = $exception;
+		//$pattern .= '<br />%s';
+		//$texts[] = $exception;
 	
 		return call_user_func_array(array($this, '__'), array_merge(array($pattern), $texts));
 	}

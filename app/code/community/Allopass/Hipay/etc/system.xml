@@ -173,7 +173,7 @@
                     <label>Fraud Payment Deny Email</label>
                     <comment>This email is sended to customer, if his payment is denied by merchant</comment> 
                     <frontend_type>text</frontend_type>
-                    <sort_order>30</sort_order>
+                    <sort_order>40</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
@@ -215,7 +215,7 @@
                             <show_in_store>1</show_in_store>
                         </copy_method>
                     </fields>
-                </fraud_payment_accept>
+                </fraud_payment_deny>
    			</groups>
 		</hipay>
 		<payment>
