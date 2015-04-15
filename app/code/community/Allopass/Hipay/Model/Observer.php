@@ -117,17 +117,20 @@ class Allopass_Hipay_Model_Observer
 		}
 	}
 	
-	public function orderCanRefund($observer)
+	public function arrangeOrderView($observer)
 	{
 		/* @var $block Mage_Adminhtml_Block_Sales_Order_Invoice_View|Mage_Adminhtml_Block_Sales_Transactions_Detail */
 		$block = $observer->getBlock();
 		
 		
-		if($block instanceof Mage_Adminhtml_Block_Sales_Order_Invoice_View)
+		/*if($block instanceof Mage_Adminhtml_Block_Sales_Order_Invoice_View)
 		{
 			$order = $block->getInvoice()->getOrder();
+			if($order->getStatus() == Allopass_Hipay_Model_Method_Abstract::STATUS_CAPTURE_REQUESTED)
+				$order->setForcedCanCreditmemo(false);
 		}
-		elseif($block instanceof Mage_Adminhtml_Block_Sales_Transactions_Detail)
+		else*/
+		if($block instanceof Mage_Adminhtml_Block_Sales_Transactions_Detail)
 		{
 			$txnId = $block->getTxnIdHtml();
 			$orderIncrementId = $block->getOrderIncrementIdHtml();
@@ -143,5 +146,12 @@ class Allopass_Hipay_Model_Observer
 			
 			
 		}
+	}
+	
+	public function orderCanRefund($observer)
+	{
+		$order = $observer->getOrder();
+		if($order->getStatus() == Allopass_Hipay_Model_Method_Abstract::STATUS_CAPTURE_REQUESTED)
+			$order->setForcedCanCreditmemo(false);
 	}
 }
