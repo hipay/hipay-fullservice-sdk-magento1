@@ -1,4 +1,4 @@
-<!--@subject Promemoria Transazione Pagamento Fallito @-->
+<!--@subject Payment transaction waiting for validation @-->
 <!--@vars
 {"var reason":"Transaction Failed Reason",
 "var checkoutType":"Checkout Type",
@@ -16,46 +16,46 @@
 <table>
     <thead>
     <tr>
-        <th>Transazione Pagamento Fallito.</th>
+        <th>Payment transaction is waiting for review.</th>
     </tr>
     </thead>
     <tbody>
     <tr>
         <td>
             <p>
-                <b>Motivo</b><br />
+                <b>Reason</b><br />
                 {{var reason}}
             </p>
             <p>
-                <b>Cliente:</b><br />
+                <b>Customer:</b><br />
                 <a href="mailto:{{var customerEmail}}">{{var customer}}</a> &lt;{{var customerEmail}}&gt;
             </p>
             <p>
-                <b>Prodotti</b><br />
+                <b>Items</b><br />
                 {{var items}}
             </p>
             <p>
-                <b>Totale:</b><br />
+                <b>Total:</b><br />
                 {{var total}}
             </p>
             <p>
-                <b>Indirizzo di fatturazione:</b><br />
+                <b>Billing Address:</b><br />
                 {{var billingAddress.format('html')}}
             </p>
             <p>
-                <b>Indirizzo di spedizione:</b><br />
+                <b>Shipping Address:</b><br />
                 {{var shippingAddress.format('html')}}
             </p>
             <p>
-                <b>Metodo di spedizione:</b><br />
+                <b>Shipping Method:</b><br />
                 {{var shippingMethod}}
             </p>
             <p>
-                <b>Metodo di Pagamento:</b><br />
+                <b>Payment Method:</b><br />
                 {{var paymentMethod}}
             </p>
             <p>
-                <b>Data e ora:</b><br />
+                <b>Date & Time:</b><br />
                 {{var dateAndTime}}
             </p>
         </td>

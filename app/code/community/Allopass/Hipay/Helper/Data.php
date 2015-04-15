@@ -465,7 +465,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 	 * @param string $message
 	 * @return Mage_Checkout_Helper_Data
 	 */
-	public function sendFraudPaymentEmail($receiver,$order, $message)
+	public function sendFraudPaymentEmail($receiver,$order, $message,$email_key = 'fraud_payment')
 	{
 		$translate = Mage::getSingleton('core/translate');
 		/* @var $translate Mage_Core_Model_Translate */
@@ -474,10 +474,10 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 		$mailTemplate = Mage::getModel('core/email_template');
 		/* @var $mailTemplate Mage_Core_Model_Email_Template */
 	
-		$template = Mage::getStoreConfig('hipay/fraud_payment/template', $order->getStoreId());
+		$template = Mage::getStoreConfig('hipay/'.$email_key.'/template', $order->getStoreId());
 	
-		$copyTo = $this->_getEmails('hipay/fraud_payment/copy_to', $order->getStoreId());
-		$copyMethod = Mage::getStoreConfig('hipay/fraud_payment/copy_method', $order->getStoreId());
+		$copyTo = $this->_getEmails('hipay/'.$email_key.'/copy_to', $order->getStoreId());
+		$copyMethod = Mage::getStoreConfig('hipay/'.$email_key.'/copy_method', $order->getStoreId());
 		if ($copyTo && $copyMethod == 'bcc') {
 			$mailTemplate->addBcc($copyTo);
 		}
@@ -521,7 +521,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 			$mailTemplate->setDesignConfig(array('area'=>'frontend', 'store'=>$order->getStoreId()))
 			->sendTransactional(
 					$template,
-					Mage::getStoreConfig('hipay/fraud_payment/identity', $order->getStoreId()),
+					Mage::getStoreConfig('hipay/'.$email_key.'/identity', $order->getStoreId()),
 					$recipient['email'],
 					$recipient['name'],
 					array(

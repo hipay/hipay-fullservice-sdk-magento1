@@ -76,7 +76,7 @@
                     </fields>
    				</hipay_api>
    				 <fraud_payment translate="label">
-                    <label>Fraud Payment Email</label>
+                    <label>Fraud Payment Review Email</label>
                     <comment>This email is sended to customer, if his payment is in fraud state</comment> 
                     <frontend_type>text</frontend_type>
                     <sort_order>20</sort_order>
@@ -122,6 +122,100 @@
                         </copy_method>
                     </fields>
                 </fraud_payment>
+                <fraud_payment_accept translate="label">
+                    <label>Fraud Payment Accept Email</label>
+                    <comment>This email is sended to customer, if his payment is validated by merchant</comment> 
+                    <frontend_type>text</frontend_type>
+                    <sort_order>30</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <identity translate="label">
+                            <label>Payment Fraud Accept Email Sender</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_identity</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </identity>
+                        <template translate="label">
+                            <label>Payment Fraud Accept Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </template>
+                        <copy_to translate="label comment">
+                            <label>Send Payment Accept Email Copy To</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Separate by ",".</comment>
+                        </copy_to>
+                        <copy_method translate="label">
+                            <label>Send Payment Accept Email Copy Method</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_method</source_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </copy_method>
+                    </fields>
+                </fraud_payment_accept>
+                <fraud_payment_deny translate="label">
+                    <label>Fraud Payment Deny Email</label>
+                    <comment>This email is sended to customer, if his payment is denied by merchant</comment> 
+                    <frontend_type>text</frontend_type>
+                    <sort_order>30</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <identity translate="label">
+                            <label>Payment Fraud Deny Email Sender</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_identity</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </identity>
+                        <template translate="label">
+                            <label>Payment Fraud Deny Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </template>
+                        <copy_to translate="label comment">
+                            <label>Send Payment Deny Email Copy To</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Separate by ",".</comment>
+                        </copy_to>
+                        <copy_method translate="label">
+                            <label>Send Payment Deny Email Copy Method</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_method</source_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </copy_method>
+                    </fields>
+                </fraud_payment_accept>
    			</groups>
 		</hipay>
 		<payment>

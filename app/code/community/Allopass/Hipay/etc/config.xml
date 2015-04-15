@@ -54,6 +54,16 @@
                     <file>hipay_fraud_payment.html</file>
                     <type>html</type>
                 </hipay_fraud_payment_template>
+                <hipay_fraud_payment_accept_template translate="label" module="hipay">
+                    <label>Fraud Payment Accepted</label>
+                    <file>hipay_fraud_payment_accept.html</file>
+                    <type>html</type>
+                </hipay_fraud_payment_accept_template>
+                <hipay_fraud_payment_deny_template translate="label" module="hipay">
+                    <label>Fraud Payment</label>
+                    <file>hipay_fraud_payment_deny.html</file>
+                    <type>html</type>
+                </hipay_fraud_payment_deny_template>
             </email>
         </template>
         <template_hipay>
@@ -319,6 +329,14 @@
                 <identity>general</identity>
                 <template>hipay_fraud_payment_template</template>
             </fraud_payment>
+            <fraud_payment_accept>
+                <identity>general</identity>
+                <template>hipay_fraud_payment_accept_template</template>
+            </fraud_payment_accept>
+            <fraud_payment_deny>
+                <identity>general</identity>
+                <template>hipay_fraud_payment_deny_template</template>
+            </fraud_payment_deny>
 		</hipay>
 		<payment>
 			<hipay_cc>
