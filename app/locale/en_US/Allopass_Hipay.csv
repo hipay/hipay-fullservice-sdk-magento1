@@ -107,3 +107,7 @@
 "Sort the list by drag'n/drop credit card type","Sort the list by drag'n/drop credit card type"
 "Split your Payment","Split your Payment"
 "-- Please select your card --","-- Please select your card --"
+"Try to enable for all transactions.","Try to enable for all transactions."
+"Try to enable for configured 3ds rules","Try to enable for configured 3ds rules"
+"Force for configured 3ds rules","Force for configured 3ds rules"
+"Force for all transactions.","Force for all transactions."

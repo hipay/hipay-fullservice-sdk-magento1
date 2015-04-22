@@ -108,6 +108,10 @@
 "Sort the list by drag'n/drop credit card type","Vous pouvez choisir l'ordre d'affichage en faisant un glisser/déposer de chaque type de paiement."
 "Split your Payment","Payer en plusieurs fois"
 "-- Please select your split payment --","-- Sélectionnez votre mode de paiement --"
+"Try to enable for all transactions.","Demander l'activation pour toutes les transactions"
+"Try to enable for configured 3ds rules","Demander l'activation pour les transactions défini par les règles 3DS (ci-dessous)"
+"Force for configured 3ds rules","Forcer l'activation pour les transactions défini par les règles 3DS (ci-dessous)"
+"Force for all transactions.","Forcer l'activation pour toutes les transactions."
 
 
 
