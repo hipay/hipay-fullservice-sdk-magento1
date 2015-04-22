@@ -40,4 +40,10 @@
   </reference>
 </adminhtml_customer_edit>
 
+<hipay_adminhtml_card_edit>
+	<reference name="content">
+	    <block type="hipay/adminhtml_card_edit" name="card.edit.container"></block>
+	</reference>
+</hipay_adminhtml_card_edit>
+
 </layout>

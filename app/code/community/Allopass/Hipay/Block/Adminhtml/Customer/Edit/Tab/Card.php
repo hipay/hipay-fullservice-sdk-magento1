@@ -109,16 +109,23 @@ class Allopass_Hipay_Block_Adminhtml_Customer_Edit_Tab_Card extends
 		return parent::_prepareColumns();
 	}
 
-	//     public function getRowUrl($row)
-	//     {
-	//         return $this->getUrl('*/sales_order/view', array('order_id' => $row->getId()));
-	//     }
 
 	public function getGridUrl() {
 		return $this
 				->getUrl('hipay/adminhtml_card/cards',
 						array('_current' => true));
 	}
+	
+	/**
+	 * Row click url
+	 *
+	 * @return string
+	 */
+	public function getRowUrl($row)
+	{
+		return $this->getUrl('hipay/adminhtml_card/edit', array('card_id' => $row->getId()));
+	}
+	
 	public function getTabLabel() {
 		return Mage::helper('hipay')->__("Hipay's Cards");
 

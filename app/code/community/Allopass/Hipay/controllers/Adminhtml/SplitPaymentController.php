@@ -6,7 +6,7 @@ class Allopass_Hipay_Adminhtml_SplitPaymentController extends Mage_Adminhtml_Con
 	/**
 	 * Init actions
 	 *
-	 * @return Allopass_Hipay_Adminhtml_PaymentProfileController
+	 * @return Allopass_Hipay_Adminhtml_SplitPaymentController
 	 */
 	protected function _initAction()
 	{
@@ -113,7 +113,7 @@ class Allopass_Hipay_Adminhtml_SplitPaymentController extends Mage_Adminhtml_Con
 			}
 				
 			$this->_getSession()->setFormData($data);
-			$this->_redirect('*/*/edit', array('profile_id' => $this->getRequest()->getParam('split_payment_id')));
+			$this->_redirect('*/*/edit', array('split_payment_id' => $this->getRequest()->getParam('split_payment_id')));
 			return;
 				
 		}
