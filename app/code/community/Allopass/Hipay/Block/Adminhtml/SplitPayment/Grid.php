@@ -46,14 +46,6 @@ class Allopass_Hipay_Block_Adminhtml_SplitPayment_Grid extends Mage_Adminhtml_Bl
 						'width'=>'60px',
 						'index' => 'card_token',
 				));
-		
-		/*$this->addColumn('real_order_id',
-				array(
-						'header'=> Mage::helper('sales')->__('Order #'),
-						'type'  => 'text',
-						'width'=>'20px',
-						'index' => 'real_order_id',
-				));*/
 
 	
 		$this->addColumn('total_amount',

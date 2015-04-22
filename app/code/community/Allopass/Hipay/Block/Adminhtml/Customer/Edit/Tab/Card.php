@@ -88,23 +88,24 @@ class Allopass_Hipay_Block_Adminhtml_Customer_Edit_Tab_Card extends
 								'header' => Mage::helper('hipay')
 										->__('Alias oneclick'),
 								'index' => 'cc_token',));
+		
+		$this->addColumn('cc_status',
+				array(
+						'header'=> Mage::helper('hipay')->__('Status'),
+						'index' => 'cc_status',
+						'type'  => 'options',
+						'options' => 	array(Allopass_Hipay_Model_Card::STATUS_ENABLED=>$this->__('Enabled'),Allopass_Hipay_Model_Card::STATUS_DISABLED=>$this->__('Disabled')),
+				));
+		
+		$this->addColumn('is_default',
+				array(
+						'header'=> Mage::helper('hipay')->__('Is default'),
+						'index' => 'is_default',
+						'type'  => 'options',
+						'options' => 	array($this->__('No'),$this->__('Yes')),
+				));
 
-		/*$this
-				->addColumn('action',
-						array(
-								'header' => Mage::helper('hipay')->__('Action'),
-								'index' => 'card_id', 
-								'filter' => false,
-								'sortable' => false,
-								'actions' => array(
-										array(
-												'caption' => Mage::helper(
-														'hipay')->__('Delete'),
-												'url' => '#',
-												//'onclick' => 'return wishlistControl.removeItem($wishlist_item_id);'
-												
-										))
-								));*/
+
 
 		return parent::_prepareColumns();
 	}

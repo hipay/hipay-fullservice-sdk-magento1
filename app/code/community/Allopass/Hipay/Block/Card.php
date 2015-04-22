@@ -43,7 +43,7 @@ class Allopass_Hipay_Block_Card extends Mage_Core_Block_Template
     
     public function canDelete()
     {
-    	return false;
+    	return true;
     }
 
 

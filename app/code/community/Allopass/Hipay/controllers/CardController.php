@@ -127,16 +127,30 @@ class Allopass_Hipay_CardController extends Mage_Core_Controller_Front_Action
 	{
 		
 		// check if we know what should be deleted
-		if ($id = $this->getRequest()->getParam('card_id')) {
-				
+		if ($cardId = $this->getRequest()->getParam('card_id')) {
+			$customer = $this->_getSession()->getCustomer();
+			$card = Mage::getModel('hipay/card');
+
+			if ($cardId) {
+				$existsCard = $card->load($cardId);
+				if ($existsCard->getId() && $existsCard->getCustomerId() == $customer->getId()) {
+					$card->setId($existsCard->getId());
+				}
+			}
+			
+			if(!$card->getId())
+			{
+				$this->_getSession()->addError("This card no longer exists!");
+				return $this->_redirectError(Mage::getUrl('*/*/'));
+			}
+			
 			try {
-				// init model and delete
-				$model = Mage::getModel('hipay/card');
-				$model->load($id);
-		
-				$model->delete();
+				
+				//just disable the card
+				$card->setCcStatus(Allopass_Hipay_Model_Card::STATUS_DISABLED);
+				$card->save();
 				// display success message
-				Mage::getSingleton('adminhtml/session')->addSuccess(
+				$this->_getSession()->addSuccess(
 				Mage::helper('hipay')->__('The card has been deleted.'));
 				// go to grid
 				$this->_redirect('*/*/');
@@ -144,14 +158,14 @@ class Allopass_Hipay_CardController extends Mage_Core_Controller_Front_Action
 		
 			} catch (Exception $e) {
 				// display error message
-				Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
+				$this->_getSession()->addError($e->getMessage());
 				// go back to edit form
-				$this->_redirect('*/*/edit', array('card_id' => $id));
+				$this->_redirect('*/*/edit', array('card_id' => $cardId));
 				return;
 			}
 		}
 		// display error message
-		Mage::getSingleton('adminhtml/session')->addError(Mage::helper('hipay')->__('Unable to find a card to delete.'));
+		$this->_getSession()->addError(Mage::helper('hipay')->__('Unable to find a card to delete.'));
 		// go to grid
 		$this->_redirect('*/*/');	
 	
