@@ -1,6 +1,7 @@
 <?php 
 $_code=$this->getMethodCode();
 $_cards = $this->getCards();
+
 ?>
 <div id="payment_form_<?php echo $_code ?>" style="display:none;">
 <?php if($this->allowSplitPayment()) : ?>
@@ -54,7 +55,7 @@ $_cards = $this->getCards();
         <label for="<?php echo $_code ?>_expiration" class="required"><em>*</em><?php echo $this->__('Expiration Date') ?></label>
         <div class="input-box">
             <div class="v-fix">
-                <select id="<?php echo $_code ?>_expiration" name="payment[cc_exp_month]" class="month validate-cc-exp required-entry">
+                <select id="<?php echo $_code ?>_expiration" name="payment[cc_exp_month]" class="month validate-cc-exp validate-cc-exp-split required-entry">
                 <?php $_ccExpMonth = $this->getInfoData('cc_exp_month') ?>
                 <?php foreach ($this->getCcMonths() as $k=>$v): ?>
                     <option value="<?php echo $k?$k:'' ?>"<?php if($k==$_ccExpMonth): ?> selected="selected"<?php endif ?>><?php echo $v ?></option>
@@ -156,7 +157,9 @@ $_cards = $this->getCards();
  	 //]]>
  </script>
  <?php endif; ?>
+ <div id="debit_amount">
  <?php echo $this->__('You will be debit of amount %s only after submit order.',Mage::app()->getStore()->getBaseCurrency()->format($this->getQuote()->getGrandTotal(), array(), true))?>
+ </div>
  <script type="text/javascript">
  	//<![CDATA[
  	    
@@ -173,6 +176,60 @@ $_cards = $this->getCards();
         
         Event.observe($('<?php echo $_code ?>_cc_type'), 'change', ToogleCvn<?php echo $_code ?>);
         ToogleCvn<?php echo $_code ?>();
+
+		var UpdateDebitAmount<?php echo $_code ?> = function(){
+			
+			new Ajax.Request('<?php echo Mage::getUrl('hipay/cc/updateDebitAmount') ?>', {
+	            evalScripts: true,
+	            parameters: {'payment_profile_id': $('<?php echo $_code ?>_split_payment').value},
+	            onSuccess: function(transport) {
+		            
+	            	if (transport.responseText.isJSON()) {
+	                    var response = transport.responseText.evalJSON();
+
+	                    if (response.error) {
+	                        $('debit_amount').innerHTML = response.message;
+	                        Validation.add('validate-cc-exp-split', 'Incorrect credit card expiration date.', function(v,elm) {	                        	
+	                            return true;
+	                        });
+							
+	                    }
+
+	                    if(response.success)
+	                    {
+		                    //Add validation for the last debit of split payments
+	                    	var splitPayment = response.splitPayment;
+							var dateArr = splitPayment[splitPayment.length - 1]['dateToPay'].split("-");
+
+	                        Validation.add('validate-cc-exp-split', 'Incorrect credit card expiration date.', function(v,elm) {
+		                        console.log("Enter in validation");
+	                        	var ccExpMonth   = v;
+	                            var ccExpYear    = $(elm.id.substr(0,elm.id.indexOf('_expiration')) + '_expiration_yr').value;
+	                            var currentTime  = new Date();
+	                            var currentMonth = parseInt(dateArr[1]);//currentTime.getMonth() + 1;
+	                            var currentYear  = parseInt(dateArr[0])//currentTime.getFullYear();
+	                            console.log(ccExpMonth +'<'+ currentMonth +'&&'+ ccExpYear + '==' + currentYear);
+	                            if (ccExpMonth < currentMonth && ccExpYear == currentYear) {
+	                                return false;
+	                            }
+	                            return true;
+	                        });
+
+	                        //Update HTMl
+		                    $('debit_amount').innerHTML = response.labelSplitPayment;
+		                    decorateTable('split-payment-cc-table')
+		                    
+	                    }
+	            	}
+		            
+	                
+	            }
+	        });
+			
+		};
+
+		Event.observe($('<?php echo $_code ?>_split_payment'), 'change', UpdateDebitAmount<?php echo $_code ?>);
+        
  	 //]]>
  </script>
 

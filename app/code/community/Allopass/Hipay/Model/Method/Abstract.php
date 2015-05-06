@@ -242,7 +242,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 						}
 						
 						
-						$this->_setFraudDetected($gatewayResponse,$customer, $payment);
+						$this->_setFraudDetected($gatewayResponse,$customer, $payment,$amount);
 						
 						$order->setState($state,$status,$gatewayResponse->getMessage());
 						
@@ -559,7 +559,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 					$status = $order->getStatus();
 				}
 				
-				$this->_setFraudDetected($gatewayResponse,$customer, $payment,true);
+				$this->_setFraudDetected($gatewayResponse,$customer, $payment,$amount,true);
 				
 				
 	
@@ -591,7 +591,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 	 * @param Allopass_Hipay_Model_Api_Response_Gateway $gatewayResponse
 	 * @param Mage_Sales_Model_Order_Payment $payment
 	 */
-	protected function _setFraudDetected($gatewayResponse,$customer,$payment,$addToHistory = false)
+	protected function _setFraudDetected($gatewayResponse,$customer,$payment,$amount,$addToHistory = false)
 	{
 		
 		
@@ -619,7 +619,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 				if($this->getConfigData('send_fraud_payment_email',$order->getStoreId()));
 				{
 					$email_key='fraud_payment';
-					if($fraudScreening['result'] != 'challenged')
+					if($fraudScreening['result'] != 'challenged' || $gatewayResponse->getState() == self::STATE_DECLINED)
 						$email_key = 'fraud_payment_deny';
 					
 					$this->getHelper()->sendFraudPaymentEmail($customer, $order, $message,$email_key);

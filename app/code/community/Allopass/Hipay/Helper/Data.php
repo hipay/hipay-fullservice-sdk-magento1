@@ -32,7 +32,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 			$fmod = fmod($amount, $maxCycles);
 			//Mage::log("PART = ".$part." RESTE = ".$reste,null,'hipay_split_debug.log');
 			
-			for ($i=0;$i<$maxCycles;$i++)
+			for ($i=-1;$i<($maxCycles-1);$i++)
 			{
 				$todayClone = clone $todayDate;
 				switch ($periodUnit)
@@ -95,14 +95,13 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 			
 			$paymentsSplit = $this->splitPayment($profile, $order->getBaseGrandTotal());
 			
-			/**
-			 * Not used for now
+
 			//remove first element because is already paid
-			//array_shift($paymentsSplit);
-			*/
+			array_shift($paymentsSplit);
+			
 			
 			//remove last element because the first split is already paid
-			array_pop($paymentsSplit);
+			//array_pop($paymentsSplit);
 			
 			foreach ($paymentsSplit as $split)
 			{

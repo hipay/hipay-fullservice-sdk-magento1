@@ -13,22 +13,9 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
 	 */
 	public function preDispatch() {
 		parent::preDispatch();
-		
-		if (!$this->_validateSignature()) {
-			$this->getResponse()->setBody("NOK. Wrong Signature!");
-			$this->setFlag('', 'no-dispatch', true);
-		}
+
 	}
-	
-	
-	protected function _validateSignature()
-	{
-		return true;
-		/* @var $_helper Allopass_Hipay_Helper_Data */
-		$_helper = Mage::helper('hipay');
-		$signature = $this->getRequest()->getParam('hash');
-		return $_helper->checkSignature($signature);
-	}
+
 	
 	/**
 	 * 
@@ -238,5 +225,56 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
 	protected function getCheckout()
 	{
 		return Mage::getSingleton('checkout/session');
+	}
+	
+	
+	public function updateDebitAmountAction()
+	{
+		/* @var $_helper Allopass_Hipay_Helper_Data */
+		$_helper = Mage::helper('hipay');
+		$response = array();
+		$response['error'] = true;
+		$response['success'] = false;
+		$payment_profile_id = $this->getRequest()->getParam('payment_profile_id',false);
+		$amount = $this->getCheckout()->getQuote()->getGrandTotal();
+		if($payment_profile_id)
+		{
+			try {
+				
+				$splitPayment = $_helper->splitPayment((int)$payment_profile_id, $amount);
+				$response['success'] = true;
+				$response['error'] = false;
+				$response['splitPayment'] = $splitPayment;
+				$firstAmount = $splitPayment[0]['amountToPay'];
+				array_shift($splitPayment);
+				$otherPayments = "<p><span>" . Mage::helper('hipay')->__("Your next payments:") . '</span><table class="data-table" id="split-payment-cc-table">';
+				foreach ($splitPayment as $value)
+				{
+					$otherPayments .= '<tr>';
+					$amount = Mage::app()->getStore()->getBaseCurrency()->format($value['amountToPay'], array(), true);
+					$dateToPay = new Zend_Date($value['dateToPay']);
+					$otherPayments .= '<td>' . $dateToPay->toString(Zend_Date::DATE_LONG) . "</td><td> " . $amount . '</td>' ;
+					$otherPayments .= '</tr>';
+				}
+				$otherPayments .= '<table></p>';
+				
+				$response['labelSplitPayment'] = "<p><span>" . Mage::helper('hipay')->__('You will be debit of amount %s only after submit order.',Mage::app()->getStore()->getBaseCurrency()->format($firstAmount, array(), true)) . '</span></p>';				
+				$response['labelSplitPayment'] .= $otherPayments;
+				
+			} catch (Exception $e) {
+
+				$response['message'] = $e->getMessage();
+				
+			}
+			
+			
+		}
+		else 
+		{
+			$response['message'] = Mage::helper('hipay')->__('You will be debit of amount %s only after submit order.',Mage::app()->getStore()->getBaseCurrency()->format($amount, array(), true));
+		}
+		
+		$this->getResponse()->setBody(Mage::helper('core')->jsonEncode($response));
+		
 	}
 }
