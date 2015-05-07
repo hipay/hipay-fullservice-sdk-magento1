@@ -2,6 +2,8 @@
 class Allopass_Hipay_Model_Method_Hosted extends Allopass_Hipay_Model_Method_Abstract
 {
 	
+	protected $_canReviewPayment		= true;
+	
 	protected $_code  = 'hipay_hosted';
 	
 	protected $_formBlockType = 'hipay/form_hosted';

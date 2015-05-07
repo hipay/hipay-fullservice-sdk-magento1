@@ -119,23 +119,39 @@ class Allopass_Hipay_Model_Observer
 	
 	public function arrangeOrderView($observer)
 	{
-		/* @var $block Mage_Adminhtml_Block_Sales_Order_Invoice_View|Mage_Adminhtml_Block_Sales_Transactions_Detail */
+		/* @var $block Mage_Adminhtml_Block_Sales_Order_View|Mage_Adminhtml_Block_Sales_Transactions_Detail */
 		$block = $observer->getBlock();
 		
-		
-		/*if($block instanceof Mage_Adminhtml_Block_Sales_Order_Invoice_View)
+		/* @var $order Mage_Sales_Model_Order */
+		if($block instanceof Mage_Adminhtml_Block_Sales_Order_View)
 		{
-			$order = $block->getInvoice()->getOrder();
-			if($order->getStatus() == Allopass_Hipay_Model_Method_Abstract::STATUS_CAPTURE_REQUESTED)
-				$order->setForcedCanCreditmemo(false);
+			$isAllowedAction = Mage::getSingleton('admin/session')->isAllowed('sales/order/actions/review_payment');
+			if(!$isAllowedAction)
+				return $this;
+			
+			$order = $block->getOrder();
+			
+			if(strpos($order->getPayment()->getMethod(), "hipay") === false)
+				return $this;
+
+			if($order->canReviewPayment())
+			{
+				$url = $block->getUrl("hipay/adminhtml_payment/reviewCapturePayment");
+				$message = Mage::helper('sales')->__('Are you sure you want to accept this payment?');
+                $block->addButton('accept_capture_payment', array(
+                    'label'     => Mage::helper('sales')->__('Accept and Capture Payment'),
+                    'onclick'   => "confirmSetLocation('{$message}', '{$url}')",
+                ));
+			}
+			
+				
 		}
-		else*/
-		if($block instanceof Mage_Adminhtml_Block_Sales_Transactions_Detail)
+		elseif($block instanceof Mage_Adminhtml_Block_Sales_Transactions_Detail)
 		{
 			$txnId = $block->getTxnIdHtml();
 			$orderIncrementId = $block->getOrderIncrementIdHtml();
 			
-			/* @var $order Mage_Sales_Model_Order */
+			
 			$order = Mage::getModel('sales/order')->loadByIncrementId(trim($orderIncrementId));
 			if($order->getId() && strpos($order->getPayment()->getMethod(), 'hipay') !== false)
 			{

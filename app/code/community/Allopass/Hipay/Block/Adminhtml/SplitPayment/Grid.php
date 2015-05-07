@@ -1,6 +1,7 @@
 <?php
 class Allopass_Hipay_Block_Adminhtml_SplitPayment_Grid extends Mage_Adminhtml_Block_Widget_Grid
 {
+	protected $_defaultSort     = 'split_payment_id';
 
 	protected function _prepareCollection()
 	{

@@ -93,7 +93,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 	{
 		parent::acceptPayment($payment);
 		$transactionId = $payment->getLastTransId();
-		$amount = $payment->getAmountOrdered();
+		$amount = $payment->getAmountAuthorized();
 		
 		$transactionId = $payment->getLastTransId();
 		
@@ -120,7 +120,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		/*@var $payment Mage_Sales_Model_Order_Payment */
 		parent::denyPayment($payment);
 		$transactionId = $payment->getLastTransId();
-		$amount = $payment->getAmountOrdered();
+		$amount = $payment->getAmountAuthorized();
 		
 		$transactionId = $payment->getLastTransId();
 		
@@ -309,7 +309,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 					
 					case 116: //Authorized
 						
-						if($order->getStatus() == 'capture_requested' || $order->getStatus() == 'processing' 
+						if($order->getStatus() == 'capture_requested'  /*|| $order->getStatus() == 'processing' */ //uncommented for payment review
 								|| $order->getStatus() == 'complete' || $order->getStatus() == 'closed' )// for logic process
 							break;
 						if(!$this->isPreauthorizeCapture($payment))
@@ -385,7 +385,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 						// Create invoice
 						if ($this->getConfigData('invoice_create',$order->getStoreId()) && !$order->hasInvoices()) {
 							
-							$invoice = $this->create_invoice($order, $gatewayResponse->getTransactionReference());
+							$invoice = $this->create_invoice($order, $gatewayResponse->getTransactionReference(),false);
+
 							Mage::getModel('core/resource_transaction')
 							->addObject($invoice)->addObject($invoice->getOrder())
 							->save();
@@ -608,6 +609,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		
 				$payment->setAdditionalInformation('fraud_type',$fraudScreening['result']);
 				$payment->setAdditionalInformation('fraud_score',$fraudScreening['scoring']);
+				$payment->setAdditionalInformation('fraud_review',$fraudScreening['review']);
 				
 				if($addToHistory)
 					$order->addStatusToHistory($status, Mage::helper('hipay')->getTransactionMessage(
@@ -637,16 +639,23 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 	 * @param boolean $paid
 	 * @return Mage_Sales_Model_Order_Invoice $invoice 
 	 */
-	protected function create_invoice($order,$transactionReference,$capture = true,$paid = true)
+	protected function create_invoice($order,$transactionReference,$capture = true,$paid = false)
 	{
+		/* @var $invoice Mage_Sales_Model_Order_Invoice */
 		$invoice = $order->prepareInvoice();
 		$invoice->setTransactionId($transactionReference);	
 		
-		if($capture)					
-			$invoice->register()->capture();
+		$capture_case = Mage_Sales_Model_Order_Invoice::CAPTURE_OFFLINE;
+		if($capture)
+			$capture_case = Mage_Sales_Model_Order_Invoice::CAPTURE_ONLINE;
+		$invoice->setRequestedCaptureCase($capture_case);
 			
-		/*if($paid)
-			$invoice->setIsPaid(1);*/
+		$invoice->register();
+		
+		$invoice->getOrder()->setIsInProcess(true);
+		
+		if($paid)
+			$invoice->setIsPaid(1);
 		
 		return $invoice;
 	}
@@ -1008,9 +1017,9 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		if(!$lastTransaction)
 			return false;
 		
-		if ($this->getOperation() == self::OPERATION_SALE && $lastTransaction->getTxnType() == Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH  )
+		/*if ($this->getOperation() == self::OPERATION_SALE && $lastTransaction->getTxnType() == Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH  )
 			return false;
-		
+		*/
 		if($lastTransaction->getTxnType() == Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE && $this->orderDue($payment->getOrder()))
 			return true;
 		
@@ -1243,7 +1252,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
     public function canReviewPayment(Mage_Payment_Model_Info $payment)
     {
     	$fraud_type = $payment->getAdditionalInformation('fraud_type');
-    	return $this->_canReviewPayment || $fraud_type == 'challenged';
+    	$fraud_review = $payment->getAdditionalInformation('fraud_review');
+    	return parent::canReviewPayment($payment) && ($fraud_type == 'challenged' && $fraud_review != 'allowed');
     }
     
     public function canRefund()

@@ -9,28 +9,6 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
 	
 	
 	/**
-	 * @return Mage_Core_Controller_Front_Action
-	 */
-	public function preDispatch() {
-		parent::preDispatch();
-		
-		if (!$this->_validateSignature()) {
-			$this->getResponse()->setBody("NOK. Wrong Signature!");
-			$this->setFlag('', 'no-dispatch', true);
-		}
-	}
-	
-	
-	protected function _validateSignature()
-	{
-		return true;
-		/* @var $_helper Allopass_Hipay_Helper_Data */
-		$_helper = Mage::helper('hipay');
-		$signature = $this->getRequest()->getParam('hash');
-		return $_helper->checkSignature($signature);
-	}
-	
-	/**
 	 * 
 	 * @return Allopass_Hipay_Model_Method_Abstract $methodInstance
 	 */
@@ -44,6 +22,66 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
 		Mage::log($modelName,null,"debug_bo_hipay.log");
 		return Mage::getSingleton($modelName);
 		//Mage::throwException("Method: '" . __METHOD__ . "' must be implemented!");
+	}
+	
+	public function reviewCapturePaymentAction()
+	{
+		/* @var $order Mage_Sales_Model_Order */
+		$id = $this->getRequest()->getParam('order_id');
+		$order = Mage::getModel('sales/order')->load($id);
+		
+		if (!$order->getId()) {
+			$this->_getSession()->addError($this->__('This order no longer exists.'));
+			$this->_redirect('*/*/');
+			$this->setFlag('', self::FLAG_NO_DISPATCH, true);
+			return false;
+		}
+		Mage::register('sales_order', $order);
+		Mage::register('current_order', $order);
+		
+		try {
+
+			$order->getPayment()->accept();
+			$message = $this->__('The payment has been accepted.');								
+			$order->save();
+			$this->_getSession()->addSuccess($message);
+			
+			//Capture Payment
+			/**
+			 * Check invoice create availability
+			 */
+			if (!$order->canInvoice()) {
+				$this->_getSession()->addError($this->__('The order does not allow creating an invoice.'));
+				$this->_redirect('adminhtml/sales_order/view', array('order_id' => $order->getId()));
+				return $this;
+			}
+
+			$invoice = $order->prepareInvoice();
+			if (!$invoice->getTotalQty()) {
+				Mage::throwException($this->__('Cannot create an invoice without products.'));
+			}
+			
+			$invoice->setRequestedCaptureCase(Mage_Sales_Model_Order_Invoice::CAPTURE_ONLINE);
+			
+			$invoice->register();
+			$invoice->getOrder()->setIsInProcess(true);
+			
+			$transactionSave = Mage::getModel('core/resource_transaction')
+			->addObject($invoice)
+			->addObject($invoice->getOrder());
+			
+			$transactionSave->save();
+			
+			$message = $this->__('The payment has been captured.');
+			$this->_getSession()->addSuccess($message);
+			
+		} catch (Mage_Core_Exception $e) {
+			$this->_getSession()->addError($e->getMessage());
+		} catch (Exception $e) {
+			$this->_getSession()->addError($this->__('Failed to update the payment.'));
+			Mage::logException($e);
+		}
+		$this->_redirect('adminhtml/sales_order/view', array('order_id' => $order->getId()));
 	}
 
 	public function sendRequestAction()

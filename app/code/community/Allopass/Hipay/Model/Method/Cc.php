@@ -2,6 +2,7 @@
 class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstract
 {
 	
+	protected $_canReviewPayment		= true;
 	const STATUS_PENDING_CAPTURE = 'pending_capture';
 	
 	protected $_code  = 'hipay_cc';
@@ -131,6 +132,8 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
 	 */
 	public function capture(Varien_Object $payment, $amount)
 	{
+		//TODO CHECK AMOUNT FOR SPLIT PAYMENT
+		
 		parent::capture($payment, $amount);
 	
 		if ($this->isPreauthorizeCapture($payment) /*|| $this->orderDue($payment->getOrder())*/)
