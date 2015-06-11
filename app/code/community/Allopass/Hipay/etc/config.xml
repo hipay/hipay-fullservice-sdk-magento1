@@ -233,7 +233,7 @@
                 </Allopass_Hipay>
             </modules>
         </translate>
-        <menu>
+     <menu>
 		<sales>
             <children>
             	<hipay_payment translate="title" module="hipay">
@@ -241,7 +241,7 @@
                     <sort_order>200</sort_order>
                     <children>
                     	<payment_profile translate="title" module="hipay">
-                    		<title>Payment Profiles</title>
+                    		<title>Split Payment Profiles</title>
                     		<action>hipay/adminhtml_paymentProfile</action>
                     		<sort_order>10</sort_order>
                     	</payment_profile>
@@ -283,7 +283,7 @@
 									 <title>Hipay Payment</title>
 									 <children>
 									 	<payment_profile translate="title" module="hipay">
-									 		<title>Payment Profile</title>
+									 		<title>Split Payment Profile</title>
 									 	</payment_profile>
 									 	<split_payment translate="title" module="hipay">
 									 		<title>Split payments</title>
