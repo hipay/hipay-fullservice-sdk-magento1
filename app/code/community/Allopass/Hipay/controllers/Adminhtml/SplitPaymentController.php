@@ -75,7 +75,7 @@ class Allopass_Hipay_Adminhtml_SplitPaymentController extends Mage_Adminhtml_Con
 	{
 		// check if data sent
 		if ($data = $this->getRequest()->getPost()) {
-				
+			$data = $this->_filterDates($data, array("date_to_pay"));
 			//init model and set data
 			$model = Mage::getModel('hipay/splitPayment');
 	

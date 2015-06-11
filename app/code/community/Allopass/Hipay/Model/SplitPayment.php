@@ -68,7 +68,7 @@ class Allopass_Hipay_Model_SplitPayment extends Mage_Core_Model_Abstract
 		/* @var $helperCheckout Mage_Checkout_Helper_Data */
 		$helperCheckout = Mage::helper('checkout');
 		$order = Mage::getModel('sales/order')->load($this->getOrderId());
-		$message = Mage::helper('hipay')->__("Error on request split Payment HIPAY. Split Payment Id: ".$this->getSplitPaymenId());
+		$message = Mage::helper('hipay')->__("Error on request split Payment HIPAY. Split Payment Id: ".$this->getSplitPaymentId());
 		$helperCheckout->sendPaymentFailedEmail($order, $message,'Split Payment Hipay');
 	}
 	

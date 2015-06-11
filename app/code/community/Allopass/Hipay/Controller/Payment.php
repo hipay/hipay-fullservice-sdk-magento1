@@ -235,8 +235,12 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
 		$response = array();
 		$response['error'] = true;
 		$response['success'] = false;
+		
 		$payment_profile_id = $this->getRequest()->getParam('payment_profile_id',false);
 		$amount = $this->getCheckout()->getQuote()->getGrandTotal();
+		
+		$response['message'] = Mage::helper('hipay')->__('You will be debit of amount %s only after submit order.',Mage::app()->getStore()->getBaseCurrency()->format($amount, array(), true));
+		
 		if($payment_profile_id)
 		{
 			try {
@@ -245,6 +249,7 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
 				$response['success'] = true;
 				$response['error'] = false;
 				$response['splitPayment'] = $splitPayment;
+				$response['grandTotal'] = $amount;
 				$firstAmount = $splitPayment[0]['amountToPay'];
 				array_shift($splitPayment);
 				$otherPayments = "<p><span>" . Mage::helper('hipay')->__("Your next payments:") . '</span><table class="data-table" id="split-payment-cc-table">';
@@ -269,10 +274,7 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
 			
 			
 		}
-		else 
-		{
-			$response['message'] = Mage::helper('hipay')->__('You will be debit of amount %s only after submit order.',Mage::app()->getStore()->getBaseCurrency()->format($amount, array(), true));
-		}
+
 		
 		$this->getResponse()->setBody(Mage::helper('core')->jsonEncode($response));
 		

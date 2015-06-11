@@ -934,7 +934,9 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		$params['streetaddress2'] = $order->getBillingAddress()->getStreet2();
 		$params['city'] = $order->getBillingAddress()->getCity();
 		//$params['state'] = $order->getBillingAddress(); //TODO checck if country is US or Canada
-		$params['zipcode'] = $order->getBillingAddress()->getPostcode();
+		$zipcode = explode('-',$order->getBillingAddress()->getPostcode());
+		$params['zipcode'] = $zipcode[0];
+		//$params['zipcode'] = $order->getBillingAddress()->getPostcode();
 		$params['country'] = $order->getBillingAddress()->getCountry();
 	
 		return $params;
