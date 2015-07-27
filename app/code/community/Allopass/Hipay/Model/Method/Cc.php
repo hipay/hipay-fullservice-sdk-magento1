@@ -108,8 +108,10 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
 		{
 			$cardId = $payment->getAdditionalInformation('selected_oneclick_card');
 			$card = Mage::getModel('hipay/card')->load($cardId);
-			if($card->getId())
-				$token = $card->getCcToken();//$customer->getHipayAliasOneclick();
+			if($card->getId() && $card->getCustomerId() == $customer->getId())
+				$token = $card->getCcToken();
+			else 
+				Mage::throwException(Mage::helper('hipay')->__("Error with your card!"));
 		}
 		else 
 		{
@@ -167,8 +169,12 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
     	{
     		$cardId = $payment->getAdditionalInformation('selected_oneclick_card');
     		$card = Mage::getModel('hipay/card')->load($cardId);
-    		if($card->getId())
-    			$paymentProduct = $card->getCcType();//Mage::getSingleton('customer/session')->getCustomer()->getHipayCcType();
+
+    		if($card->getId() && $card->getCustomerId() == $customer->getId())
+    			$paymentProduct = $card->getCcType();
+    		else
+    			Mage::throwException(Mage::helper('hipay')->__("Error with your card!"));
+    		
     	}
     	else
     		$paymentProduct = $this->getCcTypeHipay($payment->getCcType());
