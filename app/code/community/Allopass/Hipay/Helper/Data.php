@@ -153,7 +153,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 		foreach (Mage::getStoreConfig('payment') as $code => $data) {
 				if(strpos($code, 'hipay') !== false)
 				{
-					$methods[$code] = $data['model'];
+					if (isset($data['model']))
+						$methods[$code] = $data['model'];
 				}
 		}
 		

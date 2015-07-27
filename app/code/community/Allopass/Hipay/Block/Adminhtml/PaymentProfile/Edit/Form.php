@@ -53,13 +53,18 @@ class Allopass_Hipay_Block_Adminhtml_PaymentProfile_Edit_Form extends Mage_Admin
         		'note'=>$this->__('The number of billing cycles for payment period.')
         ));
         
-        $fieldset->addField('payment_type', 'select', array(
+        /*$fieldset->addField('payment_type', 'select', array(
         		'label'     => $profile->getPaymentTypeLabel('payment_type'),
         		'title'     => $profile->getPaymentTypeLabel('payment_type'),
         		'name'      => 'payment_type',
         		'values'    => $profile->getAllPaymentTypes(),
         )
-        );
+        );*/
+        
+        $fieldset->addField('payment_type', "hidden", array(
+        		'name'      => 'payment_type'
+        ));
+        $profile->setData('payment_type',"split_payment");
         
         $form->setUseContainer(true);
         $form->setValues($profile->getData());
