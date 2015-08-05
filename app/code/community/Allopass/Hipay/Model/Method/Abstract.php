@@ -22,6 +22,19 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 	const STATUS_CAPTURE_REQUESTED = 'capture_requested';
 	const STATUS_PENDING_CAPTURE = 'pending_capture';
 	
+	/**
+	 * Bit masks to specify different payment method checks.
+	 * @see Mage_Payment_Model_Method_Abstract::isApplicableToQuote
+	 */
+	const CHECK_USE_FOR_COUNTRY       = 1;
+	const CHECK_USE_FOR_CURRENCY      = 2;
+	const CHECK_USE_CHECKOUT          = 4;
+	const CHECK_USE_FOR_MULTISHIPPING = 8;
+	const CHECK_USE_INTERNAL          = 16;
+	const CHECK_ORDER_TOTAL_MIN_MAX   = 32;
+	const CHECK_RECURRING_PROFILES    = 64;
+	const CHECK_ZERO_TOTAL            = 128;
+	
 	//const STATUS_PENDING_CAPTURE = 'pending_capture';
 	
 	/**
@@ -457,11 +470,27 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 						
 						if($order->hasCreditmemos())
 						{
+							
+							$total_already_refunded = 0;
+							
+							/* @var $creditmemo Mage_Sales_Model_Order_Creditmemo */
+							//We get total already refunded for found the amount of this creditmemo
+							foreach ($order->getCreditmemosCollection() as $creditmemo)
+							{
+								if($creditmemo->getState() == Mage_Sales_Model_Order_Creditmemo::STATE_REFUNDED)
+								{
+									$total_already_refunded += $creditmemo->getGrandTotal();
+								}
+							}
+							
+							$cm_amount_check = round($gatewayResponse->getRefundedAmount() - $total_already_refunded,2);
+							
+							
 							/* @var $creditmemo Mage_Sales_Model_Order_Creditmemo */
 							foreach ($order->getCreditmemosCollection() as $creditmemo)
 							{
 								if($creditmemo->getState() == Mage_Sales_Model_Order_Creditmemo::STATE_OPEN 
-										&& $creditmemo->getGrandTotal() == $gatewayResponse->getRefundedAmount())
+										&& round($creditmemo->getGrandTotal(),2) == $cm_amount_check)
 								{
 									$creditmemo->setState(Mage_Sales_Model_Order_Creditmemo::STATE_REFUNDED);
 									

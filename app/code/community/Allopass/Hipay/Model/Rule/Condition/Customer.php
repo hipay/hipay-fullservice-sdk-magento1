@@ -7,6 +7,7 @@ class Allopass_Hipay_Model_Rule_Condition_Customer extends Mage_Rule_Model_Condi
             'orders_count' => Mage::helper('hipay')->__('Orders count'),
             'customer_is_guest' => Mage::helper('sales')->__('Customer is guest'),
             'diff_addresses' => Mage::helper('hipay')->__('Billing and shipping addresses are differents'),
+        	'customer_group' => Mage::helper('adminhtml')->__('Customers Groups:')
         );
 
         $this->setAttributeOption($attributes);
@@ -19,8 +20,11 @@ class Allopass_Hipay_Model_Rule_Condition_Customer extends Mage_Rule_Model_Condi
         switch ($this->getAttribute()) {
             case 'orders_count':
                 return 'numeric';
-			case 'customer_is_guest': case 'diff_addresses':
-                return 'boolean';
+			case 'customer_is_guest': 
+			case 'diff_addresses':
+				return 'boolean';
+			case 'customer_group':
+                return 'multiselect';
         }
         return 'string';
     }
@@ -28,8 +32,11 @@ class Allopass_Hipay_Model_Rule_Condition_Customer extends Mage_Rule_Model_Condi
     public function getValueElementType()
     {
     	switch ($this->getAttribute()) {
-			case 'customer_is_guest': case 'diff_addresses':
+			case 'customer_is_guest': 
+			case 'diff_addresses':
                 return 'select';
+            case 'customer_group':
+                return 'multiselect';
         }
         return 'text';
     }
@@ -42,6 +49,10 @@ class Allopass_Hipay_Model_Rule_Condition_Customer extends Mage_Rule_Model_Condi
 				case 'diff_addresses':
                     $options = Mage::getModel('adminhtml/system_config_source_yesno')
                         ->toOptionArray();
+                    break;
+               case 'customer_group':
+                    $options = Mage::getModel('adminhtml/system_config_source_customer_group_multiselect')
+                    	->toOptionArray();
                     break;
                 default:
                     $options = array();
@@ -72,6 +83,7 @@ class Allopass_Hipay_Model_Rule_Condition_Customer extends Mage_Rule_Model_Condi
 		$toValidate->setOrdersCount($orders_count);
 		$toValidate->setCustomerIsGuest(is_null($object->getCustomerIsGuest()) ? 0 : $object->getCustomerIsGuest());
 		$toValidate->setDiffAddresses($this->_addressesesAreDifferent($object));
+		$toValidate->setCustomerGroup($object->getCustomerGroupId());
 		
 		return parent::validate($toValidate);
 

@@ -16,11 +16,11 @@ class Allopass_Hipay_Sales_Order_CreateController extends Mage_Adminhtml_Sales_O
             $this->_processActionData('save');
             $paymentData = $this->getRequest()->getPost('payment');
             if ($paymentData) {
-                $paymentData['checks'] = Mage_Payment_Model_Method_Abstract::CHECK_USE_INTERNAL
-                    | Mage_Payment_Model_Method_Abstract::CHECK_USE_FOR_COUNTRY
-                    | Mage_Payment_Model_Method_Abstract::CHECK_USE_FOR_CURRENCY
-                    | Mage_Payment_Model_Method_Abstract::CHECK_ORDER_TOTAL_MIN_MAX
-                    | Mage_Payment_Model_Method_Abstract::CHECK_ZERO_TOTAL;
+                $paymentData['checks'] = Allopass_Hipay_Model_Method_Abstract::CHECK_USE_INTERNAL
+                    | Allopass_Hipay_Model_Method_Abstract::CHECK_USE_FOR_COUNTRY
+                    | Allopass_Hipay_Model_Method_Abstract::CHECK_USE_FOR_CURRENCY
+                    | Allopass_Hipay_Model_Method_Abstract::CHECK_ORDER_TOTAL_MIN_MAX
+                    | Allopass_Hipay_Model_Method_Abstract::CHECK_ZERO_TOTAL;
                 $this->_getOrderCreateModel()->setPaymentData($paymentData);
                 $this->_getOrderCreateModel()->getQuote()->getPayment()->addData($paymentData);
             }
