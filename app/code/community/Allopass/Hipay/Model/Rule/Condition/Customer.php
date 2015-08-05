@@ -7,7 +7,7 @@ class Allopass_Hipay_Model_Rule_Condition_Customer extends Mage_Rule_Model_Condi
             'orders_count' => Mage::helper('hipay')->__('Orders count'),
             'customer_is_guest' => Mage::helper('sales')->__('Customer is guest'),
             'diff_addresses' => Mage::helper('hipay')->__('Billing and shipping addresses are differents'),
-        	'customer_group' => Mage::helper('adminhtml')->__('Customers Groups:')
+        	'customer_group' => Mage::helper('adminhtml')->__('Customer Groups')
         );
 
         $this->setAttributeOption($attributes);
