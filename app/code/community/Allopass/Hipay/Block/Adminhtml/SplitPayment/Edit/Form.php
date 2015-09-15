@@ -8,7 +8,7 @@ class Allopass_Hipay_Block_Adminhtml_SplitPayment_Edit_Form extends Mage_Adminht
     	/* @var $profile Allopass_Hipay_Model_SplitPayment */
     	$splitPayment = Mage::registry('split_payment');
     	
-        $form = new Varien_Data_Form(array('id'=>'edit_form','action' => $this->getData('action'), 'method' => 'post'));
+        $form = new Varien_Data_Form(array('id'=>'edit_form','action' =>$this->getUrl('*/splitPayment/save'), 'method' => 'post'));
         
         $fieldset = $form->addFieldset('splitPayment_form', array('legend'=>Mage::helper('hipay')->__('Split Payment')));
         

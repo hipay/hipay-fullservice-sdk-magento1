@@ -9,29 +9,29 @@
     </reference>
 </adminhtml_system_config_edit>
 
-<hipay_adminhtml_paymentprofile_index>
+<adminhtml_paymentprofile_index>
 	<reference name="content">
 	    <block type="hipay/adminhtml_paymentProfile" name="paymentProfile.grid.container"></block>
 	</reference>
-</hipay_adminhtml_paymentprofile_index>
+</adminhtml_paymentprofile_index>
 
-<hipay_adminhtml_paymentprofile_edit>
+<adminhtml_paymentprofile_edit>
 	<reference name="content">
 	    <block type="hipay/adminhtml_paymentProfile_edit" name="paymentProfile.edit.container"></block>
 	</reference>
-</hipay_adminhtml_paymentprofile_edit>
+</adminhtml_paymentprofile_edit>
 
-<hipay_adminhtml_splitpayment_index>
+<adminhtml_splitpayment_index>
 	<reference name="content">
 	    <block type="hipay/adminhtml_splitPayment" name="splitPayment.grid.container"></block>
 	</reference>
-</hipay_adminhtml_splitpayment_index>
+</adminhtml_splitpayment_index>
 
-<hipay_adminhtml_splitpayment_edit>
+<adminhtml_splitpayment_edit>
 	<reference name="content">
 	    <block type="hipay/adminhtml_splitPayment_edit" name="splitPayment.edit.container"></block>
 	</reference>
-</hipay_adminhtml_splitpayment_edit>
+</adminhtml_splitpayment_edit>
 
 <adminhtml_customer_edit>
   <reference name="customer_edit_tabs">
@@ -40,10 +40,10 @@
   </reference>
 </adminhtml_customer_edit>
 
-<hipay_adminhtml_card_edit>
+<adminhtml_card_edit>
 	<reference name="content">
 	    <block type="hipay/adminhtml_card_edit" name="card.edit.container"></block>
 	</reference>
-</hipay_adminhtml_card_edit>
+</adminhtml_card_edit>
 
 </layout>

@@ -8,7 +8,7 @@ class Allopass_Hipay_Block_Adminhtml_PaymentProfile_Edit_Form extends Mage_Admin
     	/* @var $profile Allopass_Hipay_Model_PaymentProfile */
     	$profile = Mage::registry('payment_profile');
     	
-        $form = new Varien_Data_Form(array('id'=>'edit_form','action' => $this->getData('action'), 'method' => 'post'));
+        $form = new Varien_Data_Form(array('id'=>'edit_form','action' => $this->getUrl('*/paymentProfile/save'), 'method' => 'post'));
         
         $fieldset = $form->addFieldset('paymentProfile_form', array('legend'=>Mage::helper('hipay')->__('Payment Profile')));
         

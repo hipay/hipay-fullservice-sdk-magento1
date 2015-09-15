@@ -163,17 +163,6 @@
             </order>
         </sales>
 	</global>
-	<admin>
-        <routers>
-            <adminhtml>
-                <args>
-                    <modules>
-                        <allopass_hipay before="Mage_Adminhtml">Allopass_Hipay</allopass_hipay>
-                    </modules>
-                </args>
-            </adminhtml>
-        </routers>
-    </admin>
 	<frontend>
 		<secure_url>
             <hipay_payment>/hipay/payment</hipay_payment>
@@ -214,8 +203,19 @@
 			</controller_action_postdispatch_checkout_onepage_saveOrder>
 		</events>
 	</frontend>
+	<admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <allopass_hipay before="Mage_Adminhtml">Allopass_Hipay_Adminhtml</allopass_hipay>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
 	<adminhtml>
-		 <routers>
+		 <!-- <routers>
             <hipay>
                 <use>admin</use>
                 <args>
@@ -223,7 +223,7 @@
                     <frontName>hipay</frontName>
                 </args>
             </hipay>
-        </routers>
+        </routers> -->
 		 <translate>
             <modules>
                 <Allopass_Hipay>
@@ -242,12 +242,12 @@
                     <children>
                     	<payment_profile translate="title" module="hipay">
                     		<title>Split Payment Profiles</title>
-                    		<action>hipay/adminhtml_paymentProfile</action>
+                    		<action>adminhtml/paymentProfile</action>
                     		<sort_order>10</sort_order>
                     	</payment_profile>
                     	<split_payment translate="title" module="hipay">
                     		<title>Split payments</title>
-                    		<action>hipay/adminhtml_splitPayment</action>
+                    		<action>adminhtml/splitPayment</action>
                     		<sort_order>20</sort_order>
                     	</split_payment>
                     </children>
