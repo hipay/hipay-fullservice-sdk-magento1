@@ -124,7 +124,7 @@ class Allopass_Hipay_Block_Adminhtml_Customer_Edit_Tab_Card extends
 	 */
 	public function getRowUrl($row)
 	{
-		return $this->getUrl('hipay/adminhtml_card/edit', array('card_id' => $row->getId()));
+		return $this->getUrl('adminhtml/card/edit', array('card_id' => $row->getId()));
 	}
 	
 	public function getTabLabel() {
