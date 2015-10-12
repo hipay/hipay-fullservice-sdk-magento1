@@ -2,7 +2,7 @@
 <config>
 	<modules>
 		<Allopass_Hipay>
-			<version>1.1.8</version>
+			<version>1.1.9</version>
 		</Allopass_Hipay>
 	</modules>
 	<global>
@@ -315,7 +315,7 @@
 	</adminhtml>
 	<default>
 		<hipay>
-			<hipay_api>			
+			<hipay_api>
 				<api_password backend_model="adminhtml/system_config_backend_encrypted"/>
 				<api_password_test backend_model="adminhtml/system_config_backend_encrypted"/>
 				<secret_passphrase backend_model="adminhtml/system_config_backend_encrypted"/>
@@ -654,7 +654,7 @@
 				<cancel_url>hipay/sisalapi/cancel</cancel_url><!-- Url cancel de la méthode -->
 				<use_3d_secure>0</use_3d_secure><!-- valeur par défaut pour activer le 3ds -->
 				<send_fraud_payment_email>0</send_fraud_payment_email> <!-- Envoi le mail de fraud au client final -->
-			</hipay_sisalapi>			
+			</hipay_sisalapi>
 			<hipay_qiwi>
 				<active>0</active> <!-- Activé ou non -->
 				<title>HiPay Visa Qiwi Wallet</title> <!-- Titre par défaut modifiable en admin -->
@@ -749,11 +749,11 @@
 			<hipay_pay_split_payment>
 				<schedule><cron_expr>0 1 * * *</cron_expr></schedule>
 				<run><model>hipay/observer::paySplitPayments</model></run>
-			</hipay_pay_split_payment>	
+			</hipay_pay_split_payment>
 			<clean_orders_hipay_in_pending>
 				<schedule><cron_expr>*/15 * * * *</cron_expr></schedule>
 				<run><model>hipay/observer::cancelOrdersInPending</model></run>
-			</clean_orders_hipay_in_pending>	
+			</clean_orders_hipay_in_pending>
 		</jobs>
 	</crontab>
 </config>
