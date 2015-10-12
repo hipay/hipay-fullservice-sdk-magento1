@@ -5,8 +5,8 @@
  * Hipay resource collection model
  *
  */
-class Allopass_Hipay_Model_Resource_PaymentProfile_Collection extends Mage_Rule_Model_Mysql4_Rule_Collection
-{ 
+class Allopass_Hipay_Model_Resource_PaymentProfile_Collection extends Mage_Core_Model_Mysql4_Collection_Abstract
+{
 
     /**
      * Set resource model and determine field mapping
@@ -16,12 +16,12 @@ class Allopass_Hipay_Model_Resource_PaymentProfile_Collection extends Mage_Rule_
         $this->_init('hipay/paymentProfile');
     }
 
-    
+
     public function toOptionArray()
     {
     	return $this->_toOptionArray('profile_id');
     }
-    
+
     /**
      * Add filtering by profile ids
      *
@@ -33,5 +33,5 @@ class Allopass_Hipay_Model_Resource_PaymentProfile_Collection extends Mage_Rule_
     	$this->addFieldToFilter('main_table.profile_id', $profileIds);
     	return $this;
     }
-    
+
 }
