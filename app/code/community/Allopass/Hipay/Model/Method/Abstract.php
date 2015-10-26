@@ -847,7 +847,6 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 			{
 				$longDesc = Mage::helper('hipay')->__('Split payment');
 				$paymentsSplit = $this->getHelper()->splitPayment((int)$profile, $amount);
-				Mage::log($paymentsSplit,null,'hipay_split_debug.log');
 			
 				$amount = $paymentsSplit[0]['amountToPay'];
 			}
