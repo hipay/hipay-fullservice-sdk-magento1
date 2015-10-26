@@ -80,6 +80,15 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
 					$profile->save();
 				}
 			}
+			
+			
+			$session = Mage::getSingleton('checkout/session');
+			if (!$session->getLastSuccessQuoteId()) {
+				
+				$session->setLastSuccessQuoteId($this->getOrder()->getIncrementId());
+				$session->setLastQuoteId($this->getOrder()->getId());
+			}
+			
 		}
 		/*else 
 		{		
@@ -101,6 +110,11 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
 	
 	public function declineAction()
 	{
+		$lastOrderId =  $this->getOrder()->getIncrementId();
+		
+		Mage::getSingleton('checkout/session')->setLastQuoteId($lastOrderId);
+		Mage::getSingleton('checkout/session')->setLastOrderId($lastOrderId);
+		
 		$this->processResponse();
 		$this->_redirect('checkout/onepage/failure');
 		return $this;
@@ -109,6 +123,12 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
 	
 	public function exceptionAction()
 	{
+		
+		$lastOrderId =  $this->getOrder()->getIncrementId();
+		
+		Mage::getSingleton('checkout/session')->setLastQuoteId($lastOrderId);
+		Mage::getSingleton('checkout/session')->setLastOrderId($lastOrderId);
+		
 		$this->_redirect('checkout/onepage/failure');
 		return $this;
 	}
