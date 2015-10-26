@@ -1,0 +1,83 @@
+CHANGELOG
+
+v1.1.9:
+ --Change super class of models: card,payment profile and split payment
+
+v1.1.8:
+ --fix url admin
+ --fix bug with code storein url for admin controllers
+ --add scope store view for hipay account informations
+ --add last release
+ --fix translation
+
+v1.1.7:
+ --fix bug payment BO
+ --fix bug partial refund
+ --add filter customr group in 3DS/Oneclick rules
+ --add package 1.1.6
+
+v1.1.6:
+ --Fix security bug on load cardId (oneclick). We added check with customerID
+
+v1.1.5:
+ --fix some bugs
+
+v1.1.4:
+ --bug fix
+ --modify labels
+
+v1.1.3:
+ --add input owner card in card form
+ --add accept and capture for transactions in pending_review
+ --add split payment info in frontend
+
+v1.1.2:
+ --add soft delete for card. It's change the status to Disabled ;-)
+ --add option to force 3ds
+ --add edit card in Bo
+ --bug in Bo payment Fixed
+
+v1.1.1:
+ --bugs fixed
+ --add lock for refund if method == hipay_cc and ccType == bcmc
+ --add lock for refund if order is in status capture_requested
+ --emails for fraud added
+ --change order status of fraud challenged
+ --display only one card when list have just one
+ --evolution propres à magento added
+ --add infos to object payment and display them on block info
+ --add url to order in cdata1
+ --add link to transaction détail TPP in view transaction Magento
+ --Set refund to false for all not allowed methods
+ (multi_card) --add sort order by is_default in Abstract payment form
+ --add edit card in front
+ (new_status) --add semantic
+ --Bo bugs fixed
+
+v1.1.0:
+ --add statues: authorization_requested, expired,partial capture,partial refund
+ --clean form template
+ --manage cards for oneclick
+ --Rule config fixed
+ --3ds not did
+
+v1.0.9:
+ --card created when user create oneclick
+ --list of cards is in account wrapper
+
+v1.0.8:
+ --add rule to oneclick configuration
+ --acceptChallenge and DenyChallenge OK
+ (fraud_email) --email fraus implemented
+ --fraud email first commit
+ (split_payment) --add accept/deny fraude challenged
+ (BO) --payment in BO OK
+ --split payment ok
+
+v1.0.7:
+ --split payment in progress
+ (order_methods) --make selection of cctype sortable in configuration
+ --remove directory design/frontend/default and add directory frontend/base/default
+
+v1.0.6:
+ --added order status filter if hipay response is "Authorized" (116) but order is already captured
