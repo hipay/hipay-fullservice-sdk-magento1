@@ -71,6 +71,7 @@ $_cards = $this->getCards();
 <?php echo $this->__('You will be redirect to payment page after submit order.')?>
 <script type="text/javascript">
 	//<![CDATA[
+	<?php $iFrameConfig = $this->getIframeConfig() ?>
 	
 	Review.prototype.displayIframe = function(url) {
         
@@ -79,18 +80,13 @@ $_cards = $this->getCards();
         // Create container Iframe
         var hipayIframeWrapper = $('hipay_iframe_wrapper');
         if (hipayIframeWrapper === null) {
-            hipayIframeWrapper = new Element('div', {id: 'hipay_iframe_wrapper', style: 'text-align: center; border-bottom: 1px solid #BEBCB7; border-left: 1px solid #BEBCB7; border-right: 1px solid #BEBCB7;'});
+            hipayIframeWrapper = new Element('div', {id: 'hipay_iframe_wrapper', style: '<?php echo $iFrameConfig['iframe_wrapper_style']?>'});
             $('checkout-review-table-wrapper').insert({after: hipayIframeWrapper});
             
         }
 
         // generate Iframe
-        hipayIframeWrapper.appendChild(new Element('iframe', {frameBorder: 0, width: '485px', height: '450px', src: url, style: 'margin: 10px 0; border: 1px solid #BEBCB7;'}));
-        //var button = new Element('button', {'class': 'button', type: 'button'}).update('<span><span>Cancel</span></span>');
-        //Event.observe(button, 'click', this.cancel.bind(this));
-        //hipayIframeWrapper.appendChild(button);
-        
-        
+        hipayIframeWrapper.appendChild(new Element('iframe', {frameBorder: 0, width: '<?php echo $iFrameConfig['iframe_width']?>', height: '<?php echo $iFrameConfig['iframe_height']?>', src: url, style: '<?php echo $iFrameConfig['iframe_style']?>'}));      
 
    };
    

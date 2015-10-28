@@ -641,6 +641,14 @@
 	                        <show_in_website>1</show_in_website>
 	                        <show_in_store>1</show_in_store>
                         </iframe_style>
+                        <iframe_wrapper_style translate="label">
+                        	<label>Wrapper iFrame Style</label>
+                        	<frontend_type>text</frontend_type>
+	                        <sort_order>39</sort_order>
+	                        <show_in_default>1</show_in_default>
+	                        <show_in_website>1</show_in_website>
+	                        <show_in_store>1</show_in_store>
+                        </iframe_wrapper_style>
                         <display_selector translate="label">
                         	<label>Display card selector</label>
                             <frontend_type>select</frontend_type>

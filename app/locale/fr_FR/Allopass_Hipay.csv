@@ -134,6 +134,10 @@
 "payment_type","Type de paiement"
 "Add payment profile","Ajouter un profile de paiement"
 "Payment Profile","Profil de paiement"
+"Wrapper iFrame Style","Style du container de l'iframe"
+"iFrame Width","Largeur de l'iframe"
+"iFrame Height","Hauteur de l'iframe"
+"iFrame Style","Style de l'iframe"
 
 
 

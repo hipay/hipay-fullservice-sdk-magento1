@@ -146,6 +146,7 @@ abstract class Allopass_Hipay_Block_Form_Abstract extends Mage_Payment_Block_For
     	$iframe['iframe_width'] = $this->getMethod()->getConfigData('iframe_width');
     	$iframe['iframe_height'] = $this->getMethod()->getConfigData('iframe_height');
     	$iframe['iframe_style'] = $this->getMethod()->getConfigData('iframe_style');
+    	$iframe['iframe_wrapper_style'] = $this->getMethod()->getConfigData('iframe_style');
     	return $iframe;
     }
 
