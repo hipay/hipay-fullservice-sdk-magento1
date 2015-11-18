@@ -1,5 +1,27 @@
 CHANGELOG
 
+vx.x.x:
+--Update CHANGELOG file
+
+v1.2.3:
+--Let IPN treat Authorized status if order has been in fraud state and not if it's already processing
+--Init iFram" config array
+
+v1.2.2:
+--Add paypal API
+
+v1.2.1:
+#Fix iframe bugs
+
+  --Add wrapper style for iframe in configuraiton
+  --Use variable for set style in hosted form phtml file
+  --Add some translation
+
+v1.2.0:
+--Remove unused Mage::log
+--Fix issue #1. Add annotations on card model. Add sessions var in Payment controller.
+--Add changelog
+
 v1.1.9:
  --Change super class of models: card,payment profile and split payment
 
