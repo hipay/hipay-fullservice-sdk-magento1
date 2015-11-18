@@ -322,7 +322,12 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 					
 					case 116: //Authorized
 						
-						if($order->getStatus() == 'capture_requested'  /*|| $order->getStatus() == 'processing' */ //uncommented for payment review
+						//check if this order was in state fraud detected
+						$fraud_type = $order->getPayment()->getAdditionalInformation('fraud_type');
+						$fraud_score = $order->getPayment()->getAdditionalInformation('scoring');
+						$has_fraud = !empty($fraud_type) && !empty($fraud_score);
+						
+						if($order->getStatus() == 'capture_requested'  || ($order->getStatus() == 'processing' && !$has_fraud ) //check fraud for allow notif in payment review case
 								|| $order->getStatus() == 'complete' || $order->getStatus() == 'closed' )// for logic process
 							break;
 						if(!$this->isPreauthorizeCapture($payment))
