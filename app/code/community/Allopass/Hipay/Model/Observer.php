@@ -6,13 +6,15 @@ class Allopass_Hipay_Model_Observer
 	 */
 	public function cancelOrdersInPending()
 	{
-		
+		Mage::log("Enter in task cancelOrderPending...",null,"debug_hipay_cron.log");
 		//$methodCodes = array('hipay_cc'=>'hipay/method_cc','hipay_hosted'=>'hipay/method_hosted');
 		$methodCodes = Mage::helper('hipay')->getHipayMethods();
 		foreach ($methodCodes as $methodCode=>$model)
 		{
 			if(!Mage::getStoreConfig('payment/'.$methodCode."/cancel_pending_order"))
 				continue;
+			
+			Mage::log("Process for method: " . $methodCode,null,"debug_hipay_cron.log");
 			
 			$limitedTime = 30;
 				
@@ -21,10 +23,10 @@ class Allopass_Hipay_Model_Observer
 			/* @var $collection Mage_Sales_Model_Resource_Order_Collection */
 			$collection = Mage::getResourceModel('sales/order_collection');
 			$collection->addFieldToSelect(array('entity_id','state'))
-				
+			->addFieldToFilter('state',Mage_Sales_Model_Order::STATE_NEW)
 			->addAttributeToFilter('created_at', array('to' => ($date->subMinute($limitedTime)->toString('Y-MM-dd HH:mm:ss'))))
 			;
-			
+			Mage::log("count orders: " . $collection->count(),null,"debug_hipay_cron.log");
 			
 			/* @var $order Mage_Sales_Model_Order */
 			foreach ($collection as $order)
@@ -32,9 +34,10 @@ class Allopass_Hipay_Model_Observer
 	
 				if($order->getPayment()->getMethod() == $methodCode)
 				{
-					if($order->canCancel() && $order->getState() == Mage_Sales_Model_Order::STATE_NEW)
+					if($order->canCancel() /*&& $order->getState() == Mage_Sales_Model_Order::STATE_NEW*/)
 					{
 						try {
+							Mage::log("Try to cancel orderId: " . $order->getId(),null,"debug_hipay_cron.log");
 							$order->cancel();
 							$order
 							->addStatusToHistory($order->getStatus(),
@@ -42,6 +45,7 @@ class Allopass_Hipay_Model_Observer
 									Mage::helper('hipay')->__("Order canceled automatically by cron because order is pending since %d minutes",$limitedTime));
 	
 							$order->save();
+							Mage::log("Cancel success!",null,"debug_hipay_cron.log");
 						} catch (Exception $e) {
 							Mage::logException($e);
 						}
