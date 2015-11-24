@@ -1,0 +1,19 @@
+{
+	"name": "sirateck/mage-tools",
+	"version": "1.0.0",
+	"repositories": [
+        {
+            "type": "git",
+            "url": "git@github.com:sirateck/MagentoTarToConnect.git"
+        }
+    ],
+	"require": {
+	    "pulsestorm/magento-tar-to-connect":"dev-master"
+	},
+	"scripts": {
+        "package":[
+            "tar cf package/Allopass_Hipay.tar src/*",
+	        "vendor/pulsestorm/magento-tar-to-connect/magento-tar-to-connect.phar config.php"        
+        ]
+    }
+}
