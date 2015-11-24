@@ -6,53 +6,55 @@ class Allopass_Hipay_Model_Observer
 	 */
 	public function cancelOrdersInPending()
 	{
-		Mage::log("Enter in task cancelOrderPending...",null,"debug_hipay_cron.log");
-		//$methodCodes = array('hipay_cc'=>'hipay/method_cc','hipay_hosted'=>'hipay/method_hosted');
-		$methodCodes = Mage::helper('hipay')->getHipayMethods();
-		foreach ($methodCodes as $methodCode=>$model)
+		$methodCodes = array();
+		//Select only method with cancel orders enabled
+		foreach (Mage::helper('hipay')->getHipayMethods() as $code=>$model)
 		{
-			if(!Mage::getStoreConfig('payment/'.$methodCode."/cancel_pending_order"))
-				continue;
-			
-			Mage::log("Process for method: " . $methodCode,null,"debug_hipay_cron.log");
-			
-			$limitedTime = 30;
-				
-			$date = new Zend_Date();//Mage::app()->getLocale()->date();
-			
-			/* @var $collection Mage_Sales_Model_Resource_Order_Collection */
-			$collection = Mage::getResourceModel('sales/order_collection');
-			$collection->addFieldToSelect(array('entity_id','state'))
-			->addFieldToFilter('state',Mage_Sales_Model_Order::STATE_NEW)
-			->addAttributeToFilter('created_at', array('to' => ($date->subMinute($limitedTime)->toString('Y-MM-dd HH:mm:ss'))))
-			;
-			Mage::log("count orders: " . $collection->count(),null,"debug_hipay_cron.log");
-			
-			/* @var $order Mage_Sales_Model_Order */
-			foreach ($collection as $order)
+			if(Mage::getStoreConfig('payment/'.$code."/cancel_pending_order"))
 			{
-	
-				if($order->getPayment()->getMethod() == $methodCode)
-				{
-					if($order->canCancel() /*&& $order->getState() == Mage_Sales_Model_Order::STATE_NEW*/)
-					{
-						try {
-							Mage::log("Try to cancel orderId: " . $order->getId(),null,"debug_hipay_cron.log");
-							$order->cancel();
-							$order
-							->addStatusToHistory($order->getStatus(),
-									// keep order status/state
-									Mage::helper('hipay')->__("Order canceled automatically by cron because order is pending since %d minutes",$limitedTime));
-	
-							$order->save();
-							Mage::log("Cancel success!",null,"debug_hipay_cron.log");
-						} catch (Exception $e) {
-							Mage::logException($e);
-						}
-					}
-				}
+				$methodCodes[] = $code;
 			}
 		}
+		
+		if(count($methodCodes) < 1)
+			return $this;
+			
+		//Limited time in minutes
+		$limitedTime = 30;
+		
+		$date = new Zend_Date();
+			
+		/* @var $collection Mage_Sales_Model_Resource_Order_Collection */
+		$collection = Mage::getResourceModel('sales/order_collection');
+		$collection->addFieldToSelect(array('entity_id'))
+		->addFieldToFilter('state',Mage_Sales_Model_Order::STATE_NEW)
+		->addFieldToFilter('op.method',array('in'=>array_values($methodCodes)))
+		->addAttributeToFilter('created_at', array('to' => ($date->subMinute($limitedTime)->toString('Y-MM-dd HH:mm:ss'))))
+		->join(array('op' => 'sales/order_payment'), 'main_table.entity_id=op.parent_id', array('method'));
+		
+		
+		/* @var $order Mage_Sales_Model_Order */
+		foreach ($collection as $order)
+		{
+		
+			if($order->canCancel())
+			{
+				try {
+						
+					$order->cancel();
+					$order
+					->addStatusToHistory($order->getStatus(),// keep order status/state
+							Mage::helper('hipay')->__("Order canceled automatically by cron because order is pending since %d minutes",$limitedTime));
+		
+					$order->save();
+		
+				} catch (Exception $e) {
+					Mage::logException($e);
+				}
+			}
+				
+		}
+		
 		return $this;
 	}
 	
