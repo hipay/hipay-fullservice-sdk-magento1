@@ -4,6 +4,6 @@
 .settings
 .project
 _$*
-vendor/*
+vendor
 package/*
 *.lock

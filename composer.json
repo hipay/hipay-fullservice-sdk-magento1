@@ -12,7 +12,7 @@
 	},
 	"scripts": {
         "package":[
-            "tar cf package/Allopass_Hipay.tar src/*",
+            "tar cvf package/Allopass_Hipay.tar -C src .",
 	        "vendor/pulsestorm/magento-tar-to-connect/magento-tar-to-connect.phar config.php"        
         ]
     }
