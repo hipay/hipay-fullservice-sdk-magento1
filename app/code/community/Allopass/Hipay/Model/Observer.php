@@ -175,11 +175,14 @@ class Allopass_Hipay_Model_Observer
 		$order = $observer->getOrder();
 		if($order->getStatus() == Allopass_Hipay_Model_Method_Abstract::STATUS_CAPTURE_REQUESTED)
 			$order->setForcedCanCreditmemo(false);
-		
-		if($order->getPayment()->getMethod() == 'hipay_cc' && strtolower($order->getPayment()->getCcType()) == 'bcmc')
+		if($order->getPayment())
 		{
-			$order->setForcedCanCreditmemo(false);
+			if($order->getPayment()->getMethod() == 'hipay_cc' && strtolower($order->getPayment()->getCcType()) == 'bcmc')
+			{
+				$order->setForcedCanCreditmemo(false);
+			}
 		}
+		
 		
 	}
 }
