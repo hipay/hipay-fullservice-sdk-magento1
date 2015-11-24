@@ -68,10 +68,6 @@
         </template>
         <template_hipay>
         	<hosted>
-        		<basic>
-        			<label>Basic</label>
-        			<value>basic</value>
-        		</basic>
         		<basicjs>
         			<label>Basic-js</label>
         			<value>basic-js</value>
@@ -85,7 +81,7 @@
                         <code>AE</code>
                         <code_hipay>american-express</code_hipay>
                         <name>American Express</name>
-                        <order>0</order>
+                        <order>50</order>
                     </AE>
                     <VI>
                         <code>VI</code>
@@ -111,6 +107,12 @@
                         <name>Bancontact / Mister Cash</name>
                         <order>60</order>
                     </BCMC>
+                     <CB>
+                        <code>CB</code>
+                        <code_hipay>cb</code_hipay>
+                        <name>Carte Bancaire</name>
+                        <order>0</order>
+                    </CB>
                 </types>
             </cc>
             <hosted>
@@ -119,7 +121,7 @@
                         <code>AE</code>
                         <code_hipay>american-express</code_hipay>
                         <name>American Express</name>
-                        <order>0</order>
+                        <order>50</order>
                     </AE>
                     <VI>
                         <code>VI</code>
@@ -145,6 +147,12 @@
                         <name>Bancontact / Mister Cash</name>
                         <order>60</order>
                     </BCMC>
+                     <CB>
+                        <code>CB</code>
+                        <code_hipay>cb</code_hipay>
+                        <name>Carte Bancaire</name>
+                        <order>0</order>
+                    </CB>
                 </types>
             </hosted>
     	</payment_hipay>
@@ -340,7 +348,7 @@
 		<payment>
 			<hipay_cc>
 				<active>0</active>
-				<title>HiPay Credit Card</title>
+				<title>Credit Card</title>
 				<payment_action>authorize_capture</payment_action>
 				<cctypes>VI,MC,AE</cctypes>
 				<display_card_owner>0</display_card_owner>
@@ -368,7 +376,7 @@
 			</hipay_cc>
 			<hipay_hosted>
 				<active>0</active>
-				<title>HiPay Hosted</title>
+				<title>Credit Card</title>
 				<payment_action>authorize_capture</payment_action>
 				<cctypes>american-express,visa,mastercard</cctypes>
 				<order_status_payment_accepted>processing</order_status_payment_accepted>

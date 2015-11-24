@@ -3,7 +3,6 @@
 "Api password","Api password"
 "Api username test","Api username test"
 "Api password test","Api password test"
-"Hipay Credit Card","Hipay Credit Card"
 "Enabled","Enabled"
 "Title","Title"
 "Payment Action","Payment Action"
@@ -37,7 +36,6 @@
 "Record new card data","Record new credit card data"
 "Not use record card data","Not use record card data"
 "You will be redirect to payment page after submit order.","You will be redirect to payment page after submit order."
-"Hipay Credit Card","Hipay Credit Card"
 "Enabled","Enabled"
 "Title","Title"
 "Order status when payment accepted","Order status when payment accepted"
@@ -137,3 +135,10 @@
 "iFrame Width","iFrame Width"
 "iFrame Height","iFrame Height"
 "iFrame Style","iFrame Style"
+"HiPay Fullservice credentials configuration","HiPay Fullservice credentials configuration"
+"HiPay Fullservice Credit Card","HiPay Fullservice Credit Card API"
+"HiPay Fullservice Hosted Page","HiPay Fullservice Credit Card Hosted Page"
+"Hipay Hosted","HiPay Fullservice Credit Card Hosted Page"
+"Hipay Credit Card","HiPay Fullservice Credit Card API"
+
+
