@@ -17,9 +17,9 @@ return array(
   'author_user'            => 'Sirateck',
   'author_email'           => 'kassim@sirateck.com',
 
-  'base_dir'               => __DIR__.'/package',
+  'base_dir'               => __DIR__.'/dist',
   'archive_files'          => 'Allopass_Hipay.tar',
-  'path_output'            => __DIR__.'/package',
+  'path_output'            => __DIR__.'/dist',
 
   'php_min'                => '5.2.0',
   'php_max'                => '6.0.0',

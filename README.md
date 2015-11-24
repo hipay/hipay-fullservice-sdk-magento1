@@ -1,4 +1,21 @@
-# HiPay Fullservice
+# Module Hipay Full Service
+
+## How to use this repository
+
+### Get sources
+If you want to do any changes follow this steps:
+
+1.  Clone the repo
+```
+$ git clone git@gitlab.sirateck.com:magento-modules/allopass_hipay.git
+```
+
+2.  Checkout into `develop` branch
+```
+$ git checkout -b develop origin/develop
+```
+
+# HiPay Fullservice Features
 
 ## Overview   
 
@@ -73,4 +90,4 @@ The **HiPay** solutions are framed by **two European licenses for Payment Instit
 
 ### Our clients:
 
-Various large companies have already placed their trust in us: Promod, F&M, Sfrpay, etc. 
+Various large companies have already placed their trust in us: Promod, F&M, Sfrpay, etc.
