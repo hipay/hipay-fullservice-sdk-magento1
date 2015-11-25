@@ -9,7 +9,6 @@ If you want to do any changes follow this steps:
 ```
 $ git clone git@gitlab.sirateck.com:magento-modules/allopass_hipay.git
 ```
-
   **Note:**  
   Don't forget to put your ssh public key into your gitlab account.  Else try with http connection:  
 ```
@@ -49,58 +48,17 @@ Instead you can use `composer.phar` directly but it is less convenient.
 **IMPORTANT**: Make sure you are in master branch (`$ git checkout master`)
 
 1.  Install dependencies
-
-  In project's root run:
+In project's root run:
 ```
 $ composer install
 ```
+
 2.  Build package
 ```
 $ composer package
 ```
+
 If build package is successful you can see *tar.gz file* in `dist/`  and *Package xml file* in `dist/var/connect`.
-
-3.  Write your modifications and save your files
-
-4. Stage and commit your changes
-```
-// Stage all modifications
-$ git add .
-// Commit with message. For good practices see: https://github.com/ajoslin/conventional-changelog/blob/master/conventions/angular.md  
-$ git commit -m "fix(hosted): Fix iframe size"
-```
-
-5.  Share your code
-```
-$ git push
-```
-
-6. Finally, send merge request
-
-  Go to your **gitlab account** enter in this project and send a [merge request](http://gitlab.sirateck.com/magento-modules/allopass_hipay/merge_requests) to admin users.
-
-### Build Magento package
-
-You can easily build Magento package with composer.  
-If you don't have composer see: https://getcomposer.org/.  
-The following example take in consideration you have command `composer` available in your PATH environment.  
-Instead you can use `composer.phar` directly but it is less convenient.  
-`tar` command is also required.
-
-**IMPORTANT**: Make sure you are in master branch (`$ git checkout master`)
-
-1.  Install dependencies
-```
-// In project's root run:
-$ composer install
-```
-
-2.  Build package
-```
-$ composer package
-```
-
-If build package is successful you can see *tar.gz file* in `dist/` directory and *Package xml file* in `dist/var/connect` directory.
 
 # HiPay Fullservice Features
 
