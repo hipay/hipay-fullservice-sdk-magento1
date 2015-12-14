@@ -1049,6 +1049,17 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		
 	}
 	
+	protected function getCcTypeHipay($ccTypeMagento)
+	{
+		$ccTypes = Mage::getSingleton('hipay/config')->getCcTypesHipay();
+	
+		if(isset($ccTypes[$ccTypeMagento]))
+			return $ccTypes[$ccTypeMagento];
+		else //Maybe it's already hipay code, we return it directly
+			return $ccTypeMagento;
+	
+	}
+	
 	/**
 	 * Return true if there are authorized transactions
 	 *

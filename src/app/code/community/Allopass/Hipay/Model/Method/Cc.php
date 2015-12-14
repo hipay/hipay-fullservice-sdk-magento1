@@ -193,16 +193,6 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
     	
 	}
 	
-	protected function getCcTypeHipay($ccTypeMagento)
-	{
-		$ccTypes = Mage::getSingleton('hipay/config')->getCcTypesHipay();
-		
-		if(isset($ccTypes[$ccTypeMagento]))
-			return $ccTypes[$ccTypeMagento];
-		
-		Mage::throwException(Mage::helper('hipay')->__("Code Credit Card Type Hipay not found!"));
-	}
-	
 
 	
 	/**

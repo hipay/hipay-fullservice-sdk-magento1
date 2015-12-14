@@ -55,11 +55,12 @@ class Allopass_Hipay_Model_Method_PaypalApi extends Allopass_Hipay_Model_Method_
 		
 	}
 	
-	
+
 	protected function getCcTypeHipay($ccTypeMagento)
 	{
 		return $ccTypeMagento;
 	}
+
 	
 	/**
 	 * Validate payment method information object
