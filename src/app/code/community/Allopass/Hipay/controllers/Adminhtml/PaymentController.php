@@ -14,14 +14,9 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
 	 */
 	protected function _getMethodInstance()
 	{
-		
-		//list($module,$method) = explode("_", $this->getCheckout()->getMethod());
-		//$modelName = $module . "/method_" . $method; 
 		$modelName = Mage::getStoreConfig('payment/'.$this->getCheckout()->getMethod()."/model");
-		
-		Mage::log($modelName,null,"debug_bo_hipay.log");
 		return Mage::getSingleton($modelName);
-		//Mage::throwException("Method: '" . __METHOD__ . "' must be implemented!");
+
 	}
 	
 	public function reviewCapturePaymentAction()
@@ -124,7 +119,7 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
 				;
 				$profiles = array();
 				foreach ($collection as $profile) {
-					//$referenceId = $gatewayResponse->getToken()."-".$profile->getId();
+
 					$additionalInfo = array();
 					$additionalInfo['ccType'] = $gatewayResponse->getBrand();
 					$additionalInfo['ccExpMonth'] = $gatewayResponse->getCardExpiryMonth() ;
@@ -132,25 +127,22 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
 					$additionalInfo['token'] = $gatewayResponse->getToken();
 					$additionalInfo['transaction_id'] = $gatewayResponse->getTransactionReference();
 					$profile->setAdditionalInfo($additionalInfo);
-					//$profile->setReferenceId($referenceId);
+
 					$profile->setState(Mage_Sales_Model_Recurring_Profile::STATE_ACTIVE);
 					 
 					$profile->save();
 				}
 			}
 		}
-		/*else 
-		{		
-			$this->processResponse();
-		}*/
+
 		$this->processResponse();
-		Mage::log($this->getUrl('adminhtml/sales_order/view', array('order_id' => $this->getOrder()->getId())),null,"debug_hipay_redirect.log");
+
 		if (Mage::getSingleton('admin/session')->isAllowed('sales/order/actions/view')) {
                  $this->_redirect('adminhtml/sales_order/view', array('order_id' => $this->getOrder()->getId()));
-            } else {
+        } else {
                 $this->_redirect('adminhtml/sales_order/index');
-            }
-		//$this->_redirect('checkout/onepage/success');
+        }
+
 		
 		return $this;
 	}

@@ -9,7 +9,6 @@ class Allopass_Hipay_CheckoutController extends Mage_Core_Controller_Front_Actio
 	 */
 	public function preDispatch() {
 		parent::preDispatch();
-		//Mage::log($this->getRequest()->getParams(),null,$this->getRequest()->getActionName() . ".log");
 	}
 
 	
