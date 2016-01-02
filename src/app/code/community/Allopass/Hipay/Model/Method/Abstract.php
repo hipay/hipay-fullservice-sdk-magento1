@@ -304,7 +304,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 									$payment,
 									$gatewayResponse->getTransactionReference(),
 									Mage_Sales_Model_Order_Payment_Transaction::TYPE_VOID,
-									array('is_transaction_closed' => 1),
+									array('is_transaction_closed' => 0),//Transaction was not closed, because admin can try capture after expiration
 									array(
 											$this->_realTransactionIdKey => $gatewayResponse->getTransactionReference(),
 									),
@@ -312,10 +312,17 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 											$payment, self::OPERATION_AUTHORIZATION, $gatewayResponse->getTransactionReference(), $amount,true
 									)
 							);
-							$state = Mage_Sales_Model_Order::STATE_CLOSED;
+							
+							/**
+						     * We change only status and preserver processing state
+						     * So the administrator can try to cpature transaction even if
+						     * the auhorization was expired
+							 * 
+							 */
 							$status = self::STATUS_EXPIRED;
-					
-							$order->setState($state,$status,$gatewayResponse->getMessage());
+							$order->addStatusHistoryComment($gatewayResponse->getMessage(),$status)
+										->setIsCustomerNotified(false);
+
 					
 							$order->save();
 							break;
