@@ -10,12 +10,12 @@ class Allopass_Hipay_Model_Observer
 		//Select only method with cancel orders enabled
 		foreach (Mage::helper('hipay')->getHipayMethods() as $code=>$model)
 		{
-			if(Mage::getStoreConfig('payment/'.$code."/cancel_pending_order"))
+			if(Mage::getStoreConfigFlag('payment/'.$code."/cancel_pending_order"))
 			{
 				$methodCodes[] = $code;
 			}
 		}
-		
+
 		if(count($methodCodes) < 1)
 			return $this;
 			
@@ -26,21 +26,19 @@ class Allopass_Hipay_Model_Observer
 			
 		/* @var $collection Mage_Sales_Model_Resource_Order_Collection */
 		$collection = Mage::getResourceModel('sales/order_collection');
-		$collection->addFieldToSelect(array('entity_id'))
-		->addFieldToFilter('state',Mage_Sales_Model_Order::STATE_NEW)
+		$collection->addFieldToSelect(array('entity_id','increment_id','store_id','state'))
+		->addFieldToFilter('main_table.state',Mage_Sales_Model_Order::STATE_NEW)
 		->addFieldToFilter('op.method',array('in'=>array_values($methodCodes)))
 		->addAttributeToFilter('created_at', array('to' => ($date->subMinute($limitedTime)->toString('Y-MM-dd HH:mm:ss'))))
 		->join(array('op' => 'sales/order_payment'), 'main_table.entity_id=op.parent_id', array('method'));
 		
-		
 		/* @var $order Mage_Sales_Model_Order */
 		foreach ($collection as $order)
 		{
-		
 			if($order->canCancel())
 			{
 				try {
-						
+
 					$order->cancel();
 					$order
 					->addStatusToHistory($order->getStatus(),// keep order status/state
