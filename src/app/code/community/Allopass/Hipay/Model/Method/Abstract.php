@@ -314,15 +314,17 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 							);
 							
 							/**
-						     * We change only status and preserver processing state
-						     * So the administrator can try to cpature transaction even if
+						     * We change status to expired and state to holded
+						     * So the administrator can try to capture transaction even if
 						     * the auhorization was expired
 							 * 
 							 */
+							$state = Mage_Sales_Model_Order::STATE_HOLDED;
 							$status = self::STATUS_EXPIRED;
-							$order->addStatusHistoryComment($gatewayResponse->getMessage(),$status)
-										->setIsCustomerNotified(false);
-
+							$order->setState(
+									$state,
+									$status,
+									$gatewayResponse->getMessage());
 					
 							$order->save();
 							break;
