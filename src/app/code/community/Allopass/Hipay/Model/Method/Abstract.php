@@ -578,7 +578,12 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 				break;
 				
 			case self::STATE_DECLINED:
-				
+				if(/* @TODO wait for response from hipay support $order->getStatus() == self::STATUS_CAPTURE_REQUESTED || $order->getStatus() == self::STATUS_PENDING_CAPTURE ||*/ 
+				$order->getStatus() == Mage_Sales_Model_Order::STATE_PROCESSING
+						|| $order->getStatus() == Mage_Sales_Model_Order::STATE_COMPLETE || $order->getStatus() == Mage_Sales_Model_Order::STATE_CLOSED
+						 )// for logic process
+					break;
+					
 				$statusCode = (int)$gatewayResponse->getStatus();
 				$reason = $gatewayResponse->getReason();
 				$this->addTransaction(
