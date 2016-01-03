@@ -578,7 +578,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 				break;
 				
 			case self::STATE_DECLINED:
-		
+				
+				$statusCode = (int)$gatewayResponse->getStatus();
 				$reason = $gatewayResponse->getReason();
 				$this->addTransaction(
 						$payment,
@@ -603,7 +604,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 					$status = $order->getStatus();
 				}
 				
-				$this->_setFraudDetected($gatewayResponse,$customer, $payment,$amount,true);
+				if(in_array($statusCode,array(110)))
+					$this->_setFraudDetected($gatewayResponse,$customer, $payment,$amount,true);
 				
 				
 	
