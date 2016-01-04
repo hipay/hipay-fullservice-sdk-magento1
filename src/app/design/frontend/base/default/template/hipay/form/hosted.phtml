@@ -59,19 +59,21 @@ $_cards = $this->getCards();
 </ul>
  <br />
  <?php endif; ?>
-<?php echo $this->__('You will be redirect to payment page after submit order.')?>
- <div id="<?php echo $_code ?>_debit_amount">
- <?php echo $this->__('You will be debit of amount %s only after submit order.',Mage::app()->getStore()->getBaseCurrency()->format($this->getQuote()->getGrandTotal(), array(), true))?>
- </div>
+ <?php if($this->allowSplitPayment()) : ?>
+	 <div id="<?php echo $_code ?>_debit_amount">
+	 <?php echo $this->__('You will be debit of amount %s only after submit order.',Mage::app()->getStore()->getBaseCurrency()->format($this->getQuote()->getGrandTotal(), array(), true))?>
+	 </div>
+ <?php endif;?>
+ <?php echo $this->__('You will be redirect to payment page after submit order.')?>
 <script type="text/javascript">
 	//<![CDATA[
 	
-	
+	<?php if($this->allowSplitPayment()) : ?>
 	var UpdateDebitAmount<?php echo $_code ?> = function(){
 			
 			new Ajax.Request('<?php echo Mage::getUrl('hipay/hosted/updateDebitAmount') ?>', {
 	            evalScripts: true,
-	            parameters: {'payment_profile_id': $('<?php echo $_code ?>_split_payment').value},
+	            parameters: {'payment_profile_id': $('<?php echo $_code ?>_split_payment').value,'method_code': '<?php echo $_code ?>'},
 	            onSuccess: function(transport) {
 		            
 	            	if (transport.responseText.isJSON()) {
@@ -98,6 +100,7 @@ $_cards = $this->getCards();
 		};
 
 		Event.observe($('<?php echo $_code ?>_split_payment'), 'change', UpdateDebitAmount<?php echo $_code ?>);
+	<?php endif; ?>
 	
 	<?php $iFrameConfig = $this->getIframeConfig() ?>
 	

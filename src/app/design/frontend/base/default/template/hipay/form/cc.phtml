@@ -174,12 +174,13 @@ $_cards = $this->getCards();
         
         Event.observe($('<?php echo $_code ?>_cc_type'), 'change', ToogleCvn<?php echo $_code ?>);
         ToogleCvn<?php echo $_code ?>();
-
+        
+        <?php if($this->allowSplitPayment()) : ?>
 		var UpdateDebitAmount<?php echo $_code ?> = function(){
 			
 			new Ajax.Request('<?php echo Mage::getUrl('hipay/cc/updateDebitAmount') ?>', {
 	            evalScripts: true,
-	            parameters: {'payment_profile_id': $('<?php echo $_code ?>_split_payment').value},
+	            parameters: {'payment_profile_id': $('<?php echo $_code ?>_split_payment').value,'method_code': '<?php echo $_code ?>'},
 	            onSuccess: function(transport) {
 		            
 	            	if (transport.responseText.isJSON()) {
@@ -227,7 +228,7 @@ $_cards = $this->getCards();
 		};
 
 		Event.observe($('<?php echo $_code ?>_split_payment'), 'change', UpdateDebitAmount<?php echo $_code ?>);
-        
+        <?php endif; ?>
  	 //]]>
  </script>
 
