@@ -1,11 +1,33 @@
 <a name=""></a>
-#  (2016-01-02)
+# [](//compare/v1.2.5...vundefined) (2016-01-04)
 
+
+### Bug Fixes
+
+* **api-response:** Set fraud detected only for status code 110 fd2ce15
+* **cron:** Add fields to order collection 566be4b, closes #8 #13
+* **notification:** Add logic process for state declined 7e63e2a
+* **notification:** add some comments 6dc9d1a
+* **notification:** Change status expired and state holded 97307da
+* **response status:** Change only order status to expired not state f5dce16, closes #14
+* **split payment:** Fix JS bug 79290b9
+* **split-payment:** Fix display split payment 1f46174, closes #12
+
+### Features
+
+* **payment-x-times:** Add CcXtimes class 7883cc4
+* **split-payment:** Add 2 new methods for split payment 92e690b
+
+### Refactor
+
+* **clean code:** Remove some comments a6390a2
+* **changelog:** First generation with conventional-changelog 240a5c5
+* **clean-code:** Clean log calls and comments c2bf280
 
 
 
 <a name="1.2.5"></a>
-## 1.2.5 (2015-12-14)
+## [1.2.5](//compare/v1.2.4...v1.2.5) (2015-12-14)
 
 
 ### Documents
@@ -29,7 +51,7 @@
 
 
 <a name="1.2.4"></a>
-## 1.2.4 (2015-11-24)
+## [1.2.4](//compare/v1.2.3...v1.2.4) (2015-11-24)
 
 
 ### Bug Fixes
@@ -51,7 +73,7 @@
 
 
 <a name="1.2.3"></a>
-## 1.2.3 (2015-11-18)
+## [1.2.3](//compare/v1.2.2...v1.2.3) (2015-11-18)
 
 
 * Init iFram config array 1925810
@@ -60,7 +82,7 @@
 
 
 <a name="1.2.2"></a>
-## 1.2.2 (2015-10-29)
+## [1.2.2](//compare/v1.2.1...v1.2.2) (2015-10-29)
 
 
 * Add paypal API 108e6a6
@@ -68,7 +90,7 @@
 
 
 <a name="1.2.1"></a>
-## 1.2.1 (2015-10-28)
+## [1.2.1](//compare/v1.2.0...v1.2.1) (2015-10-28)
 
 
 * Fix iframe bugs 96d1fdd
@@ -76,7 +98,7 @@
 
 
 <a name="1.2.0"></a>
-# 1.2.0 (2015-10-26)
+# [1.2.0](//compare/v1.1.9...v1.2.0) (2015-10-26)
 
 
 * add changelog 949150d
@@ -86,7 +108,7 @@
 
 
 <a name="1.1.9"></a>
-## 1.1.9 (2015-10-12)
+## [1.1.9](//compare/v1.1.8...v1.1.9) (2015-10-12)
 
 
 * Change super class of models: card,payment profile and split payment 1dc1980
@@ -95,7 +117,7 @@
 
 
 <a name="1.1.8"></a>
-## 1.1.8 (2015-09-15)
+## [1.1.8](//compare/v1.1.7...v1.1.8) (2015-09-15)
 
 
 * --add last release 87739b6
@@ -106,7 +128,7 @@
 
 
 <a name="1.1.7"></a>
-## 1.1.7 (2015-08-05)
+## [1.1.7](//compare/v1.1.6...v1.1.7) (2015-08-05)
 
 
 * --add package 1.1.6 51999f4
@@ -115,7 +137,7 @@
 
 
 <a name="1.1.6"></a>
-## 1.1.6 (2015-07-27)
+## [1.1.6](//compare/v1.1.5...v1.1.6) (2015-07-27)
 
 
 * --Fix security bug on load cardId (oneclick). We added check with 19ed601
@@ -123,7 +145,7 @@
 
 
 <a name="1.1.5"></a>
-## 1.1.5 (2015-07-27)
+## [1.1.5](//compare/v1.1.4...v1.1.5) (2015-07-27)
 
 
 * --fix some bugs f1bfedd
@@ -131,7 +153,7 @@
 
 
 <a name="1.1.4"></a>
-## 1.1.4 (2015-06-11)
+## [1.1.4](//compare/v1.1.3...v1.1.4) (2015-06-11)
 
 
 * --bug fix e00b35c
@@ -140,7 +162,7 @@
 
 
 <a name="1.1.3"></a>
-## 1.1.3 (2015-05-07)
+## [1.1.3](//compare/v1.1.2...v1.1.3) (2015-05-07)
 
 
 * --add accept and capture for transactions in pending_review 003c656
@@ -150,7 +172,7 @@
 
 
 <a name="1.1.2"></a>
-## 1.1.2 (2015-04-22)
+## [1.1.2](//compare/v1.1.1...v1.1.2) (2015-04-22)
 
 
 * --add edit card in Bo 54e5d2a
