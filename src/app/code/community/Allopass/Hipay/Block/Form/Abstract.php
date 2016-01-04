@@ -102,8 +102,10 @@ abstract class Allopass_Hipay_Block_Form_Abstract extends Mage_Payment_Block_For
     	$minAmount = (float)$this->getMethod()->getConfigData('min_order_total_split_payment');
 
     	if($checkoutMethod == Mage_Checkout_Model_Type_Onepage::METHOD_GUEST || 
-    			!$this->getMethod()->getConfigData('allow_split_payment') || 
-    			($this->getMethod()->getConfigData('allow_split_payment') && (!empty($minAmount) && $minAmount <= (float)$this->getQuote()->getBaseGrandTotal() )))
+    			//!$this->getMethod()->getConfigData('allow_split_payment') || 
+    			(strpos($this->getMethodCode(), "xtimes") === false) 
+    			//|| ($this->getMethod()->getConfigData('allow_split_payment') && (!empty($minAmount) && $minAmount <= (float)$this->getQuote()->getBaseGrandTotal() ))
+    			)
     		return false;
     	
     	return true;
