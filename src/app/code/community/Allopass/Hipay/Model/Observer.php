@@ -87,7 +87,7 @@ class Allopass_Hipay_Model_Observer
 		//TODO check if payment method is hosted and iframe active and is success
 		$methodInstance =  $payment->getMethodInstance(); 
 		if($result['success'] 
-				&& $methodInstance->getCode() == 'hipay_hosted' 
+				&& ($methodInstance->getCode() == 'hipay_hosted' ||  $methodInstance->getCode() == 'hipay_hostedxtimes')
 				&& $methodInstance->getConfigData('display_iframe'))
 		{
 			$result['iframeUrl'] = $result['redirect']; 
