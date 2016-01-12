@@ -286,4 +286,5 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
 	{
 		return Mage::getSingleton('checkout/session');
 	}
+	
 }

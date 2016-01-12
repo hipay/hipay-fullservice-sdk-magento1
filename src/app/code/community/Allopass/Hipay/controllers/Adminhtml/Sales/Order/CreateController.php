@@ -2,7 +2,7 @@
 
 require_once 'Mage/Adminhtml/controllers/Sales/Order/CreateController.php';
 
-class Allopass_Hipay_Sales_Order_CreateController extends Mage_Adminhtml_Sales_Order_CreateController
+class Allopass_Hipay_Adminhtml_Sales_Order_CreateController extends Mage_Adminhtml_Sales_Order_CreateController
 {
 
 
@@ -40,7 +40,7 @@ class Allopass_Hipay_Sales_Order_CreateController extends Mage_Adminhtml_Sales_O
             if(strpos($order->getPayment()->getMethod(), 'hipay') !== false)
             {
             	$url = Mage::helper('adminhtml')->getUrl('*/payment/sendRequest',array('_secure' => true));
-            	$this->_redirect($url);
+            	$this->_redirectUrl($url);
             
 	            // add order information to the session
 	            Mage::getSingleton('checkout/session')->setLastOrderId($order->getId())
