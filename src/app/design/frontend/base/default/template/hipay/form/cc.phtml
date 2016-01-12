@@ -10,7 +10,7 @@ $_cards = $this->getCards();
 		 <div class="input-box">
 		 	<label style="float: none;" for="<?php echo $_code ?>_split_payment"><?php echo $this->__('Split your Payment') ?></label><br />
 		 	<select id="<?php echo $_code ?>_split_payment" name="payment[<?php echo $_code ?>_split_payment_id]">
-		 		<option value=""><?php echo $this->__('-- Please select your split payment --')?></option>
+		 		<!--  <option value=""><?php echo $this->__('-- Please select your split payment --')?></option> -->
 		 		<?php foreach ($this->getSplitPaymentProfiles() as $profile) : ?>
 		 			<option value="<?php echo $profile->getId()?>"><?php echo $profile->getName()?></option>
 		 		<?php endforeach;?>
@@ -228,6 +228,7 @@ $_cards = $this->getCards();
 		};
 
 		Event.observe($('<?php echo $_code ?>_split_payment'), 'change', UpdateDebitAmount<?php echo $_code ?>);
+		UpdateDebitAmount<?php echo $_code ?>();
         <?php endif; ?>
  	 //]]>
  </script>
