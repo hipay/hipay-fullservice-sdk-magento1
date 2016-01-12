@@ -944,11 +944,11 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		 * Redirect urls
 		 */
 		$isAdmin = $this->isAdmin();
-		$params['accept_url'] =  $isAdmin ? Mage::getUrl('hipay/adminhtml_payment/accept') : Mage::getUrl($this->getConfigData('accept_url'));
-		$params['decline_url'] = $isAdmin ? Mage::getUrl('hipay/adminhtml_payment/decline') : Mage::getUrl($this->getConfigData('decline_url'));
-		$params['pending_url'] = $isAdmin ? Mage::getUrl('hipay/adminhtml_payment/pending') : Mage::getUrl($this->getConfigData('pending_url'));
-		$params['exception_url'] = $isAdmin ? Mage::getUrl('hipay/adminhtml_payment/exception') : Mage::getUrl($this->getConfigData('exception_url'));
-		$params['cancel_url'] = $isAdmin ? Mage::getUrl('hipay/adminhtml_payment/cancel') : Mage::getUrl($this->getConfigData('cancel_url'));
+		$params['accept_url'] =  $isAdmin ? Mage::helper('adminhtml')->getUrl('*/payment/accept') : Mage::getUrl($this->getConfigData('accept_url'));
+		$params['decline_url'] = $isAdmin ? Mage::helper('adminhtml')->getUrl('*/payment/decline') : Mage::getUrl($this->getConfigData('decline_url'));
+		$params['pending_url'] = $isAdmin ? Mage::helper('adminhtml')->getUrl('*/payment/pending') : Mage::getUrl($this->getConfigData('pending_url'));
+		$params['exception_url'] = $isAdmin ? Mage::helper('adminhtml')->getUrl('*/payment/exception') : Mage::getUrl($this->getConfigData('exception_url'));
+		$params['cancel_url'] = $isAdmin ? Mage::helper('adminhtml')->getUrl('*/payment/cancel') : Mage::getUrl($this->getConfigData('cancel_url'));
 	
 		$params = $this->getCustomerParams($payment,$params);
 		$params = $this->getShippingParams($payment,$params);

@@ -140,7 +140,7 @@ class Allopass_Hipay_Model_Observer
 
 			if($order->canReviewPayment())
 			{
-				$url = $block->getUrl("hipay/adminhtml_payment/reviewCapturePayment");
+				$url = $block->getUrl("*/payment/reviewCapturePayment");
 				$message = Mage::helper('sales')->__('Are you sure you want to accept this payment?');
                 $block->addButton('accept_capture_payment', array(
                     'label'     => Mage::helper('sales')->__('Accept and Capture Payment'),
