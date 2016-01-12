@@ -974,7 +974,9 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		if(($dob = $order->getCustomerDob()) != "")
 		{
 			$dob = new Zend_Date($dob);
-			$params['birthdate'] = $dob->toString('YYYYMMdd');
+			$validator = new Zend_Validate_Date();
+			if($validator->isValid($dob))
+				$params['birthdate'] = $dob->toString('YYYYMMdd');
 		}
 	
 		$gender = $order->getCustomerGender();
