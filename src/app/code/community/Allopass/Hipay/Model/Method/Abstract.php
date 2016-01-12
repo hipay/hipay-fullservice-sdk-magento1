@@ -883,7 +883,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		
 		$params['description'] = Mage::helper('hipay')->__("Order %s by %s",$payment->getOrder()->getIncrementId(),$payment->getOrder()->getCustomerEmail());//MANDATORY
 		$params['long_description'] = $longDesc;// optional
-		$params['currency'] = $payment->getOrder()->getOrderCurrencyCode();
+		$params['currency'] = $payment->getOrder()->getBaseCurrencyCode();
 		$params['amount'] = $amount;
 		$params['shipping'] = $payment->getOrder()->getShippingAmount();
 		$params['tax'] = $payment->getOrder()->getTaxAmount();
