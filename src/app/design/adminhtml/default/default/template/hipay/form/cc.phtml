@@ -42,7 +42,7 @@
     </li>
     <li id="<?php echo $_code ?>_cc_type_exp_div">
         <div class="input-box">
-        	<label for="<?php echo $_code ?>_expiration" ><?php echo $this->__('Expiration Date') ?> <span class="required">*</span></label><br />
+        	<label for="<?php echo $_code ?>_expiration" ><?php echo $this->__('Expiration Date') ?><span class="required">*</span></label><br />
                 <select id="<?php echo $_code ?>_expiration" name="payment[cc_exp_month]" class="month validate-cc-exp required-entry">
                 <?php $_ccExpMonth = $this->getInfoData('cc_exp_month') ?>
                 <?php foreach ($this->getCcMonths() as $k=>$v): ?>
