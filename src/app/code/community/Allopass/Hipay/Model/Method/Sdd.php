@@ -147,11 +147,11 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 
 		if(!$iban->isValid($paymentInfo->getSddIban()))
 		{
-			$errorMsg .= Mage::helper('payment')->__('Iban is not correct, please enter a valid Iban.').'<br />';
+			$errorMsg = Mage::helper('payment')->__('Iban is not correct, please enter a valid Iban.');
 		}
 		if(empty($paymentInfo->getSddBankName()))
 		{
-			$errorMsg .= Mage::helper('payment')->__('The Bank name should not be empty.').'<br />';
+			$errorMsg = Mage::helper('payment')->__('The Bank name should not be empty.');
 		}
 		if($errorMsg)
 		{
