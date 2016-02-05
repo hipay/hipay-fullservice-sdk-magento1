@@ -20,6 +20,7 @@ $_cards = $this->getCards();
  </ul>
  <br />
 <?php endif; ?>
+<?php if($_code != "sdd") : ?>
 <ul class="form-list" id="card_payment_form_<?php echo $_code ?>" >
 
  <li>
@@ -240,6 +241,22 @@ $_cards = $this->getCards();
         
  	 //]]>
  </script>
+<?php else : ?>
+	<ul class="form-list" id="card_payment_form_<?php echo $_code ?>" >
+		<li>
+			<label for="<?php echo $_code ?>_iban" class="required"><em>*</em><?php echo $this->__('IBAN') ?></label>
+	        <div class="input-box">
+	            <input type="text" title="<?php echo $this->__('IBAN') ?>" class="input-text required-entry" id="<?php echo $_code ?>_iban" name="payment[iban]" value="" />
+	        </div>
+	    </li>
+	    <li>
+			<label for="<?php echo $_code ?>_bank_name" class="required"><em>*</em><?php echo $this->__('Bank name') ?></label>
+	        <div class="input-box">
+	            <input type="text" title="<?php echo $this->__('Bank name') ?>" class="input-text required-entry" id="<?php echo $_bank_name ?>_iban" name="payment[bank_name]" value="" />
+	        </div>
+	    </li>
+   </ul>
+<?php endif; ?>
 
- </div>
+</div>
 

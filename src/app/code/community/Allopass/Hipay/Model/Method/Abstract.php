@@ -886,30 +886,30 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		 */
 		if(!is_null($token))
 			$params['cardtoken'] = $token;
-		
-		$params['authentication_indicator'] = 0;
-		
-		switch ((int)$this->getConfigData('use_3d_secure')) {
-			case 1:
-				$params['authentication_indicator'] = 1;
-				break;
-			case 2:
-			case 3:
-				/* @var $rule Allopass_Hipay_Model_Rule */
-				$rule = Mage::getModel('hipay/rule')->load($this->getConfigData('config_3ds_rules'));
-				if($rule->getId() && $rule->validate($payment->getOrder()) )
-				{
-					$params['authentication_indicator'] = 1;
-					if((int)$this->getConfigData('use_3d_secure') == 3)//case for force 3ds if rules are validated
-						$params['authentication_indicator'] = 2;
-						
-				}
-				break;
-			case 4:
-				$params['authentication_indicator'] = 2;
-				break;
-		}
 
+		// TPPMAG1-2 - JPN
+		//$params['authentication_indicator'] = 0;
+		//switch ((int)$this->getConfigData('use_3d_secure')) {
+		//	case 1:
+		//		$params['authentication_indicator'] = 1;
+		//		break;
+		//	case 2:
+		//	case 3:
+		//		/* @var $rule Allopass_Hipay_Model_Rule */
+		//		$rule = Mage::getModel('hipay/rule')->load($this->getConfigData('config_3ds_rules'));
+		//		if($rule->getId() && $rule->validate($payment->getOrder()) )
+		//		{
+		//			$params['authentication_indicator'] = 1;
+		//			if((int)$this->getConfigData('use_3d_secure') == 3)//case for force 3ds if rules are validated
+		//				$params['authentication_indicator'] = 2;
+		//				
+		//		}
+		//		break;
+		//	case 4:
+		//		$params['authentication_indicator'] = 2;
+		//		break;
+		//}
+		$params['authentication_indicator'] = Mage::helper('hipay')->is3dSecure($this->getConfigData('use_3d_secure'), $this->getConfigData('config_3ds_rules'), $payment);
 	
 		/**
 		 * Electronic Commerce Indicator
