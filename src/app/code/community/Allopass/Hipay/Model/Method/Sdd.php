@@ -129,34 +129,34 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 			// if not 3DS, action API
 			parent::place($payment, $amount);
 		}
-    	/**
-		 * Validate payment method information object
-		 *
-		 * @param   Mage_Payment_Model_Info $info
-		 * @return  Mage_Payment_Model_Abstract
-		 */
-		public function validate()
-		{
-			/**
-			* to validate payment method is allowed for billing country or not
-			*/
-			$errorMsg = '';
-			$paymentInfo = $this->getInfoInstance();
-			$iban = new Zend_Validate_Iban();
+	}
+	/**
+	 * Validate payment method information object
+	 *
+	 * @param   Mage_Payment_Model_Info $info
+	 * @return  Mage_Payment_Model_Abstract
+	 */
+	public function validate()
+	{
+		/**
+		* to validate payment method is allowed for billing country or not
+		*/
+		$errorMsg = '';
+		$paymentInfo = $this->getInfoInstance();
+		$iban = new Zend_Validate_Iban();
 
-			if(!$iban->isValid($paymentInfo->getSddIban()))
-			{
-				$errorMsg .= Mage::helper('payment')->__('Iban is not correct, please enter a valid Iban.').'<br />';
-			}
-			if(empty($paymentInfo->getSddBankName()))
-			{
-				$errorMsg .= Mage::helper('payment')->__('The Bank name should not be empty.').'<br />';
-			}
-			if($errorMsg)
-			{
-				Mage::throwException($errorMsg);
-			}
-			return $this;
+		if(!$iban->isValid($paymentInfo->getSddIban()))
+		{
+			$errorMsg .= Mage::helper('payment')->__('Iban is not correct, please enter a valid Iban.').'<br />';
 		}
+		if(empty($paymentInfo->getSddBankName()))
+		{
+			$errorMsg .= Mage::helper('payment')->__('The Bank name should not be empty.').'<br />';
+		}
+		if($errorMsg)
+		{
+			Mage::throwException($errorMsg);
+		}
+		return $this;
 	}
 }
