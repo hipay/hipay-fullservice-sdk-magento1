@@ -577,11 +577,13 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 	/*
 	 * TPPMAG1-2 - JPN
 	 */
-	public function is3dSecure($use3dSecure, $config3dsRules, $payment)
+	public function is3dSecure($use3dSecure, $config3dsRules, $payment = false)
 	{
 		$params = 0;
-		
-		switch ((int)$use3dSecure) {
+		if($use3dSecure > 0 && !$payment){
+			$params = 1;
+		}else{
+			switch ((int)$use3dSecure) {
 			case 1:
 				$params = 1;
 				break;
@@ -600,7 +602,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 			case 4:
 				$params = 2;
 				break;
-		}
+			}
+		}		
 		return $params;
 	}
 

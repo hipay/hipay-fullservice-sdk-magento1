@@ -21,6 +21,7 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 		$info = $this->getInfoInstance();
 		$info->setCcType($this->getConfigData('cctypes'))
 		->setSddIban($data->getSddIban())
+		->setSddCodeBic($data->getSddCodeBic())
 		->setSddBankName($data->getSddBankName());
 		
 		$this->assignInfoData($info, $data);
@@ -143,19 +144,26 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 		*/
 		$errorMsg = '';
 		$paymentInfo = $this->getInfoInstance();
-		$iban = new Zend_Validate_Iban();
 
-		if(!$iban->isValid($paymentInfo->getSddIban()))
+		// check if 3DS
+		$code3Dsecure = Mage::helper('hipay')->is3dSecure($this->getConfigData('use_3d_secure'), $this->getConfigData('config_3ds_rules'));
+		if($code3Dsecure == 0 )
 		{
-			$errorMsg = Mage::helper('payment')->__('Iban is not correct, please enter a valid Iban.');
-		}
-		if(empty($paymentInfo->getSddBankName()))
-		{
-			$errorMsg = Mage::helper('payment')->__('The Bank name should not be empty.');
-		}
-		if($errorMsg)
-		{
-			Mage::throwException($errorMsg);
+			$iban = new Zend_Validate_Iban();
+
+			if(!$iban->isValid($paymentInfo->getSddIban()))
+			{
+				$errorMsg = Mage::helper('payment')->__('Iban is not correct, please enter a valid Iban.');
+			}
+			$result_bic = (bool) ( preg_match('/^[a-z]{6}[0-9a-z]{2}([0-9a-z]{3})?\z/i', $paymentInfo->getSddCodeBic)) == 1 );
+			if(!$result_bic)
+			{
+				$errorMsg = Mage::helper('payment')->__('Code BIC is not correct, please enter a valid Code BIC.');
+			}
+			if($errorMsg)
+			{
+				Mage::throwException($errorMsg);
+			}
 		}
 		return $this;
 	}
