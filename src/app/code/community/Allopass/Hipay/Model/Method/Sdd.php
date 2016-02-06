@@ -114,21 +114,51 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 	    	else
 	    	{
 	    		$gatewayParams['operation'] = $this->getOperation();
-	    		$gatewayParams['payment_product']  = Mage::getSingleton('customer/session')->getCustomer()->getHipayCcType();
+	    		$gatewayParams['payment_product']  = Mage::getSingleton('customer/session')->getCustomer()->getHipaySddType();
+	    		$gatewayParams['iban']  = Mage::getSingleton('customer/session')->getCustomer()->getHipaySddIban();
+	    		$gatewayParams['issuer_bank_id']  = Mage::getSingleton('customer/session')->getCustomer()->getHipaySddCodeBic();
+	    		$gatewayParams['bank_name']  = Mage::getSingleton('customer/session')->getCustomer()->getHipaySddBankName();
 	    		
 	    		$this->_debug($gatewayParams);
-	    		 
 	    		$gatewayResponse = $request->gatewayRequest(Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_ORDER,$gatewayParams,$payment->getOrder()->getStoreId());
-	    		 
 	    		$this->_debug($gatewayResponse->debug());
-	    		 
 	    		$redirectUrl =  $this->processResponseToRedirect($gatewayResponse, $payment, $amount);
-	    		
 	    		return $redirectUrl;
 	    	}
 		}else{
 			// if not 3DS, action API
-			parent::place($payment, $amount);
+			$order = $payment->getOrder();
+			$customer = Mage::getModel('customer/customer')->load($order->getCustomerId());			
+			$request = Mage::getModel('hipay/api_request',array($this));			
+			$payment->setAmount($amount);
+			$token = $payment->getAdditionalInformation('token');
+	    	$gatewayParams =  $this->getGatewayParams($payment, $amount,$token); 	    	
+	    	$gatewayParams['operation'] =$this->getOperation();	   
+	    	$paymentProduct = null; 	
+	    	if($payment->getAdditionalInformation('use_oneclick'))
+	    	{
+	    		$cardId = $payment->getAdditionalInformation('selected_oneclick_card');
+	    		$card = Mage::getModel('hipay/card')->load($cardId);
+
+	    		if($card->getId() && $card->getCustomerId() == $customer->getId())
+	    			$paymentProduct = $card->getCcType();
+	    		else
+	    			Mage::throwException(Mage::helper('hipay')->__("Error with your card!"));
+	    		
+	    	}
+	    	else
+	    		$paymentProduct = $this->getCcTypeHipay($payment->getSddType());
+	    	
+	    	$gatewayParams['payment_product'] 	= $paymentProduct ;
+	    	$gatewayParams['iban'] 				= $payment->getSddIban();
+	    	$gatewayParams['issuer_bank_id'] 	= $payment->getSddCodeBic();
+	    	$gatewayParams['bank_name']	 		= $payment->getSddBankName();
+	    	$this->_debug($gatewayParams);
+	    	$gatewayResponse = $request->gatewayRequest(Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_ORDER,$gatewayParams,$payment->getOrder()->getStoreId());
+	    	$this->_debug($gatewayResponse->debug());	    	
+	  		$redirectUrl =  $this->processResponseToRedirect($gatewayResponse, $payment, $amount);
+	  		
+	  		return $redirectUrl;
 		}
 	}
 	/**
@@ -149,21 +179,24 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 		$code3Dsecure = Mage::helper('hipay')->is3dSecure($this->getConfigData('use_3d_secure'), $this->getConfigData('config_3ds_rules'));
 		if($code3Dsecure == 0 )
 		{
-			$iban = new Zend_Validate_Iban();
+			/*$iban = new Zend_Validate_Iban();
 
 			if(!$iban->isValid($paymentInfo->getSddIban()))
 			{
 				$errorMsg = Mage::helper('payment')->__('Iban is not correct, please enter a valid Iban.');
 			}
-			$result_bic = (bool) ( preg_match('/^[a-z]{6}[0-9a-z]{2}([0-9a-z]{3})?\z/i', $paymentInfo->getSddCodeBic)) == 1 );
-			if(!$result_bic)
+			if(empty($paymentInfo->getSddCodeBic()))
 			{
 				$errorMsg = Mage::helper('payment')->__('Code BIC is not correct, please enter a valid Code BIC.');
+			}
+			if(empty($paymentInfo->getSddBankName()))
+			{
+				$errorMsg = Mage::helper('payment')->__('Bank name is not correct, please enter a valid Bank name.');
 			}
 			if($errorMsg)
 			{
 				Mage::throwException($errorMsg);
-			}
+			}*/
 		}
 		return $this;
 	}
