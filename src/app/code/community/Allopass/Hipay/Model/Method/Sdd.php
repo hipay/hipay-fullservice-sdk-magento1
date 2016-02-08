@@ -17,9 +17,9 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 		}
 		$info = $this->getInfoInstance();
 		$info->setCcType('SDD')
-		->setCcIban($data->getCcIban())
-		->setCcCodeBic($data->getCcCodeBic())
-		->setCcBankName($data->getCcBankName());
+		->setAdditionalInformation('cc_iban', $data->getCcIban())
+		->setAdditionalInformation('cc_code_bic',$data->getCcCodeBic())
+		->setAdditionalInformation('cc_bank_name',$data->getCcBankName());
 		
 		$this->assignInfoData($info, $data);
 		
@@ -141,9 +141,9 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 	    	$paymentProduct = $this->getCcTypeHipay($payment->getCcType());
 	    	
 	    	$gatewayParams['payment_product'] 	= $paymentProduct ;
-	    	$gatewayParams['iban'] 				= $payment->getSddIban();
-	    	$gatewayParams['issuer_bank_id'] 	= $payment->getSddCodeBic();
-	    	$gatewayParams['bank_name']	 		= $payment->getSddBankName();
+	    	$gatewayParams['iban'] 				= $payment->getAdditionalInformation('cc_iban');
+	    	$gatewayParams['issuer_bank_id'] 	= $payment->getAdditionalInformation('cc_code_bic');
+	    	$gatewayParams['bank_name']	 		= $payment->getAdditionalInformation('cc_bank_name');
 	    	$this->_debug($gatewayParams);
 	    	$gatewayResponse = $request->gatewayRequest(Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_ORDER,$gatewayParams,$payment->getOrder()->getStoreId());
 	    	$this->_debug($gatewayResponse->debug());	    	
@@ -169,13 +169,12 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 		$code3Dsecure = Mage::helper('hipay')->is3dSecure($this->getConfigData('use_3d_secure'), $this->getConfigData('config_3ds_rules'));
 		if($code3Dsecure == 0 )
 		{
-			$this->_debug = $paymentInfo;
+			
 			$iban = new Zend_Validate_Iban();
-			if(!$iban->isValid($paymentInfo->getCcIban()))
+			if(!$iban->isValid($paymentInfo->getAdditionalInformation(cc_iban)))
 			{
 				$errorMsg = Mage::helper('payment')->__('Iban is not correct, please enter a valid Iban.');
 			}
-			/*
 			if(empty($paymentInfo->getSddCodeBic()))
 			{
 				$errorMsg = Mage::helper('payment')->__('Code BIC is not correct, please enter a valid Code BIC.');
@@ -187,7 +186,7 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 			if($errorMsg)
 			{
 				Mage::throwException($errorMsg);
-			}*/
+			}
 		}
 		return $this;
 	}
