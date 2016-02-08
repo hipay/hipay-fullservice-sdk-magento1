@@ -275,7 +275,7 @@ $_cards = $this->getCards();
 	    <li>
 			<label for="<?php echo $_code ?>_bank_name" class="required"><em>*</em><?php echo $this->__('Bank name') ?></label>
 	        <div class="input-box">
-	            <input type="text" title="<?php echo $this->__('Bank name') ?>" class="input-text required-entry" id="<?php echo $_bank_name ?>_iban" name="payment[sdd_bank_name]" value="<?php echo $this->htmlEscape($this->getInfoData('sdd_bank_name')) ?>" />
+	            <input type="text" title="<?php echo $this->__('Bank name') ?>" class="input-text required-entry" id="<?php echo $_code ?>_bank_name" name="payment[sdd_bank_name]" value="<?php echo $this->htmlEscape($this->getInfoData('sdd_bank_name')) ?>" />
 	        </div>
 	    </li>
    	</ul>

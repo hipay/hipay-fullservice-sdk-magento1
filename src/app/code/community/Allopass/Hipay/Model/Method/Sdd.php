@@ -2,11 +2,8 @@
 class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 {
 	protected $_code = 'hipay_sdd';
-
 	protected $_canRefund               = false;
 	protected $_canRefundInvoicePartial = false;
-
-
 	/**
 	 * Assign data to info model instance
 	 *
@@ -19,7 +16,7 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 			$data = new Varien_Object($data);
 		}
 		$info = $this->getInfoInstance();
-		$info->setCcType($this->getConfigData('cctypes'))
+		$info->setCcType('SDD')
 		->setSddIban($data->getSddIban())
 		->setSddCodeBic($data->getSddCodeBic())
 		->setSddBankName($data->getSddBankName());
@@ -51,7 +48,6 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 		return $this;
 		
 	}
-
 	public function place($payment, $amount)
 	{
 		// check if 3DS
@@ -84,7 +80,7 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 	    	if(is_null($token))
 	    	{
 	    			
-		    	$gatewayParams['payment_product'] = 'cb' ;
+		    	$gatewayParams['payment_product'] = 'sdd' ;
 		    	$gatewayParams['operation'] = $this->getOperation();
 		    	$gatewayParams['css'] = $this->getConfigData('css_url');
 				$gatewayParams['template'] = $this->getConfigData('display_iframe') ? 'iframe' :  $this->getConfigData('template');
@@ -96,7 +92,6 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 					$gatewayParams['payment_product_list'] = $this->getConfigData('cctypes');
 				else
 					$gatewayParams['payment_product_list'] = str_replace('bcmc', '', $this->getConfigData('cctypes'));
-
 				
 		    	$gatewayParams['payment_product_category_list'] = "credit-card";
 		    	
@@ -134,20 +129,19 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 			$token = $payment->getAdditionalInformation('token');
 	    	$gatewayParams =  $this->getGatewayParams($payment, $amount,$token); 	    	
 	    	$gatewayParams['operation'] =$this->getOperation();	   
-	    	$paymentProduct = null; 	
+	    	/*$paymentProduct = null; 	
 	    	if($payment->getAdditionalInformation('use_oneclick'))
 	    	{
 	    		$cardId = $payment->getAdditionalInformation('selected_oneclick_card');
 	    		$card = Mage::getModel('hipay/card')->load($cardId);
-
 	    		if($card->getId() && $card->getCustomerId() == $customer->getId())
 	    			$paymentProduct = $card->getCcType();
 	    		else
 	    			Mage::throwException(Mage::helper('hipay')->__("Error with your card!"));
 	    		
 	    	}
-	    	else
-	    		$paymentProduct = $this->getCcTypeHipay($payment->getSddType());
+	    	else*/
+	    	$paymentProduct = $this->getCcTypeHipay($payment->getSddType());
 	    	
 	    	$gatewayParams['payment_product'] 	= $paymentProduct ;
 	    	$gatewayParams['iban'] 				= $payment->getSddIban();
@@ -174,13 +168,11 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 		*/
 		$errorMsg = '';
 		$paymentInfo = $this->getInfoInstance();
-
 		// check if 3DS
 		$code3Dsecure = Mage::helper('hipay')->is3dSecure($this->getConfigData('use_3d_secure'), $this->getConfigData('config_3ds_rules'));
 		if($code3Dsecure == 0 )
 		{
 			/*$iban = new Zend_Validate_Iban();
-
 			if(!$iban->isValid($paymentInfo->getSddIban()))
 			{
 				$errorMsg = Mage::helper('payment')->__('Iban is not correct, please enter a valid Iban.');
