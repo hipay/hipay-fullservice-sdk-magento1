@@ -356,7 +356,7 @@
 				<active>0</active>
 				<title>Credit Card</title>
 				<payment_action>authorize_capture</payment_action>
-				<cctypes>VI,MC,AE</cctypes>
+				<cctypes>VI,MC,AE,SDD</cctypes>
 				<display_card_owner>0</display_card_owner>
 				<useccv>1</useccv>
 				<order_status_payment_accepted>processing</order_status_payment_accepted>

@@ -17,9 +17,9 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 		}
 		$info = $this->getInfoInstance();
 		$info->setCcType('SDD')
-		->setSddIban($data->getSddIban())
-		->setSddCodeBic($data->getSddCodeBic())
-		->setSddBankName($data->getSddBankName());
+		->setCcIban($data->getCcIban())
+		->setCcCodeBic($data->getCcCodeBic())
+		->setCcBankName($data->getCcBankName());
 		
 		$this->assignInfoData($info, $data);
 		
@@ -33,7 +33,7 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 		$order = $payment->getOrder();
 		$customer = Mage::getModel('customer/customer')->load($order->getCustomerId());
 		
-		
+		/*
 		if($payment->getAdditionalInformation('use_oneclick') && $customer->getId())
 		{
 			$cardId = $payment->getAdditionalInformation('selected_oneclick_card');
@@ -44,7 +44,7 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 				Mage::throwException(Mage::helper('hipay')->__("Error with your card!"));
 			$payment->setAdditionalInformation('token',$token);
 		}
-		
+		*/
 		return $this;
 		
 	}
@@ -63,7 +63,7 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 			$payment->setAmount($amount);
 			
 			$token = null;
-			if($payment->getAdditionalInformation('use_oneclick'))
+			/*if($payment->getAdditionalInformation('use_oneclick'))
 			{
 				$cardId = $payment->getAdditionalInformation('selected_oneclick_card');
 				$card = Mage::getModel('hipay/card')->load($cardId);
@@ -73,14 +73,14 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 				else
 					Mage::throwException(Mage::helper('hipay')->__("Error with your card!"));
 				
-			}
+			}*/
 			
 	    	$gatewayParams = $this->getGatewayParams($payment, $amount,$token);
 	    	
 	    	if(is_null($token))
 	    	{
 	    			
-		    	$gatewayParams['payment_product'] = 'sdd' ;
+		    	$gatewayParams['payment_product'] = 'SDD' ;
 		    	$gatewayParams['operation'] = $this->getOperation();
 		    	$gatewayParams['css'] = $this->getConfigData('css_url');
 				$gatewayParams['template'] = $this->getConfigData('display_iframe') ? 'iframe' :  $this->getConfigData('template');
@@ -110,9 +110,6 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 	    	{
 	    		$gatewayParams['operation'] = $this->getOperation();
 	    		$gatewayParams['payment_product']  = Mage::getSingleton('customer/session')->getCustomer()->getHipaySddType();
-	    		$gatewayParams['iban']  = Mage::getSingleton('customer/session')->getCustomer()->getHipaySddIban();
-	    		$gatewayParams['issuer_bank_id']  = Mage::getSingleton('customer/session')->getCustomer()->getHipaySddCodeBic();
-	    		$gatewayParams['bank_name']  = Mage::getSingleton('customer/session')->getCustomer()->getHipaySddBankName();
 	    		
 	    		$this->_debug($gatewayParams);
 	    		$gatewayResponse = $request->gatewayRequest(Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_ORDER,$gatewayParams,$payment->getOrder()->getStoreId());
@@ -141,7 +138,7 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 	    		
 	    	}
 	    	else*/
-	    	$paymentProduct = $this->getCcTypeHipay($payment->getSddType());
+	    	$paymentProduct = $this->getCcTypeHipay($payment->getCcType());
 	    	
 	    	$gatewayParams['payment_product'] 	= $paymentProduct ;
 	    	$gatewayParams['iban'] 				= $payment->getSddIban();
@@ -172,11 +169,13 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 		$code3Dsecure = Mage::helper('hipay')->is3dSecure($this->getConfigData('use_3d_secure'), $this->getConfigData('config_3ds_rules'));
 		if($code3Dsecure == 0 )
 		{
-			/*$iban = new Zend_Validate_Iban();
-			if(!$iban->isValid($paymentInfo->getSddIban()))
+			$this->_debug = $paymentInfo;
+			$iban = new Zend_Validate_Iban();
+			if(!$iban->isValid($paymentInfo->getCcIban()))
 			{
 				$errorMsg = Mage::helper('payment')->__('Iban is not correct, please enter a valid Iban.');
 			}
+			/*
 			if(empty($paymentInfo->getSddCodeBic()))
 			{
 				$errorMsg = Mage::helper('payment')->__('Code BIC is not correct, please enter a valid Code BIC.');

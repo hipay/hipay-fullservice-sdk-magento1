@@ -251,10 +251,10 @@ $_cards = $this->getCards();
                ); 
 	$config3ds = Mage::helper('hipay')->is3dSecure($use3ds, $rule3ds);
 	?>
-	<label for="<?php echo $_code ?>_cc_type" ><?php echo $this->__('Credit Card Type') ?>: 
+	<label for="<?php echo $_code ?>_type" ><?php echo $this->__('Bankwire method ') ?>: 
 		<?php foreach ($this->getCcAvailableTypes() as $_typeCode => $_typeName): ?>
 				<?php echo $_typeName ?>
-                <input id="<?php echo $_code ?>_sdd_type" value="<?php echo $_typeCode ?>" type="hidden" name="payment[sdd_type]" />
+                <input id="<?php echo $_code ?>_type" value="<?php echo $_typeCode ?>" type="hidden" name="payment[cc_type]" />
             <?php endforeach ?>
 	</label>
 	<?php if($config3ds == 0) : ?>
@@ -263,19 +263,19 @@ $_cards = $this->getCards();
 		<li>
 			<label for="<?php echo $_code ?>_iban" class="required"><em>*</em><?php echo $this->__('IBAN') ?></label>
 	        <div class="input-box">
-	            <input type="text" title="<?php echo $this->__('IBAN') ?>" class="input-text required-entry" id="<?php echo $_code ?>_iban" name="payment[sdd_iban]" value="<?php echo $this->htmlEscape($this->getInfoData('sdd_iban')) ?>" />
+	            <input type="text" title="<?php echo $this->__('IBAN') ?>" class="input-text required-entry" id="<?php echo $_code ?>_iban" name="payment[cc_iban]" value="<?php echo $this->htmlEscape($this->getInfoData('cc_iban')) ?>" />
 	        </div>
 	    </li>
 	    <li>
 			<label for="<?php echo $_code ?>_code_bic" class="required"><em>*</em><?php echo $this->__('Code BIC') ?></label>
 	        <div class="input-box">
-	            <input type="text" title="<?php echo $this->__('Code BIC') ?>" class="input-text required-entry" id="<?php echo $_code ?>_code_bic" name="payment[sdd_code_bic]" value="<?php echo $this->htmlEscape($this->getInfoData('sdd_code_bic')) ?>" />
+	            <input type="text" title="<?php echo $this->__('Code BIC') ?>" class="input-text required-entry" id="<?php echo $_code ?>_code_bic" name="payment[cc_code_bic]" value="<?php echo $this->htmlEscape($this->getInfoData('cc_code_bic')) ?>" />
 	        </div>
 	    </li>
 	    <li>
 			<label for="<?php echo $_code ?>_bank_name" class="required"><em>*</em><?php echo $this->__('Bank name') ?></label>
 	        <div class="input-box">
-	            <input type="text" title="<?php echo $this->__('Bank name') ?>" class="input-text required-entry" id="<?php echo $_code ?>_bank_name" name="payment[sdd_bank_name]" value="<?php echo $this->htmlEscape($this->getInfoData('sdd_bank_name')) ?>" />
+	            <input type="text" title="<?php echo $this->__('Bank name') ?>" class="input-text required-entry" id="<?php echo $_code ?>_bank_name" name="payment[cc_bank_name]" value="<?php echo $this->htmlEscape($this->getInfoData('cc_bank_name')) ?>" />
 	        </div>
 	    </li>
    	</ul>
