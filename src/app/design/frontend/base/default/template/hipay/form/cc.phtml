@@ -261,6 +261,21 @@ $_cards = $this->getCards();
 
 	<ul class="form-list" id="card_payment_form_<?php echo $_code ?>" >
 		<li>
+			<label for="<?php echo $_code ?>_gender" class="required"><em>*</em><?php echo $this->__('Gender') ?></label>
+	        <div class="input-box">
+	            <select id="<?php echo $_code ?>_gender" name="payment[cc_gender]" >
+					<option value="M" selected><?php echo $this->__('Male') ?></option>
+					<option value="F"><?php echo $this->__('Female') ?></option>
+			 	</select>
+	        </div>
+	    </li>
+	    <li>
+			<label for="<?php echo $_code ?>_fullname" class=""><em>*</em><?php echo $this->__('Fullname') ?></label>
+	        <div class="input-box">
+	            <input type="text" title="<?php echo $this->__('Fullname') ?>" class="input-text " id="<?php echo $_code ?>_fullname" name="payment[cc_fullname]" value="<?php echo $this->htmlEscape(Mage::getSingleton('customer/session')->getCustomer()->getFirstname(). ' ' .Mage::getSingleton('customer/session')->getCustomer()->getLastname()); ?>" readonly />
+	        </div>
+	    </li>
+		<li>
 			<label for="<?php echo $_code ?>_iban" class="required"><em>*</em><?php echo $this->__('IBAN') ?></label>
 	        <div class="input-box">
 	            <input type="text" title="<?php echo $this->__('IBAN') ?>" class="input-text required-entry" id="<?php echo $_code ?>_iban" name="payment[cc_iban]" value="<?php echo $this->htmlEscape($this->getInfoData('cc_iban')) ?>" />
