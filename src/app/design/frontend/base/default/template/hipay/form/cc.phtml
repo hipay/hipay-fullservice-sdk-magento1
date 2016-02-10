@@ -20,6 +20,7 @@ $_cards = $this->getCards();
  </ul>
  <br />
 <?php endif; ?>
+<?php if($_code != "hipay_sdd") : ?>
 <ul class="form-list" id="card_payment_form_<?php echo $_code ?>" >
 
  <li>
@@ -232,6 +233,67 @@ $_cards = $this->getCards();
         <?php endif; ?>
  	 //]]>
  </script>
+<?php else : ?>
+	<?php
 
- </div>
+	// TPPMAG1-2 - SEPA Payment.
+
+	$use3ds = Mage::getStoreConfig(
+                   'payment/hipay_sdd/use_3d_secure'
+               ); 
+	$rule3ds = Mage::getStoreConfig(
+                   'payment/hipay_sdd/config_3ds_rules'
+               ); 
+	$config3ds = Mage::helper('hipay')->is3dSecure($use3ds, $rule3ds);
+	?>
+	<label for="<?php echo $_code ?>_type" ><?php echo $this->__('Bankwire method ') ?>: 
+		<?php foreach ($this->getCcAvailableTypes() as $_typeCode => $_typeName): ?>
+				<?php echo $_typeName ?>
+                <input id="<?php echo $_code ?>_type" value="<?php echo $_typeCode ?>" type="hidden" name="payment[cc_type]" />
+            <?php endforeach ?>
+	</label>
+	<?php if($config3ds == 0) : ?>
+
+	<ul class="form-list" id="card_payment_form_<?php echo $_code ?>" >
+		<li>
+			<label for="<?php echo $_code ?>_gender" class="required"><em>*</em><?php echo $this->__('Gender') ?></label>
+	        <div class="input-box">
+	            <select id="<?php echo $_code ?>_gender" name="payment[cc_gender]" >
+					<option value="M" selected><?php echo $this->__('Male') ?></option>
+					<option value="F"><?php echo $this->__('Female') ?></option>
+			 	</select>
+	        </div>
+	    </li>
+	    <li>
+			<label for="<?php echo $_code ?>_fullname" class=""><em>*</em><?php echo $this->__('Fullname') ?></label>
+	        <div class="input-box">
+	            <input type="text" title="<?php echo $this->__('Fullname') ?>" class="input-text " id="<?php echo $_code ?>_fullname" name="payment[cc_fullname]" value="<?php echo $this->htmlEscape(Mage::getSingleton('customer/session')->getCustomer()->getFirstname(). ' ' .Mage::getSingleton('customer/session')->getCustomer()->getLastname()); ?>" readonly />
+	        </div>
+	    </li>
+		<li>
+			<label for="<?php echo $_code ?>_iban" class="required"><em>*</em><?php echo $this->__('IBAN') ?></label>
+	        <div class="input-box">
+	            <input type="text" title="<?php echo $this->__('IBAN') ?>" class="input-text required-entry" id="<?php echo $_code ?>_iban" name="payment[cc_iban]" value="<?php echo $this->htmlEscape($this->getInfoData('cc_iban')) ?>" />
+	        </div>
+	    </li>
+	    <li>
+			<label for="<?php echo $_code ?>_code_bic" class="required"><em>*</em><?php echo $this->__('Code BIC') ?></label>
+	        <div class="input-box">
+	            <input type="text" title="<?php echo $this->__('Code BIC') ?>" class="input-text required-entry" id="<?php echo $_code ?>_code_bic" name="payment[cc_code_bic]" value="<?php echo $this->htmlEscape($this->getInfoData('cc_code_bic')) ?>" />
+	        </div>
+	    </li>
+	    <li>
+			<label for="<?php echo $_code ?>_bank_name" class="required"><em>*</em><?php echo $this->__('Bank name') ?></label>
+	        <div class="input-box">
+	            <input type="text" title="<?php echo $this->__('Bank name') ?>" class="input-text required-entry" id="<?php echo $_code ?>_bank_name" name="payment[cc_bank_name]" value="<?php echo $this->htmlEscape($this->getInfoData('cc_bank_name')) ?>" />
+	        </div>
+	    </li>
+   	</ul>
+ 	<?php endif; ?>
+ 	<div id="debit_amount">
+	<?php echo $this->__('You will be debit of amount %s only after submit order.',Mage::app()->getStore()->getBaseCurrency()->format($this->getQuote()->getGrandTotal(), array(), true))?>
+ 	</div>
+<?php endif; ?>
+
+</div>
 
