@@ -93,10 +93,15 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 	
 	public function assignInfoData($info,$data)
 	{
-		$info->setAdditionalInformation('create_oneclick',$data->getOneclick() == "create_oneclick" ? 1 : 0)
-		->setAdditionalInformation('use_oneclick',$data->getOneclick() == "use_oneclick" ? 1 : 0)
-		->setAdditionalInformation('selected_oneclick_card',$data->getOneclickCard() == "" ? 0 : $data->getOneclickCard())
-		->setAdditionalInformation('split_payment_id',$data->getSplitPaymentId() != "" ? $data->getSplitPaymentId() : 0);
+		
+		$oneclickMode = $data->getData($this->getCode() . '_oneclick');
+		$oneclickCard = $data->getData($this->getCode() . '_oneclick_card');
+		$splitPaymentId = $data->getData($this->getCode() . '_split_payment_id');
+		
+		$info->setAdditionalInformation('create_oneclick', $oneclickMode == "create_oneclick" ? 1 : 0)
+		->setAdditionalInformation('use_oneclick',$oneclickMode == "use_oneclick" ? 1 : 0)
+		->setAdditionalInformation('selected_oneclick_card',$oneclickCard == "" ? 0 : $oneclickCard)
+		->setAdditionalInformation('split_payment_id',$splitPaymentId != "" ? $splitPaymentId : 0);
 		
 		
 	}
@@ -304,7 +309,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 									$payment,
 									$gatewayResponse->getTransactionReference(),
 									Mage_Sales_Model_Order_Payment_Transaction::TYPE_VOID,
-									array('is_transaction_closed' => 1),
+									array('is_transaction_closed' => 0),//Transaction was not closed, because admin can try capture after expiration
 									array(
 											$this->_realTransactionIdKey => $gatewayResponse->getTransactionReference(),
 									),
@@ -312,10 +317,19 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 											$payment, self::OPERATION_AUTHORIZATION, $gatewayResponse->getTransactionReference(), $amount,true
 									)
 							);
-							$state = Mage_Sales_Model_Order::STATE_CLOSED;
+							
+							/**
+						     * We change status to expired and state to holded
+						     * So the administrator can try to capture transaction even if
+						     * the auhorization was expired
+							 * 
+							 */
+							$state = Mage_Sales_Model_Order::STATE_HOLDED;
 							$status = self::STATUS_EXPIRED;
-					
-							$order->setState($state,$status,$gatewayResponse->getMessage());
+							$order->setState(
+									$state,
+									$status,
+									$gatewayResponse->getMessage());
 					
 							$order->save();
 							break;
@@ -569,7 +583,15 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 				break;
 				
 			case self::STATE_DECLINED:
-		
+				if(/* @TODO wait for response from hipay support 
+						About issue #10 les notifications des différentes transactions HiPay se croisent
+				$order->getStatus() == self::STATUS_CAPTURE_REQUESTED || $order->getStatus() == self::STATUS_PENDING_CAPTURE ||*/ 
+				$order->getStatus() == Mage_Sales_Model_Order::STATE_PROCESSING
+						|| $order->getStatus() == Mage_Sales_Model_Order::STATE_COMPLETE || $order->getStatus() == Mage_Sales_Model_Order::STATE_CLOSED
+						 )// for logic process
+					break;
+					
+				$statusCode = (int)$gatewayResponse->getStatus();
 				$reason = $gatewayResponse->getReason();
 				$this->addTransaction(
 						$payment,
@@ -594,7 +616,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 					$status = $order->getStatus();
 				}
 				
-				$this->_setFraudDetected($gatewayResponse,$customer, $payment,$amount,true);
+				if(in_array($statusCode,array(110)))
+					$this->_setFraudDetected($gatewayResponse,$customer, $payment,$amount,true);
 				
 				
 	
@@ -860,7 +883,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		
 		$params['description'] = Mage::helper('hipay')->__("Order %s by %s",$payment->getOrder()->getIncrementId(),$payment->getOrder()->getCustomerEmail());//MANDATORY
 		$params['long_description'] = $longDesc;// optional
-		$params['currency'] = $payment->getOrder()->getOrderCurrencyCode();
+		$params['currency'] = $payment->getOrder()->getBaseCurrencyCode();
 		$params['amount'] = $amount;
 		$params['shipping'] = $payment->getOrder()->getShippingAmount();
 		$params['tax'] = $payment->getOrder()->getTaxAmount();
@@ -921,11 +944,11 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		 * Redirect urls
 		 */
 		$isAdmin = $this->isAdmin();
-		$params['accept_url'] =  $isAdmin ? Mage::getUrl('hipay/adminhtml_payment/accept') : Mage::getUrl($this->getConfigData('accept_url'));
-		$params['decline_url'] = $isAdmin ? Mage::getUrl('hipay/adminhtml_payment/decline') : Mage::getUrl($this->getConfigData('decline_url'));
-		$params['pending_url'] = $isAdmin ? Mage::getUrl('hipay/adminhtml_payment/pending') : Mage::getUrl($this->getConfigData('pending_url'));
-		$params['exception_url'] = $isAdmin ? Mage::getUrl('hipay/adminhtml_payment/exception') : Mage::getUrl($this->getConfigData('exception_url'));
-		$params['cancel_url'] = $isAdmin ? Mage::getUrl('hipay/adminhtml_payment/cancel') : Mage::getUrl($this->getConfigData('cancel_url'));
+		$params['accept_url'] =  $isAdmin ? Mage::helper('adminhtml')->getUrl('*/payment/accept') : Mage::getUrl($this->getConfigData('accept_url'));
+		$params['decline_url'] = $isAdmin ? Mage::helper('adminhtml')->getUrl('*/payment/decline') : Mage::getUrl($this->getConfigData('decline_url'));
+		$params['pending_url'] = $isAdmin ? Mage::helper('adminhtml')->getUrl('*/payment/pending') : Mage::getUrl($this->getConfigData('pending_url'));
+		$params['exception_url'] = $isAdmin ? Mage::helper('adminhtml')->getUrl('*/payment/exception') : Mage::getUrl($this->getConfigData('exception_url'));
+		$params['cancel_url'] = $isAdmin ? Mage::helper('adminhtml')->getUrl('*/payment/cancel') : Mage::getUrl($this->getConfigData('cancel_url'));
 	
 		$params = $this->getCustomerParams($payment,$params);
 		$params = $this->getShippingParams($payment,$params);
@@ -951,7 +974,9 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		if(($dob = $order->getCustomerDob()) != "")
 		{
 			$dob = new Zend_Date($dob);
-			$params['birthdate'] = $dob->toString('YYYYMMdd');
+			$validator = new Zend_Validate_Date();
+			if($validator->isValid($dob))
+				$params['birthdate'] = $dob->toString('YYYYMMdd');
 		}
 	
 		$gender = $order->getCustomerGender();

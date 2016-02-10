@@ -10,12 +10,12 @@ class Allopass_Hipay_Model_Observer
 		//Select only method with cancel orders enabled
 		foreach (Mage::helper('hipay')->getHipayMethods() as $code=>$model)
 		{
-			if(Mage::getStoreConfig('payment/'.$code."/cancel_pending_order"))
+			if(Mage::getStoreConfigFlag('payment/'.$code."/cancel_pending_order"))
 			{
 				$methodCodes[] = $code;
 			}
 		}
-		
+
 		if(count($methodCodes) < 1)
 			return $this;
 			
@@ -26,21 +26,19 @@ class Allopass_Hipay_Model_Observer
 			
 		/* @var $collection Mage_Sales_Model_Resource_Order_Collection */
 		$collection = Mage::getResourceModel('sales/order_collection');
-		$collection->addFieldToSelect(array('entity_id'))
-		->addFieldToFilter('state',Mage_Sales_Model_Order::STATE_NEW)
+		$collection->addFieldToSelect(array('entity_id','increment_id','store_id','state'))
+		->addFieldToFilter('main_table.state',Mage_Sales_Model_Order::STATE_NEW)
 		->addFieldToFilter('op.method',array('in'=>array_values($methodCodes)))
 		->addAttributeToFilter('created_at', array('to' => ($date->subMinute($limitedTime)->toString('Y-MM-dd HH:mm:ss'))))
 		->join(array('op' => 'sales/order_payment'), 'main_table.entity_id=op.parent_id', array('method'));
 		
-		
 		/* @var $order Mage_Sales_Model_Order */
 		foreach ($collection as $order)
 		{
-		
 			if($order->canCancel())
 			{
 				try {
-						
+
 					$order->cancel();
 					$order
 					->addStatusToHistory($order->getStatus(),// keep order status/state
@@ -89,7 +87,7 @@ class Allopass_Hipay_Model_Observer
 		//TODO check if payment method is hosted and iframe active and is success
 		$methodInstance =  $payment->getMethodInstance(); 
 		if($result['success'] 
-				&& $methodInstance->getCode() == 'hipay_hosted' 
+				&& ($methodInstance->getCode() == 'hipay_hosted' ||  $methodInstance->getCode() == 'hipay_hostedxtimes')
 				&& $methodInstance->getConfigData('display_iframe'))
 		{
 			$result['iframeUrl'] = $result['redirect']; 
@@ -142,7 +140,7 @@ class Allopass_Hipay_Model_Observer
 
 			if($order->canReviewPayment())
 			{
-				$url = $block->getUrl("hipay/adminhtml_payment/reviewCapturePayment");
+				$url = $block->getUrl("*/payment/reviewCapturePayment");
 				$message = Mage::helper('sales')->__('Are you sure you want to accept this payment?');
                 $block->addButton('accept_capture_payment', array(
                     'label'     => Mage::helper('sales')->__('Accept and Capture Payment'),
