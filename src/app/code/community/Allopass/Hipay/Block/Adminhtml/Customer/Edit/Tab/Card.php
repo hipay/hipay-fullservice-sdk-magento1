@@ -112,8 +112,8 @@ class Allopass_Hipay_Block_Adminhtml_Customer_Edit_Tab_Card extends
 
 
 	public function getGridUrl() {
-		return $this
-				->getUrl('hipay/adminhtml_card/cards',
+		return Mage::helper('adminhtml')
+				->getUrl('*/card/cards',
 						array('_current' => true));
 	}
 	

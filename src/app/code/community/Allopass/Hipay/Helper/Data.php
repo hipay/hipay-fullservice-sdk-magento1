@@ -30,7 +30,6 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 			$part = (int)($amount / $maxCycles);
 			$reste = $amount%$maxCycles;
 			$fmod = fmod($amount, $maxCycles);
-			//Mage::log("PART = ".$part." RESTE = ".$reste,null,'hipay_split_debug.log');
 			
 			for ($i=-1;$i<($maxCycles-1);$i++)
 			{

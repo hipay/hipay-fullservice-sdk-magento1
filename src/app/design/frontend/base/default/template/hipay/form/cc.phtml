@@ -9,8 +9,8 @@ $_cards = $this->getCards();
 	 <li>
 		 <div class="input-box">
 		 	<label style="float: none;" for="<?php echo $_code ?>_split_payment"><?php echo $this->__('Split your Payment') ?></label><br />
-		 	<select id="<?php echo $_code ?>_split_payment" name="payment[split_payment_id]">
-		 		<option value=""><?php echo $this->__('-- Please select your split payment --')?></option>
+		 	<select id="<?php echo $_code ?>_split_payment" name="payment[<?php echo $_code ?>_split_payment_id]">
+		 		<!--  <option value=""><?php echo $this->__('-- Please select your split payment --')?></option> -->
 		 		<?php foreach ($this->getSplitPaymentProfiles() as $profile) : ?>
 		 			<option value="<?php echo $profile->getId()?>"><?php echo $profile->getName()?></option>
 		 		<?php endforeach;?>
@@ -28,14 +28,14 @@ $_cards = $this->getCards();
         	<label for="<?php echo $_code ?>_cc_type" ><?php echo $this->__('Credit Card Type') ?>: 
         		<?php foreach ($this->getCcAvailableTypes() as $_typeCode => $_typeName): ?>
         				<?php echo $_typeName ?>
-		                <input id="<?php echo $_code ?>_cc_type" value="<?php echo $_typeCode ?>" type="hidden" name="payment[cc_type]" />
+		                <input id="<?php echo $_code ?>_cc_type" value="<?php echo $_typeCode ?>" type="hidden" name="payment[<?php echo $_code ?>_cc_type]" />
 		            <?php endforeach ?>
         	</label>
         <?php else:?>
 	        <label for="<?php echo $_code ?>_cc_type" class="required"><em>*</em><?php echo $this->__('Credit Card Type') ?></label>
 	        <div class="input-box">
 	        	
-		            <select id="<?php echo $_code ?>_cc_type" name="payment[cc_type]" class="required-entry validate-cc-type-select">
+		            <select id="<?php echo $_code ?>_cc_type" name="payment[<?php echo $_code ?>_cc_type]" class="required-entry validate-cc-type-select">
 		                <option value=""><?php echo $this->__('--Please Select--')?></option>
 		            <?php $_ccType = $this->getInfoData('cc_type') ?>
 		            <?php foreach ($this->getCcAvailableTypes() as $_typeCode => $_typeName): ?>
@@ -50,21 +50,21 @@ $_cards = $this->getCards();
     <li>
         <label for="<?php echo $_code ?>_cc_owner" class="required"><em>*</em><?php echo $this->__('Name on Card') ?></label>
         <div class="input-box">
-            <input type="text" title="<?php echo $this->__('Name on Card') ?>" class="input-text required-entry" id="<?php echo $_code ?>_cc_owner" name="payment[cc_owner]" value="<?php echo $this->htmlEscape($this->getInfoData('cc_owner')) ?>" />
+            <input type="text" title="<?php echo $this->__('Name on Card') ?>" class="input-text required-entry" id="<?php echo $_code ?>_cc_owner" name="payment[<?php echo $_code ?>_cc_owner]" value="<?php echo $this->htmlEscape($this->getInfoData('cc_owner')) ?>" />
         </div>
     </li>
     <?php endif; ?>
     <li>
         <label for="<?php echo $_code ?>_cc_number" class="required"><em>*</em><?php echo $this->__('Credit Card Number') ?></label>
         <div class="input-box">
-            <input type="text" id="<?php echo $_code ?>_cc_number" name="payment[cc_number]" title="<?php echo $this->__('Credit Card Number') ?>" class="input-text validate-cc-number validate-cc-type" value="<?php echo $_SERVER['HTTP_HOST'] == 'magento1910.sirateck.com' ? '4111111111111111' : '' ?>" />
+            <input type="text" id="<?php echo $_code ?>_cc_number" name="payment[<?php echo $_code ?>_cc_number]" title="<?php echo $this->__('Credit Card Number') ?>" class="input-text validate-cc-number validate-cc-type" value="" />
         </div>
     </li>
     <li id="<?php echo $_code ?>_cc_type_exp_div">
         <label for="<?php echo $_code ?>_expiration" class="required"><em>*</em><?php echo $this->__('Expiration Date') ?></label>
         <div class="input-box">
             <div class="v-fix">
-                <select id="<?php echo $_code ?>_expiration" name="payment[cc_exp_month]" class="month validate-cc-exp validate-cc-exp-split required-entry">
+                <select id="<?php echo $_code ?>_expiration" name="payment[<?php echo $_code ?>_cc_exp_month]" class="month validate-cc-exp validate-cc-exp-split required-entry">
                 <?php $_ccExpMonth = $this->getInfoData('cc_exp_month') ?>
                 <?php foreach ($this->getCcMonths() as $k=>$v): ?>
                     <option value="<?php echo $k?$k:'' ?>"<?php if($k==$_ccExpMonth): ?> selected="selected"<?php endif ?>><?php echo $v ?></option>
@@ -73,7 +73,7 @@ $_cards = $this->getCards();
             </div>
             <div class="v-fix">
                 <?php $_ccExpYear = $this->getInfoData('cc_exp_year') ?>
-                <select id="<?php echo $_code ?>_expiration_yr" name="payment[cc_exp_year]" class="year required-entry">
+                <select id="<?php echo $_code ?>_expiration_yr" name="payment[<?php echo $_code ?>_cc_exp_year]" class="year required-entry">
                 <?php foreach ($this->getCcYears() as $k=>$v): ?>
                     <option value="<?php echo $k?$k:'' ?>"<?php if($k==$_ccExpYear): ?> selected="selected"<?php endif ?>><?php echo $v ?></option>
                 <?php endforeach ?>
@@ -87,7 +87,7 @@ $_cards = $this->getCards();
         <label for="<?php echo $_code ?>_cc_cid" class="required"><em>*</em><?php echo $this->__('Card Verification Number') ?></label>
         <div class="input-box">
             <div class="v-fix">
-                <input type="text" title="<?php echo $this->__('Card Verification Number') ?>" class="input-text cvv required-entry validate-cc-cvn" id="<?php echo $_code ?>_cc_cid" name="payment[cc_cid]" value="" />
+                <input type="text" title="<?php echo $this->__('Card Verification Number') ?>" class="input-text cvv required-entry validate-cc-cvn" id="<?php echo $_code ?>_cc_cid" name="payment[<?php echo $_code ?>_cc_cid]" value="" />
             </div>
             <a href="#" class="cvv-what-is-this"><?php echo $this->__('What is this?') ?></a>
         </div>
@@ -101,42 +101,32 @@ $_cards = $this->getCards();
 
 			<?php if (!$this->getCustomerHasCard()) :?>
 			<div class="input-box">
-				<input id="<?php echo $_code ?>_create_alias_oneclick"  value="create_oneclick"  type="checkbox" name="payment[oneclick]" />
+				<input id="<?php echo $_code ?>_create_alias_oneclick"  value="create_oneclick"  type="checkbox" name="payment[<?php echo $_code ?>_oneclick]" />
 				<label style="float: none;" for="<?php echo $_code ?>_create_alias_oneclick"><?php echo $this->__('Record your card data for a next buy.') ?></label>
 			</div>
 		<?php else :?>
 			<script type="text/javascript">$('card_payment_form_<?php echo $_code ?>').hide();</script>
 			
 			<div class="input-box">
-				<input id="<?php echo $_code ?>_use_alias_oneclick" value="use_oneclick" checked="checked"   type="radio" name="payment[oneclick]" onclick="$('card_payment_form_<?php echo $_code ?>').hide();"   />
+				<input id="<?php echo $_code ?>_use_alias_oneclick" value="use_oneclick" checked="checked"   type="radio" name="payment[<?php echo $_code ?>_oneclick]" onclick="$('card_payment_form_<?php echo $_code ?>').hide();"   />
 				<label style="float: none;" for="<?php echo $_code ?>_use_alias_oneclick"><?php echo $this->__('Use my recorded card') ?></label>
 			</div>
 			
 			<div class="input-box info-card">
-				<select id="<?php echo $_code ?>_oneclick_selected_card" name="payment[oneclick_card]" >
+				<select id="<?php echo $_code ?>_oneclick_selected_card" name="payment[<?php echo $_code ?>_oneclick_card]" >
 					<?php foreach ($_cards as $card):?>
 						<option value="<?php echo $card->getId()?>"><?php echo $card->getName()?></option>
 					<?php endforeach;?>
 			 	</select>
-		 	</div>
-			
-			<!-- <div class="input-box info-card">
-				<label><?php echo $this->__('Actual card') ?> :</label>
-				<span><?php echo $this->getCustomer()->getHipayCcNumberEnc() ?></span>
-			</div>
-			<div class="input-box info-card">
-				<label><?php echo $this->__('Expiration date') ?> : <?php echo $this->getCustomer()->getHipayCcExpDate() ?></label>
-			</div>-->
-			
-			
+		 	</div>			
 			
 			<div class="input-box">
-				<input id="<?php echo $_code ?>_create_alias_oneclick"  type="radio" name="payment[oneclick]" value="create_oneclick" onclick="$('card_payment_form_<?php echo $_code ?>').show();"/>
+				<input id="<?php echo $_code ?>_create_alias_oneclick"  type="radio" name="payment[<?php echo $_code ?>_oneclick]" value="create_oneclick" onclick="$('card_payment_form_<?php echo $_code ?>').show();"/>
 				<label style="float: none;" for="<?php echo $_code ?>_create_alias_oneclick"><?php echo $this->__('Record new card data') ?></label>
 			</div>
 
 			<div class="input-box">
-				<input id="<?php echo $_code ?>_not_oneclick"  type="radio" name="payment[oneclick]" value="not_oneclick" onclick="$('card_payment_form_<?php echo $_code ?>').show();" />
+				<input id="<?php echo $_code ?>_not_oneclick"  type="radio" name="payment[<?php echo $_code ?>_oneclick]" value="not_oneclick" onclick="$('card_payment_form_<?php echo $_code ?>').show();" />
 				<label style="float: none;" for="<?php echo $_code ?>_not_oneclick"><?php echo $this->__('Not use record card data') ?></label>
 			</div>
 
@@ -166,7 +156,7 @@ $_cards = $this->getCards();
  	 //]]>
  </script>
  <?php endif; ?>
- <div id="debit_amount">
+ <div id="<?php echo $_code ?>_debit_amount">
  <?php echo $this->__('You will be debit of amount %s only after submit order.',Mage::app()->getStore()->getBaseCurrency()->format($this->getQuote()->getGrandTotal(), array(), true))?>
  </div>
  <script type="text/javascript">
@@ -185,19 +175,20 @@ $_cards = $this->getCards();
         
         Event.observe($('<?php echo $_code ?>_cc_type'), 'change', ToogleCvn<?php echo $_code ?>);
         ToogleCvn<?php echo $_code ?>();
-
+        
+        <?php if($this->allowSplitPayment()) : ?>
 		var UpdateDebitAmount<?php echo $_code ?> = function(){
 			
 			new Ajax.Request('<?php echo Mage::getUrl('hipay/cc/updateDebitAmount') ?>', {
 	            evalScripts: true,
-	            parameters: {'payment_profile_id': $('<?php echo $_code ?>_split_payment').value},
+	            parameters: {'payment_profile_id': $('<?php echo $_code ?>_split_payment').value,'method_code': '<?php echo $_code ?>'},
 	            onSuccess: function(transport) {
 		            
 	            	if (transport.responseText.isJSON()) {
 	                    var response = transport.responseText.evalJSON();
 
 	                    if (response.error) {
-	                        $('debit_amount').innerHTML = response.message;
+	                        $('<?php echo $_code ?>_debit_amount').innerHTML = response.message;
 	                        Validation.add('validate-cc-exp-split', 'Incorrect credit card expiration date.', function(v,elm) {	                        	
 	                            return true;
 	                        });
@@ -211,13 +202,13 @@ $_cards = $this->getCards();
 							var dateArr = splitPayment[splitPayment.length - 1]['dateToPay'].split("-");
 
 	                        Validation.add('validate-cc-exp-split', 'Incorrect credit card expiration date.', function(v,elm) {
-		                        console.log("Enter in validation");
+
 	                        	var ccExpMonth   = v;
 	                            var ccExpYear    = $(elm.id.substr(0,elm.id.indexOf('_expiration')) + '_expiration_yr').value;
 	                            var currentTime  = new Date();
 	                            var currentMonth = parseInt(dateArr[1]);//currentTime.getMonth() + 1;
 	                            var currentYear  = parseInt(dateArr[0])//currentTime.getFullYear();
-	                            console.log(ccExpMonth +'<'+ currentMonth +'&&'+ ccExpYear + '==' + currentYear);
+	                            
 	                            if (ccExpMonth < currentMonth && ccExpYear == currentYear) {
 	                                return false;
 	                            }
@@ -225,7 +216,7 @@ $_cards = $this->getCards();
 	                        });
 
 	                        //Update HTMl
-		                    $('debit_amount').innerHTML = response.labelSplitPayment;
+		                    $('<?php echo $_code ?>_debit_amount').innerHTML = response.labelSplitPayment;
 		                    decorateTable('split-payment-cc-table')
 		                    
 	                    }
@@ -238,7 +229,8 @@ $_cards = $this->getCards();
 		};
 
 		Event.observe($('<?php echo $_code ?>_split_payment'), 'change', UpdateDebitAmount<?php echo $_code ?>);
-        
+		UpdateDebitAmount<?php echo $_code ?>();
+        <?php endif; ?>
  	 //]]>
  </script>
 <?php else : ?>

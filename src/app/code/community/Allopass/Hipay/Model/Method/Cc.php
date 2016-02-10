@@ -22,17 +22,19 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
 		if (!($data instanceof Varien_Object)) {
 			$data = new Varien_Object($data);
 		}
+
+		Mage::log($data,null,'debug_data.log');
 		$info = $this->getInfoInstance();
-		$info->setCcType($data->getCcType())
-		->setCcOwner($data->getCcOwner())
-		->setCcLast4(substr($data->getCcNumber(), -4))
-		->setCcNumber($data->getCcNumber())
-		->setCcCid($data->getCcCid())
-		->setCcExpMonth($data->getCcExpMonth())
-		->setCcExpYear($data->getCcExpYear())
-		->setCcSsIssue($data->getCcSsIssue())
-		->setCcSsStartMonth($data->getCcSsStartMonth())
-		->setCcSsStartYear($data->getCcSsStartYear())
+		$info->setCcType($data->getData($this->getCode() . '_cc_type'))
+		->setCcOwner($data->getData($this->getCode() . '_cc_owner'))
+		->setCcLast4(substr($data->getData($this->getCode() . '_cc_number'), -4))
+		->setCcNumber($data->getData($this->getCode() . '_cc_number'))
+		->setCcCid($data->getData($this->getCode() . '_cc_cid'))
+		->setCcExpMonth($data->getData($this->getCode() . '_cc_exp_month'))
+		->setCcExpYear($data->getData($this->getCode() . '_cc_exp_year'))
+		->setCcSsIssue($data->getData($this->getCode() . '_cc_ss_issue'))
+		->setCcSsStartMonth($data->getData($this->getCode() . '_cc_ss_start_month'))
+		->setCcSsStartYear($data->getData($this->getCode() . '_cc_ss_start_yeat'))
 		;
 		
 		$this->assignInfoData($info, $data);
