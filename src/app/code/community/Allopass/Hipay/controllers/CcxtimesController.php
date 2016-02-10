@@ -9,7 +9,7 @@ class Allopass_Hipay_CcxtimesController extends Allopass_Hipay_Controller_Paymen
 	 */
 	protected function _getMethodInstance()
 	{
-		return Mage::getSingleton('hipay/method_ccXtimes'); ;	
+		return Mage::getSingleton('hipay/method_ccXtimes');
 	}
 
 }

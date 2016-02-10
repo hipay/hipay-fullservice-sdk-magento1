@@ -9,7 +9,7 @@ class Allopass_Hipay_HostedxtimesController extends Allopass_Hipay_Controller_Pa
 	 */
 	protected function _getMethodInstance()
 	{
-		return Mage::getSingleton('hipay/method_hostedXtimes'); ;	
+		return Mage::getSingleton('hipay/method_hostedXtimes');
 	}
 
 }
