@@ -243,6 +243,9 @@ $_cards = $this->getCards();
  </script>
 <?php else : ?>
 	<?php
+
+	// TPPMAG1-2 - SEPA Payment.
+
 	$use3ds = Mage::getStoreConfig(
                    'payment/hipay_sdd/use_3d_secure'
                ); 
