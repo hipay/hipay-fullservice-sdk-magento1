@@ -144,5 +144,10 @@
 "HiPay Fullservice Credit Card Split Payment","HiPay Fullservice Credit Card Split Payment"
 "Credit Card Split Payment","Paiement en plusieurs fois par carte bancaire"
 "HiPay Fullservice Hosted Page Split Payment","HiPay Fullservice Hosted Page Split Payment"
-
-
+"Bankwire method","Méthode virement bancaire"
+"Gender","Le genre"
+"Male","Homme"
+"Female","Femme"
+"firstname","Prénom"
+"lastname","Nom"
+"Bank name","Nom de la banque"

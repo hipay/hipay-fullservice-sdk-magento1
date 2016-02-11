@@ -18,6 +18,8 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 		$info = $this->getInfoInstance();
 		$info->setCcType('SDD')
 		->setAdditionalInformation('cc_gender', $data->getCcGender())
+		->setAdditionalInformation('cc_firstname', $data->getCcFirstname())
+		->setAdditionalInformation('cc_lastname', $data->getCcLastname())
 		->setAdditionalInformation('cc_iban', $data->getCcIban())
 		->setAdditionalInformation('cc_code_bic',$data->getCcCodeBic())
 		->setAdditionalInformation('cc_bank_name',$data->getCcBankName());
@@ -97,6 +99,8 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 	    	
 	    	$gatewayParams['payment_product'] 	= $paymentProduct ;
 	    	$gatewayParams['gender']	 		= $payment->getAdditionalInformation('cc_gender');
+	    	$gatewayParams['firstname']	 		= $payment->getAdditionalInformation('cc_firstname');
+	    	$gatewayParams['lastname']	 		= $payment->getAdditionalInformation('cc_lastname');
 	    	$gatewayParams['recurring_payment'] = 0;
 	    	$gatewayParams['iban'] 				= $payment->getAdditionalInformation('cc_iban');
 	    	$gatewayParams['issuer_bank_id'] 	= $payment->getAdditionalInformation('cc_code_bic');
@@ -131,6 +135,14 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 			if(!$iban->isValid($paymentInfo->getAdditionalInformation('cc_iban')))
 			{
 				$errorMsg = Mage::helper('payment')->__('Iban is not correct, please enter a valid Iban.');
+			}
+			if(empty($paymentInfo->getAdditionalInformation('cc_firstname')))
+			{
+				$errorMsg = Mage::helper('payment')->__('Firstname is mandatory.');
+			}
+			if(empty($paymentInfo->getAdditionalInformation('cc_lastname')))
+			{
+				$errorMsg = Mage::helper('payment')->__('Lastname is mandatory.');
 			}
 			if(empty($paymentInfo->getAdditionalInformation('cc_code_bic')))
 			{
