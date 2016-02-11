@@ -1,41 +1,6 @@
-# Module Hipay Full Service
+# HiPay Fullservice extension for Magento v1
 
 ## How to use this repository
-
-### Get and change sources
-If you want to do any changes follow this steps:
-
-1.  Clone the repo
-```
-$ git clone git@gitlab.sirateck.com:magento-modules/allopass_hipay.git
-```
-  **Note:**  
-  Don't forget to put your ssh public key into your gitlab account.  Else try with http connection:  
-```
-$ git clone http://gitlab.sirateck.com/magento-modules/allopass_hipay.git
-```
-
-2.  Checkout into `develop` branch
-```
-$ git checkout -b develop origin/develop
-```
-3.  Write your modifications and save your filess
-
-4. Stage and commit your changes
-```
-// Stage all modifications
-$ git add .
-// Commit with message. For good practices see: https://github.com/ajoslin/conventional-changelog/blob/master/conventions/angular.md  
-$ git commit -m "fix(hosted): Fix iframe size"
-```
-5.  Share your code
-```
-$ git push
-```
-
-6. Finally, send merge request
-
-  Go to your **gitlab account** on this project and send a [merge request](http://gitlab.sirateck.com/magento-modules/allopass_hipay/merge_requests) to admin users.
 
 ### Build Magento package
 
@@ -130,9 +95,4 @@ For more information, have a look at: http://www.hipayfullservice.com
 
 ### Our group:
 
-HiPay, the electronic banking branch of the Himedia Group, offers publishers of digital content and e-tailers, the payment modes that are the most relevant for the development of their business.  
-The **HiPay** solutions are framed by **two European licenses for Payment Institutions and Electronic Money Issuer**.
-
-### Our clients:
-
-Various large companies have already placed their trust in us: Promod, F&M, Sfrpay, etc.
+HiPay Group offers digital content publishers and e-tailers the most relevant payment methods to grow their business. Our solutions benefit from two European banking licences: payment institution and e-money issuer.
