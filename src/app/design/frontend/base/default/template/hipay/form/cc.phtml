@@ -265,9 +265,15 @@ $_cards = $this->getCards();
 	        </div>
 	    </li>
 	    <li>
-			<label for="<?php echo $_code ?>_fullname" class=""><em>*</em><?php echo $this->__('Fullname') ?></label>
+			<label for="<?php echo $_code ?>_fullname" class="required"><em>*</em><?php echo $this->__('firstname') ?></label>
 	        <div class="input-box">
-	            <input type="text" title="<?php echo $this->__('Fullname') ?>" class="input-text " id="<?php echo $_code ?>_fullname" name="payment[cc_fullname]" value="<?php echo $this->htmlEscape(Mage::getSingleton('customer/session')->getCustomer()->getFirstname(). ' ' .Mage::getSingleton('customer/session')->getCustomer()->getLastname()); ?>" readonly />
+	            <input type="text" title="<?php echo $this->__('firstname') ?>" class="input-text " id="<?php echo $_code ?>_firstname" name="payment[cc_firstname]" value="<?php echo $this->htmlEscape(Mage::getSingleton('customer/session')->getCustomer()->getFirstname()); ?>" />
+	        </div>
+	    </li>
+	    <li>
+			<label for="<?php echo $_code ?>_fullname" class="required"><em>*</em><?php echo $this->__('lastname') ?></label>
+	        <div class="input-box">
+	            <input type="text" title="<?php echo $this->__('lastname') ?>" class="input-text " id="<?php echo $_code ?>_lastname" name="payment[cc_lastname]" value="<?php echo $this->htmlEscape(Mage::getSingleton('customer/session')->getCustomer()->getLastname()); ?>" />
 	        </div>
 	    </li>
 		<li>
