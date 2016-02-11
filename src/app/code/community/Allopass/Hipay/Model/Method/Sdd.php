@@ -61,28 +61,14 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 	    	if(is_null($token))
 	    	{
 	    			
-		    	$gatewayParams['payment_product'] = 'SDD' ;
+		    	$gatewayParams['payment_product'] = $this->getCcTypeHipay($payment->getCcType()); ;
 		    	$gatewayParams['operation'] = $this->getOperation();
-		    	$gatewayParams['css'] = $this->getConfigData('css_url');
-				$gatewayParams['template'] = $this->getConfigData('display_iframe') ? 'iframe' :  $this->getConfigData('template');
-		    	if ($this->getConfigData('template') == 'basic-js' && $gatewayParams['template'] == 'iframe') $gatewayParams['template'] .= '-js';
-		    	$gatewayParams['display_selector'] = $this->getConfigData('display_selector');
-		    	//$gatewayParams['payment_product_list'] = $this->getConfigData('cctypes');
-				
-				if ($gatewayParams['country'] == 'BE') 
-					$gatewayParams['payment_product_list'] = $this->getConfigData('cctypes');
-				else
-					$gatewayParams['payment_product_list'] = str_replace('bcmc', '', $this->getConfigData('cctypes'));
-				
-		    	$gatewayParams['payment_product_category_list'] = "credit-card";
 		    	
 		    	if(Mage::getStoreConfig('general/store_information/name') != "")
 		    		$gatewayParams['merchant_display_name'] = Mage::getStoreConfig('general/store_information/name'); 
 				
-		    	$this->_debug($gatewayParams);
-		    	
-		    	$gatewayResponse = $request->gatewayRequest(Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_HOSTED,$gatewayParams,$payment->getOrder()->getStoreId());
-		    	
+		    	$this->_debug($gatewayParams);		    	
+		    	$gatewayResponse = $request->gatewayRequest(Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_ORDER,$gatewayParams,$payment->getOrder()->getStoreId());
 		    	$this->_debug($gatewayResponse->debug());
 		
 				return  $gatewayResponse->getForwardUrl();
