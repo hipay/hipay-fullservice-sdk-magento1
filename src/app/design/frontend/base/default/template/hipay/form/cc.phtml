@@ -246,7 +246,7 @@ $_cards = $this->getCards();
                ); 
 	$config3ds = Mage::helper('hipay')->is3dSecure($use3ds, $rule3ds);
 	?>
-	<label for="<?php echo $_code ?>_type" ><?php echo $this->__('Bankwire method ') ?>: 
+	<label for="<?php echo $_code ?>_type" ><?php echo $this->__('Bankwire method') ?>: 
 		<?php foreach ($this->getCcAvailableTypes() as $_typeCode => $_typeName): ?>
 				<?php echo $_typeName ?>
                 <input id="<?php echo $_code ?>_type" value="<?php echo $_typeCode ?>" type="hidden" name="payment[cc_type]" />
