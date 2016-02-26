@@ -3779,7 +3779,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </pending_redirect_page>
-                         <payment_action translate="label">
+                        <payment_action translate="label">
                             <label>Payment Action</label>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_paymentAction</source_model>
@@ -3787,19 +3787,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                              <show_in_store>0</show_in_store>
-                          </payment_action>
-                          <cctypes translate="label">
-                            <label>Credit Card Types</label>
-                            <comment>Sort the list by drag'n/drop credit card type</comment>
-                            <frontend_type>checkboxes</frontend_type>
-                            <frontend_model>hipay/adminhtml_system_config_form_field_multiselectSortable</frontend_model>
-                            <backend_model>hipay/system_config_backend_ccTypes</backend_model>
-                           <source_model>hipay/source_ccType::toConfigOption</source_model>
-                            <sort_order>40</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </cctypes>
+                        </payment_action>
                         <display_card_owner translate="label comment">
                             <label>Display card owner</label>
                             <comment>Display card owner in card form</comment>
