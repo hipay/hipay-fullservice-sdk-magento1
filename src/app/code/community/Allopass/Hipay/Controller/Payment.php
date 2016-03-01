@@ -104,8 +104,6 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
 	{
 		$this->processResponse();
 		
-		$this->getCheckout()->clear();
-		
 		$this->_redirect($this->_getMethodInstance()->getConfigData('pending_redirect_page'));
 		
 		return $this;
