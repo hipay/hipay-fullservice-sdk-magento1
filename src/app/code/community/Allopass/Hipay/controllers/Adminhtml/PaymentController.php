@@ -37,6 +37,7 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
 		try {
 
 			$order->getPayment()->accept();
+			$order->setState(Mage_Sales_Model_Order::STATE_PROCESSING,Allopass_Hipay_Model_Method_Cc::STATUS_PENDING_CAPTURE);
 			$message = $this->__('The payment has been accepted.');								
 			$order->save();
 			$this->_getSession()->addSuccess($message);

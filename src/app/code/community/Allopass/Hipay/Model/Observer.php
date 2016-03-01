@@ -143,7 +143,7 @@ class Allopass_Hipay_Model_Observer
 				$url = $block->getUrl("*/payment/reviewCapturePayment");
 				$message = Mage::helper('sales')->__('Are you sure you want to accept this payment?');
                 $block->addButton('accept_capture_payment', array(
-                    'label'     => Mage::helper('sales')->__('Accept and Capture Payment'),
+                    'label'     => Mage::helper('hipay')->__('Accept and Capture Payment'),
                     'onclick'   => "confirmSetLocation('{$message}', '{$url}')",
                 ));
 			}

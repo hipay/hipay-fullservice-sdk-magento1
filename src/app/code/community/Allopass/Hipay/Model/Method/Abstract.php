@@ -1137,6 +1137,18 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 	
 		switch ($gatewayResponse->getStatus())
 		{
+			case "116":
+				$this->addTransaction(
+						$payment,
+						$gatewayResponse->getTransactionReference(),
+						Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH,
+						array('is_transaction_closed' => 0),
+						array(),
+						Mage::helper('hipay')->getTransactionMessage(
+								$payment, self::OPERATION_MAINTENANCE_ACCEPT_CHALLENGE, $gatewayResponse->getTransactionReference(), $amount
+								)
+						);
+				break;
 			case "117": //Capture requested
 			case "118": //Capture
 			case "119": //Partially Capture
@@ -1154,7 +1166,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 				$payment->setIsTransactionPending(true);
 				break;
 			default:
-				Mage::throwException( $gatewayResponse->getStatus() . " ==> " .$gatewayResponse->getMessage());
+				Mage::throwException( $gatewayResponse->getStatus() . " ==> " .$gatewayResponse->getMessage() . " is not processed!");
 				break;
 		}
 	
