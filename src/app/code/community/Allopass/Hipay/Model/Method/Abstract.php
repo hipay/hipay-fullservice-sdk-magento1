@@ -333,7 +333,28 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 					
 							$order->save();
 							break;
-					
+					case 115: //Canceled
+							if($order->cancel())
+							{
+								
+								$order->cancel();
+								
+								$this->addTransaction(
+										$payment,
+										$gatewayResponse->getTransactionReference(),
+										Mage_Sales_Model_Order_Payment_Transaction::TYPE_VOID,
+										array('is_transaction_closed' => 1),//Transaction was not closed, because admin can try capture after expiration
+										array(
+												$this->_realTransactionIdKey => $gatewayResponse->getTransactionReference(),
+										),
+										Mage::helper('hipay')->getTransactionMessage(
+												$payment, self::OPERATION_AUTHORIZATION, $gatewayResponse->getTransactionReference(), $amount,true
+												)
+										);
+							}
+								
+							
+							break;
 					case 116: //Authorized
 						
 						//check if this order was in state fraud detected
