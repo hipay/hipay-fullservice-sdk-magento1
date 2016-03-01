@@ -934,16 +934,22 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		//}
 		$params['authentication_indicator'] = Mage::helper('hipay')->is3dSecure($this->getConfigData('use_3d_secure'), $this->getConfigData('config_3ds_rules'), $payment);
 	
+		$isAdmin = $this->isAdmin();
+		
 		/**
 		 * Electronic Commerce Indicator
 		*/
-		if($payment->getAdditionalInformation('use_oneclick'))
+		if($payment->getAdditionalInformation('use_oneclick')){
+			
 			$params['eci'] = 9; //Recurring E-commerce
+		}
+		elseif($isAdmin){
+			$params['eci'] = 1; //MO/TO (Card Not Present). This value prevent from 3ds redirection in Admin payment.
+		}
 	
 		/**
 		 * Redirect urls
 		 */
-		$isAdmin = $this->isAdmin();
 		$params['accept_url'] =  $isAdmin ? Mage::helper('adminhtml')->getUrl('*/payment/accept') : Mage::getUrl($this->getConfigData('accept_url'));
 		$params['decline_url'] = $isAdmin ? Mage::helper('adminhtml')->getUrl('*/payment/decline') : Mage::getUrl($this->getConfigData('decline_url'));
 		$params['pending_url'] = $isAdmin ? Mage::helper('adminhtml')->getUrl('*/payment/pending') : Mage::getUrl($this->getConfigData('pending_url'));
