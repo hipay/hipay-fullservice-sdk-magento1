@@ -526,19 +526,44 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 						}
 						elseif($order->canCreditmemo())
 						{
-							$service = Mage::getModel('sales/service_order', $order);
+							/** @var $service Mage_Sales_Model_Service_Order */
+							/*$service = Mage::getModel('sales/service_order', $order);
 							$creditmemo = $service->prepareInvoiceCreditmemo($order->getInvoiceCollection()->getFirstItem());
 							foreach ($creditmemo->getAllItems() as $creditmemoItem) {
 								$creditmemoItem->setBackToStock(Mage::helper('cataloginventory')->isAutoReturnEnabled());
 							}
 							$creditmemo->setOfflineRequested(true);
+							$creditmemo->setState(Mage_Sales_Model_Order_Creditmemo::STATE_REFUNDED);
 							$transactionSave = Mage::getModel('core/resource_transaction')
 							->addObject($creditmemo)
 							->addObject($creditmemo->getOrder());
 							if ($creditmemo->getInvoice()) {
 								$transactionSave->addObject($creditmemo->getInvoice());
 							}
-							$transactionSave->save();
+							$transactionSave->save();*/
+							
+							$amountTxt = $order->getBaseCurrency()->formatTxt($amount);
+							
+							$transactionId = $gatewayResponse->getTransactionReference();
+							
+							$comment = Mage::helper('hipay')->__('Refunded amount of %s. Transaction ID: "%s"', $amountTxt, $transactionId);
+							
+							$isRefundFinal = $gatewayResponse->getRefundedAmount() == $order->getGrandTotal();
+							$payment->setIsTransactionClosed($isRefundFinal)
+							->registerRefundNotification($amount);
+							$order->addStatusHistoryComment($comment, false);
+	
+							// TODO: there is no way to close a capture right now
+							$creditmemo = $payment->getCreatedCreditmemo();
+							if ($creditmemo) {
+								$creditmemo->sendEmail();
+								$order->addStatusHistoryComment(
+										Mage::helper('hipay')->__('Notified customer about creditmemo #%s.', $creditmemo->getIncrementId())
+										)
+										->setIsCustomerNotified(true)
+										->save();
+							}
+							
 						}
 						
 						break;
@@ -817,9 +842,11 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		$transactionId = $payment->getLastTransId();
 		
 		$gatewayParams = array('operation'=>'refund','amount'=>$amount);
+
 		/* @var $request Allopass_Hipay_Model_Api_Request */
 		$request = Mage::getModel('hipay/api_request',array($this));
 		$action = Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_MAINTENANCE . $transactionId;
+		
 		
 		
 		$this->_debug($gatewayParams);
@@ -836,7 +863,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 				
 				/* @var $creditmemo Mage_Sales_Model_Order_Creditmemo */
 				$creditmemo = $payment->getCreditmemo();		
-				$creditmemo->setState(Mage_Sales_Model_Order_Creditmemo::STATE_OPEN);
+				$creditmemo->setState(Mage_Sales_Model_Order_Creditmemo::STATE_OPEN);//State open = pending state
 				
 				break;
 			default:
