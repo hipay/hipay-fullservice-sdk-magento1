@@ -152,3 +152,5 @@
 "lastname","Nom"
 "Bank name","Nom de la banque"
 "Accept and Capture Payment","Accepter et Capturer le paiement"
+"The Capture was requested.","LA capture a été demandée."
+"You must reload the page to see new status.","Vous devez recharger la page pour voir le nouveau statut."

@@ -151,3 +151,5 @@
 "lastname","Lastname"
 "Bank name","Bank name"
 "Accept and Capture Payment","Accept and Capture Payment"
+"The Capture was requested.","The Capture was requested."
+"You must reload the page to see new status.","You must reload the page to see new status."

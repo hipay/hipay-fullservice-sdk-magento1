@@ -68,7 +68,10 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
 			
 			$transactionSave->save();
 			
-			$message = $this->__('The payment has been captured.');
+			$message = $this->__('The Capture was requested.');
+			$this->_getSession()->addSuccess($message);
+			
+			$message = $this->__('You must reload the page to see new status.');
 			$this->_getSession()->addSuccess($message);
 			
 		} catch (Mage_Core_Exception $e) {

@@ -1148,6 +1148,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 								$payment, self::OPERATION_MAINTENANCE_ACCEPT_CHALLENGE, $gatewayResponse->getTransactionReference(), $amount
 								)
 						);
+				$payment->setIsTransactionPending(true);
 				break;
 			case "117": //Capture requested
 			case "118": //Capture
