@@ -153,3 +153,7 @@
 "Bank name","Nom de la banque"
 "Notification ""Refunded"". Refund issued by merchant. Registered notification about refunded amount of %s. Transaction ID: ""%s"". Credit Memo has not been created. Please create offline Credit Memo.","Notification ""Refund"". Remboursement demandé par le marchand. Enregistrement de la notification de remboursement d'un montant de %s. Transaction ID: ""%s"". L'avoir n'a pas été créé. Veuillez créer l'avoir en offline"
 "Notification ""Capture"". Capture issued by merchant. Registered notification about captured amount of %s. Transaction ID: ""%s"". Invoice has not been created. Please create offline Invoice.","Notification ""Capture"". Capture demandée par le marchand. Enregistrement de la notification de capture d'un montant de %s. Transaction ID: ""%s"". La facture n'a pas été créée. Veuillez créer la facture en offline."
+"Accept and Capture Payment","Accepter et Capturer le paiement"
+"The Capture was requested.","LA capture a été demandée."
+"You must reload the page to see new status.","Vous devez recharger la page pour voir le nouveau statut."
+
