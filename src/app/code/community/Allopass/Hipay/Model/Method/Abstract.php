@@ -431,6 +431,14 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 						 	break;
 						}
 						
+						if ($amount != $order->getBaseGrandTotal()) {
+						
+							$transactionId = $gatewayResponse->getTransactionReference();
+							$order->addStatusHistoryComment(Mage::helper('hipay')->__('Notification "Capture". Capture issued by merchant. Registered notification about captured amount of %s. Transaction ID: "%s". Invoice has not been created. Please create offline Invoice.',
+									$order->getBaseCurrency()->formatTxt($amount), $transactionId), false);
+							break;
+						}
+						
 						if ($order->getState() == Mage_Sales_Model_Order::STATE_HOLDED) {
 							$order->unhold();
 						}
@@ -547,8 +555,19 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 						}
 						elseif($order->canCreditmemo())
 						{
+
+							if ($amount != $order->getBaseGrandTotal()) {
+								
+								$transactionId = $gatewayResponse->getTransactionReference();
+								$order->addStatusHistoryComment(Mage::helper('hipay')->__('Notification "Refunded". Refund issued by merchant. Registered notification about refunded amount of %s. Transaction ID: "%s". Credit Memo has not been created. Please create offline Credit Memo.',
+										$order->getBaseCurrency()->formatTxt($amount), $transactionId), false);
+								return $this;
+							}
+
+
 							/** @var $service Mage_Sales_Model_Service_Order */
 							/*$service = Mage::getModel('sales/service_order', $order);
+
 							$creditmemo = $service->prepareInvoiceCreditmemo($order->getInvoiceCollection()->getFirstItem());
 							foreach ($creditmemo->getAllItems() as $creditmemoItem) {
 								$creditmemoItem->setBackToStock(Mage::helper('cataloginventory')->isAutoReturnEnabled());
@@ -1185,6 +1204,19 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 	
 		switch ($gatewayResponse->getStatus())
 		{
+			case "116":
+				$this->addTransaction(
+						$payment,
+						$gatewayResponse->getTransactionReference(),
+						Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH,
+						array('is_transaction_closed' => 0),
+						array(),
+						Mage::helper('hipay')->getTransactionMessage(
+								$payment, self::OPERATION_MAINTENANCE_ACCEPT_CHALLENGE, $gatewayResponse->getTransactionReference(), $amount
+								)
+						);
+				$payment->setIsTransactionPending(true);
+				break;
 			case "117": //Capture requested
 			case "118": //Capture
 			case "119": //Partially Capture
@@ -1202,7 +1234,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 				$payment->setIsTransactionPending(true);
 				break;
 			default:
-				Mage::throwException( $gatewayResponse->getStatus() . " ==> " .$gatewayResponse->getMessage());
+				Mage::throwException( $gatewayResponse->getStatus() . " ==> " .$gatewayResponse->getMessage() . " is not processed!");
 				break;
 		}
 	

@@ -123,3 +123,8 @@
 "HiPay Fullservice Credit Card Split Payment","HiPay Fullservice Credit Card Split Payment"
 "Credit Card Split Payment","Credit Card Split Payment"
 "HiPay Fullservice Hosted Page Split Payment","HiPay Fullservice Hosted Page Split Payment"
+"Notification ""Refunded"". Refund issued by merchant. Registered notification about refunded amount of %s. Transaction ID: ""%s"". Credit Memo has not been created. Please create offline Credit Memo.","Notification ""Refunded"". Refund issued by merchant. Registered notification about refunded amount of %s. Transaction ID: ""%s"". Credit Memo has not been created. Please create offline Credit Memo."
+"Notification ""Capture"". Capture issued by merchant. Registered notification about captured amount of %s. Transaction ID: ""%s"". Invoice has not been created. Please create offline Invoice.","Notification ""Capture"". Capture issued by merchant. Registered notification about captured amount of %s. Transaction ID: ""%s"". Invoice has not been created. Please create offline Invoice."
+"Accept and Capture Payment","Accept and Capture Payment"
+"The Capture was requested.","The Capture was requested."
+"You must reload the page to see new status.","You must reload the page to see new status."

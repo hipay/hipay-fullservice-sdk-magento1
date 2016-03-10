@@ -137,19 +137,24 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 			{
 				$errorMsg = Mage::helper('payment')->__('Iban is not correct, please enter a valid Iban.');
 			}
-			if(empty($paymentInfo->getAdditionalInformation('cc_firstname')))
+			// variable pour la fonction empty
+			$var1 = $paymentInfo->getAdditionalInformation('cc_firstname');
+			$var2 = $paymentInfo->getAdditionalInformation('cc_lastname');
+			$var3 = $paymentInfo->getAdditionalInformation('cc_code_bic');
+			$var4 = $paymentInfo->getAdditionalInformation('cc_bank_name');
+			if(empty($var1))
 			{
 				$errorMsg = Mage::helper('payment')->__('Firstname is mandatory.');
-			}
-			if(empty($paymentInfo->getAdditionalInformation('cc_lastname')))
+			}			
+			if(empty($var2))
 			{
 				$errorMsg = Mage::helper('payment')->__('Lastname is mandatory.');
-			}
-			if(empty($paymentInfo->getAdditionalInformation('cc_code_bic')))
+			}			
+			if(empty($var3))
 			{
 				$errorMsg = Mage::helper('payment')->__('Code BIC is not correct, please enter a valid Code BIC.');
-			}
-			if(empty($paymentInfo->getAdditionalInformation('cc_bank_name')))
+			}			
+			if(empty($var4))
 			{
 				$errorMsg = Mage::helper('payment')->__('Bank name is not correct, please enter a valid Bank name.');
 			}
