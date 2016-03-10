@@ -410,6 +410,14 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 						 	break;
 						}
 						
+						if ($amount != $order->getBaseGrandTotal()) {
+						
+							$transactionId = $gatewayResponse->getTransactionReference();
+							$order->addStatusHistoryComment(Mage::helper('hipay')->__('Notification "Capture". Capture issued by merchant. Registered notification about captured amount of %s. Transaction ID: "%s". Invoice has not been created. Please create offline Invoice.',
+									$order->getBaseCurrency()->formatTxt($amount), $transactionId), false);
+							break;
+						}
+						
 						if ($order->getState() == Mage_Sales_Model_Order::STATE_HOLDED) {
 							$order->unhold();
 						}
@@ -526,6 +534,14 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 						}
 						elseif($order->canCreditmemo())
 						{
+							if ($amount != $order->getBaseGrandTotal()) {
+								
+								$transactionId = $gatewayResponse->getTransactionReference();
+								$order->addStatusHistoryComment(Mage::helper('hipay')->__('Notification "Refunded". Refund issued by merchant. Registered notification about refunded amount of %s. Transaction ID: "%s". Credit Memo has not been created. Please create offline Credit Memo.',
+										$order->getBaseCurrency()->formatTxt($amount), $transactionId), false);
+								return $this;
+							}
+								
 							$service = Mage::getModel('sales/service_order', $order);
 							$creditmemo = $service->prepareInvoiceCreditmemo($order->getInvoiceCollection()->getFirstItem());
 							foreach ($creditmemo->getAllItems() as $creditmemoItem) {
