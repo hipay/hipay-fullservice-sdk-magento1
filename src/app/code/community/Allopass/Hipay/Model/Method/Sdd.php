@@ -48,11 +48,11 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 
 	public function place($payment, $amount)
 	{
-		// check if 3DS
-		$code3Dsecure = Mage::helper('hipay')->is3dSecure($this->getConfigData('use_3d_secure'), $this->getConfigData('config_3ds_rules'), $payment);
-		if($code3Dsecure > 0 )
+		// check if Electronic Signature
+		$codeElectronicSignature = $this->getConfigData('electronic_signature');
+		if($codeElectronicSignature > 0 )
 		{
-			// if 3DS, action hosted			
+			// if Electronic signature, action hosted			
 			$order = $payment->getOrder();
 			$customer = Mage::getModel('customer/customer')->load($order->getCustomerId());			
 			$request = Mage::getModel('hipay/api_request',array($this));				
@@ -87,7 +87,7 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 	    		return $redirectUrl;
 	    	}
 		}else{
-			// if not 3DS, action API
+			// if not Electronic signature, action API
 			$order = $payment->getOrder();
 			$customer = Mage::getModel('customer/customer')->load($order->getCustomerId());			
 			$request = Mage::getModel('hipay/api_request',array($this));			
@@ -105,6 +105,7 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 	    	$gatewayParams['iban'] 				= $payment->getAdditionalInformation('cc_iban');
 	    	$gatewayParams['issuer_bank_id'] 	= $payment->getAdditionalInformation('cc_code_bic');
 	    	$gatewayParams['bank_name']	 		= $payment->getAdditionalInformation('cc_bank_name');
+	    	$gatewayParams['authentication_indicator'] = 0;
 	    	$this->_debug($gatewayParams);
 	    	$gatewayResponse = $request->gatewayRequest(Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_ORDER,$gatewayParams,$payment->getOrder()->getStoreId());
 	    	$this->_debug($gatewayResponse->debug());	    	
@@ -126,9 +127,9 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 		*/
 		$errorMsg = '';
 		$paymentInfo = $this->getInfoInstance();
-		// check if 3DS
-		$code3Dsecure = Mage::helper('hipay')->is3dSecure($this->getConfigData('use_3d_secure'), $this->getConfigData('config_3ds_rules'));
-		if($code3Dsecure == 0 )
+		// check if Electronic signature
+		$codeElectronicSignature = $this->getConfigData('electronic_signature');
+		if($codeElectronicSignature == 0 )
 		{
 			
 			$iban = new Zend_Validate_Iban();

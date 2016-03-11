@@ -238,13 +238,7 @@ $_cards = $this->getCards();
 
 	// TPPMAG1-2 - SEPA Payment.
 
-	$use3ds = Mage::getStoreConfig(
-                   'payment/hipay_sdd/use_3d_secure'
-               ); 
-	$rule3ds = Mage::getStoreConfig(
-                   'payment/hipay_sdd/config_3ds_rules'
-               ); 
-	$config3ds = Mage::helper('hipay')->is3dSecure($use3ds, $rule3ds);
+	$useElectronicSigmature = Mage::getStoreConfig('payment/hipay_sdd/electronic_signature'); 
 	?>
 	<label for="<?php echo $_code ?>_type" ><?php echo $this->__('Bankwire method') ?>: 
 		<?php foreach ($this->getCcAvailableTypes() as $_typeCode => $_typeName): ?>
@@ -252,7 +246,7 @@ $_cards = $this->getCards();
                 <input id="<?php echo $_code ?>_type" value="<?php echo $_typeCode ?>" type="hidden" name="payment[cc_type]" />
             <?php endforeach ?>
 	</label>
-	<?php if($config3ds == 0) : ?>
+	<?php if($useElectronicSigmature == 0) : ?>
 
 	<ul class="form-list" id="card_payment_form_<?php echo $_code ?>" >
 		<li>

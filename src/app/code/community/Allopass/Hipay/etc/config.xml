@@ -864,7 +864,7 @@
                 <decline_url>hipay/sdd/decline</decline_url>
                 <exception_url>hipay/sdd/exception</exception_url>
                 <cancel_url>hipay/sdd/cancel</cancel_url>
-                <use_3d_secure>1</use_3d_secure>
+                <electronic_signature>1</electronic_signature>
                 <send_fraud_payment_email>0</send_fraud_payment_email>
             </hipay_sdd>
 		</payment>
