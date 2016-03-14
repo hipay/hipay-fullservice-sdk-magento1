@@ -96,16 +96,16 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
 			$amount = $response->getRefundedAmount();
 		
 		$transactionId = $response->getTransactionReference();
-		
-		
-		$methodInstance->processResponse($response, $payment, $amount);
-		
-		
+
+
+		// Move Notification before processing
 		$message = Mage::helper('hipay')->__("Notification from Hipay:") . " " . Mage::helper('hipay')->__("status") . ": ". $response->getStatus(). " Message: " .$response->getMessage()." ".Mage::helper('hipay')->__('amount: %s',(string)$amount);
-		//
 		$order->addStatusToHistory($order->getStatus(), $message);
 		$order->save();
-		
+
+		// THEN processResponse
+		$methodInstance->processResponse($response, $payment, $amount);
+
 		return $this;
 		
 		
