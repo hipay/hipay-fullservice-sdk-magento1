@@ -4,7 +4,7 @@
 
 The **HiPay Fullservice for Magento 1** is a library that allows you to **accept payments in your Demandware online shop** by leveraging the HiPay Fullservice payment platform.
 
-[[magento-logo.png]]
+![Magento 1 LINK Marketplace](magento-logo.png)
 
 ## Getting started
 
