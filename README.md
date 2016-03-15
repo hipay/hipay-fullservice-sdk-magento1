@@ -25,13 +25,12 @@ This extension is compatible with Magento version 1.5.x, 1.6.x, 1.7.x, 1.8.x and
 
 - Allows your customers to check out with a **wide variety of payment methods**: international credit and debit cards (**Visa**, **MasterCard**, **American Express**, **Maestro**, etc.), real-time banking, e-wallets, etc.
 - Enables merchants to **configure specific rules for the use of 3-D Secure**
-- Oneclick configurable by custom rules
+- One Click configurable by custom rules
 - Managing multiple cards per customer for payment Oneclick
 - Iframe integration, hosted page and API custom cards
 - Mail management for transactions awaiting validation of fraud (challenge)
 - Manual and automatic capture
 - Capture and partial refund
-- Ensures automatic cancellation: **pending orders are automatically cancelled if not completed** within 30 minutes.
 - Payment in x times without fees
 - Subscription management
 
