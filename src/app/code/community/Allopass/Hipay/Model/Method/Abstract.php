@@ -387,8 +387,17 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 								$notified = true);
 						
 						$order->save();
-						if (!$order->getEmailSent()) {
-							$order->sendNewOrderEmail();
+						// Send order confirmation email - TPPMAG1-29
+ +						if (!$order->getEmailSent() && $order->getCanSendNewEmailFlag()) {
+ +							try {
+ +								if (method_exists($order, 'queueNewOrderEmail')) {
+ +									$order->queueNewOrderEmail();
+ +								} else {
+ +									$order->sendNewOrderEmail();
+ +								}
+ +							} catch (Exception $e) {
+ +								Mage::logException($e);
+ +							}
 						}
 						
 						$payment->setAmountAuthorized($gatewayResponse->getAuthorizedAmount());
@@ -499,8 +508,17 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 						$payment->setBaseAmountAuthorized($gatewayResponse->getAuthorizedAmount());
 						
 						
-						if (!$order->getEmailSent()) {
-							$order->sendNewOrderEmail();
+						// Send order confirmation email - TPPMAG1-29
+ +						if (!$order->getEmailSent() && $order->getCanSendNewEmailFlag()) {
+ +							try {
+ +								if (method_exists($order, 'queueNewOrderEmail')) {
+ +									$order->queueNewOrderEmail();
+ +								} else {
+ +									$order->sendNewOrderEmail();
+ +								}
+ +							} catch (Exception $e) {
+ +								Mage::logException($e);
+ +							}
 						}
 						
 						break;
