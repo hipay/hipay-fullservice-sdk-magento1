@@ -1,14 +1,18 @@
-# HiPay Fullservice for Magento 1.5.x - 1.6.x - 1.7.x - 1.8.x - 1.9.x 
+# HiPay Fullservice extension for Magento v1
 
 [![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/hipay/hipay-wallet-cashout-mirakl-integration/master/LICENSE.md)
 
-The **HiPay Fullservice for Magento 1** is a library that allows you to **accept payments in your Demandware online shop** by leveraging the HiPay Fullservice payment platform.
+The **HiPay Fullservice extension for Magento v1** is a library that allows you to **accept payments in your Magento online shop** by leveraging the HiPay Fullservice payment platform.
 
-![Magento 1 LINK Marketplace](magento-logo.png)
+![Magento](magento-logo.png)
 
 ## Getting started
 
 Read the **[project documentation][doc-home]** for comprehensive information about the requirements, general workflow and installation procedure.
+
+## Compatibility
+
+This extension is compatible with Magento version 1.5.x, 1.6.x, 1.7.x, 1.8.x and 1.9.x.
 
 ## Resources
 - [Full project documentation][doc-home] — To have a comprehensive understanding of the workflow and get the installation procedure
@@ -19,10 +23,8 @@ Read the **[project documentation][doc-home]** for comprehensive information abo
 
 ## Features
 
-- Compatibility Magento 1.5.x - 1.6.x - 1.7.x - 1.8.x - 1.9.x 
 - Allows your customers to check out with a **wide variety of payment methods**: international credit and debit cards (**Visa**, **MasterCard**, **American Express**, **Maestro**, etc.), real-time banking, e-wallets, etc.
-- Enabling the 3D secure
-- Enables merchants to **configure specific rules for the use of 3-D Secure**. These rules can be edited or deleted at any time.
+- Enables merchants to **configure specific rules for the use of 3-D Secure**
 - Oneclick configurable by custom rules
 - Managing multiple cards per customer for payment Oneclick
 - Iframe integration, hosted page and API custom cards
@@ -35,9 +37,9 @@ Read the **[project documentation][doc-home]** for comprehensive information abo
 
 ## License
 
-The **HiPay Fullservice for Magento 1** is available under the **Apache 2.0 License**. Check out the [license file][project-license] for more information.
+The **HiPay Fullservice extension for Magento v1** is available under the **Apache 2.0 License**. Check out the [license file][project-license] for more information.
 
-[doc-home]: HiPayTPP-MagentoIntegrationGuide-v1.2.pdf
+[doc-home]: HiPayTPP-MagentoIntegrationGuide.pdf
 
 [hipay-help]: http://help.hipay.com
 

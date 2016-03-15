@@ -1,6 +1,6 @@
-# Contributing to the HiPay Fullservice for Magento 1
+# Contributing to the HiPay Fullservice extension for Magento v1
 
-Contributions to the HiPay Fullservice for Magento 1 should be made via GitHub [pull
+Contributions to the HiPay Fullservice extension for Magento v1 should be made via GitHub [pull
 requests][pull-requests] and discussed using
 GitHub [issues][issues].
 
@@ -18,9 +18,9 @@ requests should be opened against that branch.
 
 Any contributions should pass all tests.
 
-## Licensing
+### Licensing
 
-The HiPay Fullservice cartridge for Demandware is released under an [Apache
+The HiPay Fullservice extension for Magento v1 is released under the [Apache
 2.0][project-license] license. Any code you submit will be
 released under that license.
 
