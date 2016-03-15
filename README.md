@@ -1,98 +1,47 @@
-# HiPay Fullservice extension for Magento v1
+# HiPay Fullservice for Magento 1.5.x - 1.6.x - 1.7.x - 1.8.x - 1.9.x 
 
-## How to use this repository
+[![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/hipay/hipay-wallet-cashout-mirakl-integration/master/LICENSE.md)
 
-### Build Magento package
+The **HiPay Fullservice for Magento 1** is a library that allows you to **accept payments in your Demandware online shop** by leveraging the HiPay Fullservice payment platform.
 
-You can easily build Magento package with composer.  
-If you don't have composer see: https://getcomposer.org/.  
-The following example take in consideration you have command `composer` available in your PATH environment.  
-Instead you can use `composer.phar` directly but it is less convenient.  
-`tar` command is also required.
+[[magento-logo.png]]
 
-**IMPORTANT**: Make sure you are in master branch (`$ git checkout master`)
+## Getting started
 
-1.  Install dependencies
-In project's root run:
-```
-$ composer install
-```
+Read the **[project documentation][doc-home]** for comprehensive information about the requirements, general workflow and installation procedure.
 
-2.  Build package
-```
-$ composer package
-```
+## Resources
+- [Full project documentation][doc-home] — To have a comprehensive understanding of the workflow and get the installation procedure
+- [HiPay Support Center][hipay-help] — To get technical help from HiPay
+- [Issues][project-issues] — To report issues, submit pull requests and get involved (see [Apache 2.0 License][project-license])
+- [Change log][project-changelog] — To check the changes of the latest versions
+- [Contributing guidelines][project-contributing] — To contribute to our source code
 
-If build package is successful you can see *tar.gz file* in `dist/`  and *Package xml file* in `dist/var/connect`.
+## Features
 
-# HiPay Fullservice Features
+- Compatibility Magento 1.5.x - 1.6.x - 1.7.x - 1.8.x - 1.9.x 
+- Allows your customers to check out with a **wide variety of payment methods**: international credit and debit cards (**Visa**, **MasterCard**, **American Express**, **Maestro**, etc.), real-time banking, e-wallets, etc.
+- Enabling the 3D secure
+- Enables merchants to **configure specific rules for the use of 3-D Secure**. These rules can be edited or deleted at any time.
+- Oneclick configurable by custom rules
+- Managing multiple cards per customer for payment Oneclick
+- Iframe integration, hosted page and API custom cards
+- Mail management for transactions awaiting validation of fraud (challenge)
+- Manual and automatic capture
+- Capture and partial refund
+- Ensures automatic cancellation: **pending orders are automatically cancelled if not completed** within 30 minutes.
+- Payment in x times without fees
+- Subscription management
 
-## Overview   
+## License
 
-HiPay Fullservice is the first payment platform oriented towards merchants that responds to all matters related to online payment:  
-transaction processing, risk management, relationship management with banks and acquirers, financial reconciliation or even international expansion.  
+The **HiPay Fullservice for Magento 1** is available under the **Apache 2.0 License**. Check out the [license file][project-license] for more information.
 
+[doc-home]: HiPayTPP-MagentoIntegrationGuide-v1.2.pdf
 
-## Optimise your conversion rate
+[hipay-help]: http://help.hipay.com
 
-Through one single integration, Hipay offers all local and international payment methods,   
-the latest generation tool for fighting fraud and innovative features for an optimised conversion rate!    
-
-
-![alt mode de paiement](http://58b7509f0ca565bdd628-3b5a1171ec85e695d4ada5118e96496e.r14.cf1.rackcdn.com/files/535e59ffc254511e29000020/size_3_logo-paiements.png)
-
-
-HiPay Fullservice offers innovative features to reduce shopping cart abandonment rates and optimise the purchasing process on your merchant sites.
-
-## Our module provides you with different options to increase your sales:
-
-### Activation of 3Ds upon request:
-* Configure when, how and for whom you want to request 3D Secure.
-* Module for fighting intelligent fraud – HiPay FPS.
-* Equipped with the latest technological innovations in the field, our module provides you with optimum protection without blocking legitimate transactions.
-
-### A payment page with your branding:  
-* The payment page offered by HiPay Fullservice is completely customisable with your corporate identity, is available in 10 languages and is built using multi-screen logic   
-(responsive design). All of these options guarantee a unique user experience and an optimal conversion rate.   
-
-## Expand your business on an international scale
-
-HiPay Fullservice meets the security and electronic payment requirements of cross-border online trade and through   
-one single integration, offers the most favoured domestic and international payment solutions in each market  
-(Sofort, Sisal Pay, American Express, Visa, MasterCard, Qiwi, Bancontact Mister Cash, Ideal, Przelewy 24, Paysafcard, Multibanco, Yandex, Webmoney, Belfiu etc.)
-
-HiPay Fullservice allows your foreign customers to make purchases in their own currency. (More than 100 currencies available)
-
-## Features to save you time in managing your transactions
-
-### Management of user permissions:
-* HiPay Fullservice allows you to create user accounts with specific permissions for each individual. A feature that allows you to ensure your tool for managing transactions is secure.
-
-### Numerous payment options:
-* 1-click payments...
-
-### Management of multi-accounts:
-* Make it easy for your staff with automated financial reconciliation and eliminate 80% of the manual work undertaken by your team.
-
-## Flexible integration
-
-### HiPay Fullservice offers a choice of 3 types of integration to best suit your business:
-* **Host mode**: HiPay Fullservice hosts the payment page on its secure site. With this option you will benefit from getting a single point of contact,   
-adjustable payment pages that are PCI-DSS standard. In addition, you can outsource the heavy security requirements necessary for accepting payments.
-* **Iframe**: A hybrid solution where the buyer remains on the merchant site to make a payment, but the information is entered on an iframe hosted by HiPay Fullservice.   
-You will only need an SSL certificate to reassure your customers.
-* **API integration**: The payment page is hosted entirely on the merchant site. You will need a PCI-DSS certification to allow credit card numbers to be transferred through your servers.
-
-## Our experts in on-line payments are here for you
-
-### For more information about the module, please contact us at:
-
-support.tpp @ hipay.com
-
-Send us an email so that we can send you the **technical documentation**.
-
-For more information, have a look at: http://www.hipayfullservice.com
-
-### Our group:
-
-HiPay Group offers digital content publishers and e-tailers the most relevant payment methods to grow their business. Our solutions benefit from two European banking licences: payment institution and e-money issuer.
+[project-issues]: https://github.com/hipay/hipay-fullservice-sdk-magento1/issues
+[project-license]: LICENSE.md
+[project-changelog]: CHANGELOG.md
+[project-contributing]: CONTRIBUTING.md
