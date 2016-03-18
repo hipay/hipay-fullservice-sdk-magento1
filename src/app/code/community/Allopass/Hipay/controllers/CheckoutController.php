@@ -9,22 +9,28 @@ class Allopass_Hipay_CheckoutController extends Mage_Core_Controller_Front_Actio
 	 */
 	public function preDispatch() {
 		parent::preDispatch();
-		//Mage::log($this->getRequest()->getParams(),null,$this->getRequest()->getActionName() . ".log");
 	}
 
 	
 	public function pendingAction()
 	{
+		$session = $this->getOnepage()->getCheckout();
+		if (!$session->getLastSuccessQuoteId()) {
+			$this->_redirect('checkout/cart');
+			return;
+		}
 		
-	 	$lastQuoteId = $this->getOnepage()->getCheckout()->getLastQuoteId();
-        $lastOrderId = $this->getOnepage()->getCheckout()->getLastOrderId();
-        $this->getOnepage()->getCheckout()->setErrorMessage("");
-        if (!$lastQuoteId || !$lastOrderId) {
-            $this->_redirect('checkout/cart');
-            return;
-        }
-
-        $this->loadLayout();
+		$lastQuoteId = $session->getLastQuoteId();
+		$lastOrderId = $session->getLastOrderId();
+		$lastRecurringProfiles = $session->getLastRecurringProfileIds();
+		if (!$lastQuoteId || (!$lastOrderId && empty($lastRecurringProfiles))) {
+			$this->_redirect('checkout/cart');
+			return;
+		}
+		
+		$session->clear();
+		$this->loadLayout();
+		$this->_initLayoutMessages('checkout/session');
         $this->renderLayout();
     }
     

@@ -1,0 +1,31 @@
+[
+    {
+        "name": "pulsestorm/magento-tar-to-connect",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "git@github.com:sirateck/MagentoTarToConnect.git",
+            "reference": "9214251c60ee4a35f68545ee0a00faa380271f5b"
+        },
+        "require-dev": {
+            "pear/archive_tar": "1.3.*",
+            "phpunit/phpunit": "4.2.*"
+        },
+        "time": "2014-09-24 03:02:48",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "tests/MagentoTarToConnectBaseTest.php"
+            ]
+        },
+        "authors": [
+            {
+                "name": "Alan Storm",
+                "email": "astorm@alanstorm.com"
+            }
+        ],
+        "description": "A duct-tape shell script for packaging Magento Extenstions"
+    }
+]

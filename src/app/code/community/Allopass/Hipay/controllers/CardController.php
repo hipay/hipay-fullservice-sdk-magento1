@@ -129,6 +129,7 @@ class Allopass_Hipay_CardController extends Mage_Core_Controller_Front_Action
 		// check if we know what should be deleted
 		if ($cardId = $this->getRequest()->getParam('card_id')) {
 			$customer = $this->_getSession()->getCustomer();
+			/* @var $card Allopass_Hipay_Model_Card */
 			$card = Mage::getModel('hipay/card');
 
 			if ($cardId) {
@@ -144,11 +145,11 @@ class Allopass_Hipay_CardController extends Mage_Core_Controller_Front_Action
 				return $this->_redirectError(Mage::getUrl('*/*/'));
 			}
 			
+			
 			try {
 				
-				//just disable the card
-				$card->setCcStatus(Allopass_Hipay_Model_Card::STATUS_DISABLED);
-				$card->save();
+				//Delete the card
+				$card->delete();
 				// display success message
 				$this->_getSession()->addSuccess(
 				Mage::helper('hipay')->__('The card has been deleted.'));

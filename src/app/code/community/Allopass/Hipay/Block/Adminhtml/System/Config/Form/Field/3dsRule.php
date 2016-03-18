@@ -18,7 +18,7 @@ class Allopass_Hipay_Block_Adminhtml_System_Config_Form_Field_3dsRule extends  M
 	}
 	
 	public function getNewChildUrl(){
-		return Mage::getUrl('hipay/adminhtml_rule/newConditionHtml/form/rule_conditions_fieldset');
+		return Mage::helper("adminhtml")->getUrl('*/rule/newConditionHtml',array('form'=>'rule_conditions_fieldset'));
 	}
 	
 	/**

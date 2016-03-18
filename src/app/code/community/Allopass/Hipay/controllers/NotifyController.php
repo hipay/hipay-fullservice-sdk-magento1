@@ -13,8 +13,7 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
 	 */
 	public function preDispatch() {
 		parent::preDispatch();
-		
-		//Mage::log($this->getRequest()->getParams(),null,$this->getRequest()->getActionName() . ".log");
+
 		if (!$this->_validateSignature()) {
 			$this->getResponse()->setBody("NOK. Wrong Signature!");
 			$this->setFlag('', 'no-dispatch', true);
@@ -49,28 +48,18 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
 		
 		if(strpos($orderArr['id'], 'recurring') !== false)
 		{
-			//return $this;
-				
+	
 			list($action,$type,$profileId) = explode("-", $orderArr['id']);
 				
 			if($profileId)
 			{
 				/* @var $profile Mage_Sales_Model_Recurring_Profile */
 				$profile = Mage::getModel('sales/recurring_profile')->load($profileId);
-				if($profile->getId())
+				if(!$profile->getId())
 				{
-					
-
-					if($action == 'create' || $action == "payment")
-					{
-						//$order = $this->createProfileOrder($profile, $response);
-					}
-						
-					//return $this;	
-					
+					die(Mage::helper('hipay')->__("Profile for ID: %d doesn't exists (Recurring).",$profileId));	
 				}
-				else
-					die(Mage::helper('hipay')->__("Profile for ID: %d doesn't exists (Recurring).",$profileId));
+					
 			}
 			else 
 				die(Mage::helper('hipay')->__("Order Id not present (Recurring)."));
@@ -95,19 +84,18 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
 		else 
 			$amount = $response->getRefundedAmount();
 		
-		$transactionId = $response->getTransactionReference();
-		
-		
-		$methodInstance->processResponse($response, $payment, $amount);
-		
-		
+		$transactionId = $response->getTransactionReference();		
+
+		// Move Notification before processing
 		$message = Mage::helper('hipay')->__("Notification from Hipay:") . " " . Mage::helper('hipay')->__("status") . ": ". $response->getStatus(). " Message: " .$response->getMessage()." ".Mage::helper('hipay')->__('amount: %s',(string)$amount);
-		//
+		
 		$order->addStatusToHistory($order->getStatus(), $message);
 		$order->save();
+
+		// THEN processResponse
+ +		$methodInstance->processResponse($response, $payment, $amount);
 		
-		return $this;
-		
+		return $this;	
 		
 	}
 	

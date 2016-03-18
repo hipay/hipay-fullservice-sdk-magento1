@@ -14,14 +14,9 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
 	 */
 	protected function _getMethodInstance()
 	{
-		
-		//list($module,$method) = explode("_", $this->getCheckout()->getMethod());
-		//$modelName = $module . "/method_" . $method; 
 		$modelName = Mage::getStoreConfig('payment/'.$this->getCheckout()->getMethod()."/model");
-		
-		Mage::log($modelName,null,"debug_bo_hipay.log");
 		return Mage::getSingleton($modelName);
-		//Mage::throwException("Method: '" . __METHOD__ . "' must be implemented!");
+
 	}
 	
 	public function reviewCapturePaymentAction()
@@ -42,6 +37,7 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
 		try {
 
 			$order->getPayment()->accept();
+			$order->setState(Mage_Sales_Model_Order::STATE_PROCESSING,Allopass_Hipay_Model_Method_Cc::STATUS_PENDING_CAPTURE);
 			$message = $this->__('The payment has been accepted.');								
 			$order->save();
 			$this->_getSession()->addSuccess($message);
@@ -72,7 +68,10 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
 			
 			$transactionSave->save();
 			
-			$message = $this->__('The payment has been captured.');
+			$message = $this->__('The Capture was requested.');
+			$this->_getSession()->addSuccess($message);
+			
+			$message = $this->__('You must reload the page to see new status.');
 			$this->_getSession()->addSuccess($message);
 			
 		} catch (Mage_Core_Exception $e) {
@@ -124,7 +123,7 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
 				;
 				$profiles = array();
 				foreach ($collection as $profile) {
-					//$referenceId = $gatewayResponse->getToken()."-".$profile->getId();
+
 					$additionalInfo = array();
 					$additionalInfo['ccType'] = $gatewayResponse->getBrand();
 					$additionalInfo['ccExpMonth'] = $gatewayResponse->getCardExpiryMonth() ;
@@ -132,25 +131,22 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
 					$additionalInfo['token'] = $gatewayResponse->getToken();
 					$additionalInfo['transaction_id'] = $gatewayResponse->getTransactionReference();
 					$profile->setAdditionalInfo($additionalInfo);
-					//$profile->setReferenceId($referenceId);
+
 					$profile->setState(Mage_Sales_Model_Recurring_Profile::STATE_ACTIVE);
 					 
 					$profile->save();
 				}
 			}
 		}
-		/*else 
-		{		
-			$this->processResponse();
-		}*/
+
 		$this->processResponse();
-		Mage::log($this->getUrl('adminhtml/sales_order/view', array('order_id' => $this->getOrder()->getId())),null,"debug_hipay_redirect.log");
+
 		if (Mage::getSingleton('admin/session')->isAllowed('sales/order/actions/view')) {
                  $this->_redirect('adminhtml/sales_order/view', array('order_id' => $this->getOrder()->getId()));
-            } else {
+        } else {
                 $this->_redirect('adminhtml/sales_order/index');
-            }
-		//$this->_redirect('checkout/onepage/success');
+        }
+
 		
 		return $this;
 	}
@@ -294,4 +290,5 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
 	{
 		return Mage::getSingleton('checkout/session');
 	}
+	
 }

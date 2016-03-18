@@ -78,7 +78,12 @@ class Allopass_Hipay_Model_SplitPayment extends Mage_Core_Model_Abstract
 	public function getMethodInstance()
 	{
 		list($moduleName,$methodClass) = explode("_",$this->getMethodCode());
-		return MAge::getSingleton($moduleName . "/method_" . $methodClass );
+		//Fix bug due to upper letter in class name
+		if(strpos($methodClass,'xtimes') !== false)
+		{
+			$methodClass = str_replace("x","X",$methodClass);
+		}
+		return Mage::getSingleton($moduleName . "/method_" . $methodClass );
 	}
 	
 	public function canPay()

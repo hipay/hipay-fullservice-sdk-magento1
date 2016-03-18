@@ -30,7 +30,6 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 			$part = (int)($amount / $maxCycles);
 			$reste = $amount%$maxCycles;
 			$fmod = fmod($amount, $maxCycles);
-			//Mage::log("PART = ".$part." RESTE = ".$reste,null,'hipay_split_debug.log');
 			
 			for ($i=-1;$i<($maxCycles-1);$i++)
 			{
@@ -574,4 +573,38 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 		
 		return $ccTypeMagento;
 	}
+	/*
+	 * TPPMAG1-2 - JPN
+	 */
+	public function is3dSecure($use3dSecure, $config3dsRules, $payment = false)
+	{
+		$params = 0;
+		if($use3dSecure > 0 && !$payment){
+			$params = 1;
+		}else{
+			switch ((int)$use3dSecure) {
+			case 1:
+				$params = 1;
+				break;
+			case 2:
+			case 3:
+				/* @var $rule Allopass_Hipay_Model_Rule */
+				$rule = Mage::getModel('hipay/rule')->load($config3dsRules);
+				if($rule->getId() && $rule->validate($payment->getOrder()) )
+				{
+					$params = 1;
+					if((int)$use3dSecure == 3)//case for force 3ds if rules are validated
+						$params = 2;
+						
+				}
+				break;
+			case 4:
+				$params = 2;
+				break;
+			}
+		}		
+		return $params;
+	}
+
+
 }
