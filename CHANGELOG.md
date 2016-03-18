@@ -1,3 +1,8 @@
+# Version 1.3.0
+New payment method SEPA (SDD)
+Bugfix for refund, cards registered, order optimisation in status pending, Payment MO/TO in back office
+
+
 <a name=""></a>
 # [](//compare/v1.2.5...vundefined) (2016-01-04)
 
