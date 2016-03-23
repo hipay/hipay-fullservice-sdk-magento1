@@ -440,7 +440,15 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 						 	break;
 						}
 						
-						if ($amount != $order->getBaseGrandTotal()) {
+						//Check if it is split payment and insert it
+						$profile=0;
+						if(($profile = (int)$payment->getAdditionalInformation('split_payment_id')) && $customer->getId())
+						{
+							$token = isset( $gatewayResponse->paymentMethod['token']) ? $gatewayResponse->paymentMethod['token'] : $gatewayResponse->getData('cardtoken');
+							$this->getHelper()->insertSplitPayment($order, $profile,$customer->getId(),$token);
+						}
+						
+						if ($amount != $order->getBaseGrandTotal() && !$profile) {
 						
 							$transactionId = $gatewayResponse->getTransactionReference();
 							$order->addStatusHistoryComment(Mage::helper('hipay')->__('Notification "Capture". Capture issued by merchant. Registered notification about captured amount of %s. Transaction ID: "%s". Invoice has not been created. Please create offline Invoice.',
