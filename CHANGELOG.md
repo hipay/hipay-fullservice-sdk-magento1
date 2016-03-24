@@ -1,3 +1,10 @@
+# Version 1.3.2
+Fix - Replace URL stage and production
+Fix - sorted date in split payment array
+Fix - Reverse array of split payment
+Fix - split amount with decimals
+Fix - regression for split payment
+
 # Version 1.3.1
 Bugfix - Bad characterin Abstract.php
 
