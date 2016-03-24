@@ -65,11 +65,11 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 						}
 				}
 			
-				$amountToPay = $i==($maxCycles-1) ? ($part + $fmod) : $part;
+				$amountToPay = $i==0 ? ($part + $fmod) : $part;
 				$paymentsSplit[] = array('dateToPay'=>$dateToPay,'amountToPay'=>$amountToPay);
 			}
 			
-			return array_reverse($paymentsSplit);
+			return $paymentsSplit;
 				
 		}
 		
