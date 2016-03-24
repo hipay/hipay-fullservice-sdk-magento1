@@ -69,7 +69,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 				$paymentsSplit[] = array('dateToPay'=>$dateToPay,'amountToPay'=>$amountToPay);
 			}
 			
-			return $paymentsSplit;
+			return array_reverse($paymentsSplit);
 				
 		}
 		
