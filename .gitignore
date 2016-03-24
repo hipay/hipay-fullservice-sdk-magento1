@@ -7,3 +7,4 @@ _$*
 vendor
 package/*
 *.lock
+dist

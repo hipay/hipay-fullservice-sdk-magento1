@@ -28,43 +28,44 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 			
 			
 			$part = (int)($amount / $maxCycles);
-			$reste = $amount%$maxCycles;
+			//$reste = $amount%$maxCycles;
 			$fmod = fmod($amount, $maxCycles);
 			
-			for ($i=-1;$i<($maxCycles-1);$i++)
+			for ($i=0;$i<=($maxCycles-1);$i++)
 			{
+				$j = $i - 1;
 				$todayClone = clone $todayDate;
 				switch ($periodUnit)
 				{
 					case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_MONTH:
 					{
-						$dateToPay = $todayClone->addMonth($periodFrequency+$i)->getDate()->toString('yyyy-MM-dd');
+						$dateToPay = $todayClone->addMonth($periodFrequency+$j)->getDate()->toString('yyyy-MM-dd');
 						break;
 					}
 					case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_DAY:
 						{
-							$dateToPay = $todayClone->addDay($periodFrequency+$i)->getDate()->toString('yyyy-MM-dd');
+							$dateToPay = $todayClone->addDay($periodFrequency+$j)->getDate()->toString('yyyy-MM-dd');
 					
 							break;
 						}
 					case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_SEMI_MONTH://TODO test this case !!!
 						{
-							$dateToPay = $todayClone->addDay(15 + $periodFrequency+$i)->getDate()->toString('yyyy-MM-dd');
+							$dateToPay = $todayClone->addDay(15 + $periodFrequency+$j)->getDate()->toString('yyyy-MM-dd');
 							break;
 						}
 					case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_WEEK:
 						{
-							$dateToPay = $todayClone->addWeek($periodFrequency+$i)->getDate()->toString('yyyy-MM-dd');
+							$dateToPay = $todayClone->addWeek($periodFrequency+$j)->getDate()->toString('yyyy-MM-dd');
 							break;
 						}
 					case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_YEAR:
 						{
-							$dateToPay = $todayClone->addYear($periodFrequency+$i)->getDate()->toString('yyyy-MM-dd');
+							$dateToPay = $todayClone->addYear($periodFrequency+$j)->getDate()->toString('yyyy-MM-dd');
 							break;
 						}
 				}
 			
-				$amountToPay = $i==($maxCycles-1) ? ($part + $fmod) : $part;
+				$amountToPay = $i==0 ? ($part + $fmod) : $part;
 				$paymentsSplit[] = array('dateToPay'=>$dateToPay,'amountToPay'=>$amountToPay);
 			}
 			
