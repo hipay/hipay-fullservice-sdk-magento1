@@ -430,12 +430,15 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 						$payment->setAmountAuthorized($gatewayResponse->getAuthorizedAmount());
 						$payment->setBaseAmountAuthorized($gatewayResponse->getAuthorizedAmount());
 
+						//If status Capture Requested is not configured to validate the order, we break.
 						if(((int)$this->getConfigData('hipay_status_validate_order') == 117) === false )
 							break;
 						
-					case 118: //Capture
+					case 118: //Capture. There are 2 ways to enter in this case: 1. direct capture notification. 2. After 117 case, when it is configured for valid order with 117 status.
 						
-						if($order->getStatus() == $this->getConfigData('order_status_payment_accepted') )
+						if(($order->getStatus() == $this->getConfigData('order_status_payment_accepted') ) ||
+						//If status Capture Requested is configured to validate the order and is a direct capture notification (118), we break because order is already validate.
+							((int)$this->getConfigData('hipay_status_validate_order') == 117) === true && (int)$gatewayResponse->getStatus() == 118) 
 						{
 						 	break;
 						}
