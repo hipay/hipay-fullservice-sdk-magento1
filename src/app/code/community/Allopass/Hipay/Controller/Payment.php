@@ -117,7 +117,10 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
 		Mage::getSingleton('checkout/session')->setLastOrderId($lastOrderId);
 		
 		$this->processResponse();
-		$this->_redirect('checkout/onepage/failure');
+		
+		Mage::getSingleton('checkout/session')->addError("Your payment is declined. Please retry checkout with another payment card.");
+		
+		$this->_redirect('checkout/cart');
 		return $this;
 	}
 
@@ -130,7 +133,9 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
 		Mage::getSingleton('checkout/session')->setLastQuoteId($lastOrderId);
 		Mage::getSingleton('checkout/session')->setLastOrderId($lastOrderId);
 		
-		$this->_redirect('checkout/onepage/failure');
+		Mage::getSingleton('checkout/session')->addError("An exception has occured. Please retry checkout.");
+		
+		$this->_redirect('checkout/cart');
 		return $this;
 	}
 	

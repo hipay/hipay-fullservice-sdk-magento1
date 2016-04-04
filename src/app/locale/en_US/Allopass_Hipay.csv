@@ -155,3 +155,5 @@
 "Accept and Capture Payment","Accept and Capture Payment"
 "The Capture was requested.","The Capture was requested."
 "You must reload the page to see new status.","You must reload the page to see new status."
+"Your payment is declined. Please retry checkout with another payment card.","Your payment is declined. Please retry checkout with another payment card."
+"An exception has occured. Please retry checkout.","An exception has occured. Please retry checkout."
