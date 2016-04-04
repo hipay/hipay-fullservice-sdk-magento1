@@ -127,7 +127,9 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		$receiver = Mage::getModel('customer/customer')->load($payment->getOrder()->getCustomerId());
 		$message = Mage::helper('hipay')->__('Your transaction has been approved.');
 		$email_key = "fraud_payment_accept";
-		$this->getHelper()->sendFraudPaymentEmail($receiver, $payment->getOrder(), $message,$email_key);
+		if($this->canSendFraudEmail($payment->getOrder()->getStoreId())){		
+			$this->getHelper()->sendFraudPaymentEmail($receiver, $payment->getOrder(), $message,$email_key);
+		}
 		
 		return $this;
 	}
@@ -155,7 +157,9 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		$receiver = Mage::getModel('customer/customer')->load($payment->getOrder()->getCustomerId());
 		$message = Mage::helper('hipay')->__('Your transaction has been refused.');
 		$email_key = "fraud_payment_deny";
-		$this->getHelper()->sendFraudPaymentEmail($receiver, $payment->getOrder(), $message,$email_key);
+		if($this->canSendFraudEmail($payment->getOrder()->getStoreId())){
+			$this->getHelper()->sendFraudPaymentEmail($receiver, $payment->getOrder(), $message,$email_key);
+		}
 		
 		return $this;
 	}
@@ -769,7 +773,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 				
 				$message = Mage::helper('hipay')->__($gatewayResponse->getMessage());
 				
-				if($this->getConfigData('send_fraud_payment_email',$order->getStoreId()));
+				if($this->canSendFraudEmail($order->getStoreId()))
 				{
 					$email_key='fraud_payment';
 					if($fraudScreening['result'] != 'challenged' || $gatewayResponse->getState() == self::STATE_DECLINED)
@@ -780,6 +784,15 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 			}
 		
 		}
+	}
+	
+	/**
+	 * 
+	 * @param int $storeId
+	 * @return bool
+	 */
+	protected function canSendFraudEmail($storeId=null){
+		return (bool)$this->getConfigData('send_fraud_payment_email',$storeId);
 	}
 
 	/**
