@@ -185,6 +185,7 @@ class Allopass_Hipay_Model_Observer
 			if(((int)$order->getPayment()->getMethodInstance()->getConfigData('hipay_status_validate_order') == 117)  === true ){
 					
 				$histories = Mage::getResourceModel('sales/order_status_history_collection')
+									->setOrderFilter($order)
 									->addFieldToFilter('comment',array('like'=>'%code-118%'));
 
 				if($histories->count() < 1){
