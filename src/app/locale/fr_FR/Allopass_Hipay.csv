@@ -157,3 +157,5 @@
 "Accept and Capture Payment","Accepter et Capturer le paiement"
 "The Capture was requested.","LA capture a été demandée."
 "You must reload the page to see new status.","Vous devez recharger la page pour voir le nouveau statut."
+"Your payment is declined. Please retry checkout with another payment card.","Votre paiement a été refusé. Veuillez réessayer avec une autre carte bancaire."
+"An exception has occured. Please retry checkout.","Une exception est survenue. Vous pouvez valider votre commande à nouveau."
