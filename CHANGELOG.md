@@ -1,3 +1,14 @@
+# Version 1.3.3
+Fix - API + oneclick
+Fix - Block a refund request when the order status is not in processing
+Fix - Fraud email
+Fix - MO/TO create order by back office
+Fix - Workflow optimization for the order status by callback
+Fix - Retry optimization between Payment page and Magento
+Fix - Show a table Split payment on the front office in HTTPS
+Fix - Better management about amount (split payment)
+
+
 # Version 1.3.2
 Fix - Replace URL stage and production
 Fix - sorted date in split payment array
