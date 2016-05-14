@@ -14,7 +14,7 @@
 "successful","successful"
 "Credit Card: xxxx-%s","Credit Card: xxxx-%s"
 "Hipay Transaction ID %s","Hipay Transaction ID %s"
-"Payment authorization error."Payment authorization error."
+"Payment authorization error.","Payment authorization error."
 "Payment capturing error.","Payment capturing error."
 "Payment accepted by Hipay.","Payment accepted by Hipay."
 "Waiting for capture transaction ID '%s' of amount %s","Waiting for capture transaction ID '%s' of amount %s"
