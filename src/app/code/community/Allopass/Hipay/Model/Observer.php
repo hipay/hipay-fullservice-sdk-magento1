@@ -186,7 +186,13 @@ class Allopass_Hipay_Model_Observer
 					
 				$histories = Mage::getResourceModel('sales/order_status_history_collection')
 									->setOrderFilter($order)
-									->addFieldToFilter('comment',array('like'=>'%code-118%'));
+										->addFieldToFilter('comment',
+											array(
+												// new order 
+												array('like'=>'%code-118%'),
+												// old order
+												array('like'=>'%: 118 Message: %')
+											);
 
 				if($histories->count() < 1){
 			
