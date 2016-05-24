@@ -160,7 +160,7 @@ $_cards = $this->getCards();
  	//<![CDATA[
  	    
  	    Validation.creditCartTypes.set('BCMC',[false, new RegExp('^([0-9]{3}|[0-9]{4})?$'), false]);
- 	        
+ 	   Validation.creditCartTypes.set('CB',[new RegExp('^4[0-9]{12}([0-9]{3})?$'), new RegExp('^[0-9]{3}$'), true]);
         var ToogleCvn<?php echo $_code ?> = function() {
         	var elm = $('<?php echo $_code ?>_cc_type');
             if (['BCMC'].indexOf(elm.value) != -1) {
