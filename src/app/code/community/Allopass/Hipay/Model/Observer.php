@@ -188,7 +188,9 @@ class Allopass_Hipay_Model_Observer
 									->setOrderFilter($order)
 										->addFieldToFilter('comment',
 											array(
+												// new order 
 												array('like'=>'%code-118%'),
+												// old order
 												array('like'=>'%: 118 Message: %')
 											);
 
