@@ -1,3 +1,9 @@
+# Version 1.3.4
+Fix - Order Challenged with pending payment after callback 116
+Fix - Order Challenged with pending_review befor callback 116
+Fix - Control Credit Card number
+Fix - backward compatible Refund between new order and old order
+
 # Version 1.3.3
 Fix - API + oneclick
 Fix - Block a refund request when the order status is not in processing
