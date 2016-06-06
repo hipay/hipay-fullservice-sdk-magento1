@@ -192,7 +192,7 @@ class Allopass_Hipay_Model_Observer
 												array('like'=>'%code-118%'),
 												// for old order
 												array('like'=>'%: 118 Message: %')
-											);
+											));
 
 				if($histories->count() < 1){
 			
