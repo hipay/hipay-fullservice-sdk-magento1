@@ -1,3 +1,6 @@
+# Version 1.3.5
+Fix - oberserver parse error
+
 # Version 1.3.4
 Fix - Order Challenged with pending payment after callback 116
 Fix - Order Challenged with pending_review befor callback 116
