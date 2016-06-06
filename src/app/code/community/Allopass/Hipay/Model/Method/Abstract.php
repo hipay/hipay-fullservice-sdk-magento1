@@ -131,7 +131,10 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 			$this->getHelper()->sendFraudPaymentEmail($receiver, $payment->getOrder(), $message,$email_key);
 		}
 		
-		return $this;
+		$payment->setPreparedMessage( Mage::helper('hipay')->__('Transaction is in pending notification.'));
+		
+		// Return false because payment is accepted by notification
+		return false;
 	}
 	
 	public function denyPayment(Mage_Payment_Model_Info $payment)
@@ -161,7 +164,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 			$this->getHelper()->sendFraudPaymentEmail($receiver, $payment->getOrder(), $message,$email_key);
 		}
 		
-		return $this;
+		return true;
 	}
 	
 	/**

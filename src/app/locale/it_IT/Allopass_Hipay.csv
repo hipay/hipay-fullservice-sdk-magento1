@@ -57,7 +57,7 @@
 "Cancel orders stayed in pending because customer not validated payment","Annulla ordini rimasti in sospeso perché il cliente non ha validato il pagamento"
 "Payment from applicable countries","Pagamento da paesi pertinenti"
 "Payment from Specific countries","Pagamento da paesi specifici"
-"Minimum Order Total,"Totale minimo ordine"
+"Minimum Order Total","Totale minimo ordine"
 "Maximum Order Total","Totale massimo ordine"
 "Sort order","Organizza ordine"
 "Enable debug log","Consenti i log per il debug"
@@ -130,3 +130,4 @@
 "You must reload the page to see new status.","You must reload the page to see new status."
 "Your payment is declined. Please retry checkout with another payment card.","Your payment is declined. Please retry checkout with another payment card."
 "An exception has occured. Please retry checkout.","An exception has occured. Please retry checkout."
+"Transaction is in pending notification.","Transaction is in pending notification."
