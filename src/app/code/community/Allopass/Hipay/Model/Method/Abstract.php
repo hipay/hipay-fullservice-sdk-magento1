@@ -442,12 +442,21 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 							break;
 						
 					case 118: //Capture. There are 2 ways to enter in this case: 1. direct capture notification. 2. After 117 case, when it is configured for valid order with 117 status.
-						
-						if(($order->getStatus() == $this->getConfigData('order_status_payment_accepted') ) ||
-						//If status Capture Requested is configured to validate the order and is a direct capture notification (118), we break because order is already validate.
-							((int)$this->getConfigData('hipay_status_validate_order') == 117) === true && (int)$gatewayResponse->getStatus() == 118) 
+							
+						if($order->getStatus() == $this->getConfigData('order_status_payment_accepted') )
 						{
-						 	break;
+							break;
+						}
+						//If status Capture Requested is configured to validate the order and is a direct capture notification (118), we break because order is already validate.
+						if(((int)$this->getConfigData('hipay_status_validate_order') == 117) === true && (int)$gatewayResponse->getStatus() == 118) 
+						{
+							// if callback 118 and config validate order = 117 and no 117 in history - execute treatment alse break
+							$histories = Mage::getResourceModel('sales/order_status_history_collection')
+												->setOrderFilter($order)
+												->addFieldToFilter('comment',array('like'=>'%code-117%'));
+							if($histories->count() > 0){
+						 		break;
+						 	}
 						}
 						
 						//Check if it is split payment and insert it
