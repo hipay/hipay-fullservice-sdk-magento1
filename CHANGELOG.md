@@ -1,3 +1,6 @@
+# Version 1.3.6
+Fix - Change status to processing when callback 118 with validate order=Capture_requested and the order is not been received with the callback 117
+
 # Version 1.3.5
 Fix - oberserver parse error
 
