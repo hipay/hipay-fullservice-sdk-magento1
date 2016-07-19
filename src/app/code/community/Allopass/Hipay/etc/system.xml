@@ -73,6 +73,43 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </secret_passphrase_test>
+                        <proxy_host translate="label comment">
+                            <label>Host proxy</label>
+                            <comment>Leave blank if no proxy</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </proxy_host>
+                        <proxy_port translate="label comment">
+                            <label>Port proxy</label>
+                            <comment>Leave blank if no proxy</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </proxy_port>
+                        <proxy_user translate="label comment">
+                            <label>User proxy</label>
+                            <comment>Leave blank if no proxy</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </proxy_user>
+                        <proxy_pass translate="label comment">
+                            <label>Password proxy</label>
+                            <comment>Leave blank if no proxy</comment>
+                            <frontend_type>obscure</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </proxy_pass>
                     </fields>
    				</hipay_api>
    				 <fraud_payment translate="label">
