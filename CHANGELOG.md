@@ -1,3 +1,6 @@
+# Version 1.3.8
+Fix - update config.xml version
+
 # Version 1.3.7
 Fix - Delete observer.php setForcedCanRafund()
 Fix - Replace Mage::getSingleton by Mage::getModel in the request.php function getawayRequest()
