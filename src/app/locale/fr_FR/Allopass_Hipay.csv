@@ -160,3 +160,4 @@
 "Your payment is declined. Please retry checkout with another payment card.","Votre paiement a été refusé. Veuillez réessayer avec une autre carte bancaire."
 "An exception has occured. Please retry checkout.","Une exception est survenue. Vous pouvez valider votre commande à nouveau."
 "Transaction is in pending notification.","Transaction en attente de validation par notification."
+"Leave blank if no proxy","Laisser vide si aucun proxy"

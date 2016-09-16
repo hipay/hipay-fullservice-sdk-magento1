@@ -98,9 +98,29 @@ class Allopass_Hipay_Model_Api_Request
 					CURLOPT_HEADER=>false,
 					CURLOPT_RETURNTRANSFER=>true),
 			);
+
+            // ----------------------------------------------------------------------
+            // init proxy if not empty
+            // ----------------------------------------------------------------------
+            $proxy_host = Mage::getStoreConfig('hipay/hipay_api/proxy_host',Mage::app()->getStore());
+            // if host not empty, we use the proxy parameters
+            if(!empty($proxy_host)){
+                $proxy_user = Mage::getStoreConfig('hipay/hipay_api/proxy_user',Mage::app()->getStore());
+                $proxy_pass = Mage::getStoreConfig('hipay/hipay_api/proxy_pass',Mage::app()->getStore());
+                $proxy_port = Mage::getStoreConfig('hipay/hipay_api/proxy_port',Mage::app()->getStore());
+                // init config for cURL
+                $config['curloptions'][CURLOPT_PROXYUSERPWD] = true;
+                $config['curloptions'][CURLOPT_PROXY] = $proxy_host.':'.$proxy_port;
+                // if user and password not empty, we use the credentials
+                if(!empty($proxy_user) && !empty($proxy_pass)){
+                    $config['curloptions'][CURLOPT_PROXYUSERPWD] = $proxy_user.':'.$proxy_pass;
+                }
+            }
+            Mage::log($config, null, 'curl.log');
+            // ----------------------------------------------------------------------
+
 			try {
-	
-				//innitialize http client and adapter curl
+			    //innitialize http client and adapter curl
 				$adapter = Mage::getSingleton('hipay/api_http_client_adapter_curl');
 	
 				$this->_client = new Zend_Http_Client();
@@ -217,7 +237,9 @@ class Allopass_Hipay_Model_Api_Request
 		$uri = $this->getGatewayApiEndpoint($storeId) . $action;
 	
 		/* @var $response Allopass_Hipay_Model_Api_Response_Gateway */
-		$response  = Mage::getSingleton('hipay/api_response_gateway',$this->_request($uri,$params,$this->getMethodHttp($action),$storeId));
+		$response  = Mage::getModel('hipay/api_response_gateway',$this->_request($uri,$params,$this->getMethodHttp($action),$storeId));
+		//Mage::log($response, null, 'log-hipay-gatewayRequest.log', true);
+
 		return $response;
 	}
 	
