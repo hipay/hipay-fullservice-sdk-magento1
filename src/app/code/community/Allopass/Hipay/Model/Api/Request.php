@@ -237,7 +237,9 @@ class Allopass_Hipay_Model_Api_Request
 		$uri = $this->getGatewayApiEndpoint($storeId) . $action;
 	
 		/* @var $response Allopass_Hipay_Model_Api_Response_Gateway */
-		$response  = Mage::getSingleton('hipay/api_response_gateway',$this->_request($uri,$params,$this->getMethodHttp($action),$storeId));
+		$response  = Mage::getModel('hipay/api_response_gateway',$this->_request($uri,$params,$this->getMethodHttp($action),$storeId));
+		//Mage::log($response, null, 'log-hipay-gatewayRequest.log', true);
+
 		return $response;
 	}
 	
