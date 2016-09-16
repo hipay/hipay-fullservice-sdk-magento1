@@ -1,3 +1,7 @@
+# Version 1.3.7
+Fix - Delete observer.php setForcedCanRafund()
+Fix - Replace Mage::getSingleton by Mage::getModel in the request.php function getawayRequest()
+
 # Version 1.3.6
 Fix - Change status to processing when callback 118 with validate order=Capture_requested and the order is not been received with the callback 117
 
