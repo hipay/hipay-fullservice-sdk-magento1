@@ -38,7 +38,7 @@ This extension is compatible with Magento version 1.5.x, 1.6.x, 1.7.x, 1.8.x and
 
 The **HiPay Fullservice extension for Magento v1** is available under the **Apache 2.0 License**. Check out the [license file][project-license] for more information.
 
-[doc-home]: HiPayTPP-MagentoIntegrationGuide.pdf
+[doc-home]: https://developer.hipay.com/doc/hipay-fullservice-sdk-magento1/
 
 [hipay-help]: http://help.hipay.com
 
