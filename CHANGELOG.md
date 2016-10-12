@@ -1,3 +1,6 @@
+# Version 1.3.9
+Update documentation URL to the HiPay portal developer
+
 # Version 1.3.8
 Fix - update config.xml version
 
