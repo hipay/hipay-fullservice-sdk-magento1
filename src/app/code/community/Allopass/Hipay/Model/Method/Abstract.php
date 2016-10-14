@@ -577,7 +577,10 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 							}
 							
 							$cm_amount_check = round($gatewayResponse->getRefundedAmount() - $total_already_refunded,2);
-							
+							$status = $order->getStatus();
+							if(round($total_already_refunded,2) < round($order->getGrandTotal(),2)){
+								$status = self::STATUS_PARTIAL_REFUND;
+							}
 							
 							/* @var $creditmemo Mage_Sales_Model_Order_Creditmemo */
 							foreach ($order->getCreditmemosCollection() as $creditmemo)
@@ -589,11 +592,13 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 									
 									$message = Mage::helper("hipay")->__('Refund accepted by Hipay.');
 									
-									$order->addStatusToHistory($order->getStatus(), $message);
+									$order->addStatusToHistory($status, $message);
 									
 									Mage::getModel('core/resource_transaction')
 									->addObject($creditmemo)->addObject($creditmemo->getOrder())
 									->save();
+									
+									break;
 									
 								}
 							}
