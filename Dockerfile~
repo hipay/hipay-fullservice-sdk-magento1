@@ -6,7 +6,7 @@ RUN cd /tmp && curl https://codeload.github.com/OpenMage/magento-mirror/tar.gz/$
 
 RUN chown -R www-data:www-data /var/www/htdocs
 
-RUN apt-get update && apt-get install -y mysql-client-5.5 libxml2-dev
+RUN apt-get update && apt-get install -y mysql-client-5.5 libxml2-dev && apt-get install vim.tiny
 RUN docker-php-ext-install soap
 
 COPY ./bin/conf /tmp
