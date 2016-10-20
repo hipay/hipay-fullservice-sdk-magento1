@@ -97,11 +97,13 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		$oneclickMode = $data->getData($this->getCode() . '_oneclick');
 		$oneclickCard = $data->getData($this->getCode() . '_oneclick_card');
 		$splitPaymentId = $data->getData($this->getCode() . '_split_payment_id');
+		$token = $data->getData($this->getCode() . '_cc_token');
 		
 		$info->setAdditionalInformation('create_oneclick', $oneclickMode == "create_oneclick" ? 1 : 0)
 		->setAdditionalInformation('use_oneclick',$oneclickMode == "use_oneclick" ? 1 : 0)
 		->setAdditionalInformation('selected_oneclick_card',$oneclickCard == "" ? 0 : $oneclickCard)
-		->setAdditionalInformation('split_payment_id',$splitPaymentId != "" ? $splitPaymentId : 0);
+		->setAdditionalInformation('split_payment_id',$splitPaymentId != "" ? $splitPaymentId : 0)
+		->setAdditionalInformation('token',$token != "" ? $token : "");
 		
 		
 	}
