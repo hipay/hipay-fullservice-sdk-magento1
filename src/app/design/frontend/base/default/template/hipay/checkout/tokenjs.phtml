@@ -16,8 +16,7 @@ if($this->hasPublicCredentials()):
 	  if (this.validate() && validator.validate()) {
 		  
 		  checkout.setLoadWaiting('payment');
-	
-		  var config = <?php echo $this->getConfigJson() ?>;		  	
+	  	
 	      var paymentData = Form.serialize(this.form,{hash:true});
 	      var method = paymentData["payment[method]"];
 	      
@@ -33,7 +32,8 @@ if($this->hasPublicCredentials()):
 					    card_holder: paymentData["payment["+method+"_cc_owner]"] ? paymentData["payment["+method+"_cc_owner]"] : '',
 					    multi_use: '0'
 					  };
-	
+			 
+			  var config = <?php echo $this->getConfigJson() ?>;	
 			  
 			  if(config.methods[method].is_test_mode){  
 			  	HiPay.setTarget('stage'); // default is production/live
@@ -82,7 +82,6 @@ if($this->hasPublicCredentials()):
 
 
 	  function savePayment(paymentObj){
-		  console.log(paymentObj);
 		  var request = new Ajax.Request(
 				  paymentObj.saveUrl,
 		          {
