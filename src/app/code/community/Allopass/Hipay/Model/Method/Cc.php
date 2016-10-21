@@ -102,6 +102,12 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
 	{
 		/* @var $payment Mage_Sales_Model_Order_Payment */
 		$payment = $this->getInfoInstance();
+		
+		//Token is already generate by JS Tokenization
+		if($payment->getAdditionalInformation('token') != ""){
+			return $this;
+		}
+		
 		$order = $payment->getOrder();
 		$customer = Mage::getModel('customer/customer')->load($order->getCustomerId());
 		$token = "";
