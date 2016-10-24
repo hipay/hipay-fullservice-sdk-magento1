@@ -265,7 +265,7 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
 		$payment_profile_id = $this->getRequest()->getParam('payment_profile_id',false);
 		$amount = $this->getCheckout()->getQuote()->getGrandTotal();
 		
-		$response['message'] = Mage::helper('hipay')->__('You will be debit of amount %s only after submit order.',Mage::app()->getStore()->getBaseCurrency()->format($amount, array(), true));
+		$response['message'] = Mage::helper('hipay')->__('You will be debit of amount %s only after submit order.',Mage::app()->getStore()->getCurrency()->format($amount, array(), true));
 		
 		if($payment_profile_id)
 		{
@@ -282,14 +282,14 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
 				foreach ($splitPayment as $value)
 				{
 					$otherPayments .= '<tr>';
-					$amount = Mage::app()->getStore()->getBaseCurrency()->format($value['amountToPay'], array(), true);
+					$amount = Mage::app()->getStore()->getCurrency()->format($value['amountToPay'], array(), true);
 					$dateToPay = new Zend_Date($value['dateToPay']);
 					$otherPayments .= '<td>' . $dateToPay->toString(Zend_Date::DATE_LONG) . "</td><td> " . $amount . '</td>' ;
 					$otherPayments .= '</tr>';
 				}
 				$otherPayments .= '<table></p>';
 				
-				$response['labelSplitPayment'] = "<p><span>" . Mage::helper('hipay')->__('You will be debit of amount %s only after submit order.',Mage::app()->getStore()->getBaseCurrency()->format($firstAmount, array(), true)) . '</span></p>';				
+				$response['labelSplitPayment'] = "<p><span>" . Mage::helper('hipay')->__('You will be debit of amount %s only after submit order.',Mage::app()->getStore()->getCurrency()->format($firstAmount, array(), true)) . '</span></p>';				
 				$response['labelSplitPayment'] .= $otherPayments;
 				
 			} catch (Exception $e) {

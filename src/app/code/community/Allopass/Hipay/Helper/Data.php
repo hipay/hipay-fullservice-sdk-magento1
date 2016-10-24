@@ -93,7 +93,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 		if(!$this->splitPaymentsExists($order->getId()))
 		{
 			
-			$paymentsSplit = $this->splitPayment($profile, $order->getBaseGrandTotal());
+			$paymentsSplit = $this->splitPayment($profile, $order->getGrandTotal());
 			
 
 			//remove first element because is already paid
@@ -110,7 +110,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 							  'real_order_id'=>(int)$order->getRealOrderId(),
 							  'customer_id'=>$customerId,
 							  'card_token'=>$cardToken,
-							  'total_amount'=>$order->getBaseGrandTotal(),
+							  'total_amount'=>$order->getGrandTotal(),
 							  'amount_to_pay'=>$split['amountToPay'],
 							  'date_to_pay'=>$split['dateToPay'],
 							  'method_code'=>$order->getPayment()->getMethod(),
@@ -454,7 +454,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 	 */
 	protected function _formatPrice($payment, $amount)
 	{
-		return $payment->getOrder()->getBaseCurrency()->formatTxt($amount);
+		return $payment->getOrder()->getCurrency()->formatTxt($amount);
 	}
 	
 	

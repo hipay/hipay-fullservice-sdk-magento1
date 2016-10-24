@@ -494,9 +494,9 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
 	{
 		$info = $this->getInfoInstance();
 		if ($this->_isPlaceOrder()) {
-			return (double)$info->getOrder()->getQuoteBaseGrandTotal();
+			return (double)$info->getOrder()->getQuoteGrandTotal();
 		} else {
-			return (double)$info->getQuote()->getBaseGrandTotal();
+			return (double)$info->getQuote()->getGrandTotal();
 		}
 	}
 	
@@ -510,9 +510,9 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
 		$info = $this->getInfoInstance();
 	
 		if ($this->_isPlaceOrder()) {
-			return $info->getOrder()->getBaseCurrencyCode();
+			return $info->getOrder()->getCurrencyCode();
 		} else {
-			return $info->getQuote()->getBaseCurrencyCode();
+			return $info->getQuote()->getCurrencyCode();
 		}
 	}
 	

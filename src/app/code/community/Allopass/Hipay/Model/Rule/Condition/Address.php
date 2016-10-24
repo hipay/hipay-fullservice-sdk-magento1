@@ -7,8 +7,8 @@ class Allopass_Hipay_Model_Rule_Condition_Address extends Mage_Rule_Model_Condit
     {
         $attributes = array(
             'base_subtotal' => Mage::helper('sales')->__('Subtotal'),
-            'base_grand_total' => Mage::helper('sales')->__('Grand Total'),
-            'base_currency_code' => Mage::helper('adminhtml')->__('Currency'),
+            'grand_total' => Mage::helper('sales')->__('Grand Total'),
+            'currency_code' => Mage::helper('adminhtml')->__('Currency'),
             'items_qty' => Mage::helper('salesrule')->__('Total Items Quantity'),
             'weight' => Mage::helper('salesrule')->__('Total Weight'),
             'created_at' => Mage::helper('hipay')->__("Order's time"),
@@ -27,9 +27,9 @@ class Allopass_Hipay_Model_Rule_Condition_Address extends Mage_Rule_Model_Condit
     public function getInputType()
     {
         switch ($this->getAttribute()) {
-            case 'base_subtotal': case 'weight': case 'total_qty': case 'base_grandtotal':
+            case 'subtotal': case 'weight': case 'total_qty': case 'base_grandtotal':
                 return 'numeric';
-            case 'shipping_method': case 'billing_country_id': case 'billing_region_id': case 'base_currency_code':
+            case 'shipping_method': case 'billing_country_id': case 'billing_region_id': case 'currency_code':
                 return 'select'; 
 			case 'created_at':
 				return 'boolean' ;
@@ -40,7 +40,7 @@ class Allopass_Hipay_Model_Rule_Condition_Address extends Mage_Rule_Model_Condit
     public function getValueElementType()
     {
         switch ($this->getAttribute()) {
-            case 'shipping_method': case 'billing_country_id': case 'billing_region_id': case 'base_currency_code': case 'created_at':
+            case 'shipping_method': case 'billing_country_id': case 'billing_region_id': case 'currency_code': case 'created_at':
                 return 'select';
         }
         return 'text';
@@ -68,7 +68,7 @@ class Allopass_Hipay_Model_Rule_Condition_Address extends Mage_Rule_Model_Condit
                         ->toOptionArray();
                     break;
 				
-				case 'base_currency_code':
+				case 'currency_code':
                     $options = Mage::getModel('adminhtml/system_config_source_currency')
                         ->toOptionArray(false);
                     break;
@@ -115,13 +115,13 @@ class Allopass_Hipay_Model_Rule_Condition_Address extends Mage_Rule_Model_Condit
 			$address = $quote->getShippingAddress();
 		}
 		
-		$toValidate->setBaseSubtotal($address->getBaseSubtotal());
-		$toValidate->setBaseGrandTotal($address->getBaseGrandTotal());
+		$toValidate->setSubtotal($address->getSubtotal());
+		$toValidate->setGrandTotal($address->getGrandTotal());
 		$toValidate->setWeight($address->getWeight());
 		$toValidate->setShippingMethod($address->getShippingMethod());
 		
 		$toValidate->setTotalQty($quote->getItemsQty());
-		$toValidate->setBaseCurrencyCode($quote->getBaseCurrencyCode());
+		$toValidate->setCurrencyCode($quote->getCurrencyCode());
 		
 		$toValidate->setCreatedAt($this->_getFormatCreatedAt($object));
 		
