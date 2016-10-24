@@ -108,7 +108,8 @@ class Allopass_Hipay_Model_Observer
 		$splitPayments = Mage::getModel('hipay/splitPayment')->getCollection()
 								->addFieldToFilter('status',array('in'=>array(Allopass_Hipay_Model_SplitPayment::SPLIT_PAYMENT_STATUS_PENDING,
 																			Allopass_Hipay_Model_SplitPayment::SPLIT_PAYMENT_STATUS_FAILED)))
-								->addFieldTofilter('date_to_pay',array('to' => $date->toString('Y-MM-dd 00:00:00')));
+								->addFieldTofilter('date_to_pay',array('to' => $date->toString('Y-MM-dd 00:00:00')))
+								->addFieldTofilter('attempts',array('lte' => 3));
 
 		
 		foreach ($splitPayments as $splitPayment) {
