@@ -1,3 +1,6 @@
+# Version 1.3.10
+Fix - pre-load card holder if empty
+
 # Version 1.3.9
 Update documentation URL to the HiPay portal developer
 

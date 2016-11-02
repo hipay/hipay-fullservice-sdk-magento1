@@ -74,7 +74,6 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
 	}
 	
 	/**
-	 * 
 	 * @param Mage_Sales_Model_Order_Payment $payment
 	 * @return 	array
 	 */
@@ -90,6 +89,7 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
 		//Add card holder
 		$billing = $payment->getOrder()->getBillingAddress();
 		$defaultOwner = $billing->getFirstname() && $billing->getLastname() ? $billing->getFirstname() . ' ' . $billing->getLastname() : $billing->getEmail();
+
 		$params['card_holder'] = $payment->getCcOwner() ? $payment->getCcOwner() : $defaultOwner; 
 
 		$this->_debug($params);
