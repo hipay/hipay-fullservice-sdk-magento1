@@ -74,7 +74,11 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
 		return $instance;
 	}
 	
-	
+	/**
+	 *
+	 * @param Mage_Sales_Model_Order_Payment $payment
+	 * @return 	array
+	 */
 	protected function getVaultParams($payment)
 	{
 		$params = array();
@@ -83,6 +87,11 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
 		$params['card_expiry_year'] = $payment->getCcExpYear();
 		$params['cvc'] = $payment->getCcCid();
 		$params['multi_use'] = 1; 
+		
+		//Add card holder
+		$billing = $payment->getOrder()->getBillingAddress();
+		$defaultOwner = $billing->getFirstname() && $billing->getLastname() ? $billing->getFirstname() . ' ' . $billing->getLastname() : $billing->getEmail();
+		$params['card_holder'] = $payment->getCcOwner() ? $payment->getCcOwner() : $defaultOwner;
 
 		$this->_debug($params);
 		
