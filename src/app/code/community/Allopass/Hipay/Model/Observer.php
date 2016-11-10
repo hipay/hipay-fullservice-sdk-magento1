@@ -108,7 +108,8 @@ class Allopass_Hipay_Model_Observer
 		$splitPayments = Mage::getModel('hipay/splitPayment')->getCollection()
 								->addFieldToFilter('status',array('in'=>array(Allopass_Hipay_Model_SplitPayment::SPLIT_PAYMENT_STATUS_PENDING,
 																			Allopass_Hipay_Model_SplitPayment::SPLIT_PAYMENT_STATUS_FAILED)))
-								->addFieldTofilter('date_to_pay',array('to' => $date->toString('Y-MM-dd 00:00:00')));
+								->addFieldTofilter('date_to_pay',array('to' => $date->toString('Y-MM-dd 00:00:00')))
+								->addFieldTofilter('attempts',array('lteq' => 3));
 
 		
 		foreach ($splitPayments as $splitPayment) {
@@ -167,17 +168,27 @@ class Allopass_Hipay_Model_Observer
 			
 		}
 	}
-	
+	/**
+	 * Disallow refund action in some cases
+	 * Used only for layout render
+	 * @param Varien_Object $observer
+	 */
 	public function orderCanRefund($observer)
 	{
 		/* @var $order Mage_Sales_Model_Order */
 		$order = $observer->getOrder();
+		
 		if($order->getStatus() == Allopass_Hipay_Model_Method_Abstract::STATUS_CAPTURE_REQUESTED){
 			
-			//$order->setForcedCanCreditmemo(false);
+			$order->setForcedCanCreditmemo(false);
+			$order->setForcedCanCreditmemoFromHipay(true);
 		}
-		
-		if($order->getPayment() && strpos($order->getPayment()->getMethod(), 'hipay') !== false)
+		elseif($order->getPayment()->getMethod() == 'hipay_cc' && strtolower($order->getPayment()->getCcType()) == 'bcmc')
+		{
+			$order->setForcedCanCreditmemo(false);
+			$order->setForcedCanCreditmemoFromHipay(true);
+		}
+		elseif($order->getPayment() && strpos($order->getPayment()->getMethod(), 'hipay') !== false)
 		{
 			
 			//If configuration validate order with status 117 (capture requested) and Notification 118 (Captured) is not received
@@ -196,14 +207,28 @@ class Allopass_Hipay_Model_Observer
 
 				if($histories->count() < 1){
 			
-					//$order->setForcedCanCreditmemo(false);
+					$order->setForcedCanCreditmemo(false);
+					$order->setForcedCanCreditmemoFromHipay(true);
 				}
 			}
 			
-			if($order->getPayment()->getMethod() == 'hipay_cc' && strtolower($order->getPayment()->getCcType()) == 'bcmc')
-			{
-				//$order->setForcedCanCreditmemo(false);
-			}
+			
+		}
+		
+	}
+	
+	/**
+	 * Used to unset ForcedCanCreditmemo attributs from the order
+	 * Without restore order status is set to "C"
+	 * @param Varien_Object $observer
+	 */
+	public function unsetOrderCanRefund($observer){
+		/* @var $order Mage_Sales_Model_Order */
+		$order = $observer->getOrder();
+
+		if($order->getForcedCanCreditmemoFromHipay()){
+			$order->unsetData('forced_can_creditmemo');
+			$order->unsetData('forced_can_creditmemo_from_hipay');
 		}
 		
 		

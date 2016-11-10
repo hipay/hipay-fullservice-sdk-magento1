@@ -1,0 +1,100 @@
+<?php 
+/* @var $this Allopass_Hipay_Block_Checkout_Tokenjs */
+
+if($this->hasPublicCredentials()):
+
+?>
+	<script type="text/javascript">
+	
+	//Override save method to generate js token
+	Payment.prototype.save = function(){
+
+	  var self = this;
+		
+	  if (checkout.loadWaiting!=false) return;
+	  var validator = new Validation(this.form);
+	  if (this.validate() && validator.validate()) {
+		  
+		  checkout.setLoadWaiting('payment');
+	  	
+	      var paymentData = Form.serialize(this.form,{hash:true});
+	      var method = paymentData["payment[method]"];
+	      
+	      
+		  //Process Tokenization if method use API Mode (CC form)
+		  if(method.search('hipay_cc') > -1 && paymentData["payment["+method+"_cc_number]"])
+		  {
+			  var params = {
+					    card_number: paymentData["payment["+method+"_cc_number]"],
+					    cvc: paymentData["payment["+method+"_cc_cid]"],
+					    card_expiry_month: paymentData["payment["+method+"_cc_exp_month]"],
+					    card_expiry_year: paymentData["payment["+method+"_cc_exp_year]"],
+					    card_holder: paymentData["payment["+method+"_cc_owner]"] ? paymentData["payment["+method+"_cc_owner]"] : '',
+					    multi_use: '0'
+					  };
+			 
+			  var config = <?php echo $this->getConfigJson() ?>;	
+			  
+			  if(config.methods[method].is_test_mode){  
+			  	HiPay.setTarget('stage'); // default is production/live
+			  	config.api_tokenjs_username = config.api_tokenjs_username_test;
+			  	config.api_tokenjs_publickey = config.api_tokenjs_publickey_test;
+			  	
+			  }
+			  
+			  // These are fake credentials, put your own credentials here (HiPay Fullservice back office > Integration > Security settings and create credentials with public visibility)
+			  HiPay.setCredentials(config.api_tokenjs_username, config.api_tokenjs_publickey);
+
+			  HiPay.create(params,
+
+					    function(result) {
+
+					        // The card has successfully been tokenized
+					        var token = result.token;
+					        
+					        //Write token value in input of type hidden
+					        $("payment_form_" + method).insert({
+									bottom: new Element('input',{type:'hidden',name:'payment['+method+'_cc_token]',value:token})
+						        });
+					        
+					        savePayment(self);
+
+					    }, 
+
+					    function (errors) {
+
+					      // An error occurred
+					      if (typeof errors.message != "undefined") {
+					    	  alert(errors.message.stripTags());
+					      } else {
+					          alert(Translator.translate("An error occurred with the request.").stripTags());
+					      }
+					    }
+				);
+			
+			  
+		  }
+		  else{
+			 savePayment(this);
+		  }      
+	      
+	  }
+
+
+	  function savePayment(paymentObj){
+		  var request = new Ajax.Request(
+				  paymentObj.saveUrl,
+		          {
+		              method:'post',
+		              onComplete: paymentObj.onComplete,
+		              onSuccess: paymentObj.onSave,
+		              onFailure: checkout.ajaxFailure.bind(checkout),
+		              parameters: Form.serialize(paymentObj.form)
+		          }
+		      );
+	  }
+		
+	}
+	
+	</script>
+<?php endif;?>
