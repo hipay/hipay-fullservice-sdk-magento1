@@ -38,15 +38,4 @@
              <block type="hipay/card_edit" name="hipay.card.account.edit" template="hipay/card/form/edit.phtml" />
         </reference>
 	</hipay_card_edit>
-	
-	<!-- TOKENJS integration -->
-	<checkout_onepage_index>
-		<reference name="head">
-			<action method="addItem"><type>skin_js</type><name>js/hipay-fullservice-sdk.min.js</name></action>
-		</reference>
-		<reference name="content" >
-			<block type="hipay/checkout_tokenjs" template="hipay/checkout/tokenjs.phtml" />
-		</reference>
-	</checkout_onepage_index>
-	
 </layout>

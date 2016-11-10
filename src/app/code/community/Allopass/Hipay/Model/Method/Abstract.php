@@ -97,13 +97,11 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		$oneclickMode = $data->getData($this->getCode() . '_oneclick');
 		$oneclickCard = $data->getData($this->getCode() . '_oneclick_card');
 		$splitPaymentId = $data->getData($this->getCode() . '_split_payment_id');
-		$token = $data->getData($this->getCode() . '_cc_token');
 		
 		$info->setAdditionalInformation('create_oneclick', $oneclickMode == "create_oneclick" ? 1 : 0)
 		->setAdditionalInformation('use_oneclick',$oneclickMode == "use_oneclick" ? 1 : 0)
 		->setAdditionalInformation('selected_oneclick_card',$oneclickCard == "" ? 0 : $oneclickCard)
-		->setAdditionalInformation('split_payment_id',$splitPaymentId != "" ? $splitPaymentId : 0)
-		->setAdditionalInformation('token',$token != "" ? $token : "");
+		->setAdditionalInformation('split_payment_id',$splitPaymentId != "" ? $splitPaymentId : 0);
 		
 		
 	}
@@ -469,7 +467,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 							$this->getHelper()->insertSplitPayment($order, $profile,$customer->getId(),$token);
 						}
 						
-						if ($amount != $order->getBaseGrandTotal() && !$profile && $order->getState() != Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW) {
+						if ($amount != $order->getBaseGrandTotal() && !$profile) {
 						
 							$transactionId = $gatewayResponse->getTransactionReference();
 							$order->addStatusHistoryComment(Mage::helper('hipay')->__('Notification "Capture". Capture issued by merchant. Registered notification about captured amount of %s. Transaction ID: "%s". Invoice has not been created. Please create offline Invoice.',
@@ -579,10 +577,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 							}
 							
 							$cm_amount_check = round($gatewayResponse->getRefundedAmount() - $total_already_refunded,2);
-							$status = $order->getStatus();
-							if(round($total_already_refunded,2) < round($order->getGrandTotal(),2)){
-								$status = self::STATUS_PARTIAL_REFUND;
-							}
+							
 							
 							/* @var $creditmemo Mage_Sales_Model_Order_Creditmemo */
 							foreach ($order->getCreditmemosCollection() as $creditmemo)
@@ -594,13 +589,11 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 									
 									$message = Mage::helper("hipay")->__('Refund accepted by Hipay.');
 									
-									$order->addStatusToHistory($status, $message);
+									$order->addStatusToHistory($order->getStatus(), $message);
 									
 									Mage::getModel('core/resource_transaction')
 									->addObject($creditmemo)->addObject($creditmemo->getOrder())
 									->save();
-									
-									break;
 									
 								}
 							}

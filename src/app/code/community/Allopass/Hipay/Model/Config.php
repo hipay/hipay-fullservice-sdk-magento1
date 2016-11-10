@@ -5,17 +5,9 @@ class Allopass_Hipay_Model_Config extends Varien_Object
 	
 	const API_PASSWORD = 'api_password';
 	
-	const API_TOKENJS_USERNAME = 'api_tokenjs_username';
-	
-	const API_TOKENJS_PUBLICKEY = 'api_tokenjs_publickey';
-	
 	const API_USERNAME_TEST = "api_username_test";
 	
 	const API_PASSWORD_TEST = 'api_password_test';
-	
-	const API_TOKENJS_USERNAME_TEST = 'api_tokenjs_username_test';
-	
-	const API_TOKENJS_PUBLICKEY_TEST = 'api_tokenjs_publickey_test';
 	
 	const SECRET_PASSPHRASE = 'secret_passphrase';
 	
@@ -84,16 +76,6 @@ class Allopass_Hipay_Model_Config extends Varien_Object
 		return $this->getConfigData(self::API_PASSWORD,$storeId);
 	}
 	
-	public function getApiTokenJSUsername($storeId=null)
-	{
-		return $this->getConfigData(self::API_TOKENJS_USERNAME,$storeId);
-	}
-	
-	public function getApiTokenJSPublickey($storeId=null)
-	{
-		return $this->getConfigData(self::API_TOKENJS_PUBLICKEY,$storeId);
-	}
-	
 	public function getApiUsernameTest($storeId =null)
 	{
 		return $this->getConfigData(self::API_USERNAME_TEST,$storeId);
@@ -102,15 +84,6 @@ class Allopass_Hipay_Model_Config extends Varien_Object
 	public function getApiPasswordTest($storeId=null)
 	{
 		return $this->getConfigData(self::API_PASSWORD_TEST,$storeId);
-	}
-	
-	public function getApiTokenJSUsernameTest($storeId=null)
-	{
-		return $this->getConfigData(self::API_TOKENJS_USERNAME_TEST,$storeId);
-	}
-	public function getApiTokenJSPublickeyTest($storeId=null)
-	{
-		return $this->getConfigData(self::API_TOKENJS_PUBLICKEY_TEST,$storeId);
 	}
 	
 	public function getVaultEndpoint($storeId=null)

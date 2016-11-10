@@ -116,7 +116,7 @@ class Allopass_Hipay_Model_Api_Request
                     $config['curloptions'][CURLOPT_PROXYUSERPWD] = $proxy_user.':'.$proxy_pass;
                 }
             }
-           // Mage::log($config, null, 'curl.log');
+            Mage::log($config, null, 'curl.log');
             // ----------------------------------------------------------------------
 
 			try {

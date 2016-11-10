@@ -39,37 +39,22 @@ class Allopass_Hipay_Model_SplitPayment extends Mage_Core_Model_Abstract
 			Mage::throwException("Split Payment not found!");
 		}
 		
-		try {
-			
-			$state = $this->getMethodInstance()->paySplitPayment($this);
-			switch ($state)
-			{
-				case Allopass_Hipay_Model_Method_Abstract::STATE_COMPLETED:
-				case Allopass_Hipay_Model_Method_Abstract::STATE_FORWARDING:
-				case Allopass_Hipay_Model_Method_Abstract::STATE_PENDING:
-					$this->setStatus(self::SPLIT_PAYMENT_STATUS_COMPLETE);
-					break;
-				case Allopass_Hipay_Model_Method_Abstract::STATE_DECLINED:
-				case Allopass_Hipay_Model_Method_Abstract::STATE_ERROR:
-				default:
-					$this->setStatus(self::SPLIT_PAYMENT_STATUS_FAILED);
-					$this->sendErrorEmail();
-					break;
-						
-			}
+		$state = $this->getMethodInstance()->paySplitPayment($this);
 		
-		} catch (Exception $e) {
-			
-			if($e->getMessage() != 'Code: 3010004. Message: This order has already been paid'){
-				$this->setStatus(self::SPLIT_PAYMENT_STATUS_FAILED);
-				$this->setAttempts($this->getAttempts() + 1);
-				$this->save();
-				throw $e;
-			}
-			else{ //Order is already paid, so we set complete status
+		switch ($state)
+		{
+			case Allopass_Hipay_Model_Method_Abstract::STATE_COMPLETED:
+			case Allopass_Hipay_Model_Method_Abstract::STATE_FORWARDING:
+			case Allopass_Hipay_Model_Method_Abstract::STATE_PENDING:		
 				$this->setStatus(self::SPLIT_PAYMENT_STATUS_COMPLETE);
-			}
-			
+				break;
+			case Allopass_Hipay_Model_Method_Abstract::STATE_DECLINED:
+			case Allopass_Hipay_Model_Method_Abstract::STATE_ERROR:
+			default:
+				$this->setStatus(self::SPLIT_PAYMENT_STATUS_FAILED);
+				$this->sendErrorEmail();
+				break;
+					
 		}
 		
 		$this->setAttempts($this->getAttempts() + 1);
