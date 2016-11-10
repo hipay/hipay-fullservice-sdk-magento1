@@ -214,6 +214,7 @@ class Allopass_Hipay_Model_Observer
 			
 			
 		}
+		
 	}
 	
 	/**
@@ -224,10 +225,12 @@ class Allopass_Hipay_Model_Observer
 	public function unsetOrderCanRefund($observer){
 		/* @var $order Mage_Sales_Model_Order */
 		$order = $observer->getOrder();
-		
+
 		if($order->getForcedCanCreditmemoFromHipay()){
 			$order->unsetData('forced_can_creditmemo');
 			$order->unsetData('forced_can_creditmemo_from_hipay');
 		}
+		
+		
 	}
 }

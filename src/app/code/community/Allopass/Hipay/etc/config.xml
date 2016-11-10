@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<modules>
 		<Allopass_Hipay>
@@ -327,10 +326,10 @@
 		    </sales_order_load_after>
 		    <sales_order_save_before>
 		        <observers>
-		            <order_can_refund>
+		            <order_unset_can_refund>
 		                <class>hipay/observer</class>
-	                    <method>orderCanRefund</method>
-		            </order_can_refund>
+	                    <method>unsetOrderCanRefund</method>
+		            </order_unset_can_refund>
 		        </observers>
 		    </sales_order_save_before>
 		</events>
