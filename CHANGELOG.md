@@ -1,3 +1,10 @@
+# Version 1.4.0
+New - Repository with Docker for tests
+New - Direct POST with token javascript
+Fix - partially refund with the status 126
+Fix - Split payment and cron (*/5 * * *)
+Fix - order closed when it's shipped 
+
 # Version 1.3.10
 Fix - pre-load card holder if empty
 
