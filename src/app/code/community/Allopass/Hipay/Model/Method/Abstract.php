@@ -562,6 +562,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 						
 						break;
 					case 125: //Refund
+					case 126: //Partially Refund
 						
 						if($order->hasCreditmemos())
 						{
@@ -580,7 +581,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 							
 							$cm_amount_check = round($gatewayResponse->getRefundedAmount() - $total_already_refunded,2);
 							$status = $order->getStatus();
-							if(round($total_already_refunded,2) < round($order->getGrandTotal(),2)){
+							if(round($gatewayResponse->getRefundedAmount(),2) < round($order->getGrandTotal(),2)){
 								$status = self::STATUS_PARTIAL_REFUND;
 							}
 							
@@ -615,24 +616,6 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 										$order->getBaseCurrency()->formatTxt($amount), $transactionId), false);
 								return $this;
 							}
-
-
-							/** @var $service Mage_Sales_Model_Service_Order */
-							/*$service = Mage::getModel('sales/service_order', $order);
-
-							$creditmemo = $service->prepareInvoiceCreditmemo($order->getInvoiceCollection()->getFirstItem());
-							foreach ($creditmemo->getAllItems() as $creditmemoItem) {
-								$creditmemoItem->setBackToStock(Mage::helper('cataloginventory')->isAutoReturnEnabled());
-							}
-							$creditmemo->setOfflineRequested(true);
-							$creditmemo->setState(Mage_Sales_Model_Order_Creditmemo::STATE_REFUNDED);
-							$transactionSave = Mage::getModel('core/resource_transaction')
-							->addObject($creditmemo)
-							->addObject($creditmemo->getOrder());
-							if ($creditmemo->getInvoice()) {
-								$transactionSave->addObject($creditmemo->getInvoice());
-							}
-							$transactionSave->save();*/
 							
 							$amountTxt = $order->getBaseCurrency()->formatTxt($amount);
 							
@@ -961,6 +944,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		{
 			case "124":
 			case "125":
+			case "126":
 				
 				/* @var $creditmemo Mage_Sales_Model_Order_Creditmemo */
 				$creditmemo = $payment->getCreditmemo();		

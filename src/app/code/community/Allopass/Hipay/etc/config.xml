@@ -1,7 +1,7 @@
 <config>
 	<modules>
 		<Allopass_Hipay>
-			<version>1.3.10</version>
+			<version>1.4.0</version>
 		</Allopass_Hipay>
 	</modules>
 	<global>
@@ -933,7 +933,7 @@
 	<crontab>
 		<jobs>
 			<hipay_pay_split_payment>
-				<schedule><cron_expr>0 1 * * *</cron_expr></schedule>
+				<schedule><cron_expr>*/5 * * * *</cron_expr></schedule>
 				<run><model>hipay/observer::paySplitPayments</model></run>
 			</hipay_pay_split_payment>
 			<clean_orders_hipay_in_pending>

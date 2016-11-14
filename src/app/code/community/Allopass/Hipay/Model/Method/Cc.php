@@ -23,7 +23,6 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
 			$data = new Varien_Object($data);
 		}
 
-		Mage::log($data,null,'debug_data.log');
 		$info = $this->getInfoInstance();
 		$info->setCcType($data->getData($this->getCode() . '_cc_type'))
 		->setCcOwner($data->getData($this->getCode() . '_cc_owner'))
@@ -75,7 +74,6 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
 	}
 	
 	/**
-	 *
 	 * @param Mage_Sales_Model_Order_Payment $payment
 	 * @return 	array
 	 */
@@ -91,7 +89,8 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
 		//Add card holder
 		$billing = $payment->getOrder()->getBillingAddress();
 		$defaultOwner = $billing->getFirstname() && $billing->getLastname() ? $billing->getFirstname() . ' ' . $billing->getLastname() : $billing->getEmail();
-		$params['card_holder'] = $payment->getCcOwner() ? $payment->getCcOwner() : $defaultOwner;
+
+		$params['card_holder'] = $payment->getCcOwner() ? $payment->getCcOwner() : $defaultOwner; 
 
 		$this->_debug($params);
 		
