@@ -3629,15 +3629,6 @@
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful</comment>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>26</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </success_redirect_page>
-                        <success_redirect_page translate="label">
-                            <label>Redirect page success</label>
                             <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
