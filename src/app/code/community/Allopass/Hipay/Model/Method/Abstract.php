@@ -859,7 +859,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		switch ($gatewayResponse->getState())
 		{
 			case self::STATE_COMPLETED:
-				return $this->isAdmin() ? $urlAdmin : Mage::getUrl('checkout/onepage/success');
+				return $this->isAdmin() ? $urlAdmin : Mage::helper('hipay')->getCheckoutSuccessPage($payment);
 	
 			case self::STATE_FORWARDING:
 				$payment->setIsTransactionPending(1);
