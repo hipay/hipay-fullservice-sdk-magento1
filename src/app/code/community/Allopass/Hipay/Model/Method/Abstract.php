@@ -968,9 +968,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 	 */
 	public function getGatewayParams($payment,$amount,$token=null)
 	{
-	
 		$params = array();
-	
+
 		$params['orderid'] = $payment->getOrder()->getIncrementId();
 	
 		$paymentProduct = null;
@@ -1074,7 +1073,12 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		//add url to order in BO Magento
 		$params['cdata1'] = Mage::getUrl('adminhtml/sales_order/view',array('_secure'=>true,'order_id'=>$payment->getOrder()->getId()));
 	
-	
+		// Add custom data for transaction request
+		if(class_exists('Allopass_Hipay_Helper_CustomData'))
+		{
+			$params['custom_data']  = Mage::helper('hipay/customData')->getCustomData($payment,$amount);
+		}
+
 		return $params;
 	}
 	
