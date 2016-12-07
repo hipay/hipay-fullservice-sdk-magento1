@@ -24,6 +24,6 @@ class Allopass_Hipay_Helper_CustomData extends Mage_Core_Helper_Abstract
             $customData['my_field_custom_1'] = $payment->getOrder()->getBaseCurrencyCode();
         }
         
-        return json_encode($customData);
+        return $customData;
     }
 }
