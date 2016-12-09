@@ -142,6 +142,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </proxy_pass>
+                        <fingerprint translate="label comment">
+                            <label>Device fingerprint</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </fingerprint>
                     </fields>
    				</hipay_api>
    				 <fraud_payment translate="label">

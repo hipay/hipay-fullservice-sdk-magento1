@@ -1,3 +1,7 @@
+<?php if (Mage::getStoreConfig('hipay/hipay_api/fingerprint',Mage::app()->getStore())) : ?>
+	<input type="hidden" id="ioBB" name="payment[device_fingerprint]" value="" />
+ <?php endif;?>
+
 <?php 
 /* @var $this Allopass_Hipay_Block_Checkout_Tokenjs */
 

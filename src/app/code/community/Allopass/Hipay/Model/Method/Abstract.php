@@ -103,7 +103,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		->setAdditionalInformation('use_oneclick',$oneclickMode == "use_oneclick" ? 1 : 0)
 		->setAdditionalInformation('selected_oneclick_card',$oneclickCard == "" ? 0 : $oneclickCard)
 		->setAdditionalInformation('split_payment_id',$splitPaymentId != "" ? $splitPaymentId : 0)
-		->setAdditionalInformation('token',$token != "" ? $token : "");
+		->setAdditionalInformation('token',$token != "" ? $token : "")
+		->setAdditionalInformation('device_fingerprint', $data->getData('device_fingerprint'));
 		
 		
 	}
@@ -1085,6 +1086,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 			
 		}
 
+		$params['device_fingerprint'] = $payment->getAdditionalInformation('device_fingerprint');
+	
 		return $params;
 	}
 	
