@@ -103,7 +103,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		->setAdditionalInformation('use_oneclick',$oneclickMode == "use_oneclick" ? 1 : 0)
 		->setAdditionalInformation('selected_oneclick_card',$oneclickCard == "" ? 0 : $oneclickCard)
 		->setAdditionalInformation('split_payment_id',$splitPaymentId != "" ? $splitPaymentId : 0)
-		->setAdditionalInformation('token',$token != "" ? $token : "");
+		->setAdditionalInformation('token',$token != "" ? $token : "")
+		->setAdditionalInformation('device_fingerprint', $data->getData('device_fingerprint'));
 		
 		
 	}
@@ -859,7 +860,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		switch ($gatewayResponse->getState())
 		{
 			case self::STATE_COMPLETED:
-				return $this->isAdmin() ? $urlAdmin : Mage::getUrl('checkout/onepage/success');
+				return $this->isAdmin() ? $urlAdmin : Mage::helper('hipay')->getCheckoutSuccessPage($payment);
 	
 			case self::STATE_FORWARDING:
 				$payment->setIsTransactionPending(1);
@@ -968,9 +969,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 	 */
 	public function getGatewayParams($payment,$amount,$token=null)
 	{
-	
 		$params = array();
-	
+
 		$params['orderid'] = $payment->getOrder()->getIncrementId();
 	
 		$paymentProduct = null;
@@ -1074,6 +1074,19 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		//add url to order in BO Magento
 		$params['cdata1'] = Mage::getUrl('adminhtml/sales_order/view',array('_secure'=>true,'order_id'=>$payment->getOrder()->getId()));
 	
+		// Add custom data for transaction request
+		if(class_exists('Allopass_Hipay_Helper_CustomData') && 
+			method_exists(Mage::helper('hipay/customData'),'getCustomData'))
+		{
+			$customData = Mage::helper('hipay/customData')->getCustomData($payment,$amount);
+			
+			if (is_array($customData)){
+				$params['custom_data']  = json_encode(($customData));
+			}
+			
+		}
+
+		$params['device_fingerprint'] = $payment->getAdditionalInformation('device_fingerprint');
 	
 		return $params;
 	}
