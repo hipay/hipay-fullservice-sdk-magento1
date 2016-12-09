@@ -118,7 +118,7 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
 
 		$lastOrderId =  $this->getOrder()->getIncrementId();
 
-		Mage::getSingleton('checkout/session')->setLastQuoteId($lastOrderId);
+		Mage::getSingleton('checkout/session')->setLastQuoteId($lastQuoteId);
 		Mage::getSingleton('checkout/session')->setLastOrderId($lastOrderId);
 		
 		$this->processResponse();
@@ -132,10 +132,14 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
 	
 	public function exceptionAction()
 	{
-		
+		if ($lastQuoteId = $this->getCheckout()->getLastQuoteId()){
+			$quote = Mage::getModel('sales/quote')->load($lastQuoteId);
+			$quote->setIsActive(true)->save();
+		}
+
 		$lastOrderId =  $this->getOrder()->getIncrementId();
-		
-		Mage::getSingleton('checkout/session')->setLastQuoteId($lastOrderId);
+
+		Mage::getSingleton('checkout/session')->setLastQuoteId($lastQuoteId);
 		Mage::getSingleton('checkout/session')->setLastOrderId($lastOrderId);
 		
 		Mage::getSingleton('checkout/session')->addError("An exception has occured. Please retry checkout.");
