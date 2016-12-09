@@ -1,36 +1,36 @@
 <?php
 class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 {
-	
+
 	/**
-	 * 
+	 *
 	 * @param Allopass_Hipay_Model_PaymentProfile|int $profile
 	 * @param float $amount
 	 */
 	public function splitPayment($profile,$amount)
 	{
 		$paymentsSplit = array();
-		
+
 		if(is_int($profile))
 			$profile = Mage::getModel('hipay/paymentProfile')->load($profile);
-		
+
 		if($profile)
 		{
 			$maxCycles = (int)$profile->getPeriodMaxCycles();
 
 			$periodFrequency = (int)$profile->getPeriodFrequency();
 			$periodUnit = $profile->getPeriodUnit();
-			
+
 			$todayDate = new Zend_Date();
-			
+
 			if($maxCycles < 1)
 				Mage::throwException("Period max cycles is equals zero or negative for Payment Profile ID: ".$profile->getId());
-			
-			
+
+
 			$part = (int)($amount / $maxCycles);
 			//$reste = $amount%$maxCycles;
 			$fmod = fmod($amount, $maxCycles);
-			
+
 			for ($i=0;$i<=($maxCycles-1);$i++)
 			{
 				$j = $i - 1;
@@ -45,7 +45,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 					case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_DAY:
 						{
 							$dateToPay = $todayClone->addDay($periodFrequency+$j)->getDate()->toString('yyyy-MM-dd');
-					
+
 							break;
 						}
 					case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_SEMI_MONTH://TODO test this case !!!
@@ -64,45 +64,45 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 							break;
 						}
 				}
-			
+
 				$amountToPay = $i==0 ? ($part + $fmod) : $part;
 				$paymentsSplit[] = array('dateToPay'=>$dateToPay,'amountToPay'=>$amountToPay);
 			}
-			
+
 			return $paymentsSplit;
-				
+
 		}
-		
+
 		Mage::throwException("Payment Profile not found");
-		
+
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param Mage_Sales_Model_Order $order
 	 * @param Allopass_Hipay_Model_PaymentProfile|int $profile $profile
 	 */
 	public function insertSplitPayment($order,$profile,$customerId,$cardToken)
 	{
-		
-		
-		
+
+
+
 		if(is_int($profile))
 			$profile = Mage::getModel('hipay/paymentProfile')->load($profile);
-		
+
 		if(!$this->splitPaymentsExists($order->getId()))
 		{
-			
+
 			$paymentsSplit = $this->splitPayment($profile, $order->getBaseGrandTotal());
-			
+
 
 			//remove first element because is already paid
 			array_shift($paymentsSplit);
-			
-			
+
+
 			//remove last element because the first split is already paid
 			//array_pop($paymentsSplit);
-			
+
 			foreach ($paymentsSplit as $split)
 			{
 				$splitPayment = Mage::getModel('hipay/splitPayment');
@@ -116,14 +116,14 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 							  'method_code'=>$order->getPayment()->getMethod(),
 							  'status'=>Allopass_Hipay_Model_SplitPayment::SPLIT_PAYMENT_STATUS_PENDING,
 				);
-				
+
 				$splitPayment->setData($data);
-				
-				
+
+
 				try {
 					$splitPayment->save();
 				} catch (Exception $e) {
-					
+
 					Mage::throwException("Error on save split payments!");
 				}
 			}
@@ -131,9 +131,9 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 		}
 	}
 
-	
+
 	/**
-	 * 
+	 *
 	 * @param int $orderId
 	 * @return boolean
 	 */
@@ -142,14 +142,14 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 		$collection = Mage::getModel('hipay/splitPayment')->getCollection()->addFieldToFilter('order_id',$orderId);
 		if($collection->count())
 			return true;
-		
+
 		return false;
 	}
-	
+
 	public function getHipayMethods()
 	{
 		$methods = array();
-		
+
 		foreach (Mage::getStoreConfig('payment') as $code => $data) {
 				if(strpos($code, 'hipay') !== false)
 				{
@@ -157,21 +157,21 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 						$methods[$code] = $data['model'];
 				}
 		}
-		
+
 		return $methods;
-		
+
 	}
-	
+
 	public function checkSignature($signature,$fromNotification = false,$response = null)
 	{
 		$passphrase =$this->getConfig()->getSecretPassphrase();
 		if(!is_null($response))
 		{
 			$orderArr = $response->getOrder();
-			
+
 			/* @var $order Mage_Sales_Model_Order */
 			$order = Mage::getModel('sales/order')->loadByIncrementId($orderArr['id']);
-			
+
 			if($order->getId())
 			{
 				$method = $order->getPayment()->getMethodInstance();
@@ -181,21 +181,21 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 				}
 			}
 		}
-		
-		
+
+
 		if(empty($passphrase) || empty($signature))
 			return true;
-		
+
 		if($fromNotification)
 		{
 			$rawPostData = file_get_contents("php://input");
 			if($signature == sha1($rawPostData . $passphrase));
 				return true;
-			
+
 			return false;
 		}
-		
-		
+
+
 		$parameters = $this->_getRequest()->getParams();
 		$string2compute = "";
 		unset($parameters['hash']);
@@ -205,60 +205,60 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 				$string2compute .= $name . $value . $passphrase;
 			}
 		}
-		
+
 		if(sha1($string2compute) == $signature)
 			return true;
-		
+
 		return false;
 	}
-	
+
 	public function checkIfCcExpDateIsValid($customer)
 	{
 		if(is_int($customer))
 			$customer = Mage::getModel('customer/customer')->load($customer);
-	
+
 		$expDate = $customer->getHipayCcExpDate();
 		$alias = $customer->getHipayAliasOneclick();
 		if(!empty($expDate) && !empty($alias))
 		{
 			list($expMonth,$expYear) = explode("-", $expDate);
-			
+
 			return $this->checkIfCcIsExpired($expMonth, $expYear);
-			
+
 			/*$today = new Zend_Date(Mage::app()->getLocale()->storeTimeStamp());
-				
+
 			$currentYear = (int)$today->getYear()->toString("YY");
 			$currentMonth = (int)$today->getMonth()->toString("MM");
-				
+
 			if($currentYear > (int)$expYear)
 				return false;
-				
+
 			if($currentYear == (int)$expYear && $currentMonth > (int)$expMonth)
 				return false;
-				
+
 			return true;*/
-	
+
 		}
-	
+
 		return false;
 	}
-	
+
 	public function checkIfCcIsExpired($expMonth,$expYear)
 	{
 		$today = new Zend_Date(Mage::app()->getLocale()->storeTimeStamp());
-		
+
 		$currentYear = (int)$today->getYear()->toString("YY");
 		$currentMonth = (int)$today->getMonth()->toString("MM");
-		
+
 		if($currentYear > (int)$expYear)
 			return false;
-		
+
 		if($currentYear == (int)$expYear && $currentMonth > (int)$expMonth)
 			return false;
-		
+
 		return true;
 	}
-	
+
 	/**
 	 *
 	 * @param Mage_Customer_Model_Customer $customer
@@ -267,69 +267,69 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 	 */
 	public function responseToCustomer($customer,$response,$isRecurring = false)
 	{
-	
+
 		$paymentMethod = $response->getPaymentMethod();
 		$paymentProduct = $response->getPaymentProduct();
 		$token = isset($paymentMethod['token']) ? $paymentMethod['token'] : $response->getData('cardtoken');
-		
+
 		if($isRecurring)
 			$customer->setHipayAliasRecurring($token);
 		else
 			$customer->setHipayAliasOneclick($token );
-		
+
 		if(isset($paymentMethod['card_expiry_month']) && $paymentMethod['card_expiry_year'])
 			$customer->setHipayCcExpDate($paymentMethod['card_expiry_month'] . "-" . $paymentMethod['card_expiry_year'] );
 		else
 			$customer->setHipayCcExpDate(substr($response->getData('cardexpiry'), 4,2) . "-" . substr($response->getData('cardexpiry'), 0,4) );
-		
+
 		$customer->setHipayCcNumberEnc(isset($paymentMethod['pan']) ? $paymentMethod['pan'] : $response->getData('cardpan'));
 		//$customer->setHipayCcType(isset($paymentMethod['brand']) ? strtolower($paymentMethod['brand']) : strtolower($response->getData('cardbrand')));
-		$customer->setHipayCcType($paymentProduct);	
-			
+		$customer->setHipayCcType($paymentProduct);
+
 		$customer->getResource()->saveAttribute($customer, 'hipay_alias_oneclick');
 		$customer->getResource()->saveAttribute($customer, 'hipay_cc_exp_date');
 		$customer->getResource()->saveAttribute($customer, 'hipay_cc_number_enc');
 		$customer->getResource()->saveAttribute($customer, 'hipay_cc_type');
-	
+
 		return $this;
 	}
-	
+
 	protected function _cardTokenExist($ccToken,$customer_id=0)
 	{
 		$cards = Mage::getResourceModel('hipay/card_collection')
 		->addFieldToSelect('card_id')
 		->addFieldToFilter('cc_token', $ccToken);
-		
+
 		if($customer_id > 0)
 		{
 			$cards->addFieldToFilter('customer_id', $customer_id);
 		}
-		
+
 		return $cards->count() > 0;
 	}
-	
+
 	public function createCustomerCardFromResponse($customerId,$response,$isRecurring = false)
 	{
-		
+
 		$paymentMethod = $response->getPaymentMethod();
 		$paymentProduct = $response->getPaymentProduct();
 		$token = isset($paymentMethod['token']) ? $paymentMethod['token'] : $response->getData('cardtoken');
-		
+
 		if($this->_cardTokenExist($token,$customerId))
 		{
 			return null;
 		}
-		
+
 		$pan = isset($paymentMethod['pan']) ? $paymentMethod['pan'] : $response->getData('cardpan');
-		
+
 		$newCard = Mage::getModel('hipay/card');
-		$newCard->setCustomerId($customerId); 
+		$newCard->setCustomerId($customerId);
 		$newCard->setCcToken($token);
 		$newCard->setCcNumberEnc($pan);
 		$newCard->setCcType($paymentProduct);
 		$newCard->setCcStatus(Allopass_Hipay_Model_Card::STATUS_ENABLED);
 		$newCard->setName($this->__('Card %s - %s',$paymentProduct,$pan));
-		
+
 		if(isset($paymentMethod['card_expiry_month']) && $paymentMethod['card_expiry_year'])
 		{
 			$newCard->setCcExpMonth($paymentMethod['card_expiry_month']);
@@ -340,7 +340,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 			$newCard->setCcExpMonth(substr($response->getData('cardexpiry'), 4,2));
 			$newCard->setCcExpYear(substr($response->getData('cardexpiry'), 0,4));
 		}
-		
+
 		try {
 			$newCard->save();
 			return $newCard;
@@ -349,12 +349,12 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 		}
 
 	}
-	
+
 	public function reAddToCart($incrementId) {
-	
+
 		$cart = Mage::getSingleton('checkout/cart');
 		$order = Mage::getModel('sales/order')->loadByIncrementId($incrementId);
-	
+
 		if ($order->getId()) {
 			$items = $order->getItemsCollection();
 			foreach ($items as $item) {
@@ -372,11 +372,11 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 				}
 			}
 		}
-	
+
 		$cart->save();
 	}
 
-	
+
 	/**
 	 * Return message for gateway transaction request
 	 *
@@ -394,7 +394,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 				$payment, $requestType, $lastTransactionId, $amount, $exception,$additionalMessage
 		);
 	}
-	
+
 	/**
 	 * Return message for gateway transaction request
 	 *
@@ -410,42 +410,42 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 			$exception = false, $additionalMessage = false
 	) {
 		$operation = 'Operation: ' . $requestType;// $this->_getOperation($requestType);
-	
+
 		if (!$operation) {
 			return false;
 		}
-	
+
 		if ($amount) {
 			$amount = $this->__('amount: %s', $this->_formatPrice($payment, $amount));
 		}
-	
+
 		if ($exception) {
 			$result = $this->__('failed');
 		} else {
 			$result = $this->__('successful');
 		}
-	
+
 		$card = $this->__('Credit Card: xxxx-%s', $payment->getCcLast4());
 		$cardType = $this->__('Card type: %s',ucfirst($this->getCcTypeHipay($payment->getCcType())));
-	
+
 		$pattern = '%s - %s.<br /> %s<br /> %s.<br /> %s';
 		$texts = array($operation,$result,$card, $amount,$cardType);
-	
+
 		if (!is_null($lastTransactionId)) {
 			$pattern .= '<br />%s.';
 			$texts[] = $this->__('Hipay Transaction ID %s', $lastTransactionId);
 		}
-	
+
 		if ($additionalMessage) {
 			$pattern .= '<br />%s.';
 			$texts[] = $additionalMessage;
 		}
 		//$pattern .= '<br />%s';
 		//$texts[] = $exception;
-	
+
 		return call_user_func_array(array($this, '__'), array_merge(array($pattern), $texts));
 	}
-	
+
 	/**
 	 * Format price with currency sign
 	 * @param  Mage_Payment_Model_Info $payment
@@ -456,8 +456,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 	{
 		return $payment->getOrder()->getBaseCurrency()->formatTxt($amount);
 	}
-	
-	
+
+
 	/**
 	 * Send email id payment is in Fraud status
 	 * @param Mage_Customer_Model_Customer $receiver
@@ -470,25 +470,25 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 		$translate = Mage::getSingleton('core/translate');
 		/* @var $translate Mage_Core_Model_Translate */
 		$translate->setTranslateInline(false);
-	
+
 		$mailTemplate = Mage::getModel('core/email_template');
 		/* @var $mailTemplate Mage_Core_Model_Email_Template */
-	
+
 		$template = Mage::getStoreConfig('hipay/'.$email_key.'/template', $order->getStoreId());
-	
+
 		$copyTo = $this->_getEmails('hipay/'.$email_key.'/copy_to', $order->getStoreId());
 		$copyMethod = Mage::getStoreConfig('hipay/'.$email_key.'/copy_method', $order->getStoreId());
 		if ($copyTo && $copyMethod == 'bcc') {
 			$mailTemplate->addBcc($copyTo);
 		}
-	
+
 		$sendTo = array(
 				array(
 						'email' => $receiver->getEmail(),
 						'name'  => $receiver->getName()
 				)
 		);
-	
+
 		if ($copyTo && $copyMethod == 'copy') {
 			foreach ($copyTo as $email) {
 				$sendTo[] = array(
@@ -502,12 +502,12 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 			$data = explode('_', $shippingInfo);
 			$shippingMethod = $data[0];
 		}
-	
+
 		$paymentMethod = '';
 		if ($paymentInfo = $order->getPayment()) {
 			$paymentMethod = $paymentInfo->getMethod();
 		}
-	
+
 		$items = '';
 		foreach ($order->getAllVisibleItems() as $_item) {
 			/* @var $_item Mage_Sales_Model_Quote_Item */
@@ -516,7 +516,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 							. $_item->getProduct()->getFinalPrice($_item->getQty()) . "\n";
 		}
 		$total = $order->getStoreCurrencyCode() . ' ' . $order->getGrandTotal();
-	
+
 		foreach ($sendTo as $recipient) {
 			$mailTemplate->setDesignConfig(array('area'=>'frontend', 'store'=>$order->getStoreId()))
 			->sendTransactional(
@@ -538,12 +538,12 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 					)
 			);
 		}
-	
+
 		$translate->setTranslateInline(true);
-	
+
 		return $this;
 	}
-	
+
 	protected function _getEmails($configPath, $storeId)
 	{
 		$data = Mage::getStoreConfig($configPath, $storeId);
@@ -552,26 +552,26 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 		}
 		return false;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return Allopass_Hipay_Model_Config
 	 */
 	protected function getConfig()
 	{
 		return Mage::getSingleton('hipay/config');
 	}
-	
+
 	public function getCcTypeHipay($ccTypeMagento,$exceptionIfNotFound = false)
 	{
 		$ccTypes = Mage::getSingleton('hipay/config')->getCcTypesHipay();
-	
+
 		if(isset($ccTypes[$ccTypeMagento]))
 			return $ccTypes[$ccTypeMagento];
-		
+
 		if($exceptionIfNotFound)
 			Mage::throwException(Mage::helper('hipay')->__("Code Credit Card Type Hipay not found!"));
-		
+
 		return $ccTypeMagento;
 	}
 	/*
@@ -596,14 +596,14 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 					$params = 1;
 					if((int)$use3dSecure == 3)//case for force 3ds if rules are validated
 						$params = 2;
-						
+
 				}
 				break;
 			case 4:
 				$params = 2;
 				break;
 			}
-		}		
+		}
 		return $params;
 	}
 
@@ -616,6 +616,17 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 		return is_null(Mage::getStoreConfig('payment/'.$payment->getMethod().'/success_redirect_page')) ?
 			'checkout/onepage/success' :
 			Mage::getStoreConfig('payment/'.$payment->getMethod().'/success_redirect_page');
+	}<
+
+	/**
+	 * @param Mage_Sales_Model_Order_Payment $payment
+	 *
+	 * @return string
+	 */
+	public function getCheckoutFailurePage($payment) {
+		return is_null(Mage::getStoreConfig('payment/'.$payment->getMethod().'/failure_redirect_page')) ?
+			'checkout/onepage/failure' :
+			Mage::getStoreConfig('payment/'.$payment->getMethod().'/failure_redirect_page');
 	}
 
 

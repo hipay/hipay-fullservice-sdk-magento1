@@ -354,17 +354,26 @@
                             <label>Redirect page success</label>
                             <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>26</sort_order>
+                            <sort_order>27</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </success_redirect_page>
+                        <failure_redirect_page translate="label">
+                            <label>Redirect page failure</label>
+                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </failure_redirect_page>
                         <pending_redirect_page translate="label">
                             <label>Redirect page pending status</label>
                             <comment>Page to redirect when transaction is in pending status</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_pendingredirect</source_model>
-                            <sort_order>27</sort_order>
+                            <sort_order>29</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -651,17 +660,26 @@
                             <label>Redirect page success</label>
                             <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>26</sort_order>
+                            <sort_order>27</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </success_redirect_page>
+                        <failure_redirect_page translate="label">
+                            <label>Redirect page failure</label>
+                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </failure_redirect_page>
                         <pending_redirect_page translate="label">
                             <label>Redirect page pending status</label>
                             <comment>Page to redirect when transaction is in pending status</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_pendingredirect</source_model>
-                            <sort_order>27</sort_order>
+                            <sort_order>29</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -911,17 +929,26 @@
                             <label>Redirect page success</label>
                             <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>26</sort_order>
+                            <sort_order>27</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </success_redirect_page>
+                        <failure_redirect_page translate="label">
+                            <label>Redirect page failure</label>
+                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </failure_redirect_page>
                          <pending_redirect_page translate="label">
                             <label>Redirect page pending status</label>
                             <comment>Page to redirect when transaction is in pending status</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_pendingredirect</source_model>
-                            <sort_order>27</sort_order>
+                            <sort_order>29</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -930,7 +957,7 @@
 	                        <label>Payment Action</label>
 	                        <frontend_type>select</frontend_type>
 	                        <source_model>hipay/source_paymentAction</source_model>
-	                        <sort_order>28</sort_order>
+	                        <sort_order>30</sort_order>
 	                        <show_in_default>1</show_in_default>
 	                        <show_in_website>1</show_in_website>
 	                         <show_in_store>0</show_in_store>
@@ -942,7 +969,7 @@
                             <frontend_model>hipay/adminhtml_system_config_form_field_multiselectSortable</frontend_model>
                             <backend_model>hipay/system_config_backend_ccTypes</backend_model>
                            <source_model>hipay/source_ccTypeHosted::toConfigOption</source_model>
-                            <sort_order>29</sort_order>
+                            <sort_order>31</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -951,7 +978,7 @@
                         	<label>Css Url</label>
                         	<comment>Important, HTTPS protocol is required</comment>
 	                        <frontend_type>text</frontend_type>
-	                        <sort_order>30</sort_order>
+	                        <sort_order>32</sort_order>
 	                        <show_in_default>1</show_in_default>
 	                        <show_in_website>1</show_in_website>
 	                        <show_in_store>1</show_in_store>
@@ -1257,17 +1284,26 @@
                             <label>Redirect page success</label>
                             <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>26</sort_order>
+                            <sort_order>27</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </success_redirect_page>
+                        <failure_redirect_page translate="label">
+                            <label>Redirect page failure</label>
+                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </failure_redirect_page>
                          <pending_redirect_page translate="label">
                             <label>Redirect page pending status</label>
                             <comment>Page to redirect when transaction is in pending status</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_pendingredirect</source_model>
-                            <sort_order>27</sort_order>
+                            <sort_order>29</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -1276,7 +1312,7 @@
 	                        <label>Payment Action</label>
 	                        <frontend_type>select</frontend_type>
 	                        <source_model>hipay/source_paymentAction</source_model>
-	                        <sort_order>28</sort_order>
+	                        <sort_order>30</sort_order>
 	                        <show_in_default>1</show_in_default>
 	                        <show_in_website>1</show_in_website>
 	                         <show_in_store>0</show_in_store>
@@ -1288,7 +1324,7 @@
                             <frontend_model>hipay/adminhtml_system_config_form_field_multiselectSortable</frontend_model>
                             <backend_model>hipay/system_config_backend_ccTypes</backend_model>
                            <source_model>hipay/source_ccTypeHosted::toConfigOption</source_model>
-                            <sort_order>29</sort_order>
+                            <sort_order>31</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -1297,7 +1333,7 @@
                         	<label>Css Url</label>
                         	<comment>Important, HTTPS protocol is required</comment>
 	                        <frontend_type>text</frontend_type>
-	                        <sort_order>30</sort_order>
+	                        <sort_order>32</sort_order>
 	                        <show_in_default>1</show_in_default>
 	                        <show_in_website>1</show_in_website>
 	                        <show_in_store>1</show_in_store>
@@ -1566,17 +1602,26 @@
                             <label>Redirect page success</label>
                             <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>26</sort_order>
+                            <sort_order>27</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </success_redirect_page>
+                        <failure_redirect_page translate="label">
+                            <label>Redirect page failure</label>
+                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </failure_redirect_page>
                          <pending_redirect_page translate="label">
                             <label>Redirect page pending status</label>
                             <comment>Page to redirect when transaction is in pending status</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_pendingredirect</source_model>
-                            <sort_order>27</sort_order>
+                            <sort_order>29</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -1757,17 +1802,26 @@
                             <label>Redirect page success</label>
                             <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>26</sort_order>
+                            <sort_order>27</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </success_redirect_page>
+                        <failure_redirect_page translate="label">
+                            <label>Redirect page failure</label>
+                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </failure_redirect_page>
                          <pending_redirect_page translate="label">
                             <label>Redirect page pending status</label>
                             <comment>Page to redirect when transaction is in pending status</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_pendingredirect</source_model>
-                            <sort_order>27</sort_order>
+                            <sort_order>29</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -1948,17 +2002,26 @@
                             <label>Redirect page success</label>
                             <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>26</sort_order>
+                            <sort_order>27</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </success_redirect_page>
+                        <failure_redirect_page translate="label">
+                            <label>Redirect page failure</label>
+                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </failure_redirect_page>
                          <pending_redirect_page translate="label">
                             <label>Redirect page pending status</label>
                             <comment>Page to redirect when transaction is in pending status</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_pendingredirect</source_model>
-                            <sort_order>27</sort_order>
+                            <sort_order>29</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -2503,17 +2566,26 @@
                             <label>Redirect page success</label>
                             <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>26</sort_order>
+                            <sort_order>27</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </success_redirect_page>
+                        <failure_redirect_page translate="label">
+                            <label>Redirect page failure</label>
+                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </failure_redirect_page>
                          <pending_redirect_page translate="label">
                             <label>Redirect page pending status</label>
                             <comment>Page to redirect when transaction is in pending status</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_pendingredirect</source_model>
-                            <sort_order>27</sort_order>
+                            <sort_order>29</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -2694,17 +2766,26 @@
                             <label>Redirect page success</label>
                             <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>26</sort_order>
+                            <sort_order>27</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </success_redirect_page>
+                        <failure_redirect_page translate="label">
+                            <label>Redirect page failure</label>
+                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </failure_redirect_page>
                          <pending_redirect_page translate="label">
                             <label>Redirect page pending status</label>
                             <comment>Page to redirect when transaction is in pending status</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_pendingredirect</source_model>
-                            <sort_order>27</sort_order>
+                            <sort_order>29</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -2885,17 +2966,26 @@
                             <label>Redirect page success</label>
                             <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>26</sort_order>
+                            <sort_order>27</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </success_redirect_page>
+                        <failure_redirect_page translate="label">
+                            <label>Redirect page failure</label>
+                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </failure_redirect_page>
                          <pending_redirect_page translate="label">
                             <label>Redirect page pending status</label>
                             <comment>Page to redirect when transaction is in pending status</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_pendingredirect</source_model>
-                            <sort_order>27</sort_order>
+                            <sort_order>29</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -3076,17 +3166,26 @@
                             <label>Redirect page success</label>
                             <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>26</sort_order>
+                            <sort_order>27</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </success_redirect_page>
+                        <failure_redirect_page translate="label">
+                            <label>Redirect page failure</label>
+                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </failure_redirect_page>
                          <pending_redirect_page translate="label">
                             <label>Redirect page pending status</label>
                             <comment>Page to redirect when transaction is in pending status</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_pendingredirect</source_model>
-                            <sort_order>27</sort_order>
+                            <sort_order>29</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -3267,17 +3366,26 @@
                             <label>Redirect page success</label>
                             <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>26</sort_order>
+                            <sort_order>27</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </success_redirect_page>
+                        <failure_redirect_page translate="label">
+                            <label>Redirect page failure</label>
+                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </failure_redirect_page>
                          <pending_redirect_page translate="label">
                             <label>Redirect page pending status</label>
                             <comment>Page to redirect when transaction is in pending status</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_pendingredirect</source_model>
-                            <sort_order>27</sort_order>
+                            <sort_order>29</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -3458,17 +3566,26 @@
                             <label>Redirect page success</label>
                             <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>26</sort_order>
+                            <sort_order>27</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </success_redirect_page>
+                        <failure_redirect_page translate="label">
+                            <label>Redirect page failure</label>
+                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </failure_redirect_page>
                          <pending_redirect_page translate="label">
                             <label>Redirect page pending status</label>
                             <comment>Page to redirect when transaction is in pending status</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_pendingredirect</source_model>
-                            <sort_order>27</sort_order>
+                            <sort_order>29</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -3631,17 +3748,26 @@
                             <label>Redirect page success</label>
                             <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>26</sort_order>
+                            <sort_order>27</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </success_redirect_page>
+                        <failure_redirect_page translate="label">
+                            <label>Redirect page failure</label>
+                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </failure_redirect_page>
                         <pending_redirect_page translate="label">
                             <label>Redirect page pending status</label>
                             <comment>Page to redirect when transaction is in pending status</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_pendingredirect</source_model>
-                            <sort_order>27</sort_order>
+                            <sort_order>29</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -3804,17 +3930,26 @@
                             <label>Redirect page success</label>
                             <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>26</sort_order>
+                            <sort_order>27</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </success_redirect_page>
+                        <failure_redirect_page translate="label">
+                            <label>Redirect page failure</label>
+                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </failure_redirect_page>
                          <pending_redirect_page translate="label">
                             <label>Redirect page pending status</label>
                             <comment>Page to redirect when transaction is in pending status</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_pendingredirect</source_model>
-                            <sort_order>27</sort_order>
+                            <sort_order>29</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -3977,17 +4112,26 @@
                             <label>Redirect page success</label>
                             <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>26</sort_order>
+                            <sort_order>27</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </success_redirect_page>
+                        <failure_redirect_page translate="label">
+                            <label>Redirect page failure</label>
+                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </failure_redirect_page>
                         <pending_redirect_page translate="label">
                             <label>Redirect page pending status</label>
                             <comment>Page to redirect when transaction is in pending status</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_pendingredirect</source_model>
-                            <sort_order>27</sort_order>
+                            <sort_order>29</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -4168,17 +4312,26 @@
                             <label>Redirect page success</label>
                             <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>26</sort_order>
+                            <sort_order>27</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </success_redirect_page>
+                        <failure_redirect_page translate="label">
+                            <label>Redirect page failure</label>
+                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </failure_redirect_page>
                          <pending_redirect_page translate="label">
                             <label>Redirect page pending status</label>
                             <comment>Page to redirect when transaction is in pending status</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_pendingredirect</source_model>
-                            <sort_order>27</sort_order>
+                            <sort_order>29</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -4341,17 +4494,26 @@
                             <label>Redirect page success</label>
                             <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>26</sort_order>
+                            <sort_order>27</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </success_redirect_page>
+                        <failure_redirect_page translate="label">
+                            <label>Redirect page failure</label>
+                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </failure_redirect_page>
                          <pending_redirect_page translate="label">
                             <label>Redirect page pending status</label>
                             <comment>Page to redirect when transaction is in pending status</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_pendingredirect</source_model>
-                            <sort_order>27</sort_order>
+                            <sort_order>29</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
