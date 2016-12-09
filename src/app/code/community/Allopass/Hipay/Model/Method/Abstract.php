@@ -1074,7 +1074,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		$params['cdata1'] = Mage::getUrl('adminhtml/sales_order/view',array('_secure'=>true,'order_id'=>$payment->getOrder()->getId()));
 	
 		// Add custom data for transaction request
-		if(class_exists('Allopass_Hipay_Helper_CustomData') && 
+		if(class_exists('Allopass_Hipay_Helper_CustomData',false) && 
 			method_exists(Mage::helper('hipay/customData'),'getCustomData'))
 		{
 			$customData = Mage::helper('hipay/customData')->getCustomData($payment,$amount);
