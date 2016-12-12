@@ -1,3 +1,8 @@
+# Version 1.5.0
+New - Add a custom_data management
+New - Add a device fingerprint for Direct POST
+New - Add a specific success page management 
+
 # Version 1.4.0
 New - Repository with Docker for tests
 New - Direct POST with token javascript
