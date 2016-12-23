@@ -1088,8 +1088,12 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
 		$params['custom_data']  = json_encode(($customDataHipay));
 
+		// Add device fingerprint for the transaction request (Token of device)
 		$params['device_fingerprint'] = $payment->getAdditionalInformation('device_fingerprint');
 	
+		// Add Request resource (Informations module and cms)
+		$params['source'] = Mage::helper('hipay')->getRequestSource();
+		
 		return $params;
 	}
 	
