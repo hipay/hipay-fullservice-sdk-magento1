@@ -84,8 +84,16 @@ class Allopass_Hipay_Block_Adminhtml_SplitPayment_Edit_Form extends Mage_Adminht
         		'title'     => Mage::helper('hipay')->__('Status'),
         		'name'      => 'status',
         		'values'    => Allopass_Hipay_Model_SplitPayment::getStatues(),
-        )
-        );
+		));
+
+        $fieldset->addField('split_number', 'text', array(
+        		'label'     => Mage::helper('hipay')->__('Split number'),
+        		'title'     => Mage::helper('hipay')->__('Split number'),
+        		'required'  => false,
+        		'name'      => 'split_number',
+        		'readonly' 	=> false,
+        ));		
+ 
         
         $form->setUseContainer(true);
         $form->setValues($splitPayment->getData());

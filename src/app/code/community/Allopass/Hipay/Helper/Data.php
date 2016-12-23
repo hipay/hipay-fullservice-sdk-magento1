@@ -84,9 +84,6 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 	 */
 	public function insertSplitPayment($order,$profile,$customerId,$cardToken)
 	{
-
-
-
 		if(is_int($profile))
 			$profile = Mage::getModel('hipay/paymentProfile')->load($profile);
 
@@ -102,7 +99,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 
 			//remove last element because the first split is already paid
 			//array_pop($paymentsSplit);
-
+			$numberSplit = 2;
 			foreach ($paymentsSplit as $split)
 			{
 				$splitPayment = Mage::getModel('hipay/splitPayment');
@@ -114,7 +111,9 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 							  'amount_to_pay'=>$split['amountToPay'],
 							  'date_to_pay'=>$split['dateToPay'],
 							  'method_code'=>$order->getPayment()->getMethod(),
-							  'status'=>Allopass_Hipay_Model_SplitPayment::SPLIT_PAYMENT_STATUS_PENDING,
+							  'status'=>  Allopass_Hipay_Model_SplitPayment::SPLIT_PAYMENT_STATUS_PENDING,
+							  'split_number'=> strval($numberSplit) . '-'  . strval(count($paymentsSplit) + 1),
+							 
 				);
 
 				$splitPayment->setData($data);
@@ -126,6 +125,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 
 					Mage::throwException("Error on save split payments!");
 				}
+
+				$numberSplit++;
 			}
 
 		}
@@ -645,6 +646,43 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 
 		return json_encode($request);
 	}
+
+    /**
+	 *  Return customs data from Hipay
+     *
+     * @param array $payment
+	 * @param float $amount
+	 *
+     */
+    public function getCustomData($payment,$amount,$method,$split_number = null)
+    {
+        $customData = array();
+        
+        // Shipping description
+        $customData['shipping_description'] = $payment->getOrder()->getShippingDescription();
+
+		// Customer information
+		$customer = $payment->getOrder()->getCustomerId();
+		$customerData = Mage::getModel('customer/customer')->load($customer); 
+		$codeCustomer = Mage::getModel('customer/group')->load($customerData->getGroupId())->getCustomerGroupCode(); 
+        $customData['customer_code']  = $codeCustomer;
+
+		// Method payment information
+		$customData['payment_code'] = $method->getCode();
+		$customData['display_iframe'] = $method->getConfigData('display_iframe');
+
+		// Payment type
+		if ($split_number){
+			$customData['payment_type'] =  'Split ' . $split_number;	
+		}
+
+		// Use Onclick
+		if ($payment->getAdditionalInformation('use_oneclick') == '1'){
+			$customData['payment_type'] = 'OneClick';	
+		}
+
+        return $customData;
+    }
 
 
 }

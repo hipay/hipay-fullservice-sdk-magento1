@@ -967,7 +967,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 	 * @param string|null $token
 	 * @return multitype:
 	 */
-	public function getGatewayParams($payment,$amount,$token=null)
+	public function getGatewayParams($payment,$amount,$token=null,$split_number=null)
 	{
 		$params = array();
 
@@ -1074,17 +1074,19 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		//add url to order in BO Magento
 		$params['cdata1'] = Mage::getUrl('adminhtml/sales_order/view',array('_secure'=>true,'order_id'=>$payment->getOrder()->getId()));
 	
+		$customDataHipay = Mage::helper('hipay')->getCustomData($payment,$amount,$this,$split_number);
+
 		// Add custom data for transaction request
-		if(class_exists('Allopass_Hipay_Helper_CustomData',false) && 
-			method_exists(Mage::helper('hipay/customData'),'getCustomData'))
-		{
-			$customData = Mage::helper('hipay/customData')->getCustomData($payment,$amount);
-			
-			if (is_array($customData)){
-				$params['custom_data']  = json_encode(($customData));
+		if(class_exists('Allopass_Hipay_Helper_CustomData',true)){
+			if (method_exists(Mage::helper('hipay/customData'),'getCustomData')){		
+				$customData = Mage::helper('hipay/customData')->getCustomData($payment,$amount);
+				if (is_array($customData)){
+					$customDataHipay = array_merge($customData,$customDataHipay);
+				}
 			}
-			
 		}
+
+		$params['custom_data']  = json_encode(($customDataHipay));
 
 		// Add device fingerprint for the transaction request (Token of device)
 		$params['device_fingerprint'] = $payment->getAdditionalInformation('device_fingerprint');
@@ -1177,11 +1179,11 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 	public function paySplitPayment($splitPayment)
 	{
 		$request = Mage::getModel('hipay/api_request',array($this));
-		
+
 		$order = Mage::getModel('sales/order')->load($splitPayment->getOrderId());
 		if($order->getId())
 		{
-			$gatewayParams =  $this->getGatewayParams($order->getPayment(), $splitPayment->getAmountToPay());
+			$gatewayParams =  $this->getGatewayParams($order->getPayment(), $splitPayment->getAmountToPay(),null,$splitPayment->getSplitNumber());
 			$gatewayParams['orderid'] .= "-split-".$splitPayment->getId();//added because if the same order_id tpp respond "Max Attempts exceed!"
 			$gatewayParams['description'] = Mage::helper('hipay')->__("Order SPLIT %s by %s",$order->getIncrementId(),$order->getCustomerEmail());//MANDATORY;
 			$gatewayParams['eci'] = 9;
