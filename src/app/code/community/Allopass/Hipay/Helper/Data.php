@@ -630,5 +630,21 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 			Mage::getStoreConfig('payment/'.$payment->getMethod().'/failure_redirect_page');
 	}
 
+	/**
+	*  Return informations for TPP about the request
+	*
+	*  @return json
+	*/
+	public function getRequestSource(){
+		$request = array();
+
+		$request['source'] = 'CMS';
+		$request['brand'] = 'magento';
+		$request['brand_version'] = Mage::getVersion();
+		$request['integration_version'] = strval(Mage::getConfig()->getNode('modules')->Allopass_Hipay->version);
+
+		return json_encode($request);
+	}
+
 
 }
