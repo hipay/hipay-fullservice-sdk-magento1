@@ -1088,6 +1088,10 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
 		$params['device_fingerprint'] = $payment->getAdditionalInformation('device_fingerprint');
 	
+		if (Mage::getStoreConfig('hipay/hipay_basket/activate_basket',Mage::app()->getStore())){
+			$params['basket'] = Mage::helper('hipay')->getCartInformation($payment->getOrder());
+		}
+
 		return $params;
 	}
 	

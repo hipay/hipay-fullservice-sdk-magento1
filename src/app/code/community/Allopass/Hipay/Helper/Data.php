@@ -1,6 +1,10 @@
 <?php
 class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 {
+
+	const TYPE_ITEM_BASKET_GOOD = "good";	
+	const TYPE_ITEM_BASKET_FEE = "fee";	
+	const TYPE_ITEM_BASKET_DISCOUNT = "discount";	
 	
 	/**
 	 * 
@@ -619,5 +623,124 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 			Mage::getStoreConfig('payment/'.$payment->getMethod().'/success_redirect_page');
 	}
 
+	/**
+	 *  Return to TPP API basket informations
+	 *
+	 * @param Mage_Sales_Model_Order
+	 * @return json
+	 */	
+	public function getCartInformation($order){
+		$basket =  array();
+
+		$products = $order->getAllItems();
+
+		// =============================================================== //
+		// Add coupon in basket 
+		// =============================================================== //
+		if (!empty($order->getCouponCode())){
+			$item = array();
+			$item['type'] = Allopass_Hipay_Helper_Data::TYPE_ITEM_BASKET_DISCOUNT;	
+			$item['product_reference'] = $order->getCouponCode();
+			$item['name'] = $order->getDiscountDescription();
+			$item['discount'] = Mage::app()->getStore()->roundPrice($order->getDiscountAmount());
+			$item['total_amount'] = Mage::app()->getStore()->roundPrice($order->getDiscountAmount());
+			$item['quantity'] = '1';
+			$item['unit_price'] = '0';
+			$basket[] = $item;
+		}
+
+		// =============================================================== //
+		// Add Shipping in basket
+		// =============================================================== //
+		if ($order->getBaseShippingAmount() > 0 ){
+			$item = array();
+			$item['type'] = Allopass_Hipay_Helper_Data::TYPE_ITEM_BASKET_FEE;	
+			$item['product_reference'] = $order->getShippingDescription();
+			$item['name'] = $order->getShippingDescription();
+			$item['quantity'] = '1';
+			$item['unit_price'] = Mage::helper('core')->currency($order->getBaseShippingAmount(),false,false);
+			$item['total_amount'] = Mage::helper('core')->currency($order->getBaseShippingAmount(),false,false);
+			$basket[] = $item;
+		}
+		
+		// =============================================================== //
+		// Add each product in basket
+		// =============================================================== //
+		foreach ($products as $key => $product) 
+		{
+			$item =  array();
+
+			// For configurable products
+			if ($product->getParentItem())
+			{
+				$productParent = $product->getParentItem();
+
+				// Check if simple product override configurable his parent
+				$taxPercent = !empty($product->getData('tax_percent')) && $product->getData('tax_percent') > 0 ?  $product->getData('tax_percent')  :  $productParent->getData('tax_percent') ;
+				
+				// Calculation is done because Magento save with 2 digits per default in base_price_incl_tax
+				$unitPrice = !empty($product->getData('base_price')) && $product->getData('base_price') > 0  ?  ($product->getData('base_price') ) + ($product->getData('tax_percent') / 100 *( $product->getData('base_price') )  )  :  ($productParent->getData('base_price') )  +  ($productParent->getData('tax_percent') / 100 * ($productParent->getData('base_price') ) ) ;
+				
+				$total_amount = !empty($product->getData('base_row_total')) && $product->getData('base_row_total') > 0  ?  $product->getData('base_row_total')  + $product->getData('tax_amount') - $product->getData('base_discount_amount') :  $productParent->getData('base_row_total') + $productParent->getData('tax_amount') - $productParent->getData('base_discount_amount') ;
+				
+				$sku = !empty($product->getData('sku'))?  $product->getData('sku')  :  $productParent->getData('sku') ;
+				$discount = !empty($product->getData('base_discount_amount') && $product->getData('base_discount_amount') > 0) ?  $product->getData('base_discount_amount')  :  $productParent->getData('base_discount_amount') ;
+
+			} else {
+				// Basket from product himself ( Simple product )
+				$taxPercent = $product->getData('tax_percent');
+				$total_amount =  $product->getData('base_row_total') + $product->getData('tax_amount') - $product->getData('base_discount_amount') ;
+				$unitPrice =  $product->getData('base_price')  + ($product->getData('tax_percent') / 100 * $product->getData('base_price')) ;
+				$sku = $product->getData('sku');
+				$discount = $product->getData('base_discount_amount');
+			}
+
+			// Add information in basket only if the product is simple
+			if ($product->getProductType() == 'simple'){
+				$item['quantity'] = intval($product->getData('qty_ordered'));	
+				$item['name']  = $product->getData('name');
+
+				// if store support EAN ( Please set the attribute on hipay config )
+				if (Mage::getStoreConfig('hipay/hipay_basket/attribute_ean',Mage::app()->getStore())){
+					$attribute = Mage::getStoreConfig('hipay/hipay_basket/attribute_ean',Mage::app()->getStore());
+
+					if (Mage::getStoreConfig('hipay/hipay_basket/load_product_ean',Mage::app()->getStore())){
+						$resource = Mage::getSingleton('catalog/product')->getResource();
+						$ean = $resource->getAttributeRawValue($product->getProductId(),$attribute,Mage::app()->getStore());
+					}else{
+						// The custom attribute have to be present in quote and order
+						$ean = $product->getData($attribute);
+					}
+				}
+
+				$item['type'] = Allopass_Hipay_Helper_Data::TYPE_ITEM_BASKET_GOOD;	
+				$item['tax_rate'] = Mage::helper('core')->currency($taxPercent,false,false);	
+				$item['unit_price']	= Mage::helper('core')->currency(round($unitPrice,3),false,false);
+				$item['total_amount'] = Mage::helper('core')->currency($total_amount,false,false) ; 
+
+				if (!empty($ean) && $ean != 'null'){
+					$item['european_article_numbering'] = $ean;
+				}
+
+				$item['product_reference'] = $sku ; 
+
+				// Get the config for discount application
+				$configDiscount = Mage::getStoreConfig('tax/calculation/apply_after_discount',Mage::app()->getStore());
+
+				// Check if Tax is applied before or after discount
+				if ($configDiscount == '1'){
+					$item['discount'] = Mage::helper('core')->currency(-round($discount + (($discount * $taxPercent) / 100),3) ,false,false);
+				}else{
+					$item['discount'] = Mage::helper('core')->currency(-round($discount,3) ,false,false);					
+				}
+
+				$basket[] = $item;
+
+			}
+		}
+
+		return json_encode($basket);
+
+	}
 
 }
