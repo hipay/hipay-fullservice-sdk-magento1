@@ -1000,6 +1000,11 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		$params['shipping'] = $payment->getOrder()->getShippingAmount();
 		$params['tax'] = $payment->getOrder()->getTaxAmount();
 		$params['cid'] = $payment->getOrder()->getCustomerId();//CUSTOMER ID
+
+		// Astropay needs National identification number
+		if (!empty($payment->getAdditionalInformation('national_identification_number'))){
+			$params['national_identification_number']  = $payment->getAdditionalInformation('national_identification_number');
+		}
 		
 		$remoteIp =  $payment->getOrder()->getRemoteIp();
 		
@@ -1461,10 +1466,11 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
      */
     public function canUseForCurrency($currencyCode)
     {
-       /* if (!in_array($currencyCode, $this->_allowCurrencyCode)) {
-            return false;
-        }*/
-        return true;
+        if (empty( $this->getConfigData('currency')) || $currencyCode == $this->getConfigData('currency')
+			|| in_array($currencyCode, $this->getConfigData('currency'))) {
+            return true;
+        }
+		return false;
     }
     
     /**

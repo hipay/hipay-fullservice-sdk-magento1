@@ -2,7 +2,7 @@
 /** @var $this Allopass_Hipay_Block_Form_Abstract */
 $_code=$this->getMethodCode();
 $_cards = $this->getCards();
-
+$_typeNationalIdentification = $this->getTypeNationalIdentification();
 ?>
 <div id="payment_form_<?php echo $_code ?>" style="display:none;">
 <?php if($this->allowSplitPayment()) : ?>
@@ -21,7 +21,44 @@ $_cards = $this->getCards();
  </ul>
  <br />
 <?php endif; ?>
-<?php if($_code != "hipay_sdd") : ?>
+<?php if(!empty($_typeNationalIdentification)) : ?>
+	<?php if($_typeNationalIdentification == 'cpf') : ?>
+		<script type="text/javascript">
+			//<![CDATA[
+				Validation.add('validate-cpf', '<?php echo $this->__('The CPF format is invalid.') ?>', function(v,elm) {
+					return Validation.get('IsEmpty').test(v) || /(\d{2}[.]?\d{3}[.]?\d{3}[/]?\d{4}[-]?\d{2})|(\d{3}[.]?\d{3}[.]?\d{3}[-]?\d{2})$/i.test(v)
+					});
+			//]]>
+		</script>
+		<ul class="form-list" id="card_payment_form_<?php echo $_code ?>" >
+			<li>
+				<label for="<?php echo $_code ?>_national_identification" class="required"><em>*</em><?php echo $this->__('CPF') ?></label>
+				<div class="input-box">
+					<input type="text" title="<?php echo $this->__('CPF') ?>" class="input-text required-entry validate-cpf" oninvalid="this.setCustomValidity('<?php echo $this->__('CPF is incorrect') ?>'')"
+					oninput="setCustomValidity('')"  pattern="(\d{2}[.]?\d{3}[.]?\d{3}[/]?\d{4}[-]?\d{2})|(\d{3}[.]?\d{3}[.]?\d{3}[-]?\d{2})" id="<?php echo $_code ?>_national_identification" name="payment[national_identification_number]" />
+				</div>
+			</li>
+		</ul>
+	<?php elseif($_typeNationalIdentification == "cpn")  : ?>
+		<script type="text/javascript">
+			//<![CDATA[
+				Validation.add('validate-cpn', '<?php echo $this->__('The CPN format is invalid.') ?>', function(v,elm) {
+					return Validation.get('IsEmpty').test(v) || /^[a-zA-Z]{4}\d{6}[a-zA-Z]{6}\d{2}$/i
+.test(v)
+					});
+			//]]>
+		</script>
+		<ul class="form-list" id="card_payment_form_<?php echo $_code ?>" >
+			<li>
+				<label for="<?php echo $_code ?>_national_identification" class="required"><em>*</em><?php echo $this->__('CPN') ?></label>
+				<div class="input-box">
+					<input type="text" title="<?php echo $this->__('CPN') ?>" class="input-text required-entry validate-cpn" oninvalid="this.setCustomValidity('<?php echo $this->__('CPN is incorrect') ?>'')"
+					oninput="setCustomValidity('')"  pattern="(\d{2}[.]?\d{3}[.]?\d{3}[/]?\d{4}[-]?\d{2})|(\d{3}[.]?\d{3}[.]?\d{3}[-]?\d{2})" id="<?php echo $_code ?>_national_identification" name="payment[national_identification_number]" />
+				</div>
+			</li>
+		</ul>	
+	<?php endif ?>
+<?php elseif($_code != "hipay_sdd" ) : ?>
 <ul class="form-list" id="card_payment_form_<?php echo $_code ?>" >
 <?php if (Mage::getStoreConfig('hipay/hipay_api/fingerprint',Mage::app()->getStore())) : ?>
 	<script type="text/javascript">
@@ -172,7 +209,7 @@ $_cards = $this->getCards();
  <script type="text/javascript">
  	//<![CDATA[
  	    
- 	    Validation.creditCartTypes.set('BCMC',[false, new RegExp('^([0-9]{3}|[0-9]{4})?$'), false]);
+ 	   Validation.creditCartTypes.set('BCMC',[false, new RegExp('^([0-9]{3}|[0-9]{4})?$'), false]);
  	   Validation.creditCartTypes.set('CB',[new RegExp('^4[0-9]{12}([0-9]{3})?$'), new RegExp('^[0-9]{3}$'), true]);
  	        
         var ToogleCvn<?php echo $_code ?> = function() {
@@ -243,8 +280,8 @@ $_cards = $this->getCards();
 		UpdateDebitAmount<?php echo $_code ?>();
         <?php endif; ?>
  	 //]]>
- </script>
-<?php else : ?>
+ </script>	
+<?php elseif($_code == "hipay_sdd")  : ?>
 	<?php
 
 	// TPPMAG1-2 - SEPA Payment.

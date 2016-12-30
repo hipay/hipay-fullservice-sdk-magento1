@@ -160,3 +160,5 @@
 "Transaction is in pending notification.","Transaction is in pending notification."
 "Leave blank if no proxy","Leave blank if no proxy"
 "Device fingerprint","Device fingerprint"
+"The CPF format is invalid.","The CPF format is invalid."
+"The CPN format is invalid.","The CPN format is invalid."

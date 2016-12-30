@@ -875,60 +875,423 @@
                 <electronic_signature>1</electronic_signature>
                 <send_fraud_payment_email>0</send_fraud_payment_email>
             </hipay_sdd>
-            <hipay_postfinancecardapi>
-				<active>0</active> <!-- Activé ou non -->
-				<title>HiPay PostFinance Card</title> <!-- Titre par défaut modifiable en admin -->
-				<payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
-				<cctypes>postfinance-card</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
-				<!-- <useccv>1</useccv> --> <!-- permet de rendre obligatoire la saisie du CCV (uniquement en mode API) -->
-				<order_status_payment_accepted>processing</order_status_payment_accepted><!-- valeur par défaut du statut quand le paiement est accepté -->
-				<order_status_payment_refused>canceled</order_status_payment_refused><!-- valeur par défaut du statut quand le paiement est refusé -->
-				<order_status_payment_canceled>canceled</order_status_payment_canceled><!-- valeur par défaut du statut quand le paiement est annulé -->
-				<hipay_status_validate_order>118</hipay_status_validate_order><!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
-				<pending_redirect_page>hipay/checkout/pending</pending_redirect_page><!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
-				<allow_use_oneclick>0</allow_use_oneclick><!-- valeur par défaut de l'utilisation du oneclick -->
-				<invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
-				<re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
-				<cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
-				<display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
-				<is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
-				<debug>0</debug><!-- valeur par défaut du mode debug -->
-				<model>hipay/method_postfinancecardApi</model><!-- Classe model de la méthode -->
-				<accept_url>hipay/postfinancecardapi/accept</accept_url><!-- Url accept de la méthode -->
-				<pending_url>hipay/postfinancecardapi/pending</pending_url><!-- Url pending de la méthode -->
-				<decline_url>hipay/postfinancecardapi/decline</decline_url><!-- Url decline de la méthode -->
-				<exception_url>hipay/postfinancecardapi/exception</exception_url><!-- Url execption de la méthode -->
-				<cancel_url>hipay/postfinancecardapi/cancel</cancel_url><!-- Url cancel de la méthode -->
-				<use_3d_secure>0</use_3d_secure><!-- valeur par défaut pour activer le 3ds -->
-				<send_fraud_payment_email>0</send_fraud_payment_email> <!-- Envoi le mail de fraud au client final -->
-			</hipay_postfinancecardapi>
-            <hipay_postfinanceefinanceapi>
-				<active>0</active> <!-- Activé ou non -->
-				<title>HiPay PostFinance E-Finance</title> <!-- Titre par défaut modifiable en admin -->
-				<payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
-				<cctypes>postfinance-efinance</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
-				<!-- <useccv>1</useccv> --> <!-- permet de rendre obligatoire la saisie du CCV (uniquement en mode API) -->
-				<order_status_payment_accepted>processing</order_status_payment_accepted><!-- valeur par défaut du statut quand le paiement est accepté -->
-				<order_status_payment_refused>canceled</order_status_payment_refused><!-- valeur par défaut du statut quand le paiement est refusé -->
-				<order_status_payment_canceled>canceled</order_status_payment_canceled><!-- valeur par défaut du statut quand le paiement est annulé -->
-				<hipay_status_validate_order>118</hipay_status_validate_order><!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
-				<pending_redirect_page>hipay/checkout/pending</pending_redirect_page><!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
-				<allow_use_oneclick>0</allow_use_oneclick><!-- valeur par défaut de l'utilisation du oneclick -->
-				<invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
-				<re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
-				<cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
-				<display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
-				<is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
-				<debug>0</debug><!-- valeur par défaut du mode debug -->
-				<model>hipay/method_postfinanceefinanceApi</model><!-- Classe model de la méthode -->
-				<accept_url>hipay/postfinanceefinanceapi/accept</accept_url><!-- Url accept de la méthode -->
-				<pending_url>hipay/postfinanceefinanceapi/pending</pending_url><!-- Url pending de la méthode -->
-				<decline_url>hipay/postfinanceefinanceapi/decline</decline_url><!-- Url decline de la méthode -->
-				<exception_url>hipay/postfinanceefinanceapi/exception</exception_url><!-- Url execption de la méthode -->
-				<cancel_url>hipay/postfinanceefinanceapi/cancel</cancel_url><!-- Url cancel de la méthode -->
-				<use_3d_secure>0</use_3d_secure><!-- valeur par défaut pour activer le 3ds -->
-				<send_fraud_payment_email>0</send_fraud_payment_email> <!-- Envoi le mail de fraud au client final -->
-			</hipay_postfinanceefinanceapi>
+			<hipay_boleto>
+				<active>0</active>
+				<title>Boleto bancario</title>
+				<payment_action>authorize_capture</payment_action>
+				<cctypes>boleto-bancario</cctypes>
+				<order_status_payment_accepted>processing</order_status_payment_accepted>
+				<order_status_payment_refused>canceled</order_status_payment_refused>
+				<order_status_payment_canceled>canceled</order_status_payment_canceled>
+				<hipay_status_validate_order>118</hipay_status_validate_order>
+				<pending_redirect_page>hipay/checkout/pending</pending_redirect_page>
+				<display_selector>1</display_selector>
+				<template>basic</template>
+				<allow_use_oneclick>0</allow_use_oneclick>
+				<invoice_create>1</invoice_create>
+				<re_add_to_cart>0</re_add_to_cart>
+				<cancel_pending_order>1</cancel_pending_order>
+				<display_iframe>0</display_iframe>
+				<iframe_width>485px</iframe_width>
+				<iframe_height>450px</iframe_height>
+				<iframe_style>margin: 10px 0; border: 1px solid #BEBCB7;</iframe_style>
+				<iframe_wrapper_style>text-align: center; border-bottom: 1px solid #BEBCB7; border-left: 1px solid #BEBCB7; border-right: 1px solid #BEBCB7;</iframe_wrapper_style>
+				<is_test_mode>0</is_test_mode>
+				<debug>0</debug>
+				<model>hipay/method_boleto</model>
+				<accept_url>hipay/boleto/accept</accept_url>
+				<pending_url>hipay/boleto/pending</pending_url>
+				<decline_url>hipay/boleto/decline</decline_url>
+				<exception_url>hipay/boleto/exception</exception_url>
+				<cancel_url>hipay/boleto/cancel</cancel_url>
+				<use_3d_secure>1</use_3d_secure>
+				<send_fraud_payment_email>0</send_fraud_payment_email>				
+				<allowspecific>1</allowspecific>
+				<specificcountry>BR</specificcountry>
+				<currency>BRL</currency>
+			</hipay_boleto>
+			<hipay_itau>
+				<active>0</active>
+				<title>Itau</title>
+				<payment_action>authorize_capture</payment_action>
+				<cctypes>itau</cctypes>
+				<order_status_payment_accepted>processing</order_status_payment_accepted>
+				<order_status_payment_refused>canceled</order_status_payment_refused>
+				<order_status_payment_canceled>canceled</order_status_payment_canceled>
+				<hipay_status_validate_order>118</hipay_status_validate_order>
+				<pending_redirect_page>hipay/checkout/pending</pending_redirect_page>
+				<display_selector>1</display_selector>
+				<template>basic</template>
+				<allow_use_oneclick>0</allow_use_oneclick>
+				<invoice_create>1</invoice_create>
+				<re_add_to_cart>0</re_add_to_cart>
+				<cancel_pending_order>1</cancel_pending_order>
+				<display_iframe>0</display_iframe>
+				<iframe_width>485px</iframe_width>
+				<iframe_height>450px</iframe_height>
+				<iframe_style>margin: 10px 0; border: 1px solid #BEBCB7;</iframe_style>
+				<iframe_wrapper_style>text-align: center; border-bottom: 1px solid #BEBCB7; border-left: 1px solid #BEBCB7; border-right: 1px solid #BEBCB7;</iframe_wrapper_style>
+				<is_test_mode>0</is_test_mode>
+				<debug>0</debug>
+				<model>hipay/method_itau</model>
+				<accept_url>hipay/itau/accept</accept_url>
+				<pending_url>hipay/itau/pending</pending_url>
+				<decline_url>hipay/itau/decline</decline_url>
+				<exception_url>hipay/itau/exception</exception_url>
+				<cancel_url>hipay/itau/cancel</cancel_url>
+				<use_3d_secure>1</use_3d_secure>
+				<send_fraud_payment_email>0</send_fraud_payment_email>
+				<allowspecific>1</allowspecific>
+				<specificcountry>BR</specificcountry>
+				<currency>BRL</currency>
+			</hipay_itau>
+			<hipay_bradesco>
+				<active>0</active>
+				<title>Bradesco</title>
+				<payment_action>authorize_capture</payment_action>
+				<cctypes>bradesco</cctypes>
+				<order_status_payment_accepted>processing</order_status_payment_accepted>
+				<order_status_payment_refused>canceled</order_status_payment_refused>
+				<order_status_payment_canceled>canceled</order_status_payment_canceled>
+				<hipay_status_validate_order>118</hipay_status_validate_order>
+				<pending_redirect_page>hipay/checkout/pending</pending_redirect_page>
+				<display_selector>1</display_selector>
+				<template>basic</template>
+				<allow_use_oneclick>0</allow_use_oneclick>
+				<invoice_create>1</invoice_create>
+				<re_add_to_cart>0</re_add_to_cart>
+				<cancel_pending_order>1</cancel_pending_order>
+				<display_iframe>0</display_iframe>
+				<iframe_width>485px</iframe_width>
+				<iframe_height>450px</iframe_height>
+				<iframe_style>margin: 10px 0; border: 1px solid #BEBCB7;</iframe_style>
+				<iframe_wrapper_style>text-align: center; border-bottom: 1px solid #BEBCB7; border-left: 1px solid #BEBCB7; border-right: 1px solid #BEBCB7;</iframe_wrapper_style>
+				<is_test_mode>0</is_test_mode>
+				<debug>0</debug>
+				<model>hipay/method_bradesco</model>
+				<accept_url>hipay/bradesco/accept</accept_url>
+				<pending_url>hipay/bradesco/pending</pending_url>
+				<decline_url>hipay/bradesco/decline</decline_url>
+				<exception_url>hipay/bradesco/exception</exception_url>
+				<cancel_url>hipay/bradesco/cancel</cancel_url>
+				<use_3d_secure>1</use_3d_secure>
+				<send_fraud_payment_email>0</send_fraud_payment_email>
+				<allowspecific>1</allowspecific>
+				<specificcountry>BR</specificcountry>
+				<currency>BRL</currency>
+			</hipay_bradesco>
+			<hipay_banco>
+				<active>0</active>
+				<title>Banco do brazil</title>
+				<payment_action>authorize_capture</payment_action>
+				<cctypes>banco-do-brasil</cctypes>
+				<order_status_payment_accepted>processing</order_status_payment_accepted>
+				<order_status_payment_refused>canceled</order_status_payment_refused>
+				<order_status_payment_canceled>canceled</order_status_payment_canceled>
+				<hipay_status_validate_order>118</hipay_status_validate_order>
+				<pending_redirect_page>hipay/checkout/pending</pending_redirect_page>
+				<display_selector>1</display_selector>
+				<template>basic</template>
+				<allow_use_oneclick>0</allow_use_oneclick>
+				<invoice_create>1</invoice_create>
+				<re_add_to_cart>0</re_add_to_cart>
+				<cancel_pending_order>1</cancel_pending_order>
+				<display_iframe>0</display_iframe>
+				<iframe_width>485px</iframe_width>
+				<iframe_height>450px</iframe_height>
+				<iframe_style>margin: 10px 0; border: 1px solid #BEBCB7;</iframe_style>
+				<iframe_wrapper_style>text-align: center; border-bottom: 1px solid #BEBCB7; border-left: 1px solid #BEBCB7; border-right: 1px solid #BEBCB7;</iframe_wrapper_style>
+				<is_test_mode>0</is_test_mode>
+				<debug>0</debug>
+				<model>hipay/method_banco</model>
+				<accept_url>hipay/banco/accept</accept_url>
+				<pending_url>hipay/banco/pending</pending_url>
+				<decline_url>hipay/banco/decline</decline_url>
+				<exception_url>hipay/banco/exception</exception_url>
+				<cancel_url>hipay/banco/cancel</cancel_url>
+				<use_3d_secure>1</use_3d_secure>
+				<send_fraud_payment_email>0</send_fraud_payment_email>
+				<allowspecific>1</allowspecific>
+				<specificcountry>BR</specificcountry>
+				<currency>BRL</currency>
+			</hipay_banco>
+			<hipay_santander>
+				<active>0</active>
+				<title>Santander HomeBanking</title>
+				<payment_action>authorize_capture</payment_action>
+				<cctypes>santander-home-banking</cctypes>
+				<order_status_payment_accepted>processing</order_status_payment_accepted>
+				<order_status_payment_refused>canceled</order_status_payment_refused>
+				<order_status_payment_canceled>canceled</order_status_payment_canceled>
+				<hipay_status_validate_order>118</hipay_status_validate_order>
+				<pending_redirect_page>hipay/checkout/pending</pending_redirect_page>
+				<display_selector>1</display_selector>
+				<template>basic</template>
+				<allow_use_oneclick>0</allow_use_oneclick>
+				<invoice_create>1</invoice_create>
+				<re_add_to_cart>0</re_add_to_cart>
+				<cancel_pending_order>1</cancel_pending_order>
+				<display_iframe>0</display_iframe>
+				<iframe_width>485px</iframe_width>
+				<iframe_height>450px</iframe_height>
+				<iframe_style>margin: 10px 0; border: 1px solid #BEBCB7;</iframe_style>
+				<iframe_wrapper_style>text-align: center; border-bottom: 1px solid #BEBCB7; border-left: 1px solid #BEBCB7; border-right: 1px solid #BEBCB7;</iframe_wrapper_style>
+				<is_test_mode>0</is_test_mode>
+				<debug>0</debug>
+				<model>hipay/method_santander</model>
+				<accept_url>hipay/santander/accept</accept_url>
+				<pending_url>hipay/santander/pending</pending_url>
+				<decline_url>hipay/santander/decline</decline_url>
+				<exception_url>hipay/santander/exception</exception_url>
+				<cancel_url>hipay/santander/cancel</cancel_url>
+				<use_3d_secure>1</use_3d_secure>
+				<send_fraud_payment_email>0</send_fraud_payment_email>
+				<allowspecific>1</allowspecific>
+				<specificcountry>BR</specificcountry>
+				<currency>BRL</currency>
+			</hipay_santander>
+			<hipay_aura>
+				<active>0</active>
+				<title>Aura</title>
+				<payment_action>authorize_capture</payment_action>
+				<cctypes>aura</cctypes>
+				<order_status_payment_accepted>processing</order_status_payment_accepted>
+				<order_status_payment_refused>canceled</order_status_payment_refused>
+				<order_status_payment_canceled>canceled</order_status_payment_canceled>
+				<hipay_status_validate_order>118</hipay_status_validate_order>
+				<pending_redirect_page>hipay/checkout/pending</pending_redirect_page>
+				<display_selector>1</display_selector>
+				<template>basic</template>
+				<allow_use_oneclick>0</allow_use_oneclick>
+				<invoice_create>1</invoice_create>
+				<re_add_to_cart>0</re_add_to_cart>
+				<cancel_pending_order>1</cancel_pending_order>
+				<display_iframe>0</display_iframe>
+				<iframe_width>485px</iframe_width>
+				<iframe_height>450px</iframe_height>
+				<iframe_style>margin: 10px 0; border: 1px solid #BEBCB7;</iframe_style>
+				<iframe_wrapper_style>text-align: center; border-bottom: 1px solid #BEBCB7; border-left: 1px solid #BEBCB7; border-right: 1px solid #BEBCB7;</iframe_wrapper_style>
+				<is_test_mode>0</is_test_mode>
+				<debug>0</debug>
+				<model>hipay/method_aura</model>
+				<accept_url>hipay/aura/accept</accept_url>
+				<pending_url>hipay/aura/pending</pending_url>
+				<decline_url>hipay/aura/decline</decline_url>
+				<exception_url>hipay/aura/exception</exception_url>
+				<cancel_url>hipay/aura/cancel</cancel_url>
+				<use_3d_secure>1</use_3d_secure>
+				<send_fraud_payment_email>0</send_fraud_payment_email>
+				<allowspecific>1</allowspecific>
+				<specificcountry>BR</specificcountry>
+				<currency>BRL</currency>
+			</hipay_aura>
+			<hipay_caixa>
+				<active>0</active>
+				<title>Caixa</title>
+				<payment_action>authorize_capture</payment_action>
+				<cctypes>caixa</cctypes>
+				<order_status_payment_accepted>processing</order_status_payment_accepted>
+				<order_status_payment_refused>canceled</order_status_payment_refused>
+				<order_status_payment_canceled>canceled</order_status_payment_canceled>
+				<hipay_status_validate_order>118</hipay_status_validate_order>
+				<pending_redirect_page>hipay/checkout/pending</pending_redirect_page>
+				<display_selector>1</display_selector>
+				<template>basic</template>
+				<allow_use_oneclick>0</allow_use_oneclick>
+				<invoice_create>1</invoice_create>
+				<re_add_to_cart>0</re_add_to_cart>
+				<cancel_pending_order>1</cancel_pending_order>
+				<display_iframe>0</display_iframe>
+				<iframe_width>485px</iframe_width>
+				<iframe_height>450px</iframe_height>
+				<iframe_style>margin: 10px 0; border: 1px solid #BEBCB7;</iframe_style>
+				<iframe_wrapper_style>text-align: center; border-bottom: 1px solid #BEBCB7; border-left: 1px solid #BEBCB7; border-right: 1px solid #BEBCB7;</iframe_wrapper_style>
+				<is_test_mode>0</is_test_mode>
+				<debug>0</debug>
+				<model>hipay/method_caixa</model>
+				<accept_url>hipay/caixa/accept</accept_url>
+				<pending_url>hipay/caixa/pending</pending_url>
+				<decline_url>hipay/caixa/decline</decline_url>
+				<exception_url>hipay/caixa/exception</exception_url>
+				<cancel_url>hipay/caixa/cancel</cancel_url>
+				<use_3d_secure>1</use_3d_secure>
+				<send_fraud_payment_email>0</send_fraud_payment_email>
+				<allowspecific>1</allowspecific>
+				<specificcountry>BR</specificcountry>
+				<currency>BRL</currency>
+			</hipay_caixa>
+			<!--<hipay_discover>
+				<active>0</active>
+				<title>Discover</title>
+				<payment_action>authorize_capture</payment_action>
+				<cctypes>discover</cctypes>
+				<order_status_payment_accepted>processing</order_status_payment_accepted>
+				<order_status_payment_refused>canceled</order_status_payment_refused>
+				<order_status_payment_canceled>canceled</order_status_payment_canceled>
+				<hipay_status_validate_order>118</hipay_status_validate_order>
+				<pending_redirect_page>hipay/checkout/pending</pending_redirect_page>
+				<display_selector>1</display_selector>
+				<template>basic</template>
+				<allow_use_oneclick>0</allow_use_oneclick>
+				<invoice_create>1</invoice_create>
+				<re_add_to_cart>0</re_add_to_cart>
+				<cancel_pending_order>1</cancel_pending_order>
+				<display_iframe>0</display_iframe>
+				<iframe_width>485px</iframe_width>
+				<iframe_height>450px</iframe_height>
+				<iframe_style>margin: 10px 0; border: 1px solid #BEBCB7;</iframe_style>
+				<iframe_wrapper_style>text-align: center; border-bottom: 1px solid #BEBCB7; border-left: 1px solid #BEBCB7; border-right: 1px solid #BEBCB7;</iframe_wrapper_style>
+				<is_test_mode>0</is_test_mode>
+				<debug>0</debug>
+				<model>hipay/method_discover</model>
+				<accept_url>hipay/discover/accept</accept_url>
+				<pending_url>hipay/discover/pending</pending_url>
+				<decline_url>hipay/discover/decline</decline_url>
+				<exception_url>hipay/discover/exception</exception_url>
+				<cancel_url>hipay/discover/cancel</cancel_url>
+				<use_3d_secure>1</use_3d_secure>
+				<send_fraud_payment_email>0</send_fraud_payment_email>
+			</hipay_discover>-->
+			<hipay_oxxo>
+				<active>0</active>
+				<title>Oxxo</title>
+				<payment_action>authorize_capture</payment_action>
+				<cctypes>oxxo</cctypes>
+				<order_status_payment_accepted>processing</order_status_payment_accepted>
+				<order_status_payment_refused>canceled</order_status_payment_refused>
+				<order_status_payment_canceled>canceled</order_status_payment_canceled>
+				<hipay_status_validate_order>118</hipay_status_validate_order>
+				<pending_redirect_page>hipay/checkout/pending</pending_redirect_page>
+				<display_selector>1</display_selector>
+				<template>basic</template>
+				<allow_use_oneclick>0</allow_use_oneclick>
+				<invoice_create>1</invoice_create>
+				<re_add_to_cart>0</re_add_to_cart>
+				<cancel_pending_order>1</cancel_pending_order>
+				<display_iframe>0</display_iframe>
+				<iframe_width>485px</iframe_width>
+				<iframe_height>450px</iframe_height>
+				<iframe_style>margin: 10px 0; border: 1px solid #BEBCB7;</iframe_style>
+				<iframe_wrapper_style>text-align: center; border-bottom: 1px solid #BEBCB7; border-left: 1px solid #BEBCB7; border-right: 1px solid #BEBCB7;</iframe_wrapper_style>
+				<is_test_mode>0</is_test_mode>
+				<debug>0</debug>
+				<model>hipay/method_oxxo</model>
+				<accept_url>hipay/oxxo/accept</accept_url>
+				<pending_url>hipay/oxxo/pending</pending_url>
+				<decline_url>hipay/oxxo/decline</decline_url>
+				<exception_url>hipay/oxxo/exception</exception_url>
+				<cancel_url>hipay/oxxo/cancel</cancel_url>
+				<use_3d_secure>1</use_3d_secure>
+				<send_fraud_payment_email>0</send_fraud_payment_email>
+				<allowspecific>1</allowspecific>
+				<specificcountry>MX</specificcountry>
+				<currency>MXN</currency>
+			</hipay_oxxo>
+			<hipay_bbva>
+				<active>0</active>
+				<title>BBVA Bancomer</title>
+				<payment_action>authorize_capture</payment_action>
+				<cctypes>bbva-bancomer</cctypes>
+				<order_status_payment_accepted>processing</order_status_payment_accepted>
+				<order_status_payment_refused>canceled</order_status_payment_refused>
+				<order_status_payment_canceled>canceled</order_status_payment_canceled>
+				<hipay_status_validate_order>118</hipay_status_validate_order>
+				<pending_redirect_page>hipay/checkout/pending</pending_redirect_page>
+				<display_selector>1</display_selector>
+				<template>basic</template>
+				<allow_use_oneclick>0</allow_use_oneclick>
+				<invoice_create>1</invoice_create>
+				<re_add_to_cart>0</re_add_to_cart>
+				<cancel_pending_order>1</cancel_pending_order>
+				<display_iframe>0</display_iframe>
+				<iframe_width>485px</iframe_width>
+				<iframe_height>450px</iframe_height>
+				<iframe_style>margin: 10px 0; border: 1px solid #BEBCB7;</iframe_style>
+				<iframe_wrapper_style>text-align: center; border-bottom: 1px solid #BEBCB7; border-left: 1px solid #BEBCB7; border-right: 1px solid #BEBCB7;</iframe_wrapper_style>
+				<is_test_mode>0</is_test_mode>
+				<debug>0</debug>
+				<model>hipay/method_bbva</model>
+				<accept_url>hipay/bbva/accept</accept_url>
+				<pending_url>hipay/bbva/pending</pending_url>
+				<decline_url>hipay/bbva/decline</decline_url>
+				<exception_url>hipay/bbva/exception</exception_url>
+				<cancel_url>hipay/bbva/cancel</cancel_url>
+				<use_3d_secure>1</use_3d_secure>
+				<send_fraud_payment_email>0</send_fraud_payment_email>
+				<allowspecific>1</allowspecific>
+				<specificcountry>MX</specificcountry>
+				<currency>MXN</currency>
+			</hipay_bbva>
+			<hipay_banamex>
+				<active>0</active>
+				<title>Banamex</title>
+				<payment_action>authorize_capture</payment_action>
+				<cctypes>banamex</cctypes>
+				<order_status_payment_accepted>processing</order_status_payment_accepted>
+				<order_status_payment_refused>canceled</order_status_payment_refused>
+				<order_status_payment_canceled>canceled</order_status_payment_canceled>
+				<hipay_status_validate_order>118</hipay_status_validate_order>
+				<pending_redirect_page>hipay/checkout/pending</pending_redirect_page>
+				<display_selector>1</display_selector>
+				<template>basic</template>
+				<allow_use_oneclick>0</allow_use_oneclick>
+				<invoice_create>1</invoice_create>
+				<re_add_to_cart>0</re_add_to_cart>
+				<cancel_pending_order>1</cancel_pending_order>
+				<display_iframe>0</display_iframe>
+				<iframe_width>485px</iframe_width>
+				<iframe_height>450px</iframe_height>
+				<iframe_style>margin: 10px 0; border: 1px solid #BEBCB7;</iframe_style>
+				<iframe_wrapper_style>text-align: center; border-bottom: 1px solid #BEBCB7; border-left: 1px solid #BEBCB7; border-right: 1px solid #BEBCB7;</iframe_wrapper_style>
+				<is_test_mode>0</is_test_mode>
+				<debug>0</debug>
+				<model>hipay/method_banamex</model>
+				<accept_url>hipay/banamex/accept</accept_url>
+				<pending_url>hipay/banamex/pending</pending_url>
+				<decline_url>hipay/banamex/decline</decline_url>
+				<exception_url>hipay/banamex/exception</exception_url>
+				<cancel_url>hipay/banamex/cancel</cancel_url>
+				<use_3d_secure>1</use_3d_secure>
+				<send_fraud_payment_email>0</send_fraud_payment_email>
+				<allowspecific>1</allowspecific>
+				<specificcountry>MX</specificcountry>
+				<currency>MXN</currency>
+			</hipay_banamex>
+			<hipay_santandercash>
+				<active>0</active>
+				<title>Santader cash</title>
+				<payment_action>authorize_capture</payment_action>
+				<cctypes>santader-cash</cctypes>
+				<order_status_payment_accepted>processing</order_status_payment_accepted>
+				<order_status_payment_refused>canceled</order_status_payment_refused>
+				<order_status_payment_canceled>canceled</order_status_payment_canceled>
+				<hipay_status_validate_order>118</hipay_status_validate_order>
+				<pending_redirect_page>hipay/checkout/pending</pending_redirect_page>
+				<display_selector>1</display_selector>
+				<template>basic</template>
+				<allow_use_oneclick>0</allow_use_oneclick>
+				<invoice_create>1</invoice_create>
+				<re_add_to_cart>0</re_add_to_cart>
+				<cancel_pending_order>1</cancel_pending_order>
+				<display_iframe>0</display_iframe>
+				<iframe_width>485px</iframe_width>
+				<iframe_height>450px</iframe_height>
+				<iframe_style>margin: 10px 0; border: 1px solid #BEBCB7;</iframe_style>
+				<iframe_wrapper_style>text-align: center; border-bottom: 1px solid #BEBCB7; border-left: 1px solid #BEBCB7; border-right: 1px solid #BEBCB7;</iframe_wrapper_style>
+				<is_test_mode>0</is_test_mode>
+				<debug>0</debug>
+				<model>hipay/method_santandercash</model>
+				<accept_url>hipay/santadercash/accept</accept_url>
+				<pending_url>hipay/santadercash/pending</pending_url>
+				<decline_url>hipay/santadercash/decline</decline_url>
+				<exception_url>hipay/santadercash/exception</exception_url>
+				<cancel_url>hipay/santadercash/cancel</cancel_url>
+				<use_3d_secure>1</use_3d_secure>
+				<send_fraud_payment_email>0</send_fraud_payment_email>
+				<allowspecific>1</allowspecific>
+				<specificcountry>MX</specificcountry>
+				<currency>MXN</currency>
+			</hipay_santandercash>
 		</payment>
 	</default>
 	<crontab>
