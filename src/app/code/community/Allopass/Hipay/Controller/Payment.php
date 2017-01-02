@@ -123,7 +123,7 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
 		
 		$this->processResponse();
 		
-		Mage::getSingleton('checkout/session')->addError("Your payment is declined. Please retry checkout with another payment card.");
+		Mage::getSingleton('checkout/session')->addError(Mage::helper('hipay')->__("Your payment is declined. Please retry checkout with another payment card."));
 		
 		$this->_redirect(Mage::helper('hipay')->getCheckoutFailurePage($this->getOrder()->getPayment()));
 		return $this;
@@ -142,7 +142,7 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
 		Mage::getSingleton('checkout/session')->setLastQuoteId($lastQuoteId);
 		Mage::getSingleton('checkout/session')->setLastOrderId($lastOrderId);
 		
-		Mage::getSingleton('checkout/session')->addError("An exception has occured. Please retry checkout.");
+		Mage::getSingleton('checkout/session')->addError(Mage::helper('hipay')->__("An exception has occured. Please retry checkout."));
 		
 		$this->_redirect(Mage::helper('hipay')->getCheckoutFailurePage($this->getOrder()->getPayment()));
 		return $this;
