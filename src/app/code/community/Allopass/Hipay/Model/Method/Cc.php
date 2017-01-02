@@ -492,11 +492,21 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
 	 */
 	private function _getAmount()
 	{
+        $useOrderCurrency = $this->getConfigData('currency_transaction', Mage::app()->getStore());
+
 		$info = $this->getInfoInstance();
 		if ($this->_isPlaceOrder()) {
-			return (double)$info->getOrder()->getQuoteGrandTotal();
+            if ($useOrderCurrency) {
+                return (double)$info->getOrder()->getQuoteGrandTotal();
+            } else {
+                return (double)$info->getOrder()->getQuoteBaseGrandTotal();
+            }
 		} else {
-			return (double)$info->getQuote()->getGrandTotal();
+            if ($useOrderCurrency) {
+			    return (double)$info->getQuote()->getGrandTotal();
+            } else {
+                return (double)$info->getQuote()->getBaseGrandTotal();
+            }
 		}
 	}
 	
@@ -508,12 +518,21 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
 	private function _getCurrencyCode()
 	{
 		$info = $this->getInfoInstance();
-	
-		if ($this->_isPlaceOrder()) {
-			return $info->getOrder()->getCurrencyCode();
-		} else {
-			return $info->getQuote()->getCurrencyCode();
-		}
+        $useOrderCurrency = $this->getConfigData('currency_transaction', Mage::app()->getStore());
+
+        if ($useOrderCurrency ){
+            if ($this->_isPlaceOrder()) {
+                return $info->getOrder()->getOrderCurrencyCode();
+            } else {
+                return $info->getQuote()->getOrderCurrencyCode();
+            }
+        }else{
+            if ($this->_isPlaceOrder()) {
+                return $info->getOrder()->getBaseCurrencyCode();
+            } else {
+                return $info->getQuote()->getBaseCurrencyCode();
+            }
+        }
 	}
 	
 	/**

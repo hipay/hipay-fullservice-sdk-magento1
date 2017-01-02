@@ -337,6 +337,7 @@
                 <vault_endpoint_production>https://secure-vault.hipay-tpp.com/rest/v1/token/</vault_endpoint_production>
                 <gateway_endpoint_stage>https://stage-secure-gateway.hipay-tpp.com/rest/v1/</gateway_endpoint_stage>
                 <gateway_endpoint_production>https://secure-gateway.hipay-tpp.com/rest/v1/</gateway_endpoint_production>
+				<currency_transaction>0</currency_transaction>
 			</hipay_api>
 			<fraud_payment>
                 <identity>general</identity>
