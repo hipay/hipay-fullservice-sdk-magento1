@@ -1,6 +1,7 @@
 <?php
 
-class Allopass_Hipay_Model_Source_Order_Status_Refused extends Allopass_Hipay_Model_Source_Order_Status {
+class Allopass_Hipay_Model_Source_Order_Status_Refused extends Allopass_Hipay_Model_Source_Order_Status
+{
 
     // set null to enable all possible
     protected $_stateStatuses = array(
@@ -8,5 +9,4 @@ class Allopass_Hipay_Model_Source_Order_Status_Refused extends Allopass_Hipay_Mo
         Mage_Sales_Model_Order::STATE_CANCELED,
         //Mage_Sales_Model_Order::STATE_CLOSED
     );
-
 }

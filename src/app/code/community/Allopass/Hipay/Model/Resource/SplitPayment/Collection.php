@@ -15,5 +15,4 @@ class Allopass_Hipay_Model_Resource_SplitPayment_Collection extends Mage_Core_Mo
     {
         $this->_init('hipay/splitPayment');
     }
-
 }

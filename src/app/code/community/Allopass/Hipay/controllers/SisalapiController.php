@@ -1,8 +1,8 @@
 <?php
 class Allopass_Hipay_SisalapiController extends Allopass_Hipay_Controller_Payment
 {
-	protected function _getMethodInstance()
-	{
-		return Mage::getSingleton('hipay/method_sisalApi');
-	}
+    protected function _getMethodInstance()
+    {
+        return Mage::getSingleton('hipay/method_sisalApi');
+    }
 }

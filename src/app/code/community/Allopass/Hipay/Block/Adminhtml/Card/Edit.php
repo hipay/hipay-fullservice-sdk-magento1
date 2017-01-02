@@ -8,7 +8,6 @@ class Allopass_Hipay_Block_Adminhtml_Card_Edit extends Mage_Adminhtml_Block_Widg
      */
     public function __construct()
     {
-    
         $this->_objectId   = 'card_id';
         $this->_blockGroup = 'hipay';
         $this->_controller = 'adminhtml_card';
@@ -18,14 +17,14 @@ class Allopass_Hipay_Block_Adminhtml_Card_Edit extends Mage_Adminhtml_Block_Widg
         $this->removeButton('delete');
         
         
-       $this->_addButton('saveandcontinue', array(
-        		'label'     => Mage::helper('adminhtml')->__('Save and Continue Edit'),
-        		'onclick'   => 'saveAndContinueEdit(\''.$this->getUrl('*/*/save', array('_current'=>true,'back'=>'edit')).'\')',
-        		'class'     => 'save',
+        $this->_addButton('saveandcontinue', array(
+                'label'     => Mage::helper('adminhtml')->__('Save and Continue Edit'),
+                'onclick'   => 'saveAndContinueEdit(\''.$this->getUrl('*/*/save', array('_current'=>true,'back'=>'edit')).'\')',
+                'class'     => 'save',
         ), -100);
        
        
-       $this->_formScripts[] = "
+        $this->_formScripts[] = "
             function saveAndContinueEdit(){
                 editForm.submit($('edit_form').action+'back/edit/');
             }
@@ -43,7 +42,7 @@ class Allopass_Hipay_Block_Adminhtml_Card_Edit extends Mage_Adminhtml_Block_Widg
      */
     public function getBackUrl()
     {
-    	return $this->getUrl('adminhtml/customer/edit',array('id'=>$this->getCard()->getCustomerId()));
+        return $this->getUrl('adminhtml/customer/edit', array('id'=>$this->getCard()->getCustomerId()));
     }
     
     /**
@@ -53,7 +52,6 @@ class Allopass_Hipay_Block_Adminhtml_Card_Edit extends Mage_Adminhtml_Block_Widg
      */
     public function getCard()
     {
-    	return Mage::registry('current_card');
+        return Mage::registry('current_card');
     }
-
 }

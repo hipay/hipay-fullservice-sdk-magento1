@@ -28,6 +28,4 @@
  */
 class Allopass_Hipay_Model_Api_Response_Notification extends Allopass_Hipay_Model_Api_Response_Abstract
 {
-	
-	
 }

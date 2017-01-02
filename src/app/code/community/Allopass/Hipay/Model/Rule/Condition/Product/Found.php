@@ -1,8 +1,7 @@
 <?php
 
 
-class Allopass_Hipay_Model_Rule_Condition_Product_Found
-    extends Allopass_Hipay_Model_Rule_Condition_Product_Combine
+class Allopass_Hipay_Model_Rule_Condition_Product_Found extends Allopass_Hipay_Model_Rule_Condition_Product_Combine
 {
     public function __construct()
     {

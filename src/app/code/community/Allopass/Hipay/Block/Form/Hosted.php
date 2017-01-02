@@ -6,5 +6,4 @@ class Allopass_Hipay_Block_Form_Hosted extends Allopass_Hipay_Block_Form_Abstrac
         parent::_construct();
         $this->setTemplate('hipay/form/hosted.phtml');
     }
-
 }

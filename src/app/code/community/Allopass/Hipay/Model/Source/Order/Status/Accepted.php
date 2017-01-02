@@ -1,6 +1,7 @@
 <?php
 
-class Allopass_Hipay_Model_Source_Order_Status_Accepted extends Allopass_Hipay_Model_Source_Order_Status {
+class Allopass_Hipay_Model_Source_Order_Status_Accepted extends Allopass_Hipay_Model_Source_Order_Status
+{
 
     // set null to enable all possible
     protected $_stateStatuses = array(
@@ -8,8 +9,9 @@ class Allopass_Hipay_Model_Source_Order_Status_Accepted extends Allopass_Hipay_M
         Mage_Sales_Model_Order::STATE_PROCESSING,
         Mage_Sales_Model_Order::STATE_COMPLETE
     );
-	
-	public function toOptionArray() {
+    
+    public function toOptionArray()
+    {
         if ($this->_stateStatuses) {
             $statuses = Mage::getSingleton('sales/order_config')->getStateStatuses($this->_stateStatuses);
         } else {
@@ -21,9 +23,10 @@ class Allopass_Hipay_Model_Source_Order_Status_Accepted extends Allopass_Hipay_M
             'label' => Mage::helper('adminhtml')->__('-- Please Select --')
         );*/
         foreach ($statuses as $code => $label) {
-        	if($code != Mage_Sales_Model_Order::STATE_PROCESSING && $code !=  Mage_Sales_Model_Order::STATE_COMPLETE)
-				continue;
-			
+            if ($code != Mage_Sales_Model_Order::STATE_PROCESSING && $code !=  Mage_Sales_Model_Order::STATE_COMPLETE) {
+                continue;
+            }
+            
             $options[] = array(
                 'value' => $code,
                 'label' => $label
@@ -31,5 +34,4 @@ class Allopass_Hipay_Model_Source_Order_Status_Accepted extends Allopass_Hipay_M
         }
         return $options;
     }
-
 }
