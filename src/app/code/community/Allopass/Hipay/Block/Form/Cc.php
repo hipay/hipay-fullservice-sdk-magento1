@@ -27,14 +27,13 @@ class Allopass_Hipay_Block_Form_Cc extends Allopass_Hipay_Block_Form_Abstract
                     if (!in_array($code, $availableTypes)) {
                         unset($types[$code]);
                     }
-
                 }
                 $ordered = array();
-                foreach($availableTypes as $key) {
-                	if(array_key_exists($key,$types)) {
-                		$ordered[$key] = $types[$key];
-                		unset($types[$key]);
-                	}
+                foreach ($availableTypes as $key) {
+                    if (array_key_exists($key, $types)) {
+                        $ordered[$key] = $types[$key];
+                        unset($types[$key]);
+                    }
                 }
                 return $ordered;
                 
@@ -85,7 +84,7 @@ class Allopass_Hipay_Block_Form_Cc extends Allopass_Hipay_Block_Form_Abstract
     {
         if ($this->getMethod()) {
             $configData = $this->getMethod()->getConfigData('useccv');
-            if(is_null($configData)){
+            if (is_null($configData)) {
                 return true;
             }
             return (bool) $configData;
@@ -111,17 +110,15 @@ class Allopass_Hipay_Block_Form_Cc extends Allopass_Hipay_Block_Form_Abstract
     * @return array
     */
      public function getSsStartYears()
-    {
-        $years = array();
-        $first = date("Y");
+     {
+         $years = array();
+         $first = date("Y");
 
-        for ($index=5; $index>=0; $index--) {
-            $year = $first - $index;
-            $years[$year] = $year;
-        }
-        $years = array(0=>$this->__('Year'))+$years;
-        return $years;
-    }
-    
-
+         for ($index=5; $index>=0; $index--) {
+             $year = $first - $index;
+             $years[$year] = $year;
+         }
+         $years = array(0=>$this->__('Year'))+$years;
+         return $years;
+     }
 }

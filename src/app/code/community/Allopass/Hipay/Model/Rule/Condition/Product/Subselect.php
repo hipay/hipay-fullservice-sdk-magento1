@@ -1,8 +1,7 @@
 <?php
 
 
-class Allopass_Hipay_Model_Rule_Condition_Product_Subselect
-    extends Allopass_Hipay_Model_Rule_Condition_Product_Combine
+class Allopass_Hipay_Model_Rule_Condition_Product_Subselect extends Allopass_Hipay_Model_Rule_Condition_Product_Combine
 {
     public function __construct()
     {
@@ -79,10 +78,10 @@ class Allopass_Hipay_Model_Rule_Condition_Product_Subselect
      */
     public function validate(Varien_Object $object)
     {
-    	if (!$this->getConditions()) {
+        if (!$this->getConditions()) {
             return false;
         }
-		
+        
 
 //        $value = $this->getValue();
 //        $aggregatorArr = explode('/', $this->getAggregator());

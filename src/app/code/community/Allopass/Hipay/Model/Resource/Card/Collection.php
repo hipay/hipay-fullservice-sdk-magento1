@@ -15,5 +15,4 @@ class Allopass_Hipay_Model_Resource_Card_Collection extends Mage_Core_Model_Mysq
     {
         $this->_init('hipay/card');
     }
-
 }

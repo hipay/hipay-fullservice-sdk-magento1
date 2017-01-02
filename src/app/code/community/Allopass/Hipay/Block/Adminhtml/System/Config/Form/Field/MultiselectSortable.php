@@ -1,15 +1,15 @@
 <?php 
-class Allopass_Hipay_Block_Adminhtml_System_Config_Form_Field_MultiselectSortable extends  Mage_Adminhtml_Block_System_Config_Form_Field
+class Allopass_Hipay_Block_Adminhtml_System_Config_Form_Field_MultiselectSortable extends Mage_Adminhtml_Block_System_Config_Form_Field
 {
-	
-	/**
-	 *
-	 * @param Varien_Data_Form_Element_Abstract $element
-	 * @return string
-	 */
-	protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
-	{
-		 $javaScript = "
+    
+    /**
+     *
+     * @param Varien_Data_Form_Element_Abstract $element
+     * @return string
+     */
+    protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
+    {
+        $javaScript = "
             <script type=\"text/javascript\">
 		 		var options = $$(\"#row_".$element->getHtmlId()." ul.checkboxes li\");
 		 		options.each(function(e){
@@ -37,10 +37,8 @@ class Allopass_Hipay_Block_Adminhtml_System_Config_Form_Field_MultiselectSortabl
             	var container = $$(\"#row_".$element->getHtmlId()." ul.checkboxes\").first();
             	Sortable.create(container);
             </script>";
-		$element->setData('after_element_html',$javaScript.$element->getAfterElementHtml());
-		
-		return parent::_getElementHtml($element);
-	}
-	
-	
+        $element->setData('after_element_html', $javaScript.$element->getAfterElementHtml());
+        
+        return parent::_getElementHtml($element);
+    }
 }

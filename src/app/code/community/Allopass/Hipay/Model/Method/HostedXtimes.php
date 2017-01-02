@@ -1,31 +1,29 @@
 <?php
 class Allopass_Hipay_Model_Method_HostedXtimes extends Allopass_Hipay_Model_Method_Hosted
 {
-	protected $_canUseInternal          = false;
-	
-	protected $_code  = 'hipay_hostedxtimes';
-	
-	/**
-	 * Check whether payment method can be used
-	 *
-	 * TODO: payment method instance is not supposed to know about quote
-	 *
-	 * @param Mage_Sales_Model_Quote|null $quote
-	 *
-	 * @return bool
-	 */
-	public function isAvailable($quote = null)
-	{
-		if(!is_null($quote)){
-			
-			$checkoutMethod = $quote->getCheckoutMethod();
-	
-	    	if($checkoutMethod == Mage_Checkout_Model_Type_Onepage::METHOD_GUEST){    		
-	    		return false;
-	    	}
-		}
-    	
-		return parent::isAvailable($quote);
-	}
-
+    protected $_canUseInternal          = false;
+    
+    protected $_code  = 'hipay_hostedxtimes';
+    
+    /**
+     * Check whether payment method can be used
+     *
+     * TODO: payment method instance is not supposed to know about quote
+     *
+     * @param Mage_Sales_Model_Quote|null $quote
+     *
+     * @return bool
+     */
+    public function isAvailable($quote = null)
+    {
+        if (!is_null($quote)) {
+            $checkoutMethod = $quote->getCheckoutMethod();
+    
+            if ($checkoutMethod == Mage_Checkout_Model_Type_Onepage::METHOD_GUEST) {
+                return false;
+            }
+        }
+        
+        return parent::isAvailable($quote);
+    }
 }

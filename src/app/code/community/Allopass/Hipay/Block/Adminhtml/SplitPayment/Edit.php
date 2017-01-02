@@ -8,7 +8,6 @@ class Allopass_Hipay_Block_Adminhtml_SplitPayment_Edit extends Mage_Adminhtml_Bl
      */
     public function __construct()
     {
-    
         $this->_objectId   = 'split_payment_id';
         $this->_blockGroup = 'hipay';
         $this->_controller = 'adminhtml_splitPayment';
@@ -18,20 +17,21 @@ class Allopass_Hipay_Block_Adminhtml_SplitPayment_Edit extends Mage_Adminhtml_Bl
         $this->removeButton('delete');
         
         
-       $this->_addButton('saveandcontinue', array(
-        		'label'     => Mage::helper('adminhtml')->__('Save and Continue Edit'),
-        		'onclick'   => 'saveAndContinueEdit(\''.$this->getUrl('*/*/save', array('_current'=>true,'back'=>'edit')).'\')',
-        		'class'     => 'save',
+        $this->_addButton('saveandcontinue', array(
+                'label'     => Mage::helper('adminhtml')->__('Save and Continue Edit'),
+                'onclick'   => 'saveAndContinueEdit(\''.$this->getUrl('*/*/save', array('_current'=>true,'back'=>'edit')).'\')',
+                'class'     => 'save',
         ), -100);
        
-       if($this->getSplitPayment()->canPay())
-	        $this->_addButton('payNow', array(
-	        		'label'     => Mage::helper('adminhtml')->__('Pay now'),
-	        		'onclick'   => 'run(\''.$this->getUrl('*/*/payNow', array('_current'=>true,'back'=>'edit')).'\')',
-	        		'class'     => 'go',
-	        ), -120);
+        if ($this->getSplitPayment()->canPay()) {
+            $this->_addButton('payNow', array(
+                    'label'     => Mage::helper('adminhtml')->__('Pay now'),
+                    'onclick'   => 'run(\''.$this->getUrl('*/*/payNow', array('_current'=>true,'back'=>'edit')).'\')',
+                    'class'     => 'go',
+            ), -120);
+        }
        
-       $this->_formScripts[] = "
+        $this->_formScripts[] = "
             function saveAndContinueEdit(){
                 editForm.submit($('edit_form').action+'back/edit/');
             }
@@ -49,7 +49,6 @@ class Allopass_Hipay_Block_Adminhtml_SplitPayment_Edit extends Mage_Adminhtml_Bl
      */
     public function getSplitPayment()
     {
-    	return Mage::registry('split_payment');
+        return Mage::registry('split_payment');
     }
-
 }

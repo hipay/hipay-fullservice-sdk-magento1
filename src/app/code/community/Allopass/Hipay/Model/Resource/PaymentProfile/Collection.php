@@ -19,7 +19,7 @@ class Allopass_Hipay_Model_Resource_PaymentProfile_Collection extends Mage_Core_
 
     public function toOptionArray()
     {
-    	return $this->_toOptionArray('profile_id');
+        return $this->_toOptionArray('profile_id');
     }
 
     /**
@@ -30,8 +30,7 @@ class Allopass_Hipay_Model_Resource_PaymentProfile_Collection extends Mage_Core_
      */
     public function addIdsToFilter($profileIds)
     {
-    	$this->addFieldToFilter('main_table.profile_id', $profileIds);
-    	return $this;
+        $this->addFieldToFilter('main_table.profile_id', $profileIds);
+        return $this;
     }
-
 }

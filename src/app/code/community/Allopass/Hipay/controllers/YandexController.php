@@ -1,8 +1,8 @@
 <?php
 class Allopass_Hipay_YandexController extends Allopass_Hipay_Controller_Payment
 {
-	protected function _getMethodInstance()
-	{
-		return Mage::getSingleton('hipay/method_yandex');
-	}
+    protected function _getMethodInstance()
+    {
+        return Mage::getSingleton('hipay/method_yandex');
+    }
 }
