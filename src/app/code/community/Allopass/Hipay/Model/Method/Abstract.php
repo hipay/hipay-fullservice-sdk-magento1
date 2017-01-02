@@ -7,6 +7,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 	const OPERATION_MAINTENANCE_REFUND = "Refund";
 	const OPERATION_MAINTENANCE_ACCEPT_CHALLENGE = 'acceptChallenge';
 	const OPERATION_MAINTENANCE_DENY_CHALLENGE = 'denyChallenge';
+	const OPERATION_MAINTENANCE_CANCEL = 'cancel';
 	
 	
 	const STATE_COMPLETED = "completed";
@@ -107,6 +108,46 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		->setAdditionalInformation('device_fingerprint', $data->getData('device_fingerprint'));
 		
 		
+	}
+
+	/**
+	* A request instructing the payment gateway to cancel a previously authorized transaction. 
+	* Only authorized transactions can be cancelled, captured transactions must be refunded.
+	*
+	*/
+	public function cancelTransaction(Mage_Payment_Model_Info $payment)
+	{
+		$transactionId = $payment->getLastTransId() ;
+		$order = $payment->getOrder();
+		
+		$gatewayParams = array('operation'=>self::OPERATION_MAINTENANCE_CANCEL);
+
+		/* @var $request Allopass_Hipay_Model_Api_Request */
+		$request = Mage::getModel('hipay/api_request',array($this));
+		$uri = Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_MAINTENANCE . $transactionId;
+
+		if ($transactionId){
+			$gatewayResponse = $request->gatewayRequestMaintenance($uri,$gatewayParams,$payment->getOrder()->getStoreId());
+			
+			if (is_a($gatewayResponse,'Allopass_Hipay_Model_Api_Response_Error')){
+				$order->addStatusHistoryComment(Mage::helper('hipay')->__('Error in  canceling  Transaction ID: "%s". %s',$transactionId,$gatewayResponse->getMessage()), false);
+			}else{
+				$response = Mage::getModel('hipay/api_response_gateway',$gatewayResponse);
+
+				if ($response->getStatus() == '115'){
+					$order->addStatusHistoryComment(Mage::helper('hipay')->__('Cancel Transaction ID: "%s".',$transactionId), false);
+				}else{
+					$order->addStatusHistoryComment(Mage::helper('hipay')->__('Error in  canceling transaction ID: "%s". %s',$transactionId,$gatewayResponse->getMessage()), false);
+				}
+
+				$this->_debug($response->debug());
+			}
+		}else{
+			$order->addStatusHistoryComment(Mage::helper('hipay')->__('No Cancel Transaction because no transaction number'), false);	
+		}
+				
+		// Return false because payment is accepted by notification
+		return false;
 	}
 	
 	
@@ -1246,7 +1287,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 	
 		return true;
 	}
-	
+					
 	/**
 	 *
 	 * @param Mage_Sales_Model_Order_Payment $payment
