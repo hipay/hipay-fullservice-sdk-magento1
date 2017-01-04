@@ -999,7 +999,7 @@
                             <sort_order>35</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_store>1</show_in_store>
                         </template>
                         <display_iframe translate="label">               	
                         	<label>Display hosted page in Iframe</label>
@@ -1354,7 +1354,7 @@
                             <sort_order>35</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_store>1</show_in_store>
                         </template>
                         <display_iframe translate="label">               	
                         	<label>Display hosted page in Iframe</label>
@@ -1651,7 +1651,7 @@
                             <sort_order>35</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_store>1</show_in_store>
                         </template>
                          <re_add_to_cart translate="label comment">
                         	<label>Add product to cart</label>
@@ -1851,7 +1851,7 @@
                             <sort_order>35</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_store>1</show_in_store>
                         </template>
                          <re_add_to_cart translate="label comment">
                         	<label>Add product to cart</label>
@@ -2051,7 +2051,7 @@
                             <sort_order>35</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_store>1</show_in_store>
                         </template>
                          <re_add_to_cart translate="label comment">
                         	<label>Add product to cart</label>
@@ -2615,7 +2615,7 @@
                             <sort_order>35</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_store>1</show_in_store>
                         </template>
                          <re_add_to_cart translate="label comment">
                         	<label>Add product to cart</label>
@@ -2815,7 +2815,7 @@
                             <sort_order>35</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_store>1</show_in_store>
                         </template>
                          <re_add_to_cart translate="label comment">
                         	<label>Add product to cart</label>
@@ -3015,7 +3015,7 @@
                             <sort_order>35</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_store>1</show_in_store>
                         </template>
                          <re_add_to_cart translate="label comment">
                         	<label>Add product to cart</label>
@@ -3215,7 +3215,7 @@
                             <sort_order>35</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_store>1</show_in_store>
                         </template>
                          <re_add_to_cart translate="label comment">
                         	<label>Add product to cart</label>
@@ -3415,7 +3415,7 @@
                             <sort_order>35</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_store>1</show_in_store>
                         </template>
                          <re_add_to_cart translate="label comment">
                         	<label>Add product to cart</label>
@@ -3425,7 +3425,7 @@
                             <sort_order>95</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
+                            <show_in_store>1</show_in_store>
                         </re_add_to_cart>
                         <cancel_pending_order translate="label comment">
                          	<label>Cancel pending order</label>
