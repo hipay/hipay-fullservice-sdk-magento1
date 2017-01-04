@@ -148,7 +148,7 @@ class Allopass_Hipay_Model_Api_Request
         } else {
             $this->getClient()->setParameterGet($params);
         }
-    
+
         $this->getClient()->setUri($uri);
     
         /* @var $response Zend_Http_Response */

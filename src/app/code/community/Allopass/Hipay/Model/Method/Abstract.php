@@ -902,18 +902,17 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         parent::refund($payment, $amount);
         
         $transactionId = $payment->getLastTransId();
-        
-        $gatewayParams = $this->getGatewayParams($payment, $amount);
 
-        $gatewayParams['operation'] ='refund';
-        $gatewayParams['amount'] =   $amount;
+        $gatewayParams = array('operation'=>'refund','amount'=>$amount);
+
+        if (Mage::getStoreConfig('hipay/hipay_basket/activate_basket', Mage::app()->getStore())) {
+            $gatewayParams['basket'] = Mage::helper('hipay')->getCartInformation($payment->getOrder());
+        }
 
         /* @var $request Allopass_Hipay_Model_Api_Request */
         $request = Mage::getModel('hipay/api_request', array($this));
         $action = Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_MAINTENANCE . $transactionId;
-        
-        
-        
+
         $this->_debug($gatewayParams);
         
         $gatewayResponse = $request->gatewayRequest($action, $gatewayParams, $payment->getOrder()->getStoreId());
@@ -1225,11 +1224,11 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
     {
         $transactionId = $payment->getLastTransId();
 
-        // Hydrate gateWay params
-        $gatewayParams = $this->getGatewayParams($payment, $amount);
+        $gatewayParams = array('operation'=>'capture','amount'=>$amount);
 
-        $gatewayParams['operation'] ='capture';
-        $gatewayParams['amount'] =   $amount;
+        if (Mage::getStoreConfig('hipay/hipay_basket/activate_basket', Mage::app()->getStore())) {
+            $gatewayParams['basket'] = Mage::helper('hipay')->getCartInformation($payment->getOrder());
+        }
 
         $this->_debug($gatewayParams);
         /* @var $request Allopass_Hipay_Model_Api_Request */
