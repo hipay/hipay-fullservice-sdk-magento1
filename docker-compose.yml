@@ -6,11 +6,21 @@ web:
   links:
     - mysql
   env_file:
-    - env
+    - ./bin/conf/development/env
+  volumes:
+    - ./src/app/code/community/Allopass:/var/www/htdocs/app/code/community/Allopass
+    - ./src/app/design/frontend/base/default/template/hipay:/var/www/htdocs/app/design/frontend/base/default/template/hipay
+    - ./src/app/design/adminhtml/default/default/template/hipay:/var/www/htdocs/app/design/adminhtml/default/default/template/hipay
+    - ./web:/var/www/htdocs
+    - ./log:/var/www/htdocs/var/log
 mysql:
   image: mysql:5.6.23
+  ports:
+    - "3307:3306"
   env_file:
-    - env
+    - ./bin/conf/development/env
+  volumes:
+    - ./data/mysql:/var/lib/mysql
 smtp:
   image: schickling/mailcatcher
   container_name: smtp-hipay-mg-latest

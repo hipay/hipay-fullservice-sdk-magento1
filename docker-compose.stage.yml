@@ -1,0 +1,22 @@
+web:
+  container_name: jira-mg-latest.hipay-pos-platform.com
+  build: .
+  ports:
+    - "80:80"
+  links:
+    - mysql
+  env_file:
+    - ./bin/conf/stage/env
+mysql:
+  image: mysql:5.6.23
+  ports:
+    - "3306:3306"
+  env_file:
+     - ./bin/conf/stage/env
+  volumes:
+    - ./data/mysql:/var/lib/mysql
+smtp:
+  image: schickling/mailcatcher
+  container_name: smtp-hipay-mg-latest
+  ports:
+    - "1095:1080"
