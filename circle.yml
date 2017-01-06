@@ -14,5 +14,11 @@ dependencies:
     - docker-compose -v
 
 test:
-  override:
+  pre:
     - docker-compose -f docker-compose.stage.yml up -d
+
+deployment:
+  staging:
+    branch: develop
+    commands:
+      - ./bin/deployment/deploy_staging.sh
