@@ -15,6 +15,7 @@ RUN requirements="libpng12-dev libxml2-dev libmcrypt-dev libmcrypt4 libcurl3-dev
 
 RUN usermod -u 1000 www-data
 RUN a2enmod rewrite
+RUN sed -i -e 's/\/var\/www\/html/\/var\/www\/htdocs/' /etc/apache2/apache2.conf
 
 # REMOVE OLD FILES IN VOLUME
 RUN rm -Rf /var/www/htdocs
