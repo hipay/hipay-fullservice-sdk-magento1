@@ -618,7 +618,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 		return empty(Mage::getStoreConfig('payment/'.$payment->getMethod().'/success_redirect_page')) ?
 			Mage::getUrl('checkout/onepage/success') :
 			Mage::getStoreConfig('payment/'.$payment->getMethod().'/success_redirect_page');
-	}<
+	}
 
 	/**
 	 * @param Mage_Sales_Model_Order_Payment $payment
