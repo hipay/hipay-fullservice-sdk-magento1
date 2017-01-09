@@ -18,4 +18,4 @@ deployment:
   feature:
     branch: feature/TPPMAG1-83
     commands:
-      - sh ../bin/deployment/deploy_staging.sh
+      - sh ./bin/deployment/deploy_staging.sh
