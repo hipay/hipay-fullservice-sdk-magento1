@@ -12,10 +12,10 @@ dependencies:
     - sudo mv docker-compose /usr/local/bin
     - docker-compose -v
 test:
-  pre:
+  override:
     - docker-compose -f docker-compose.stage.yml up -d
 deployment:
   feature:
-    branch: /TPPMAG1*/
+    branch: TPPMAG1-83
     commands:
       - sh ../bin/deployment/deploy_staging.sh
