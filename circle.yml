@@ -3,7 +3,6 @@ machine:
     DOCKER_COMPOSE_VERSION: 1.4.2
   services:
     - docker
-
 dependencies:
   pre:
     - docker -v
@@ -16,7 +15,7 @@ test:
   pre:
     - docker-compose -f docker-compose.stage.yml up -d
 deployment:
-  staging:
-    branch: /TPP*/
+  feature:
+    branch: /TPPMAG1*/
     commands:
-      - ./bin/deployment/deploy_staging.sh
+      - sh ../bin/deployment/deploy_staging.sh
