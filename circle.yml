@@ -12,13 +12,11 @@ dependencies:
     - chmod +x docker-compose
     - sudo mv docker-compose /usr/local/bin
     - docker-compose -v
-
 test:
   pre:
     - docker-compose -f docker-compose.stage.yml up -d
-
 deployment:
   staging:
-    branch: develop
+    branch: /TPP*/
     commands:
       - ./bin/deployment/deploy_staging.sh
