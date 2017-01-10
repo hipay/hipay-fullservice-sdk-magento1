@@ -19,7 +19,6 @@ dependencies:
     - npm install -g casperjs@1.1.0-beta3
 test:
   pre:
-    - docker-compose -f docker-compose.stage.yml build
     - docker-compose -f docker-compose.stage.yml up -d
   override:
     - curl --retry 30 --retry-delay 3 -v ${MAGENTO_URL}
