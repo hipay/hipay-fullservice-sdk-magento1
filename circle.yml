@@ -1,10 +1,10 @@
 machine:
-  environment:
-    DOCKER_COMPOSE_VERSION: 1.4.2
   services:
     - docker
   hosts:
-      local-magento.hipay.com: 127.0.0.1
+    local-hipay.hipay.com: 127.0.0.1
+  php:
+    version: 5.6.17
 dependencies:
   pre:
     - docker -v
@@ -21,11 +21,12 @@ dependencies:
     - npm install -g casperjs@1.1.0-beta3
 test:
   pre:
-    - docker-compose -f docker-compose.stage.yml build --no-cache
+    - docker-compose -f docker-compose.stage.yml build --rm=false --no-cache
   override:
     - docker-compose up -d
-    - sleep 200
-    - curl --retry 30 --retry-delay 3 -v http://127.0.0.1
+    - sleep 60
+    - wget http://local-magento.hipay.com/
+    - curl --retry 30 --retry-delay 3 -v http://local-magento.hipay.com/
     - sh ./bin/tests/launch-all-tests.sh
 deployment:
   feature:
