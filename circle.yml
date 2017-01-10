@@ -24,7 +24,6 @@ test:
     - docker-compose -f docker-compose.stage.yml build --no-cache
   override:
     - docker-compose up -d
-    - docker-compose logs
     - sleep 200
     - curl --retry 30 --retry-delay 3 -v http://127.0.0.1
     - sh ./bin/tests/launch-all-tests.sh
