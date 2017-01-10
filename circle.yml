@@ -23,7 +23,7 @@ test:
   pre:
     - docker-compose -f docker-compose.stage.yml up -d
   override:
-    - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL
+    - curl --retry 30 --retry-delay 3 -v http://local-magento.hipay.com
     - sh ./bin/tests/launch-all-tests.sh
 deployment:
   feature:
