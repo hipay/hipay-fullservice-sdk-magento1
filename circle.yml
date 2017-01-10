@@ -3,6 +3,8 @@ machine:
     DOCKER_COMPOSE_VERSION: 1.4.2
   services:
     - docker
+  hosts:
+      local-magento.hipay.com: 127.0.0.1
 dependencies:
   pre:
     - docker -v
@@ -21,7 +23,7 @@ test:
   pre:
     - docker-compose -f docker-compose.stage.yml up -d
   override:
-    - curl --retry 30 --retry-delay 3 -v ${MAGENTO_URL}
+    - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL
     - sh ./bin/tests/launch-all-tests.sh
 deployment:
   feature:
