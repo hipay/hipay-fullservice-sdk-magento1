@@ -13,8 +13,6 @@ mysql:
     - "3307:3306"
   env_file:
      - ./bin/conf/stage/env
-  volumes:
-    - ./data/mysql:/var/lib/mysql
 smtp:
   image: schickling/mailcatcher
   container_name: smtp-hipay-mg-latest
