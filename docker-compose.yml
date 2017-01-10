@@ -6,7 +6,7 @@ web:
   links:
     - mysql
   env_file:
-    - ./bin/conf/development/env
+    - ./bin/conf/development/env_dev
   volumes:
     - ./src/app/code/community/Allopass:/var/www/htdocs/app/code/community/Allopass
     - ./src/app/design/frontend/base/default/template/hipay:/var/www/htdocs/app/design/frontend/base/default/template/hipay
@@ -18,7 +18,7 @@ mysql:
   ports:
     - "3307:3306"
   env_file:
-    - ./bin/conf/development/env
+    - ./bin/conf/development/env_dev
   volumes:
     - ./data/mysql:/var/lib/mysql
 smtp:
