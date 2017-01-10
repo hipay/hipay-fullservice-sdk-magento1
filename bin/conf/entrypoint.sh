@@ -22,10 +22,19 @@ echo "\n* STEP 1 : CHECK MAGENTO INSTALLATION   \n";
     # Install magento
     install-magento
 
+
     chown -R www-data:www-data /var/www/htdocs
     chmod -R a+rw /var/www/htdocs
     rm -f  /var/www/htdocs/install.php
 
+    # Prefix for Entity Order
+    echo "\n* UPDATE TRANSACTION PREFIX  \n";
+    n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT"  db:query "UPDATE eav_entity_store
+                               INNER JOIN eav_entity_type ON eav_entity_type.entity_type_id = eav_entity_store.entity_type_id
+                               SET eav_entity_store.increment_prefix='$RANDOM'
+                               WHERE eav_entity_type.entity_type_code='order';"
+
+    # Configuration per environment
     if [ "$ENVIRONMENT" = "$ENV_DEVELOPMENT" ];then
         echo "\n* APPLY CONFIGURATION :   $ENV_DEVELOPMENT  \n";
         n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" cache:disable
@@ -63,15 +72,16 @@ echo "\n* STEP 1 : CHECK MAGENTO INSTALLATION   \n";
 
         cp -f /tmp/$ENVIRONMENT/php/php.ini /usr/local/etc/php/php.ini
     fi
+
+    # override files for hipay after installation of magento #
+    echo "\n* STEP 2 : COPY HIPAY FILES   \n";
+    cp -Rf /tmp/src/app/code /var/www/htdocs/app/
+    cp -Rf /tmp/src/app/design /var/www/htdocs/app/
+    cp -Rf /tmp/src/app/etc /var/www/htdocs/app/
+    cp -Rf /tmp/src/app/locale /var/www/htdocs/app/
+    cp -Rf /tmp/src/skin /var/www/htdocs/
 fi
 
-# override files for hipay after installation of magento #
-echo "\n* STEP 2 : CHECK MAGENTO INSTALLATION   \n";
-cp -Rf /tmp/src/app/code /var/www/htdocs/app/
-cp -Rf /tmp/src/app/design /var/www/htdocs/app/
-cp -Rf /tmp/src/app/etc /var/www/htdocs/app/
-cp -Rf /tmp/src/app/locale /var/www/htdocs/app/
-cp -Rf /tmp/src/skin /var/www/htdocs/
 
 chown -R www-data:www-data /var/www/htdocs
 
