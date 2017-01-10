@@ -15,10 +15,9 @@ dependencies:
     - npm install -g casperjs@1.1.0-beta3
 test:
   pre:
-    - docker-compose -f docker-compose.stage.yml build --no-cache
+    - docker-compose -f docker-compose.yml -f docker-compose.stage.yml build --no-cache
   override:
     - docker-compose up -d
-    - docker-compose logs -f
     - sleep 60
     - wget http://local-magento.hipay.com/
     - curl --retry 30 --retry-delay 3 -v http://local-magento.hipay.com/
