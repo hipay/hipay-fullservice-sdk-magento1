@@ -27,6 +27,16 @@ echo "\n* STEP 1 : CHECK MAGENTO INSTALLATION   \n";
     chmod -R a+rw /var/www/htdocs
     rm -f  /var/www/htdocs/install.php
 
+     # override files for hipay after installation of magento #
+    echo "\n* COPY HIPAY FILES   \n";
+    cp -Rf /tmp/src/app/code /var/www/htdocs/app/
+    cp -Rf /tmp/src/app/design /var/www/htdocs/app/
+    cp -Rf /tmp/src/app/etc /var/www/htdocs/app/
+    cp -Rf /tmp/src/app/locale /var/www/htdocs/app/
+    cp -Rf /tmp/src/skin /var/www/htdocs/
+
+    n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" cache:clean
+
     # Prefix for Entity Order
     echo "\n* UPDATE TRANSACTION PREFIX  \n";
     n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT"  db:query "UPDATE eav_entity_store
@@ -34,28 +44,30 @@ echo "\n* STEP 1 : CHECK MAGENTO INSTALLATION   \n";
                                SET eav_entity_store.increment_prefix='$RANDOM'
                                WHERE eav_entity_type.entity_type_code='order';"
 
+    echo "\n* SET CREDENTIALS \n";
+    if [ "$HIPAY_API_USER_TEST" != "" ];then
+        n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" config:set hipay/hipay_api/api_username_test $HIPAY_API_USER_TEST
+        n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" config:set --encrypt hipay/hipay_api/api_password_test $HIPAY_API_PASSWORD_TEST
+        n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" config:set hipay/hipay_api/api_tokenjs_publickey_test $HIPAY_TOKENJS_PUBLICKEY_TEST
+        n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" config:set --encrypt hipay/hipay_api/secret_passphrase_test $HIPAY_SECRET_PASSPHRASE_TEST
+        n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" config:set hipay/hipay_api/api_tokenjs_username_test $HIPAY_TOKENJS_USERNAME_TEST
+    fi
+
+    echo "\n* ACTIVATE PAYMENT METHODS \n";
+    methods=$(echo $ACTIVE_METHODS| tr "," "\n")
+    for code in $methods
+    do
+        n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" config:set payment/$code/active 1
+        n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" config:set payment/$code/debug 1
+        n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" config:set payment/$code/is_test_mode 1
+    done
+
     # Configuration per environment
     if [ "$ENVIRONMENT" = "$ENV_DEVELOPMENT" ];then
         echo "\n* APPLY CONFIGURATION :   $ENV_DEVELOPMENT  \n";
         n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" cache:disable
         n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" dev:log --on --global
         n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" dev:log:db --on
-
-        echo "\n* SET CREDENTIALS \n";
-        n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" config:set hipay/hipay_api/api_username_test $HIPAY_API_USER_TEST
-        n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" config:set --encrypt hipay/hipay_api/api_password_test $HIPAY_API_PASSWORD_TEST
-        n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" config:set hipay/hipay_api/api_tokenjs_publickey_test $HIPAY_TOKENJS_PUBLICKEY_TEST
-        n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" config:set --encrypt hipay/hipay_api/secret_passphrase_test $HIPAY_SECRET_PASSPHRASE_TEST
-        n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" config:set hipay/hipay_api/api_tokenjs_username_test $HIPAY_TOKENJS_USERNAME_TEST
-
-        echo "\n* ACTIVATE PAYMENT METHODS \n";
-        methods=$(echo $ACTIVE_METHODS| tr "," "\n")
-        for code in $methods
-        do
-            n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" config:set payment/$code/active 1
-            n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" config:set payment/$code/debug 1
-            n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" config:set payment/$code/is_test_mode 1
-        done
 
         # INSTALL X DEBUG
         yes | pecl install xdebug
@@ -65,23 +77,15 @@ echo "\n* STEP 1 : CHECK MAGENTO INSTALLATION   \n";
 
         cp -f /tmp/$ENVIRONMENT/php/php.ini /usr/local/etc/php/php.ini
     else
-        echo "\n* APPLY CONF  $ENV_STAGE  \n";
-        n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" cache:enable
+        echo "\n* APPLY CONFIGURATION  $ENV_STAGE  \n";
+        n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" cache:clean
+        n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" cache:disable
         n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" dev:log --on --global
         n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" dev:log:db --off
 
         cp -f /tmp/$ENVIRONMENT/php/php.ini /usr/local/etc/php/php.ini
     fi
-
-    # override files for hipay after installation of magento #
-    echo "\n* STEP 2 : COPY HIPAY FILES   \n";
-    cp -Rf /tmp/src/app/code /var/www/htdocs/app/
-    cp -Rf /tmp/src/app/design /var/www/htdocs/app/
-    cp -Rf /tmp/src/app/etc /var/www/htdocs/app/
-    cp -Rf /tmp/src/app/locale /var/www/htdocs/app/
-    cp -Rf /tmp/src/skin /var/www/htdocs/
 fi
-
 
 chown -R www-data:www-data /var/www/htdocs
 
