@@ -21,7 +21,7 @@ RUN sed -i -e 's/\/var\/www\/html/\/var\/www\/htdocs/' /etc/apache2/apache2.conf
 RUN rm -Rf /var/www/htdocs
 RUN rm -Rf /var/lib/mysql
 
-# REMOVE OLD FILE I<>ddN LOCAL
+# REMOVE OLD FILE IdN LOCAL
 #RUN rm -Rf ./data/
 #RUN rm -Rf ./web/
 #RUN rm -Rf ./log/
