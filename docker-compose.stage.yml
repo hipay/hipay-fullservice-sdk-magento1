@@ -1,8 +1,6 @@
 web:
   container_name: jira-mg-latest.hipay-pos-platform.com
   build: .
-  ports:
-    - "80:80"
   env_file:
     - ./bin/conf/stage/env_stage
 mysql:
