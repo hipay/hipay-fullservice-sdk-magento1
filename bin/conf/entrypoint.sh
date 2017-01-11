@@ -45,7 +45,7 @@ echo "\n* STEP 1 : CHECK MAGENTO INSTALLATION   \n";
                                WHERE eav_entity_type.entity_type_code='order';"
 
     echo "\n* SET CREDENTIALS \n";
-    if [ "$HIPAY_API_USER_TEST" != "" ];then
+    if [ $HIPAY_API_USER_TEST != "" ];then
         n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" config:set hipay/hipay_api/api_username_test $HIPAY_API_USER_TEST
         n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" config:set --encrypt hipay/hipay_api/api_password_test $HIPAY_API_PASSWORD_TEST
         n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" config:set hipay/hipay_api/api_tokenjs_publickey_test $HIPAY_TOKENJS_PUBLICKEY_TEST
