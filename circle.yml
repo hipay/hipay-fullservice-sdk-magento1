@@ -16,8 +16,10 @@ dependencies:
 test:
   pre:
     - docker-compose -f docker-compose.yml -f docker-compose.stage.yml build --no-cache
+    - docker-compose run -d mysql
+    - docker-compose run -d smtp
+    - docker-compose run -d -e HIPAY_API_USER_TEST=$HIPAY_API_USER_TEST -e HIPAY_API_PASSWORD_TEST=$HIPAY_API_PASSWORD_TEST -e HIPAY_TOKENJS_PUBLICKEY_TEST=$HIPAY_TOKENJS_PUBLICKEY_TEST -e HIPAY_TOKENJS_USERNAME_TEST=$HIPAY_TOKENJS_USERNAME_TEST -e HIPAY_SECRET_PASSPHRASE_TEST=$HIPAY_SECRET_PASSPHRASE_TEST webn
   override:
-    - docker-compose -f docker-compose.yml -f docker-compose.stage.yml up -d
     - sleep 60
     - curl --retry 30 --retry-delay 3 -v http://local-magento.hipay.com:8095/
     - sh ./bin/tests/launch-all-tests.sh
