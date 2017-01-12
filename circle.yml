@@ -1,11 +1,13 @@
 machine:
+  timezone:
+    Europe/Paris
   services:
     - docker
   hosts:
     local-magento.hipay.com: 127.0.0.1
   php:
     version: 5.6.17
-dependencies:
+dependencies:exit
   pre:
     - wget https://github.com/Medium/phantomjs/releases/download/v1.9.19/phantomjs-1.9.8-linux-x86_64.tar.bz2
     - sudo tar xvjf phantomjs-1.9.8-linux-x86_64.tar.bz2
@@ -23,6 +25,7 @@ test:
     - docker-compose -f docker-compose.yml -f docker-compose.stage.yml build --no-cache
     - docker-compose -f docker-compose.yml -f docker-compose.stage.yml up -d
   override:
+    - sleep 60
     - curl --retry 30 --retry-delay 3 -v http://local-magento.hipay.com:8095/
     - sh ./bin/tests/launch-all-tests.sh
 deployment:
