@@ -28,6 +28,6 @@ test:
     - sh ./bin/tests/launch-all-tests.sh
 deployment:
   feature:
-    branch: feature/TPPMAG1-83
+    branch: /feature*/
     commands:
       - sh ./bin/deployment/deploy_staging.sh
