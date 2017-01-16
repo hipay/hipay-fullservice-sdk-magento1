@@ -161,6 +161,48 @@
                             <show_in_store>1</show_in_store>
                         </fingerprint>
                     </fields>
+   				 </hipay_api>
+          <hipay_basket>
+   				<label>Basket configuration</label>
+   				<frontend_type>text</frontend_type>
+					<comment></comment>
+   					<sort_order>11</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <activate_basket translate="label comment">
+                            <label>Activate basket</label>
+                            <frontend_type>select</frontend_type>
+                            <comment>Activate the basket sending to HIPAY</comment>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </activate_basket>
+                        <attribute_ean translate="label comment">
+                            <label>Attribute ean</label>
+                            <frontend_type>select</frontend_type>
+                            <comment>If you store support ean, indicate the field name </comment>
+                            <source_model>hipay/source_attributes</source_model>
+                            <sort_order>120</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </attribute_ean>
+                        <load_product_ean translate="label comment">
+                            <label>Load attribute</label>
+                            <frontend_type>select</frontend_type>
+                            <comment>If you activate this option, a product loading is carried out to get ean (Please see documentation ) </comment>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>130</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </load_product_ean>
+                    </fields>
+                </hipay_basket>
                 </hipay_api>
                 <fraud_payment translate="label">
                     <label>Fraud Payment Review Email</label>
