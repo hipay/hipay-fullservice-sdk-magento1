@@ -262,13 +262,21 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 	 */
 	public function insertSplitPayment($order,$profile,$customerId,$cardToken)
 	{
+        $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction', Mage::app()->getStore());
+
+        if ($useOrderCurrency) {
+            $total = $order->getGrandTotal();
+        } else {
+            $total = $order->geBasetGrandTotal();
+        }
+
 		if(is_int($profile))
 			$profile = Mage::getModel('hipay/paymentProfile')->load($profile);
 
 		if(!$this->splitPaymentsExists($order->getId()))
 		{
 
-			$paymentsSplit = $this->splitPayment($profile, $order->getBaseGrandTotal());
+			$paymentsSplit = $this->splitPayment($profile, $total);
 
 
 			//remove first element because is already paid
@@ -285,7 +293,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 							  'real_order_id'=>(int)$order->getRealOrderId(),
 							  'customer_id'=>$customerId,
 							  'card_token'=>$cardToken,
-							  'total_amount'=>$order->getBaseGrandTotal(),
+							  'total_amount'=>$total,
 							  'amount_to_pay'=>$split['amountToPay'],
 							  'date_to_pay'=>$split['dateToPay'],
 							  'method_code'=>$order->getPayment()->getMethod(),
@@ -864,4 +872,3 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 
 
 }
-
