@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<modules>
 		<Allopass_Hipay>
-			<version>1.3.9</version>
+			<version>1.5.0</version>
 		</Allopass_Hipay>
 	</modules>
 	<global>
@@ -317,7 +316,7 @@
 	                    </arrange_order_view>
 					</observers>
 		    </adminhtml_widget_container_html_before>
-		    <sales_order_load_after>
+		   <sales_order_load_after>
 		        <observers>
 		            <order_can_refund>
 		                <class>hipay/observer</class>
@@ -325,6 +324,14 @@
 		            </order_can_refund>
 		        </observers>
 		    </sales_order_load_after>
+		    <sales_order_save_before>
+		        <observers>
+		            <order_unset_can_refund>
+		                <class>hipay/observer</class>
+	                    <method>unsetOrderCanRefund</method>
+		            </order_unset_can_refund>
+		        </observers>
+		    </sales_order_save_before>
 		</events>
 	</adminhtml>
 	<default>
@@ -338,6 +345,7 @@
                 <gateway_endpoint_stage>https://stage-secure-gateway.hipay-tpp.com/rest/v1/</gateway_endpoint_stage>
                 <gateway_endpoint_production>https://secure-gateway.hipay-tpp.com/rest/v1/</gateway_endpoint_production>
 				<currency_transaction>0</currency_transaction>
+				<fingerprint>1</fingerprint>
 			</hipay_api>
 			<fraud_payment>
                 <identity>general</identity>
@@ -369,6 +377,7 @@
 				<invoice_create>1</invoice_create>
 				<re_add_to_cart>0</re_add_to_cart>
 				<cancel_pending_order>1</cancel_pending_order>
+				<delay_cancel_pending_order>0.5</delay_cancel_pending_order>
 				<is_test_mode>0</is_test_mode>
 				<debug>0</debug>
 				<model>hipay/method_cc</model>
@@ -396,6 +405,7 @@
 				<invoice_create>1</invoice_create>
 				<re_add_to_cart>0</re_add_to_cart>
 				<cancel_pending_order>1</cancel_pending_order>
+				<delay_cancel_pending_order>0.5</delay_cancel_pending_order>
 				<is_test_mode>0</is_test_mode>
 				<debug>0</debug>
 				<model>hipay/method_ccXtimes</model>
@@ -423,6 +433,7 @@
 				<invoice_create>1</invoice_create>
 				<re_add_to_cart>0</re_add_to_cart>
 				<cancel_pending_order>1</cancel_pending_order>
+				<delay_cancel_pending_order>0.5</delay_cancel_pending_order>
 				<display_iframe>0</display_iframe>
 				<iframe_width>485px</iframe_width>
 				<iframe_height>450px</iframe_height>
@@ -455,6 +466,7 @@
 				<invoice_create>1</invoice_create>
 				<re_add_to_cart>0</re_add_to_cart>
 				<cancel_pending_order>1</cancel_pending_order>
+				<delay_cancel_pending_order>0.5</delay_cancel_pending_order>
 				<display_iframe>0</display_iframe>
 				<iframe_width>485px</iframe_width>
 				<iframe_height>450px</iframe_height>
@@ -486,6 +498,7 @@
 				<invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
 				<re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
 				<cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
+				<delay_cancel_pending_order>0.5</delay_cancel_pending_order>
 				<display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
 				<is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
 				<debug>0</debug><!-- valeur par défaut du mode debug -->
@@ -515,6 +528,7 @@
 				<invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
 				<re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
 				<cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
+				<delay_cancel_pending_order>0.5</delay_cancel_pending_order>
 				<display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
 				<is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
 				<debug>0</debug><!-- valeur par défaut du mode debug -->
@@ -544,6 +558,7 @@
 				<invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
 				<re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
 				<cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
+				<delay_cancel_pending_order>0.5</delay_cancel_pending_order>
 				<display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
 				<is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
 				<debug>0</debug><!-- valeur par défaut du mode debug -->
@@ -573,6 +588,7 @@
 				<invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
 				<re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
 				<cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
+				<delay_cancel_pending_order>0.5</delay_cancel_pending_order>
 				<display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
 				<is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
 				<debug>0</debug><!-- valeur par défaut du mode debug -->
@@ -660,6 +676,7 @@
 				<invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
 				<re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
 				<cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
+				<delay_cancel_pending_order>0.5</delay_cancel_pending_order>
 				<display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
 				<is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
 				<debug>0</debug><!-- valeur par défaut du mode debug -->
@@ -689,6 +706,7 @@
 				<invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
 				<re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
 				<cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
+				<delay_cancel_pending_order>0.5</delay_cancel_pending_order>
 				<display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
 				<is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
 				<debug>0</debug><!-- valeur par défaut du mode debug -->
@@ -716,6 +734,7 @@
 				<invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
 				<re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
 				<cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
+				<delay_cancel_pending_order>0.5</delay_cancel_pending_order>
 				<display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
 				<is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
 				<debug>0</debug><!-- valeur par défaut du mode debug -->
@@ -745,6 +764,7 @@
 				<invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
 				<re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
 				<cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
+				<delay_cancel_pending_order>0.5</delay_cancel_pending_order>
 				<display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
 				<is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
 				<debug>0</debug><!-- valeur par défaut du mode debug -->
@@ -774,6 +794,7 @@
 				<invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
 				<re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
 				<cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
+				<delay_cancel_pending_order>0.5</delay_cancel_pending_order>
 				<display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
 				<is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
 				<debug>0</debug><!-- valeur par défaut du mode debug -->
@@ -803,6 +824,7 @@
 				<invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
 				<re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
 				<cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
+				<delay_cancel_pending_order>0.5</delay_cancel_pending_order>
 				<display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
 				<is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
 				<debug>0</debug><!-- valeur par défaut du mode debug -->
@@ -830,6 +852,7 @@
 				<invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
 				<re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
 				<cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
+				<delay_cancel_pending_order>0.5</delay_cancel_pending_order>
 				<display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
 				<is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
 				<debug>0</debug><!-- valeur par défaut du mode debug -->
@@ -857,6 +880,7 @@
                 <invoice_create>1</invoice_create>
                 <re_add_to_cart>0</re_add_to_cart>
                 <cancel_pending_order>1</cancel_pending_order>
+				<delay_cancel_pending_order>0.5</delay_cancel_pending_order>
                 <is_test_mode>0</is_test_mode>
                 <debug>0</debug>
                 <model>hipay/method_sdd</model>
@@ -883,6 +907,7 @@
 				<invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
 				<re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
 				<cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
+				<delay_cancel_pending_order>0.5</delay_cancel_pending_order>
 				<display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
 				<is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
 				<debug>0</debug><!-- valeur par défaut du mode debug -->
@@ -910,6 +935,7 @@
 				<invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
 				<re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
 				<cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
+				<delay_cancel_pending_order>0.5</delay_cancel_pending_order>
 				<display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
 				<is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
 				<debug>0</debug><!-- valeur par défaut du mode debug -->
@@ -927,7 +953,7 @@
 	<crontab>
 		<jobs>
 			<hipay_pay_split_payment>
-				<schedule><cron_expr>0 1 * * *</cron_expr></schedule>
+				<schedule><cron_expr>*/5 * * * *</cron_expr></schedule>
 				<run><model>hipay/observer::paySplitPayments</model></run>
 			</hipay_pay_split_payment>
 			<clean_orders_hipay_in_pending>

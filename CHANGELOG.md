@@ -1,3 +1,18 @@
+# Version 1.5.0
+New - Add a custom_data management
+New - Add a device fingerprint for Direct POST
+New - Add a specific success page management 
+
+# Version 1.4.0
+New - Repository with Docker for tests
+New - Direct POST with token javascript
+Fix - partially refund with the status 126
+Fix - Split payment and cron (*/5 * * *)
+Fix - order closed when it's shipped 
+
+# Version 1.3.10
+Fix - pre-load card holder if empty
+
 # Version 1.3.9
 Update documentation URL to the HiPay portal developer
 

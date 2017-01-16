@@ -121,7 +121,7 @@ class Allopass_Hipay_Model_PaymentProfile extends Mage_Core_Model_Abstract
 			case 'period_unit':
 				return Mage::helper('payment')->__('Billing Period Unit');
 			case 'period_frequency':
-				return Mage::helper('payment')->__('Billing Frequency');
+				return Mage::helper('payment')->__('Billing delay');
 			case 'period_max_cycles':
 				return Mage::helper('payment')->__('Maximum Billing Cycles');
 			case 'billing_amount':

@@ -128,11 +128,11 @@ class Allopass_Hipay_Block_Adminhtml_Customer_Edit_Tab_Card extends
 	}
 	
 	public function getTabLabel() {
-		return Mage::helper('hipay')->__("Hipay's Cards");
+		return Mage::helper('hipay')->__("My Payment Cards");
 
 	}
 	public function getTabTitle() {
-		return Mage::helper('hipay')->__("Hipay's Cards");
+		return Mage::helper('hipay')->__("My Payment Cards");
 
 	}
 	

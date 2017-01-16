@@ -14,7 +14,7 @@
         <reference name="customer_account_navigation">
             <!-- @TODO Add config for enable it -->
             <!--  ifconfig="hipay/general/card_front_active"-->
-            <action method="addLink" translate="label" module="hipay" ><name>hipay</name><path>hipay/card/</path><label>Hipay's cards</label></action>
+            <action method="addLink" translate="label" module="hipay" ><name>hipay</name><path>hipay/card/</path><label>My Payment Cards</label></action>
         </reference>
     </customer_account>
     
@@ -43,6 +43,14 @@
 	<checkout_onepage_index>
 		<reference name="head">
 			<action method="addItem"><type>skin_js</type><name>js/hipay-fullservice-sdk.min.js</name></action>
+            <action method="addItem"><type>skin_js</type><name>js/hipay-fingerprint.min.js</name></action>
+            <block type="core/text" name="iesnare">
+                <action method="setText"  ifconfig="hipay/hipay_api/fingerprint">
+                    <text>
+                        <![CDATA[<script type="text/javascript" src="https://mpsnare.iesnare.com/snare.js"></script>]]>
+                    </text>
+                </action>
+            </block>
 		</reference>
 		<reference name="content" >
 			<block type="hipay/checkout_tokenjs" template="hipay/checkout/tokenjs.phtml" />

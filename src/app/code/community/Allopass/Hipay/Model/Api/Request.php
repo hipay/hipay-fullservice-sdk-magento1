@@ -116,7 +116,7 @@ class Allopass_Hipay_Model_Api_Request
                     $config['curloptions'][CURLOPT_PROXYUSERPWD] = $proxy_user.':'.$proxy_pass;
                 }
             }
-            Mage::log($config, null, 'curl.log');
+           // Mage::log($config, null, 'curl.log');
             // ----------------------------------------------------------------------
 
 			try {
@@ -142,7 +142,7 @@ class Allopass_Hipay_Model_Api_Request
 		return $this->_client;
 	}
 	
-	protected function _request($uri,$params=array(),$method=Zend_Http_Client::POST,$storeId=null)
+	protected function _request($uri,$params=array(),$method=Zend_Http_Client::POST,$storeId=null,$throwException=true)
 	{
 	
 		if($method == Zend_Http_Client::POST)
@@ -154,7 +154,7 @@ class Allopass_Hipay_Model_Api_Request
 	
 		/* @var $response Zend_Http_Response */
 		$response = $this->getClient()->request($method);
-	
+
 		if($response->isSuccessful())
 		{
 			//$this->getClient()->getAdapter()->close();
@@ -169,7 +169,11 @@ class Allopass_Hipay_Model_Api_Request
 			if($error->getDescription() != "")
 				$messageError .= ". Details: " . $error->getDescription();
 			
-			Mage::throwException($messageError);
+			if ($throwException){
+				Mage::throwException($messageError);
+			}else{
+				return $error;
+			}
 		}
 			
 	
@@ -239,6 +243,25 @@ class Allopass_Hipay_Model_Api_Request
 		/* @var $response Allopass_Hipay_Model_Api_Response_Gateway */
 		$response  = Mage::getModel('hipay/api_response_gateway',$this->_request($uri,$params,$this->getMethodHttp($action),$storeId));
 		//Mage::log($response, null, 'log-hipay-gatewayRequest.log', true);
+
+		return $response;
+	}
+
+
+	/**
+	 *
+	 * @param string $action
+	 * @param array $params
+	 * @param int $storeId
+	 * @return Allopass_Hipay_Model_Response_Abstract
+	 */
+	public function gatewayRequestMaintenance($action,$params,$storeId=null)
+	{
+		$this->setStoreId($storeId);
+		$uri = $this->getGatewayApiEndpoint($storeId) . $action;
+	
+		/* @var $response Allopass_Hipay_Model_Api_Response_Gateway */
+		$response  = $this->_request($uri,$params,$this->getMethodHttp($action),$storeId,false);
 
 		return $response;
 	}
