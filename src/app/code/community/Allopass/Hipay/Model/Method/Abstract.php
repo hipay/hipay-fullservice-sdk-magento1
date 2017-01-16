@@ -969,6 +969,10 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		
 		$gatewayParams = array('operation'=>'refund','amount'=>$amount);
 
+        if (Mage::getStoreConfig('hipay/hipay_basket/activate_basket', Mage::app()->getStore())) {
+            $gatewayParams['basket'] = Mage::helper('hipay')->getCartInformation($payment->getOrder());
+        }
+
 		/* @var $request Allopass_Hipay_Model_Api_Request */
 		$request = Mage::getModel('hipay/api_request',array($this));
 		$action = Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_MAINTENANCE . $transactionId;
@@ -1131,6 +1135,10 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
 		// Add device fingerprint for the transaction request (Token of device)
 		$params['device_fingerprint'] = $payment->getAdditionalInformation('device_fingerprint');
+
+        if (Mage::getStoreConfig('hipay/hipay_basket/activate_basket', Mage::app()->getStore())) {
+            $params['basket'] = Mage::helper('hipay')->getCartInformation($payment->getOrder());
+        }
 	
 		// Add Request resource (Informations module and cms)
 		$params['source'] = Mage::helper('hipay')->getRequestSource();
@@ -1298,6 +1306,11 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 		$transactionId = $payment->getLastTransId();
 	
 		$gatewayParams = array('operation'=>'capture','amount'=>$amount);
+
+        if (Mage::getStoreConfig('hipay/hipay_basket/activate_basket', Mage::app()->getStore())) {
+            $gatewayParams['basket'] = Mage::helper('hipay')->getCartInformation($payment->getOrder());
+        }
+
 		$this->_debug($gatewayParams);
 		/* @var $request Allopass_Hipay_Model_Api_Request */
 		$request = Mage::getModel('hipay/api_request',array($this));
