@@ -364,7 +364,7 @@
 		</hipay>
 		<payment>
 			<hipay_cc>
-				<active>1</active>
+				<active>0</active>
 				<title>Credit Card</title>
 				<payment_action>authorize_capture</payment_action>
 				<cctypes>VI,MC,AE,SDD</cctypes>

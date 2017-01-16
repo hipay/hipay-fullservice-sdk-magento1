@@ -195,7 +195,7 @@
                     </fields>
                 </hipay_basket>
                 </hipay_api>
-                <fraud_payment translate="label"
+                <fraud_payment translate="label">
                     <label>Fraud Payment Review Email</label>
                     <comment>This email is sended to customer, if his payment is in fraud state</comment>
                     <frontend_type>text</frontend_type>
