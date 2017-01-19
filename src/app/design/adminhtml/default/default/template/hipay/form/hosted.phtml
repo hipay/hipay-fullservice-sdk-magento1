@@ -3,6 +3,9 @@ $_code=$this->getMethodCode();
 $_cards = $this->getCards();
 ?>
 <div id="payment_form_<?php echo $_code ?>" style="display:none;">
+    <?php if (Mage::getStoreConfig('hipay/hipay_api_moto/moto_send_email')) {?>
+        <?php echo $this->__('An email with a payment link will be sent to the customer.');?>
+    <?php } ?>
 <?php if($this->allowSplitPayment()) : ?>
 <ul class="form-list" id="splitpayment_card_payment_form_<?php echo $_code ?>" >
 	 <li>
