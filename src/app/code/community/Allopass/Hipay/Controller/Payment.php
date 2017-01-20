@@ -41,8 +41,7 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
             $this->_redirect('checkout/cart');
             return $this;
         }
-        
-        
+
         $this->_redirectUrl($redirectUrl);
         
         return $this;
@@ -82,12 +81,15 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
                 $session->setLastQuoteId($this->getOrder()->getId());
             }
         }
-        /*else
-        {
-            $this->processResponse();
-        }*/
+
         $this->processResponse();
-        $this->_redirect(Mage::helper('hipay')->getCheckoutSuccessPage($this->getOrder()->getPayment()));
+        $url_redirect = Mage::helper('hipay')->getCheckoutSuccessPage($this->getOrder()->getPayment());
+
+        if (preg_match('/http/',$url_redirect)){
+            $this->_redirectUrl($url_redirect);
+        }else{
+            $this->_redirect($url_redirect);
+        }
         
         return $this;
     }
@@ -142,11 +144,29 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
     {
         $order = $this->getOrder();
         $payment = $order->getPayment();
-        
+
         /* @var $gatewayResponse Allopass_Hipay_Model_Api_Response_Gateway */
         $gatewayResponse  = Mage::getSingleton('hipay/api_response_gateway', $this->getRequest()->getParams());
-        
-        $this->_getMethodInstance()->processResponseToRedirect($gatewayResponse, $payment, $order->getBaseTotalDue());
+
+        if (!$payment && $gatewayResponse->getData('order')){
+            $order =  Mage::getModel('sales/order')->loadByIncrementId($gatewayResponse->getData('order'));
+            $this->_order = $order;
+            $payment =  $order->getPayment();
+
+            $session = Mage::getSingleton('checkout/session');
+            if (!$session->getLastOrderId()) {
+                $session->setLastOrderId($this->getOrder()->getIncrementId());
+            }
+
+            if (!$session->getLastSuccessQuoteId()){
+                $session->setLastSuccessQuoteId($this->getOrder()->getIncrementId());
+                $session->setLastQuoteId($this->getOrder()->getId());
+            }
+        }else{
+            $order = $payment->getOrder();
+        }
+
+        return $this->_getMethodInstance()->processResponseToRedirect($gatewayResponse, $payment, $order->getBaseTotalDue());
     }
 
     

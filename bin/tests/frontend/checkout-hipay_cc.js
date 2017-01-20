@@ -1,5 +1,4 @@
-/*eslint strict:0*/
-/*global CasperError, console, phantom, require*/
+
 var x = require('casper').selectXPath;
 var BASE_URL = casper.cli.get('url');
 var TYPE_CC = casper.cli.get('type-cc');
@@ -25,7 +24,7 @@ casper.on('page.error', function (msg, trace) {
  *
  *                       VALIDATION TEST METHOD : CREDIT CART (DIRECT)
  *
- *  To launch the test, please pass two arguments URL (BASE URL)  and TYPE_CC ( CB,VI,MC )
+ *  To launch test, please pass two arguments URL (BASE URL)  and TYPE_CC ( CB,VI,MC )
  *
 /**********************************************************************************************/
 casper.test.begin('CHECKOUT HIPAY-CC WITH ' + TYPE_CC + ' ON URL '  + BASE_URL , function (test) {
@@ -163,7 +162,7 @@ casper.test.begin('CHECKOUT HIPAY-CC WITH ' + TYPE_CC + ' ON URL '  + BASE_URL ,
                     'payment[hipay_cc_cc_exp_month]': '2'
                 }, false);
 
-                this.sendKeys("form#co-payment-form input[name='payment[hipay_cc_cc_number]']", "4484120000000029");
+                this.sendKeys("form#co-payment-form input[name='payment[hipay_cc_cc_number]']", "5234131094136942");
             }
 
             this.sendKeys("form#co-payment-form input[name='payment[hipay_cc_cc_cid]']", "500");

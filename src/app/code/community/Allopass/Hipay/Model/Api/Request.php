@@ -23,6 +23,8 @@ class Allopass_Hipay_Model_Api_Request
     protected $_methodInstance = null;
     
     protected $_storeId = null;
+
+    protected $_useMotoCredentials = false;
     
     public function __construct($methodInstance)
     {
@@ -37,7 +39,15 @@ class Allopass_Hipay_Model_Api_Request
     
         return $this->_methodInstance;
     }
-    
+
+    /**
+     * @return bool
+     */
+    public function getUseMotoCredentials()
+    {
+        return $this->_useMotoCredentials;
+    }
+
     /**
      *
      * @param Mage_Payment_Model_Method_Abstract $methodInstance
@@ -46,24 +56,59 @@ class Allopass_Hipay_Model_Api_Request
     {
         $this->_methodInstance = $methodInstance;
     }
-    
-    
-    protected function getApiUsername($storeId=null)
+
+    /**
+     * @param null $storeId
+     * @return mixed
+     */
+    protected function getApiUsername($storeId = null)
     {
+        $this->_useMotoCredentials = false;
+
+        if ($this->getMethodInstance()->isAdmin()) {
+            if ($this->isTestMode()) {
+                if ($this->getConfig()->getApiUsernameTestMoto($storeId)) {
+                    $this->_useMotoCredentials = true;
+                    return $this->getConfig()->getApiUsernameTestMoto($storeId);
+                }
+            } else {
+                if ($this->getConfig()->getApiUsernameMoto($storeId)) {
+                    $this->_useMotoCredentials = true;
+                    return $this->getConfig()->getApiUsernameMoto($storeId);
+                }
+            }
+        }
+
         if ($this->isTestMode()) {
             return $this->getConfig()->getApiUsernameTest($storeId);
+        } else {
+            return $this->getConfig()->getApiUsername($storeId);
         }
-    
-        return $this->getConfig()->getApiUsername($storeId);
     }
-    
+
+    /**
+     * @param null $storeId
+     * @return mixed
+     */
     protected function getApiPassword($storeId=null)
     {
+        if ($this->getMethodInstance()->isAdmin()) {
+            if ($this->isTestMode()) {
+                if ($this->getConfig()->getApiPasswordTestMoto($storeId)) {
+                    return $this->getConfig()->getApiPasswordTestMoto($storeId);
+                }
+            } else {
+                if ($this->getConfig()->getApiPasswordMoto($storeId)) {
+                    return $this->getConfig()->getApiPasswordMoto($storeId);
+                }
+            }
+        }
+
         if ($this->isTestMode()) {
             return $this->getConfig()->getApiPasswordTest($storeId);
+        } else {
+            return $this->getConfig()->getApiPassword($storeId);
         }
-    
-        return $this->getConfig()->getApiPassword($storeId);
     }
     
     protected function isTestMode()
