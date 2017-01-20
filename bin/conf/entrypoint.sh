@@ -12,12 +12,10 @@ printf "\n${COLOR_SUCCESS}       CHECK MAGENTO INSTALLATION        ${NC}\n"
 printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
  if [ ! -f /var/www/htdocs/index.php ]; then
 
-    printf "\n${COLOR_SUCCESS} ==========================================================${NC}\n"
-    printf "\n${COLOR_SUCCESS}  MAGENTO IS NOT YET INSTALLED : INSTALLATION IS BEGINNING ${NC}\n"
-    printf "\n${COLOR_SUCCESS} ==========================================================${NC}\n"
+    printf "\n${COLOR_SUCCESS}  => MAGENTO IS NOT YET INSTALLED : INSTALLATION IS BEGINNING ${NC}\n"
 
     # Download MAGENTO from repository
-    cd /tmp && curl https://codeload.github.com/OpenMage/magento-mirror/tar.gz/$MAGENTO_VERSION -o $MAGENTO_VERSION.tar.gz && tar xf $MAGENTO_VERSION.tar.gz && cp -rf magento-mirror-$MAGENTO_VERSION/* magento-mirror-$MAGENTO_VERSION/.htaccess /var/www/htdocs
+    cd /tmp && curl -s https://codeload.github.com/OpenMage/magento-mirror/tar.gz/$MAGENTO_VERSION -o $MAGENTO_VERSION.tar.gz && tar xf $MAGENTO_VERSION.tar.gz && cp -rf magento-mirror-$MAGENTO_VERSION/* magento-mirror-$MAGENTO_VERSION/.htaccess /var/www/htdocs
 
     sleep 10
 
@@ -77,7 +75,7 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set --encrypt hipay/hipay_api_moto/secret_passphrase_test $HIPAY_SECRET_PASSPHRASE_TEST
 
     printf "\n"
-    echo " YOUR CREDENTIALS ARE ${NC}\n"
+    echo " YOUR CREDENTIALS ARE : "
     echo "  API_USERNAME          : $HIPAY_API_USER_TEST"
     echo "  API_PASSWORD          : $HIPAY_API_PASSWORD_TEST"
     echo "  API_TOKEN_JS_USERNAME : $HIPAY_TOKENJS_USERNAME_TEST"
@@ -131,6 +129,11 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
 
         cp -f /tmp/$ENVIRONMENT/php/php.ini /usr/local/etc/php/php.ini
     fi
+
+    sed -i -e 's/80/8095/' /etc/apache2/sites-enabled/000-default.conf
+    echo "Listen 8095" >> /etc/apache2/ports.conf
+else
+     printf "\n${COLOR_SUCCESS}  => MAGENTO IS ALREADY INSTALLED IN THE CONTAINER ${NC}\n"
 fi
 
 chown -R www-data:www-data /var/www/htdocs
@@ -142,15 +145,15 @@ export APACHE_RUN_DIR=/var/run/apache2
 export APACHE_LOCK_DIR=/var/lock/apache2
 export APACHE_LOG_DIR=/var/log/apache2
 
-printf "${COLOR_SUCCESS}    |======================================================================| ${NC}\n"
-printf "${COLOR_SUCCESS}    |                                                                      | ${NC}\n"
-printf "${COLOR_SUCCESS}    |               DOCKER MAGENTO TO HIPAY $ENVIRONMENT IS UP             | ${NC}\n"
-printf "${COLOR_SUCCESS}    |                                                                      | ${NC}\n"
-printf "${COLOR_SUCCESS}    |   URL FRONT       : $MAGENTO_URL                                     | ${NC}\n"
-printf "${COLOR_SUCCESS}    |   URL BACK        : $MAGENTO_URLadmin                                | ${NC}\n"
-printf "${COLOR_SUCCESS}    |   URL MAIL CATCHER: $MAGENTO_URL                                     | ${NC}\n"
-printf "${COLOR_SUCCESS}    |                                                                      | ${NC}\n"
-printf "${COLOR_SUCCESS}    |======================================================================| ${NC}\n"
+printf "${COLOR_SUCCESS}    |======================================================================${NC}\n"
+printf "${COLOR_SUCCESS}    |                                                                      ${NC}\n"
+printf "${COLOR_SUCCESS}    |               DOCKER MAGENTO TO HIPAY $ENVIRONMENT IS UP             ${NC}\n"
+printf "${COLOR_SUCCESS}    |                                                                      ${NC}\n"
+printf "${COLOR_SUCCESS}    |   URL FRONT       : $MAGENTO_URL                                     ${NC}\n"
+printf "${COLOR_SUCCESS}    |   URL BACK        : $MAGENTO_URL admin                               ${NC}\n"
+printf "${COLOR_SUCCESS}    |   URL MAIL CATCHER: $MAGENTO_URL                                     ${NC}\n"
+printf "${COLOR_SUCCESS}    |                                                                      ${NC}\n"
+printf "${COLOR_SUCCESS}    |======================================================================${NC}\n"
 
 exec apache2 -DFOREGROUND
 
