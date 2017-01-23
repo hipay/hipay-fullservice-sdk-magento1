@@ -9,6 +9,12 @@ machine:
     version: 5.6.17
 test:
   pre:
+    - wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2
+    - sudo tar xvjf phantomjs-2.1.1-linux-x86_64.tar.bz2
+    - sudo mv phantomjs-2.1.1-linux-x86_64 /home/ubuntu/bin/
+    - sudo chmod a+x /home/ubuntu/bin/phantomjs-2.1.1-linux-x86_64
+    - sudo ln -s --force /home/ubuntu/bin/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/bin/phantomjs
+    - npm install -g casperjs
     - echo "HIPAY_API_USER_TEST=$HIPAY_API_USER_TEST" >> ./bin/conf/stage/env_stage
     - echo "HIPAY_API_PASSWORD_TEST=$HIPAY_API_PASSWORD_TEST" >> ./bin/conf/stage/env_stage
     - echo "HIPAY_TOKENJS_PUBLICKEY_TEST=$HIPAY_TOKENJS_PUBLICKEY_TEST" >> ./bin/conf/stage/env_stage
@@ -19,8 +25,7 @@ test:
   override:
     - sleep 60
     - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL
-    - sh ./bin/tests/launch-all-tests.sh
-    - sudo lxc-attach -n "$(docker inspect --format "{{.Id}}" jira-mg-latest.hipay-pos-platform.com)" -- bash -c  sh /tmp/tests/launch-all-tests.sh
+    - cd ./bin/tests/ && sh launch-all-tests.sh
 deployment:
   feature:
     branch: /feature*/

@@ -1,5 +1,4 @@
 web:
-  container_name: jira-mg-latest.hipay-pos-platform.com
   build: .
   links:
     - mysql
