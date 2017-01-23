@@ -130,8 +130,11 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
         cp -f /tmp/$ENVIRONMENT/php/php.ini /usr/local/etc/php/php.ini
     fi
 
-    sed -i -e 's/80/8095/' /etc/apache2/sites-enabled/000-default.conf
-    echo "Listen 8095" >> /etc/apache2/ports.conf
+     if [ "$PORT_WEB" != "80" ];then
+         sed -i -e 's/80/$PORT_WEB/' /etc/apache2/sites-enabled/000-default.conf
+         echo "Listen $PORT_WEB" >> /etc/apache2/ports.conf
+     fi
+
 else
      printf "\n${COLOR_SUCCESS}  => MAGENTO IS ALREADY INSTALLED IN THE CONTAINER ${NC}\n"
 fi

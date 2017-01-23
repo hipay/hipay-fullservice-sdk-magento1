@@ -9,7 +9,7 @@ MYSQL_DATABASE=magento
 MAGENTO_LOCALE=en_GB
 MAGENTO_TIMEZONE=Pacific/Auckland
 MAGENTO_DEFAULT_CURRENCY=EUR
-MAGENTO_URL=http://local-magento.hipay.com:8095/
+MAGENTO_URL=http://local-magento.hipay.com/
 
 MAGENTO_ROOT=/var/www/htdocs/
 MAGENTO_ADMIN_FIRSTNAME=HiPay
@@ -20,5 +20,7 @@ MAGENTO_ADMIN_PASSWORD=hipay123
 
 MAGENTO_VERSION=1.9.2.3
 MAGE_IS_DEVELOPER_MODE=false
+
+PORT_WEB=80
 
 ACTIVE_METHODS=hipay_cc,hipay_hosted
