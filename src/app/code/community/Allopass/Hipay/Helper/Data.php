@@ -612,11 +612,16 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 	 *
 	 * @return string
 	 */
-	public function getCheckoutSuccessPage($payment) {
+	public function getCheckoutSuccessPage($payment)
+	{
 		// if empty success page magento
-		return empty(Mage::getStoreConfig('payment/'.$payment->getMethod().'/success_redirect_page')) ?
-			Mage::getUrl('checkout/onepage/success') :
-			Mage::getStoreConfig('payment/'.$payment->getMethod().'/success_redirect_page');
+		// Sutunam change : php 5.4 error
+		$url = Mage::getStoreConfig('payment/'.$payment->getMethod().'/success_redirect_page');
+		if (empty($url)) {
+			$url = Mage::getUrl('checkout/onepage/success');
+		}
+		
+		return $url;
 	}
 
 
