@@ -264,7 +264,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         if ($useOrderCurrency) {
             $total = $order->getGrandTotal();
         } else {
-            $total = $order->geBasetGrandTotal();
+            $total = $order->getBaseGrandTotal();
         }
 
         if(is_int($profile))
