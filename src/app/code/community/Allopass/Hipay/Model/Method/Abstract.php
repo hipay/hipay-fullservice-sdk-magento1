@@ -1036,6 +1036,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
         $longDesc ="";
 
+        $taxAmount = $payment->getOrder()->getTaxAmount();
         if(($profile = $payment->getAdditionalInformation('split_payment_id')))
         {
             //Check if this order is already split
@@ -1045,9 +1046,10 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
             if(!$spCollection->count())
             {
                 $longDesc = Mage::helper('hipay')->__('Split payment');
-                $paymentsSplit = $this->getHelper()->splitPayment((int)$profile, $amount);
+                $paymentsSplit = $this->getHelper()->splitPayment((int)$profile, $amount, $taxAmount);
 
                 $amount = $paymentsSplit[0]['amountToPay'];
+                $taxAmount =  $paymentsSplit[0]['taxAmountToPay'];
             }
 
         }
@@ -1064,7 +1066,9 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         }
         $params['amount'] = $amount;
         $params['shipping'] = $payment->getOrder()->getShippingAmount();
-        $params['tax'] = $payment->getOrder()->getTaxAmount();
+        $params['tax'] = $taxAmount;
+        $params['tax_rate'] = Mage::helper('hipay')->getTaxeRateInformation($payment->getOrder());
+
         $params['cid'] = $payment->getOrder()->getCustomerId();//CUSTOMER ID
 
         $remoteIp =  $payment->getOrder()->getRemoteIp();
