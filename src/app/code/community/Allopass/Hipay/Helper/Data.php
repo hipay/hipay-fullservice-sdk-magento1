@@ -305,7 +305,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         if ($useOrderCurrency) {
             $total = $order->getGrandTotal();
         } else {
-            $total = $order->geBasetGrandTotal();
+            $total = $order->getBaseGrandTotal();
         }
 
         if (is_int($profile)) {
@@ -316,14 +316,9 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
             $taxAmount = $order->getTaxAmount();
             $paymentsSplit = $this->splitPayment($profile, $total, $taxAmount);
 
-
-            //remove first element because is already paid
-            array_shift($paymentsSplit);
-
-
             //remove last element because the first split is already paid
             //array_pop($paymentsSplit);
-            $numberSplit = 2;
+            $numberSplit = 1;
             foreach ($paymentsSplit as $split) {
                 $splitPayment = Mage::getModel('hipay/splitPayment');
                 $data = array(
@@ -339,11 +334,14 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
                     'method_code' => $order->getPayment()->getMethod(),
                     'status' => Allopass_Hipay_Model_SplitPayment::SPLIT_PAYMENT_STATUS_PENDING,
                     'split_number' => strval($numberSplit) . '-' . strval(count($paymentsSplit) + 1),
-
                 );
 
-                $splitPayment->setData($data);
+                // First split is already paid
+                if ($numberSplit == 1){
+                    $data['status'] = Allopass_Hipay_Model_SplitPayment::SPLIT_PAYMENT_STATUS_COMPLETE;
+                }
 
+                $splitPayment->setData($data);
 
                 try {
                     $splitPayment->save();
