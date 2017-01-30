@@ -2,7 +2,6 @@
 
 class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 {
-
     const TYPE_ITEM_BASKET_GOOD = "good";
     const TYPE_ITEM_BASKET_FEE = "fee";
     const TYPE_ITEM_BASKET_DISCOUNT = "discount";
@@ -17,6 +16,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     const FIELD_BASE_REFUNDED = 'base_amount_refunded';
     const FIELD_BASE_DISCOUNT_REFUNDED = 'base_discount_refunded';
     const FIELD_BASE_TAX_REFUNDED = 'base_tax_refunded';
+
 
     /**
      *  Return to TPP Tax rate only if all products have the same tax
@@ -39,7 +39,13 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
                 $productParent = $product->getParentItem();
 
                 // Check if simple product override configurable his parent
-                $taxPercent = !empty($product->getData('tax_percent')) && $product->getData('tax_percent') > 0 ? $product->getData('tax_percent') : $productParent->getData('tax_percent');
+                $tax_percent = $product->getData('tax_percent');
+
+                if (!empty($tax_percent) && $product->getData('tax_percent') > 0) {
+                    $product->getData('tax_percent');
+                } else {
+                    $productParent->getData('tax_percent');
+                }
             } else {
                 $taxPercent = $product->getData('tax_percent');
             }
@@ -48,9 +54,11 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
             if ($product->getProductType() == 'simple') {
                 // Check if taxe rate is the same for all products
                 if ($taxPercentbasket == 0) {
-                    $taxPercentbasket  = $taxPercent;
-                }else if ($taxPercentbasket != $taxPercent){
-                    $taxPercentbasket = 0;
+                    $taxPercentbasket = $taxPercent;
+                } else {
+                    if ($taxPercentbasket != $taxPercent) {
+                        $taxPercentbasket = 0;
+                    }
                 }
             }
         }
@@ -64,15 +72,17 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      * @param Mage_Sales_Model_Order
      * @return json
      */
-    public function getCartInformation($order)
-    {
+    public function getCartInformation(
+        $order
+    ) {
         $basket = array();
         $products = $order->getAllItems();
 
         // =============================================================== //
         // Add coupon in basket
         // =============================================================== //
-        if (!empty($order->getCouponCode())) {
+        $coupon = $order->getCouponCode();
+        if (!empty($coupon)) {
             $item = array();
             $item['type'] = Allopass_Hipay_Helper_Data::TYPE_ITEM_BASKET_DISCOUNT;
             $item['product_reference'] = $order->getCouponCode();
@@ -133,15 +143,21 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
                 }
 
                 // Check if simple product override configurable his parent
-                $taxPercent = !empty($product->getData('tax_percent')) && $product->getData('tax_percent') > 0 ? $product->getData('tax_percent') : $productParent->getData('tax_percent');
+                $productTaxPercent = $product->getData('tax_percent');
+                $basePrice = $product->getData('base_price');
+                $baseRow = $product->getData($fieldBaseRow);
+                $productSku = $product->getData('sku');
+                $productDiscount = $product->getData($fieldBaseDiscount);
+
+                $taxPercent = !empty($productTaxPercent) && $product->getData('tax_percent') > 0 ? $product->getData('tax_percent') : $productParent->getData('tax_percent');
 
                 // Calculation is done because Magento save with 2 digits per default in base_price_incl_tax
-                $unitPrice = !empty($product->getData('base_price')) && $product->getData('base_price') > 0 ? ($product->getData('base_price')) + ($product->getData('tax_percent') / 100 * ($product->getData('base_price'))) : ($productParent->getData('base_price')) + ($productParent->getData('tax_percent') / 100 * ($productParent->getData('base_price')));
+                $unitPrice = !empty($basePrice) && $product->getData('base_price') > 0 ? ($product->getData('base_price')) + ($product->getData('tax_percent') / 100 * ($product->getData('base_price'))) : ($productParent->getData('base_price')) + ($productParent->getData('tax_percent') / 100 * ($productParent->getData('base_price')));
 
-                $total_amount = !empty($product->getData($fieldBaseRow)) && $product->getData($fieldBaseRow) > 0 ? $product->getData($fieldBaseRow) + $product->getData($fieldBaseTax) - $product->getData($fieldBaseDiscount) : $productParent->getData($fieldBaseRow) + $productParent->getData($fieldBaseTax) - $productParent->getData($fieldBaseDiscount);
+                $total_amount = !empty($baseRow) && $product->getData($fieldBaseRow) > 0 ? $product->getData($fieldBaseRow) + $product->getData($fieldBaseTax) - $product->getData($fieldBaseDiscount) : $productParent->getData($fieldBaseRow) + $productParent->getData($fieldBaseTax) - $productParent->getData($fieldBaseDiscount);
 
-                $sku = !empty($product->getData('sku')) ? $product->getData('sku') : $productParent->getData('sku');
-                $discount = !empty($product->getData($fieldBaseDiscount) && $product->getData($fieldBaseDiscount) > 0) ? $product->getData($fieldBaseDiscount) : $productParent->getData($fieldBaseDiscount);
+                $sku = !empty($productSku) ? $product->getData('sku') : $productParent->getData('sku');
+                $discount = (!empty($productDiscount) && $product->getData($fieldBaseDiscount) > 0) ? $product->getData($fieldBaseDiscount) : $productParent->getData($fieldBaseDiscount);
             } else {
                 // If partial capture
                 if ($product->getData('qty_invoiced') > 0 && $product->getData('qty_invoiced') != $product->getData('qty_ordered')) {
@@ -200,7 +216,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
                 $item['product_reference'] = $sku;
 
                 // Get the config for discount application
-                $configDiscount = Mage::getStoreConfig('tax/calculation/apply_after_discount', Mage::app()->getStore());
+                $configDiscount = Mage::getStoreConfig('tax/calculation/apply_after_discount',
+                    Mage::app()->getStore());
 
                 // Check if Tax is applied before or after discount
                 if ($configDiscount == '1') {
@@ -222,8 +239,11 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      * @param Allopass_Hipay_Model_PaymentProfile|int $profile
      * @param float $amount
      */
-    public function splitPayment($profile, $amount, $taxAmount = 0)
-    {
+    public function splitPayment(
+        $profile,
+        $amount,
+        $taxAmount = 0
+    ) {
         $paymentsSplit = array();
 
         if (is_int($profile)) {
@@ -286,11 +306,9 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
             }
 
             return $paymentsSplit;
-
         }
 
         Mage::throwException("Payment Profile not found");
-
     }
 
     /**
@@ -298,8 +316,12 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      * @param Mage_Sales_Model_Order $order
      * @param Allopass_Hipay_Model_PaymentProfile|int $profile $profile
      */
-    public function insertSplitPayment($order, $profile, $customerId, $cardToken)
-    {
+    public function insertSplitPayment(
+        $order,
+        $profile,
+        $customerId,
+        $cardToken
+    ) {
         $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction', Mage::app()->getStore());
 
         if ($useOrderCurrency) {
@@ -348,13 +370,11 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
                 try {
                     $splitPayment->save();
                 } catch (Exception $e) {
-
                     Mage::throwException("Error on save split payments!");
                 }
 
                 $numberSplit++;
             }
-
         }
     }
 
@@ -364,8 +384,9 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      * @param int $orderId
      * @return boolean
      */
-    public function splitPaymentsExists($orderId)
-    {
+    public function splitPaymentsExists(
+        $orderId
+    ) {
         $collection = Mage::getModel('hipay/splitPayment')->getCollection()->addFieldToFilter('order_id', $orderId);
         if ($collection->count()) {
             return true;
@@ -387,11 +408,13 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         return $methods;
-
     }
 
-    public function checkSignature($signature, $fromNotification = false, $response = null)
-    {
+    public function checkSignature(
+        $signature,
+        $fromNotification = false,
+        $response = null
+    ) {
         $passphrase = $this->getConfig()->getSecretPassphrase();
         if (!is_null($response)) {
             $orderArr = $response->getOrder();
@@ -440,8 +463,9 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         return false;
     }
 
-    public function checkIfCcExpDateIsValid($customer)
-    {
+    public function checkIfCcExpDateIsValid(
+        $customer
+    ) {
         if (is_int($customer)) {
             $customer = Mage::getModel('customer/customer')->load($customer);
         }
@@ -465,14 +489,15 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
                 return false;
 
             return true;*/
-
         }
 
         return false;
     }
 
-    public function checkIfCcIsExpired($expMonth, $expYear)
-    {
+    public function checkIfCcIsExpired(
+        $expMonth,
+        $expYear
+    ) {
         $today = new Zend_Date(Mage::app()->getLocale()->storeTimeStamp());
 
         $currentYear = (int)$today->getYear()->toString("YY");
@@ -495,9 +520,11 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      * @param Allopass_Hipay_Model_Api_Response_Gateway $response
      * @param boolean $isRecurring
      */
-    public function responseToCustomer($customer, $response, $isRecurring = false)
-    {
-
+    public function responseToCustomer(
+        $customer,
+        $response,
+        $isRecurring = false
+    ) {
         $paymentMethod = $response->getPaymentMethod();
         $paymentProduct = $response->getPaymentProduct();
         $token = isset($paymentMethod['token']) ? $paymentMethod['token'] : $response->getData('cardtoken');
@@ -527,8 +554,10 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         return $this;
     }
 
-    protected function _cardTokenExist($ccToken, $customer_id = 0)
-    {
+    protected function _cardTokenExist(
+        $ccToken,
+        $customer_id = 0
+    ) {
         $cards = Mage::getResourceModel('hipay/card_collection')
             ->addFieldToSelect('card_id')
             ->addFieldToFilter('cc_token', $ccToken);
@@ -540,9 +569,11 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         return $cards->count() > 0;
     }
 
-    public function createCustomerCardFromResponse($customerId, $response, $isRecurring = false)
-    {
-
+    public function createCustomerCardFromResponse(
+        $customerId,
+        $response,
+        $isRecurring = false
+    ) {
         $paymentMethod = $response->getPaymentMethod();
         $paymentProduct = $response->getPaymentProduct();
         $token = isset($paymentMethod['token']) ? $paymentMethod['token'] : $response->getData('cardtoken');
@@ -575,12 +606,11 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         } catch (Exception $e) {
             Mage::logException($e);
         }
-
     }
 
-    public function reAddToCart($incrementId)
-    {
-
+    public function reAddToCart(
+        $incrementId
+    ) {
         $cart = Mage::getSingleton('checkout/cart');
         $order = Mage::getModel('sales/order')->loadByIncrementId($incrementId);
 
@@ -692,8 +722,10 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      * @param float $amount
      * @return string
      */
-    protected function _formatPrice($payment, $amount)
-    {
+    protected function _formatPrice(
+        $payment,
+        $amount
+    ) {
         return $payment->getOrder()->getBaseCurrency()->formatTxt($amount);
     }
 
@@ -705,8 +737,12 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      * @param string $message
      * @return Mage_Checkout_Helper_Data
      */
-    public function sendFraudPaymentEmail($receiver, $order, $message, $email_key = 'fraud_payment')
-    {
+    public function sendFraudPaymentEmail(
+        $receiver,
+        $order,
+        $message,
+        $email_key = 'fraud_payment'
+    ) {
         $translate = Mage::getSingleton('core/translate');
         /* @var $translate Mage_Core_Model_Translate */
         $translate->setTranslateInline(false);
@@ -784,8 +820,10 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         return $this;
     }
 
-    protected function _getEmails($configPath, $storeId)
-    {
+    protected function _getEmails(
+        $configPath,
+        $storeId
+    ) {
         $data = Mage::getStoreConfig($configPath, $storeId);
         if (!empty($data)) {
             return explode(',', $data);
@@ -802,8 +840,10 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         return Mage::getSingleton('hipay/config');
     }
 
-    public function getCcTypeHipay($ccTypeMagento, $exceptionIfNotFound = false)
-    {
+    public function getCcTypeHipay(
+        $ccTypeMagento,
+        $exceptionIfNotFound = false
+    ) {
         $ccTypes = Mage::getSingleton('hipay/config')->getCcTypesHipay();
 
         if (isset($ccTypes[$ccTypeMagento])) {
@@ -820,8 +860,11 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     /*
      * TPPMAG1-2 - JPN
      */
-    public function is3dSecure($use3dSecure, $config3dsRules, $payment = false)
-    {
+    public function is3dSecure(
+        $use3dSecure,
+        $config3dsRules,
+        $payment = false
+    ) {
         $params = 0;
         if ($use3dSecure > 0 && !$payment) {
             $params = 1;
@@ -836,11 +879,10 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
                     $rule = Mage::getModel('hipay/rule')->load($config3dsRules);
                     if ($rule->getId() && $rule->validate($payment->getOrder())) {
                         $params = 1;
-                        if ((int)$use3dSecure == 3)//case for force 3ds if rules are validated
-                        {
+
+                        if ((int)$use3dSecure == 3) {//case for force 3ds if rules are validated
                             $params = 2;
                         }
-
                     }
                     break;
                 case 4:
@@ -859,9 +901,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     public function getCheckoutSuccessPage($payment)
     {
         // if empty success page magento
-        return empty(Mage::getStoreConfig('payment/' . $payment->getMethod() . '/success_redirect_page')) ?
-            Mage::getUrl('checkout/onepage/success') :
-            Mage::getStoreConfig('payment/' . $payment->getMethod() . '/success_redirect_page');
+        $url = Mage::getStoreConfig('payment/' . $payment->getMethod() . '/success_redirect_page');
+        return empty($url) ? Mage::getUrl('checkout/onepage/success') : $url;
     }
 
     /**
@@ -900,8 +941,12 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      * @param float $amount
      *
      */
-    public function getCustomData($payment, $amount, $method, $split_number = null)
-    {
+    public function getCustomData(
+        $payment,
+        $amount,
+        $method,
+        $split_number = null
+    ) {
         $customData = array();
 
         // Shipping description
@@ -940,8 +985,10 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      * @param string $email_key
      * @return $this
      */
-    public function sendLinkPaymentEmail($receiver, $order)
-    {
+    public function sendLinkPaymentEmail(
+        $receiver,
+        $order
+    ) {
         $email_key = 'hipay_api_moto';
         $translate = Mage::getSingleton('core/translate');
         /* @var $translate Mage_Core_Model_Translate */
@@ -1005,6 +1052,4 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 
         return $this;
     }
-
-
 }

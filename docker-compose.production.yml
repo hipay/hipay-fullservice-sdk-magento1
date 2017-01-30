@@ -1,6 +1,7 @@
 web:
   container_name: jira-mg-develop.hipay-pos-platform.com
   build: .
+  dockerfile: ./bin/docker/php5-6/Dockerfile
   ports:
       - "80:80"
   env_file:
