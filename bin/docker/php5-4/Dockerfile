@@ -1,4 +1,4 @@
-FROM php:5.6-apache
+FROM php:5.4-apache
 
 MAINTAINER HIPAY Fullservice <support.tpp@hipay.com>
 
@@ -44,7 +44,7 @@ RUN chmod +x /usr/local/bin/install-sampledata
 
 RUN sed -i -e 's/\/var\/www\/html/\/var\/www\/htdocs/' /etc/apache2/sites-available/000-default.conf
 
-# INSTALL MAGERUN 
+# INSTALL MAGERUN
 RUN curl -O  https://raw.githubusercontent.com/netz98/n98-magerun/master/n98-magerun.phar && \
     chmod +x ./n98-magerun.phar && \
     ./n98-magerun.phar selfupdate && \

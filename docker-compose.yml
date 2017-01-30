@@ -1,5 +1,5 @@
 web:
-  build: .
+  build: ./bin/web/php5-6/
   links:
     - mysql
     - smtp

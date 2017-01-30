@@ -131,7 +131,8 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     fi
 
      if [ "$PORT_WEB" != "80" ];then
-         sed -i -e 's/80/$PORT_WEB/' /etc/apache2/sites-enabled/000-default.conf
+         sed -i -e "s/80/$PORT_WEB/" /etc/apache2/sites-available/000-default.conf
+         echo "Listen $PORT_WEB" >> /etc/apache2/apache2.conf
          echo "Listen $PORT_WEB" >> /etc/apache2/ports.conf
      fi
 

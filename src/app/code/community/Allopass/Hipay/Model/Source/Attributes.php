@@ -24,8 +24,10 @@ class Allopass_Hipay_Model_Source_Attributes
                    'label' => Mage::helper('adminhtml')->__('-- Please Select --')
                 );     
 
-        foreach ($attributes as $attribute) {  
-            if(!empty($attribute->getAttributecode() && !empty($attribute->getFrontendLabel()))){     
+        foreach ($attributes as $attribute) {
+            $code = $attribute->getAttributecode() ;
+            $label = $attribute->getFrontendLabel();
+            if(!empty($code) && !empty($label)){
                 $options[] = array(
                    'value' => $attribute->getAttributecode(),
                    'label' => $attribute->getFrontendLabel(),
