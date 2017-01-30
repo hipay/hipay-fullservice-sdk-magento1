@@ -1,5 +1,6 @@
 web:
-  build: ./bin/web/php5-6/
+  build: ./bin/docker/php5-6/
+  dockerfile: ./bin/docker/php5-6/Dockerfile
   links:
     - mysql
     - smtp
