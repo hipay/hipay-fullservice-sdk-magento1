@@ -74,9 +74,9 @@ The sources of the hipay module are available in the src folder, any modificatio
 reflected in the web container.
 
 Three volumes were created at the root of your project after the launch of the containers
--   data ( Contains mysql lib )
--   log  ( Logs magento)
--   web ( source of magento )
+-   **data** ( Contains mysql lib )
+-   **log**  ( Logs magento)
+-   **web** ( magento files )
 
 ### Mysql
 

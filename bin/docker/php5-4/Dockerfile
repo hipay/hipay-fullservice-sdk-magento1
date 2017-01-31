@@ -1,5 +1,7 @@
 FROM php:5.4-apache
 
+ENV PHP_VERSION=5.4
+
 MAINTAINER HIPAY Fullservice <support.tpp@hipay.com>
 
 # INSTALL PHP EXTENSION
