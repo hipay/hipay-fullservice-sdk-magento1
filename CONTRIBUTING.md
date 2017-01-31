@@ -39,12 +39,12 @@ The web container installs and preconfigures a magento 1.9 with the Hipay paymen
         HIPAY_TOKENJS_USERNAME_TEST=
         HIPAY_SECRET_PASSPHRASE_TEST=
 
-  - If you want to change the url and the port used, plese change the properties (by default the port is 8095).
+ - If you want to change the url and the port used, plese change the properties (by default the port is 8095).
 
         MAGENTO_URL=http://localhost:8095/
         PORT_WEB=8095
 
-  - By default two methods of payment will be activated (CB and Hosted), it is quite possible to activate others if necessary.
+ - By default two methods of payment will be activated (CB and Hosted), it is quite possible to activate others if necessary.
  
         ACTIVE_METHODS=hipay_cc,hipay_hosted
     
