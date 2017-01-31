@@ -3,7 +3,7 @@
 //============================================================== //
 exports.checkMail = function checkMail(test) {
     //  Access to mailcatcher URL in container
-    casper.thenOpen('http://smtp:1080/ ',
+    casper.thenOpen(URL_MAILCATCHER,
         function success() {
             this.waitForSelector('nav#messages tbody tr:first-child',
                 function success() {

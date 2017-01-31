@@ -1,6 +1,7 @@
 var x = require('casper').selectXPath;
 var BASE_URL = casper.cli.get('url');
 var TYPE_CC = casper.cli.get('type-cc');
+var URL_MAILCATCHER = casper.cli.get('url-mailcatcher');
 
 // Require class utils for test
 var payment = require('modules/step-payment');
