@@ -108,6 +108,7 @@ exports.proceed = function proceed(test) {
                             casper.then(function () {
                                     test.comment('Select Shipping method');
                                     this.click(x('//input[@id="s_method_ups_3DS"]'));
+
                                 }
                             );
                         }, function fail() {
@@ -116,8 +117,19 @@ exports.proceed = function proceed(test) {
                 }
             );
 
+
         }, function fail() {
             test.assertExists(x('//span[text()="Add Selected Product(s) to Order"]'));
+        });
+
+
+    casper.waitForSelector('#p_method_hipay_hosted',
+        function success() {
+            //============================================================== //
+            //===           SELECT PAYMENT                              === //
+            //============================================================== //
+            payment.proceed(test);
+
         });
 
 

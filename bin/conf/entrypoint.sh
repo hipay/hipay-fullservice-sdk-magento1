@@ -52,6 +52,8 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     printf "\n${COLOR_SUCCESS}          UPDATE TRANSACTION PREFIX      ${NC}\n"
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
 
+    n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT"  db:query "INSERT INTO magento.eav_entity_store values (9,5,2,1,2);"
+
     n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT"  db:query "UPDATE eav_entity_store
                                INNER JOIN eav_entity_type ON eav_entity_type.entity_type_id = eav_entity_store.entity_type_id
                                SET eav_entity_store.increment_prefix='$PREFIX'

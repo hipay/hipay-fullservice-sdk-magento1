@@ -1,7 +1,7 @@
 exports.proceedMotoSendMail = function proceedMotoSendMail(test, state) {
 
 //============================================================== //
-//===               SELECT SYSTEM CONFIGURATION               === //
+//===               SELECT SYSTEM CONFIGURATION              === //
 //============================================================== //
     casper.then(
         function () {
@@ -12,11 +12,11 @@ exports.proceedMotoSendMail = function proceedMotoSendMail(test, state) {
             casper.waitForSelector(x('//span[text()="Configuration"]'),
                 function success() {
                     this.click(x('//span[text()="Configuration"]'));
-                    casper.waitForSelector(x('//span[text()[contains(.,"HiPay Fullservice")]]'),
+                    casper.waitForSelector(x('//span[text()[contains(.,"HiPay Enterprise")]]'),
                         function success() {
-                            this.click(x('//span[text()[contains(.,"HiPay Fullservice")]]'));
+                            this.click(x('//span[text()[contains(.,"HiPay Enterprise")]]'));
 
-                            casper.waitForSelector(x('//span[text()[contains(.,"HiPay Fullservice")]]'),
+                            casper.waitForSelector(x('//span[text()[contains(.,"HiPay Enterprise")]]'),
                                 function success() {
                                     this.click('#hipay_hipay_api_moto-head');
 
@@ -33,15 +33,15 @@ exports.proceedMotoSendMail = function proceedMotoSendMail(test, state) {
                                     // Test si l'enregistrement is done
                                     casper.waitForSelector(x('//span[text()[contains(.,"The configuration has been saved.")]]'),
                                         function success() {
-                                                test.pass('Configuration is ok');
+                                            test.pass('Apply Configuration MOTO is ok');
                                         }, function fail() {
-                                                test.fail('Configuration is fail');
-                                        });
+                                            test.fail('Apply Configuration MOTO  is fail');
+                                        },10000);
                                 }, function fail() {
                                 });
                         },
                         function fail() {
-                            test.assertExists(x('//span[text()[contains(.,"HiPay Fullservice")]]'));
+                            test.assertExists(x('//span[text()[contains(.,"HiPay Enterprise")]]'));
                         }
                         , 20000);
                 },

@@ -3,10 +3,12 @@ var BASE_URL = casper.cli.get('url');
 var TYPE_CC = casper.cli.get('type-cc');
 
 // Require class utils for test
-var admin = require('admin-checkout');
-var authentification = require('admin-authentification');
-var configuration = require('admin-configuration');
-var mailcatcher = require('check-mailcatcher');
+var payment = require('modules/step-payment');
+var checkout = require('modules/step-checkout');
+var authentification = require('modules/step-authentification');
+var configuration = require('modules/step-configuration');
+var mailcatcher = require('modules/step-mailcatcher');
+var pay = require('modules/step-pay-hosted');
 
 casper.on('remote.alert', function (message) {
     this.echo('alert message: ' + message);
@@ -25,16 +27,15 @@ casper.on('page.error', function (msg, trace) {
 });
 
 /**********************************************************************************************
- *                            test.pass('HOSTED PAYMENT SUCCESSFUL')
+ *
  *                     TEST CHECKOUT IN ADMIN : HOSTED
  *
- *  To launch test, please pass two arguments URL (BASE URL)  and TYPE_CC ( CB,VI,MC )
+ *  To launch the test, please pass two arguments URL (BASE URL)  and TYPE_CC ( CB,VI,MC )
  *
  /**********************************************************************************************/
-casper.test.begin('ADMIN CHECKOUT HIPAY-CC WITH ' + TYPE_CC + ' ON URL ' + BASE_URL, function (test) {
+casper.test.begin('ADMIN CHECKOUT MOTO HIPAY-HOSTED WITH ' + TYPE_CC + ' ON URL ' + BASE_URL,5, function (test) {
     casper.start(BASE_URL + 'admin');
     phantom.clearCookies();
-
 
     //============================================================== //
     //===           AUTHENTIFICATION                             === //
@@ -42,68 +43,27 @@ casper.test.begin('ADMIN CHECKOUT HIPAY-CC WITH ' + TYPE_CC + ' ON URL ' + BASE_
     authentification.proceed(test);
 
     //============================================================== //
-    //===           CONFIG                             === //
+    //===           CONFIG                                       === //
     //============================================================== //
     configuration.proceedMotoSendMail(test, '1');
 
     //============================================================== //
     //===           ADD ARTICLE TO CART                           === //
     //============================================================== //
-    admin.proceed(test);
+    checkout.proceed(test);
 
+    casper.waitForSelector(x('//span[text()="Submit Order"]'), function () {
+        this.click(x('//span[text()="Submit Order"]'));
+    });
 
     //============================================================== //
-    //===                       CHECK MAIL AND CHECKOUT         === //
+    //===           CHECK MAIL AND CHECKOUT                      === //
     //============================================================== //
     casper.wait(5000,
         function () {
             mailcatcher.checkMail(test);
         }
     );
-
-    //============================================================== //
-    //===           SELECT AND FILL PAYMENT METHOD ( UPS )       === //
-    //============================================================== //
-    casper.waitForSelector('#p_method_hipay_hosted',
-        function success() {
-            // Select the last product in grid
-            test.comment('Load Payment Method');
-            // Valid Payment
-            this.click('#p_method_hipay_hosted');
-
-            this.evaluate(function () {
-                payment.switchMethod('hipay_hosted');
-            });
-
-            //============================================================== //
-            //===           SELECT AND FILL PAYMENT METHOD ( UPS )       === //
-            //============================================================== //
-            casper.wait(5000,
-                function () {
-                    test.comment('Payment');
-                    this.click(x('//span[text()="Submit Order"]'));
-                    casper.wait(5000, function () {
-
-                        casper.waitForUrl('/admin/sales_order/view/order_id/', function () {
-                            test.assertHttpStatus(200);
-                            test.assertNotExists('.error-msg');
-                        }, null, 5000);
-                    });
-                }
-            );
-
-            //============================================================== //
-            //===                       CHECK MAIL AND CHECKOUT         === //
-            //============================================================== //
-            casper.wait(5000,
-                function () {
-                    mailcatcher.checkMail(test);
-                }
-            );
-
-        }, function fail() {
-            test.assertExists('#p_method_hipay_hosted');
-        });
 
     casper.run(function () {
         test.done();
