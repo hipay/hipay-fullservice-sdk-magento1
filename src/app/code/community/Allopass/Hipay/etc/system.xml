@@ -2,7 +2,7 @@
 <config>
     <sections>
         <hipay translate="label" module="hipay">
-            <label>HiPay Fullservice</label>
+            <label>HiPay Enterprise</label>
             <tab>sales</tab>
             <frontend_type>text</frontend_type>
             <sort_order>398</sort_order>
@@ -11,7 +11,7 @@
             <show_in_store>1</show_in_store>
             <groups>
                 <hipay_api>
-                    <label>HiPay Fullservice credentials configuration</label>
+                    <label>HiPay Enterprise credentials configuration</label>
                     <frontend_type>text</frontend_type>
                     <comment></comment>
                     <sort_order>10</sort_order>
@@ -54,7 +54,7 @@
                         </api_tokenjs_publickey>
                         <secret_passphrase translate="label comment">
                             <label>Secret passphrase (production account)</label>
-                            <comment>The same of your HiPay Fullservice production account</comment>
+                            <comment>The same of your HiPay Enterprise production account</comment>
                             <frontend_type>obscure</frontend_type>
                             <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
                             <sort_order>25</sort_order>
@@ -97,7 +97,7 @@
                         </api_tokenjs_publickey_test>
                         <secret_passphrase_test translate="label comment">
                             <label>Secret passphrase (test account)</label>
-                            <comment>The same of your HiPay Fullservice test account</comment>
+                            <comment>The same of your HiPay Enterprise test account</comment>
                             <frontend_type>obscure</frontend_type>
                             <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
                             <sort_order>50</sort_order>
@@ -163,7 +163,7 @@
                     </fields>
                 </hipay_api>
                 <hipay_api_moto>
-                    <label>HiPay Fullservice credentials MO/TO configuration</label>
+                    <label>HiPay Enterprise credentials MO/TO configuration</label>
                     <frontend_type>text</frontend_type>
                     <comment></comment>
                     <sort_order>11</sort_order>
@@ -190,7 +190,7 @@
                         </api_password>
                         <secret_passphrase translate="label comment">
                             <label>Secret passphrase (production account)</label>
-                            <comment>The same of your HiPay Fullservice production account</comment>
+                            <comment>The same of your HiPay Enterprise production account</comment>
                             <frontend_type>obscure</frontend_type>
                             <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
                             <sort_order>25</sort_order>
@@ -217,7 +217,7 @@
                         </api_password_test>
                         <secret_passphrase_test translate="label comment">
                             <label>Secret passphrase (test account)</label>
-                            <comment>The same of your HiPay Fullservice test account</comment>
+                            <comment>The same of your HiPay Enterprise test account</comment>
                             <frontend_type>obscure</frontend_type>
                             <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
                             <sort_order>50</sort_order>
@@ -442,7 +442,7 @@
         <payment>
             <groups>
                 <hipay_cc translate="label" module="hipay">
-                    <label>HiPay Fullservice Credit Card</label>
+                    <label>HiPay Enterprise Credit Card</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>200</sort_order>
                     <show_in_default>1</show_in_default>
@@ -752,7 +752,7 @@
                     </fields>
                 </hipay_cc>
                 <hipay_ccxtimes translate="label" module="hipay">
-                    <label>HiPay Fullservice Credit Card Split Payment</label>
+                    <label>HiPay Enterprise Credit Card Split Payment</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>205</sort_order>
                     <show_in_default>1</show_in_default>
@@ -1043,7 +1043,7 @@
                     </fields>
                 </hipay_ccxtimes>
                 <hipay_hosted translate="label" module="hipay">
-                    <label>HiPay Fullservice Hosted Page</label>
+                    <label>HiPay Enterprise Hosted Page</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>210</sort_order>
                     <show_in_default>1</show_in_default>
@@ -1402,7 +1402,7 @@
                     </fields>
                 </hipay_hosted>
                 <hipay_hostedxtimes translate="label" module="hipay">
-                    <label>HiPay Fullservice Hosted Page Split Payment</label>
+                    <label>HiPay Enterprise Hosted Page Split Payment</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>215</sort_order>
                     <show_in_default>1</show_in_default>
@@ -1742,7 +1742,7 @@
                     </fields>
                 </hipay_hostedxtimes>
                 <hipay_ideal translate="label" module="hipay">
-                    <label>HiPay Fullservice iDeal</label>
+                    <label>HiPay Enterprise iDeal</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>220</sort_order>
                     <show_in_default>1</show_in_default>
@@ -1954,7 +1954,7 @@
                     </fields>
                 </hipay_ideal>
                 <hipay_ing translate="label" module="hipay">
-                    <label>HiPay Fullservice ING Home'Pay</label>
+                    <label>HiPay Enterprise ING Home'Pay</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>220</sort_order>
                     <show_in_default>1</show_in_default>
@@ -2166,7 +2166,7 @@
                     </fields>
                 </hipay_ing>
                 <hipay_dexia translate="label" module="hipay">
-                    <label>HiPay Fullservice Belfius / Dexia Direct Net</label>
+                    <label>HiPay Enterprise Belfius / Dexia Direct Net</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>220</sort_order>
                     <show_in_default>1</show_in_default>
@@ -2378,7 +2378,7 @@
                     </fields>
                 </hipay_dexia>
                 <!--              	<hipay_cbc translate="label" module="hipay"> -->
-                <!--             		<label>HiPay Fullservice CBC Online</label> -->
+                <!--             		<label>HiPay Enterprise CBC Online</label> -->
                 <!--                     <frontend_type>text</frontend_type> -->
                 <!--                     <sort_order>220</sort_order> -->
                 <!--                     <show_in_default>1</show_in_default> -->
@@ -2560,7 +2560,7 @@
                 <!--                       </fields>  -->
                 <!--              	</hipay_cbc> -->
                 <!--              	<hipay_kbc translate="label" module="hipay"> -->
-                <!--             		<label>HiPay Fullservice KBC Online</label> -->
+                <!--             		<label>HiPay Enterprise KBC Online</label> -->
                 <!--                     <frontend_type>text</frontend_type> -->
                 <!--                     <sort_order>220</sort_order> -->
                 <!--                     <show_in_default>1</show_in_default> -->
@@ -2742,7 +2742,7 @@
                 <!--                       </fields>  -->
                 <!--              	</hipay_kbc> -->
                 <hipay_giropay translate="label" module="hipay">
-                    <label>HiPay Fullservice Giropay</label>
+                    <label>HiPay Enterprise Giropay</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>220</sort_order>
                     <show_in_default>1</show_in_default>
@@ -2954,7 +2954,7 @@
                     </fields>
                 </hipay_giropay>
                 <hipay_przelewy24api translate="label" module="hipay">
-                    <label>HiPay Fullservice Przelewy24</label>
+                    <label>HiPay Enterprise Przelewy24</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>220</sort_order>
                     <show_in_default>1</show_in_default>
@@ -3166,7 +3166,7 @@
                     </fields>
                 </hipay_przelewy24api>
                 <hipay_qiwi translate="label" module="hipay">
-                    <label>HiPay Fullservice Visa Qiwi Wallet</label>
+                    <label>HiPay Enterprise Visa Qiwi Wallet</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>220</sort_order>
                     <show_in_default>1</show_in_default>
@@ -3378,7 +3378,7 @@
                     </fields>
                 </hipay_qiwi>
                 <hipay_webmoneyapi translate="label" module="hipay">
-                    <label>HiPay Fullservice WebMoney Transfer</label>
+                    <label>HiPay Enterprise WebMoney Transfer</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>220</sort_order>
                     <show_in_default>1</show_in_default>
@@ -3590,7 +3590,7 @@
                     </fields>
                 </hipay_webmoneyapi>
                 <hipay_yandexapi translate="label" module="hipay">
-                    <label>HiPay Fullservice Yandex.Money</label>
+                    <label>HiPay Enterprise Yandex.Money</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>220</sort_order>
                     <show_in_default>1</show_in_default>
@@ -3802,7 +3802,7 @@
                     </fields>
                 </hipay_yandexapi>
                 <hipay_sofortapi translate="label" module="hipay">
-                    <label>HiPay Fullservice Sofort Überweisung</label>
+                    <label>HiPay Enterprise Sofort Überweisung</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>225</sort_order>
                     <show_in_default>1</show_in_default>
@@ -3998,7 +3998,7 @@
                     </fields>
                 </hipay_sofortapi>
                 <hipay_sisalapi translate="label" module="hipay">
-                    <label>HiPay Fullservice Sisal</label>
+                    <label>HiPay Enterprise Sisal</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>225</sort_order>
                     <show_in_default>1</show_in_default>
@@ -4192,7 +4192,7 @@
                     </fields>
                 </hipay_sisalapi>
                 <hipay_paypalapi translate="label" module="hipay">
-                    <label>HiPay Fullservice PayPal</label>
+                    <label>HiPay Enterprise PayPal</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>225</sort_order>
                     <show_in_default>1</show_in_default>
@@ -4386,7 +4386,7 @@
                     </fields>
                 </hipay_paypalapi>
                 <hipay_sdd translate="label" module="hipay">
-                    <label>HiPay Fullservice SEPA Direct Debit</label>
+                    <label>HiPay Enterprise SEPA Direct Debit</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>200</sort_order>
                     <show_in_default>1</show_in_default>
@@ -4598,7 +4598,7 @@
                     </fields>
                 </hipay_sdd>
                 <hipay_postfinancecardapi translate="label" module="hipay">
-                    <label>HiPay Fullservice PostFinance Card</label>
+                    <label>HiPay Enterprise PostFinance Card</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>225</sort_order>
                     <show_in_default>1</show_in_default>
@@ -4801,7 +4801,7 @@
                     </fields>
                 </hipay_postfinancecardapi>
                 <hipay_postfinanceefinanceapi translate="label" module="hipay">
-                    <label>HiPay Fullservice PostFinance E-Finance</label>
+                    <label>HiPay Enterprise PostFinance E-Finance</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>225</sort_order>
                     <show_in_default>1</show_in_default>
