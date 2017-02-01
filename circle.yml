@@ -29,7 +29,7 @@ test:
     - cd ./bin/tests/ && sh launch-all-tests.sh
     - docker-compose stop
     - docker-compose rm -fv
-    - docker rmi -f jira-mg-latest.hipay-pos-platform.com
+    - docker rmi -f hipayfullservicesdkmagento1_web
     - docker-compose -f docker-compose.yml -f docker-compose.stage-php5-4.yml build --no-cache
     - docker-compose -f docker-compose.yml -f docker-compose.stage-php5-4.yml up -d
     - sleep 60
@@ -37,7 +37,7 @@ test:
     - cd ./bin/tests/ && sh launch-all-tests.sh
     - docker-compose stop
     - docker-compose rm -fv
-    - docker rmi -f jira-mg-latest.hipay-pos-platform.com
+    - docker rmi -f hipayfullservicesdkmagento1_web
     - docker-compose -f docker-compose.yml -f docker-compose.stage-php7-0.yml build --no-cache
     - docker-compose -f docker-compose.yml -f docker-compose.stage-php7-0.yml up -d
     - sleep 60
