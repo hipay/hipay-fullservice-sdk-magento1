@@ -16,7 +16,7 @@ exports.proceed = function proceed(test) {
 
             casper.waitForSelector(".header-top",
                 function success() {
-                    test.pass('AUTHENTIFICATION MAGENTO');
+                    test.comment('Authentification');
                 },
                 function fail() {
                     test.assertExists(".error-msg");
