@@ -132,7 +132,7 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
         cp -f /tmp/$ENVIRONMENT/php/php.ini /usr/local/etc/php/php.ini
     fi
 
-     if [ "$PORT_WEB" != "80" ];then
+     if [ "$PORT_WEB" != "80" ] && [ "$ENVIRONMENT" != "production" ];then
          sed -i -e "s/80/$PORT_WEB/" /etc/apache2/sites-available/000-default.conf
 
          echo "Listen $PORT_WEB" >> /etc/apache2/ports.conf
