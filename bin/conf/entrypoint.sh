@@ -52,7 +52,7 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     printf "\n${COLOR_SUCCESS}          UPDATE TRANSACTION PREFIX      ${NC}\n"
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
 
-    n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT"  db:query "INSERT INTO magento.eav_entity_store values (9,5,2,1,2);"
+    n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT"  db:query "INSERT INTO eav_entity_store values (9,5,2,1,2);"
 
     n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT"  db:query "UPDATE eav_entity_store
                                INNER JOIN eav_entity_type ON eav_entity_type.entity_type_id = eav_entity_store.entity_type_id
@@ -132,7 +132,7 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
         cp -f /tmp/$ENVIRONMENT/php/php.ini /usr/local/etc/php/php.ini
     fi
 
-     if [ "$PORT_WEB" != "80" ];then
+     if [ "$PORT_WEB" != "80" ] && [ "$ENVIRONMENT" != "production" ];then
          sed -i -e "s/80/$PORT_WEB/" /etc/apache2/sites-available/000-default.conf
 
          echo "Listen $PORT_WEB" >> /etc/apache2/ports.conf
