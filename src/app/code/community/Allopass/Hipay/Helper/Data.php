@@ -355,7 +355,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
                     'date_to_pay' => $split['dateToPay'],
                     'method_code' => $order->getPayment()->getMethod(),
                     'status' => Allopass_Hipay_Model_SplitPayment::SPLIT_PAYMENT_STATUS_PENDING,
-                    'split_number' => strval($numberSplit) . '-' . strval(count($paymentsSplit) + 1),
+                    'split_number' => strval($numberSplit) . '-' . strval(count($paymentsSplit)),
                 );
 
                 // First split is already paid
