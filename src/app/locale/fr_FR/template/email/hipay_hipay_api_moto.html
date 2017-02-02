@@ -14,7 +14,6 @@
 @-->
 {{template config_path="design/email/header"}}
 {{inlinecss file="email-inline.css"}}
-
 <table>
     <thead>
     <tr>
@@ -25,44 +24,22 @@
     <tr>
         <td>
             <p>
-                Pour le valider, cliquez sur le lien ci-dessous. Il vous redirige sur le formulaire de carte de crédit.
+                Cher {{var customer}},
             </p>
+            <p>
+                Vous avez récemment échangé avec l'un de nos conseillers, et nous vous en remercions.
+            </p>
+            <p>
+                Comme convenu, vous trouverez ci-après un lien spécifique vous permettant de payer immédiatement votre commande, en toute sécurité.
             <p style="font-size:16px">
-                <b><a id="pay_order" href="{{var redirectUrl}}"> Je paye ma commande maintenant!</a></b>
+                <b><a id="pay_order" href="{{var redirectUrl}}">{{var redirectUrl}}</a></b>
             </p>
-            <p>
-                <b>Clients:</b><br />
-                <a href="mailto:{{var customerEmail}}">{{var customer}}</a> &lt;{{var customerEmail}}&gt;
-            </p>
-            <p>
-                <b>Produits</b><br />
-                {{var items}}
-            </p>
-            <p>
-                <b>Total:</b><br />
-                {{var total}}
-            </p>
-            <p>
-                <b>Adresse de facturation:</b><br />
-                {{var billingAddress.format('html')}}
-            </p>
-            <p>
-                <b>Adresse de livraison</b><br />
-                {{var shippingAddress.format('html')}}
-            </p>
-            <p>
-                <b>Livraison:</b><br />
-                {{var shippingMethod}}
-            </p>
-            <p>
-                <b>Mode de paiement:</b><br />
-                {{var paymentMethod}}
-            </p>
-            <p>
-                <b>Jour et heure:</b><br />
-                {{var dateAndTime}}
+            <p style="t-size:1">
+                De la même manière que sur notre site internet, vos données bancaires sont protégées par le protocole SSL,
+                et la transaction est entièrement sécurisée.
             </p>
         </td>
     </tr>
     </tbody>
 </table>
+{{template config_path="design/email/footer"}}
