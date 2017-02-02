@@ -17,6 +17,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     const FIELD_BASE_DISCOUNT_REFUNDED = 'base_discount_refunded';
     const FIELD_BASE_TAX_REFUNDED = 'base_tax_refunded';
 
+
     /**
      *  Return to TPP Tax rate only if all products have the same tax
      *
@@ -878,6 +879,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
                     $rule = Mage::getModel('hipay/rule')->load($config3dsRules);
                     if ($rule->getId() && $rule->validate($payment->getOrder())) {
                         $params = 1;
+
                         if ((int)$use3dSecure == 3) {//case for force 3ds if rules are validated
                             $params = 2;
                         }
