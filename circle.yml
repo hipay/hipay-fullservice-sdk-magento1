@@ -21,18 +21,27 @@ test:
     - echo "HIPAY_TOKENJS_USERNAME_TEST=$HIPAY_TOKENJS_USERNAME_TEST" >> ./bin/conf/stage/env_stage
     - echo "HIPAY_SECRET_PASSPHRASE_TEST=$HIPAY_SECRET_PASSPHRASE_TEST" >> ./bin/conf/stage/env_stage
   override:
+    - sh bin/docker/generate_dockerfile.sh
     - docker-compose -f docker-compose.yml -f docker-compose.stage.yml build --no-cache
     - docker-compose -f docker-compose.yml -f docker-compose.stage.yml up -d
     - sleep 60
-    - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL
+    - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
     - cd ./bin/tests/ && sh launch-all-tests.sh
     - docker-compose stop
     - docker-compose rm -fv
     - docker-compose -f docker-compose.yml -f docker-compose.stage-php5-4.yml build --no-cache
     - docker-compose -f docker-compose.yml -f docker-compose.stage-php5-4.yml up -d
     - sleep 60
-    - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL
+    - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
     - cd ./bin/tests/ && sh launch-all-tests.sh
+    - docker-compose stop
+    - docker-compose rm -fv
+    - docker-compose -f docker-compose.yml -f docker-compose.stage-php7-0.yml build --no-cache
+    - docker-compose -f docker-compose.yml -f docker-compose.stage-php7-0.yml up -d
+    - sleep 60
+    - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
+    - cd ./bin/tests/ && sh launch-all-tests.sh
+
 deployment:
   feature:
     branch: /feature*/

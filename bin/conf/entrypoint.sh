@@ -52,6 +52,8 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     printf "\n${COLOR_SUCCESS}          UPDATE TRANSACTION PREFIX      ${NC}\n"
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
 
+    n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT"  db:query "INSERT INTO eav_entity_store values (9,5,2,1,2);"
+
     n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT"  db:query "UPDATE eav_entity_store
                                INNER JOIN eav_entity_type ON eav_entity_type.entity_type_id = eav_entity_store.entity_type_id
                                SET eav_entity_store.increment_prefix='$PREFIX'
@@ -109,7 +111,7 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
 
         # INSTALL X DEBUG
         echo '' | pecl install xdebug
-        echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/local-magento.hipay.com/etc/php/conf.d/xdebug.ini
+        echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini
         echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini
         echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini
 
@@ -130,11 +132,20 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
         cp -f /tmp/$ENVIRONMENT/php/php.ini /usr/local/etc/php/php.ini
     fi
 
-     if [ "$PORT_WEB" != "80" ];then
+     if [ "$PORT_WEB" != "80" ] && [ "$ENVIRONMENT" != "production" ];then
          sed -i -e "s/80/$PORT_WEB/" /etc/apache2/sites-available/000-default.conf
-         echo "Listen $PORT_WEB" >> /etc/apache2/apache2.conf
+
          echo "Listen $PORT_WEB" >> /etc/apache2/ports.conf
+
+         if [ "$PHP_VERSION" = "5.4" ];then
+           echo "Listen $PORT_WEB" >> /etc/apache2/apache2.conf
+         fi
      fi
+
+    # SUPPORT PHP 7
+    if [ "$PHP_VERSION" = "7.0" ];then
+        sed -i -e "555s/\$callback\[0\])->\$callback\[1\]();/\$callback\[0\])->\{\$callback\[1\]\}();/" /var/www/htdocs/app/code/core/Mage/Core/Model/Layout.php
+    fi
 
 else
      printf "\n${COLOR_SUCCESS}  => MAGENTO IS ALREADY INSTALLED IN THE CONTAINER ${NC}\n"
@@ -153,10 +164,12 @@ printf "${COLOR_SUCCESS}    |===================================================
 printf "${COLOR_SUCCESS}    |                                                                      ${NC}\n"
 printf "${COLOR_SUCCESS}    |               DOCKER MAGENTO TO HIPAY $ENVIRONMENT IS UP             ${NC}\n"
 printf "${COLOR_SUCCESS}    |                                                                      ${NC}\n"
-printf "${COLOR_SUCCESS}    |   URL FRONT       : $MAGENTO_URL                                     ${NC}\n"
-printf "${COLOR_SUCCESS}    |   URL BACK        : $MAGENTO_URL admin                               ${NC}\n"
-printf "${COLOR_SUCCESS}    |   URL MAIL CATCHER: $MAGENTO_URL                                     ${NC}\n"
+printf "${COLOR_SUCCESS}    |   URL FRONT       : $MAGENTO_URL:$PORT_WEB                           ${NC}\n"
+printf "${COLOR_SUCCESS}    |   URL BACK        : $MAGENTO_URL:$PORT_WEB/admin                     ${NC}\n"
+printf "${COLOR_SUCCESS}    |   URL MAIL CATCHER: $MAGENTO_URL:1095/                               ${NC}\n"
 printf "${COLOR_SUCCESS}    |                                                                      ${NC}\n"
+printf "${COLOR_SUCCESS}    |   PHP VERSION     : $PHP_VERSION                                     ${NC}\n"
+printf "${COLOR_SUCCESS}    |   MAGENTO VERSION : $MAGENTO_VERSION                                 ${NC}\n"
 printf "${COLOR_SUCCESS}    |======================================================================${NC}\n"
 
 exec apache2 -DFOREGROUND

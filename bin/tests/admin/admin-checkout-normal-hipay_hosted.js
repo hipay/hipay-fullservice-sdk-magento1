@@ -1,7 +1,13 @@
 var x = require('casper').selectXPath;
 var BASE_URL = casper.cli.get('url');
 var TYPE_CC = casper.cli.get('type-cc');
-var admin   = require('admin-checkout');
+
+var payment = require('modules/step-payment');
+var checkout = require('modules/step-checkout');
+var authentification = require('modules/step-authentification');
+var configuration = require('modules/step-configuration');
+var mailcatcher = require('modules/step-mailcatcher');
+var pay = require('modules/step-pay-hosted');
 
 casper.on('remote.alert', function (message) {
     this.echo('alert message: ' + message);
@@ -26,7 +32,7 @@ casper.on('page.error', function (msg, trace) {
  *  To launch test, please pass two arguments URL (BASE URL)  and TYPE_CC ( CB,VI,MC )
  *
  /**********************************************************************************************/
-casper.test.begin('ADMIN CHECKOUT HIPAY-CC WITH ' + TYPE_CC + ' ON URL ' + BASE_URL, function (test) {
+casper.test.begin('ADMIN CHECKOUT NORMAL HIPAY-HOSTED WITH ' + TYPE_CC + ' ON URL ' + BASE_URL,5, function (test) {
     casper.start(BASE_URL + 'admin');
     phantom.clearCookies();
 
@@ -36,39 +42,28 @@ casper.test.begin('ADMIN CHECKOUT HIPAY-CC WITH ' + TYPE_CC + ' ON URL ' + BASE_
     authentification.proceed(test);
 
     //============================================================== //
-    //===           CONFIG                             === //
+    //===           CONFIG                                       === //
     //============================================================== //
-    configuration.proceedMotoSendMail(test,'0');
+    configuration.proceedMotoSendMail(test, '0');
 
     //============================================================== //
     //===           ADD ARTICLE TO CART                           === //
     //============================================================== //
-    admin.checkout(test);
+    checkout.proceed(test);
 
     //============================================================== //
     //===           SELECT AND FILL PAYMENT METHOD ( UPS )       === //
     //============================================================== //
     casper.waitForSelector('#p_method_hipay_hosted',
         function success() {
-            // Select the last product in grid
-            test.comment('Load Payment Method');
-            // Valid Payment
-            this.click('#p_method_hipay_hosted');
-
-            this.evaluate(function () {
-                payment.switchMethod('hipay_hosted');
-            });
-
             //============================================================== //
             //===           SELECT AND FILL PAYMENT METHOD ( UPS )       === //
             //============================================================== //
-            casper.wait(5000,
+            casper.wait(10000,
                 function () {
                     test.comment('Payment');
                     this.click(x('//span[text()="Submit Order"]'));
-                    casper.wait(5000, function () {
-                        test.assertNotExists('.error-msg');
-
+                    casper.wait(10000, function () {
                         casper.waitForUrl('/payment\/web\/pay/', function () {
                             test.comment('Fill payment in hosted page');
                             test.assertHttpStatus(200);
@@ -100,14 +95,14 @@ casper.test.begin('ADMIN CHECKOUT HIPAY-CC WITH ' + TYPE_CC + ' ON URL ' + BASE_
                                 }, null);
 
                         }, function fail() {
-                            this.debugPage();
+                            test.fail('Submit Error')
                         }, 10000);
 
                         casper.waitForUrl('/admin/sales_order/view/order_id/', function () {
                             test.assertHttpStatus(200);
                             test.assertNotExists('.error-msg');
                             test.pass('HOSTED PAYMENT SUCCESSFUL')
-                        }, null, 5000);
+                        }, null, 15000);
                     });
                 }
             );
