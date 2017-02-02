@@ -41,7 +41,7 @@ class Allopass_Hipay_Block_Adminhtml_PaymentProfile_Edit_Form extends Mage_Admin
         		'class'     => 'required-entry validate-number',
         		'required'  => true,
         		'name'      => 'period_frequency',
-        		'note'=>$this->__('Number of billing periods that make up one billing cycle.')
+        		'note'=>$this->__('Time to wait between installments in a billing cycle.')
         ));
         
         $fieldset->addField('period_max_cycles', 'text', array(

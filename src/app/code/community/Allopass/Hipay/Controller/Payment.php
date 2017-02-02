@@ -41,8 +41,7 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
             $this->_redirect('checkout/cart');
             return $this;
         }
-        
-        
+
         $this->_redirectUrl($redirectUrl);
         
         return $this;
@@ -82,12 +81,15 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
                 $session->setLastQuoteId($this->getOrder()->getId());
             }
         }
-        /*else
-        {
-            $this->processResponse();
-        }*/
+
         $this->processResponse();
-        $this->_redirect(Mage::helper('hipay')->getCheckoutSuccessPage($this->getOrder()->getPayment()));
+        $url_redirect = Mage::helper('hipay')->getCheckoutSuccessPage($this->getOrder()->getPayment());
+
+        if (preg_match('/http/',$url_redirect)){
+            $this->_redirectUrl($url_redirect);
+        }else{
+            $this->_redirect($url_redirect);
+        }
         
         return $this;
     }
@@ -103,42 +105,33 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
     
     public function declineAction()
     {
-        if ($lastQuoteId = $this->getCheckout()->getLastQuoteId()) {
-            $quote = Mage::getModel('sales/quote')->load($lastQuoteId);
-            $quote->setIsActive(true)->save();
-        }
-
         $lastOrderId =  $this->getOrder()->getIncrementId();
-
-        Mage::getSingleton('checkout/session')->setLastQuoteId($lastQuoteId);
+        
+        Mage::getSingleton('checkout/session')->setLastQuoteId($lastOrderId);
         Mage::getSingleton('checkout/session')->setLastOrderId($lastOrderId);
         
         $this->processResponse();
-
+      
         // Translate with Helper
         Mage::getSingleton('checkout/session')->addError(Mage::helper('hipay')->__("Your payment is declined. Please retry checkout with another payment card."));
 
         $this->_redirect(Mage::helper('hipay')->getCheckoutFailurePage($this->getOrder()->getPayment()));
+
         return $this;
     }
 
     
     public function exceptionAction()
     {
-        if ($lastQuoteId = $this->getCheckout()->getLastQuoteId()) {
-            $quote = Mage::getModel('sales/quote')->load($lastQuoteId);
-            $quote->setIsActive(true)->save();
-        }
-
         $lastOrderId =  $this->getOrder()->getIncrementId();
-
-        Mage::getSingleton('checkout/session')->setLastQuoteId($lastQuoteId);
+        
+        Mage::getSingleton('checkout/session')->setLastQuoteId($lastOrderId);
         Mage::getSingleton('checkout/session')->setLastOrderId($lastOrderId);
-
-        // Translate with Helper
+        
+      // Translate with Helper
         Mage::getSingleton('checkout/session')->addError(Mage::helper('hipay')->__("An exception has occured. Please retry checkout."));
         
-        $this->_redirect(Mage::helper('hipay')->getCheckoutFailurePage($this->getOrder()->getPayment()));
+        $this->_redirect('checkout/cart');
         return $this;
     }
     
@@ -154,11 +147,29 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
     {
         $order = $this->getOrder();
         $payment = $order->getPayment();
-        
+
         /* @var $gatewayResponse Allopass_Hipay_Model_Api_Response_Gateway */
         $gatewayResponse  = Mage::getSingleton('hipay/api_response_gateway', $this->getRequest()->getParams());
-        
-        $this->_getMethodInstance()->processResponseToRedirect($gatewayResponse, $payment, $order->getBaseTotalDue());
+
+        if (!$payment && $gatewayResponse->getData('order')){
+            $order =  Mage::getModel('sales/order')->loadByIncrementId($gatewayResponse->getData('order'));
+            $this->_order = $order;
+            $payment =  $order->getPayment();
+
+            $session = Mage::getSingleton('checkout/session');
+            if (!$session->getLastOrderId()) {
+                $session->setLastOrderId($this->getOrder()->getIncrementId());
+            }
+
+            if (!$session->getLastSuccessQuoteId()){
+                $session->setLastSuccessQuoteId($this->getOrder()->getIncrementId());
+                $session->setLastQuoteId($this->getOrder()->getId());
+            }
+        }else{
+            $order = $payment->getOrder();
+        }
+
+        return $this->_getMethodInstance()->processResponseToRedirect($gatewayResponse, $payment, $order->getBaseTotalDue());
     }
 
     
@@ -256,9 +267,16 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
         
         $payment_profile_id = $this->getRequest()->getParam('payment_profile_id', false);
         $amount = $this->getCheckout()->getQuote()->getGrandTotal();
-        
-        $response['message'] = Mage::helper('hipay')->__('You will be debit of amount %s only after submit order.', Mage::app()->getStore()->getBaseCurrency()->format($amount, array(), true));
-        
+        $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction', Mage::app()->getStore());
+
+        if ($useOrderCurrency) {
+            $currency = Mage::app()->getStore()->getCurrency();
+        } else {
+            $currency = Mage::app()->getStore()->getBaseCurrency();
+        }
+
+        $response['message'] = Mage::helper('hipay')->__('You will be debit of amount %s only after submit order.', $currency->format($amount, array(), true));
+
         if ($payment_profile_id) {
             try {
                 $splitPayment = $_helper->splitPayment((int)$payment_profile_id, $amount);
@@ -271,14 +289,14 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
                 $otherPayments = "<p><span>" . Mage::helper('hipay')->__("Your next payments:") . '</span><table class="data-table" id="split-payment-cc-table">';
                 foreach ($splitPayment as $value) {
                     $otherPayments .= '<tr>';
-                    $amount = Mage::app()->getStore()->getBaseCurrency()->format($value['amountToPay'], array(), true);
+                    $amount =  $currency->format($value['amountToPay'], array(), true);
                     $dateToPay = new Zend_Date($value['dateToPay']);
                     $otherPayments .= '<td>' . $dateToPay->toString(Zend_Date::DATE_LONG) . "</td><td> " . $amount . '</td>' ;
                     $otherPayments .= '</tr>';
                 }
                 $otherPayments .= '<table></p>';
                 
-                $response['labelSplitPayment'] = "<p><span>" . Mage::helper('hipay')->__('You will be debit of amount %s only after submit order.', Mage::app()->getStore()->getBaseCurrency()->format($firstAmount, array(), true)) . '</span></p>';
+                $response['labelSplitPayment'] = "<p><span>" . Mage::helper('hipay')->__('You will be debit of amount %s only after submit order.',  $currency->format($firstAmount, array(), true)) . '</span></p>';
                 $response['labelSplitPayment'] .= $otherPayments;
             } catch (Exception $e) {
                 $response['message'] = $e->getMessage();

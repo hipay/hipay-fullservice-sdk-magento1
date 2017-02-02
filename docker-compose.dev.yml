@@ -1,0 +1,21 @@
+web:
+  container_name: jira-mg-latest.hipay-pos-platform.com
+  build: .
+  dockerfile: ./bin/docker/php7-0/Dockerfile
+  ports:
+    - "8095:8095"
+  env_file:
+    - ./bin/conf/development/env_dev
+  volumes:
+    - ./src/app/code/community/Allopass:/var/www/htdocs/app/code/community/Allopass
+    - ./src/app/design/frontend/base/default/template/hipay:/var/www/htdocs/app/design/frontend/base/default/template/hipay
+    - ./src/app/design/adminhtml/default/default/template/hipay:/var/www/htdocs/app/design/adminhtml/default/default/template/hipay
+    - ./bin/tests:/tmp/tests
+    - ./web:/var/www/htdocs
+    - ./log:/var/www/htdocs/var/log
+mysql:
+  env_file:
+    - ./bin/conf/development/env_dev
+  volumes:
+    - ./data/mysql:/var/lib/mysql
+

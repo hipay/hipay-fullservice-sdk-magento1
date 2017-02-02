@@ -1,3 +1,6 @@
+# Version 1.5.1
+Fix - Add a specific success page management 
+ 
 # Version 1.5.0
 New - Add a custom_data management
 New - Add a device fingerprint for Direct POST
