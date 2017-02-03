@@ -57,12 +57,14 @@ casper.test.begin('CHECKOUT HIPAY-CC WITH ' + TYPE_CC + ' ON URL '  + BASE_URL ,
             test.assertExists("#swatch27 img");
         });
 
-    /* Add item to cart */
+    //============================================================== //
+    //===           ADD ITEM                                     === //
+    //============================================================== //
     casper.waitForSelector("form#product_addtocart_form .add-to-cart-buttons button",
         function success() {
             this.click("form#product_addtocart_form .add-to-cart-buttons button");
             test.assertNotExists('.validation-advice');
-            test.pass('Add item to cart');
+            test.comment('Add item to cart');
         },
         function fail() {
             test.assertExists("form#product_addtocart_form .add-to-cart-buttons button");
@@ -72,14 +74,16 @@ casper.test.begin('CHECKOUT HIPAY-CC WITH ' + TYPE_CC + ' ON URL '  + BASE_URL ,
     casper.waitForSelector(".cart-totals .checkout-types .btn-checkout",
         function success() {
             this.click(".cart-totals .checkout-types .btn-checkout");
-            test.pass('Checkout cart');
+            test.comment('Checkout cart');
         },
         function fail() {
             this.echo(this.getCurrentUrl());
             test.assertExists(".cart-totals .checkout-types .btn-checkout");
         });
 
-    /* Checkout as GUEST */
+    //============================================================== //
+    //===           CHECKOUT AS GUEST                            === //
+    //============================================================== //
     casper.waitForSelector("button#onepage-guest-register-button",
         function success() {
             this.click("button#onepage-guest-register-button");
@@ -98,7 +102,9 @@ casper.test.begin('CHECKOUT HIPAY-CC WITH ' + TYPE_CC + ' ON URL '  + BASE_URL ,
             test.assertExists("button#onepage-guest-register-button");
         });
 
-    /* Fill Billing information */
+    //============================================================== //
+    //===           FILL BILLING OPERATION                       === //
+    //============================================================== //
     casper.waitForSelector("form#co-billing-form",
         function success() {
             this.fill('form#co-billing-form', {
@@ -121,7 +127,9 @@ casper.test.begin('CHECKOUT HIPAY-CC WITH ' + TYPE_CC + ' ON URL '  + BASE_URL ,
             test.assertExists("button#onepage-guest-register-button");
         });
 
-    //*  Fill Shipping method */
+    //============================================================== //
+    //===           FILL SHIPPING METHOD                         === //
+    //============================================================== //
     casper.waitUntilVisible('#checkout-step-shipping_method', function () {
         this.fill('form#co-shipping-method-form', {
             'shipping_method': 'ups_GND',
@@ -132,10 +140,11 @@ casper.test.begin('CHECKOUT HIPAY-CC WITH ' + TYPE_CC + ' ON URL '  + BASE_URL ,
         });
     }, null, 20000);
 
-    /* Fill step Payment */
+    //============================================================== //
+    //===           FILL STEP PAYMENT                            === //
+    //============================================================== //
     casper.waitUntilVisible('#checkout-step-payment',
         function success() {
-
             this.click("form#co-payment-form #p_method_hipay_cc");
             test.assertExists("form#co-payment-form");
 
@@ -176,21 +185,26 @@ casper.test.begin('CHECKOUT HIPAY-CC WITH ' + TYPE_CC + ' ON URL '  + BASE_URL ,
 
             // Test if errors occurs
             test.assertNotExists('.validation-advice');
-            test.pass('Fill payment informations with type ' + TYPE_CC);
+            test.comment('Fill payment informations with type ' + TYPE_CC);
         },
         function fail() {
             test.assertExists("#checkout-step-payment");
         }
         , null, 10000);
 
-    /* Place order */
+
+    //============================================================== //
+    //===           PLACE ORDER                           === //
+    //============================================================== //
     casper.waitUntilVisible('#checkout-step-review', function () {
         test.assertExists('button.btn-checkout');
         this.click('button.btn-checkout');
-        test.pass('Place order with hipay_cc');
+        test.comment('Place order with hipay_cc');
     }, null, 10000);
 
-    /* Check Order success */
+    //============================================================== //
+    //===           CHECK ORDER SUCCESS                          === //
+    //============================================================== //
     casper.waitForUrl(BASE_URL + 'checkout/onepage/success/', function () {
         test.assertHttpStatus(200);
         test.assertExists('.checkout-onepage-success');
