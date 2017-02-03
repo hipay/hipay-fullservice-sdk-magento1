@@ -223,7 +223,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $order = $payment->getOrder();
         $customer = Mage::getModel('customer/customer')->load($order->getCustomerId());
 
-        $useOrderCurrency = $this->getConfigData('currency_transaction', Mage::app()->getStore());
+        $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction', Mage::app()->getStore());
 
         if ($useOrderCurrency) {
             $currency = Mage::app()->getStore()->getCurrency();
@@ -1057,7 +1057,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $params['description'] = Mage::helper('hipay')->__("Order %s by %s",$payment->getOrder()->getIncrementId(),$payment->getOrder()->getCustomerEmail());//MANDATORY
         $params['long_description'] = $longDesc;// optional
 
-        $useOrderCurrency = $this->getConfigData('currency_transaction', Mage::app()->getStore());
+        $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction', Mage::app()->getStore());
+
 
         if ($useOrderCurrency) {
             $params['currency'] = $payment->getOrder()->getOrderCurrencyCode();

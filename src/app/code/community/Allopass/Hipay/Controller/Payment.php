@@ -30,11 +30,17 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
     {
         $order = $this->getOrder();
         $payment = $order->getPayment();
+        $amount= $order->getBaseTotalDue();
 
         $methodInstance = $this->_getMethodInstance();
-        
+        $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction', Mage::app()->getStore());
+
+        if ($useOrderCurrency){
+            $amount = $order->getTotalDue();
+        }
+
         try {
-            $redirectUrl = $methodInstance->place($payment, $order->getBaseTotalDue());
+            $redirectUrl = $methodInstance->place($payment, $amount);
         } catch (Exception $e) {
             Mage::logException($e);
             $this->getCheckout()->addError($e->getMessage());
