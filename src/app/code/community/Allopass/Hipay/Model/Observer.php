@@ -17,11 +17,10 @@ class Allopass_Hipay_Model_Observer
         if (count($methods) < 1) {
             return $this;
         }
-        
-        $date = new Zend_Date();
-        
+
         /* @var $collection Mage_Sales_Model_Resource_Order_Collection */
         foreach ($methods as $key => $delay) {
+            $date = new Zend_Date();
             if (is_numeric($delay)) {
                 $delayMinutes = 60 *  $delay;
             } else {
@@ -36,7 +35,7 @@ class Allopass_Hipay_Model_Observer
                     array('to' => ($date->subMinute($delayMinutes)->toString('Y-MM-dd HH:mm:ss'))))
                 ->join(array('op' => 'sales/order_payment'), 'main_table.entity_id=op.parent_id', array('method'));
 
-            /* @var $order Mage_Sales_Model_Order */
+          /* @var $order Mage_Sales_Model_Order */
             foreach ($collection as $order) {
                 if ($order->canCancel()) {
                     try {

@@ -9,6 +9,11 @@
 			<hipay>
 				<class>Allopass_Hipay_Block</class>
 			</hipay>
+			<checkout>
+				<rewrite>
+					<cart_totals>Allopass_Hipay_Block_Checkout_Cart_Totals</cart_totals>
+				</rewrite>
+			</checkout>
 		</blocks>
 		<helpers>
 			<hipay>

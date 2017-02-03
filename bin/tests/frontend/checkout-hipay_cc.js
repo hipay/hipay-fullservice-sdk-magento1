@@ -29,6 +29,7 @@ casper.on('page.error', function (msg, trace) {
 /**********************************************************************************************/
 casper.test.begin('CHECKOUT HIPAY-CC WITH ' + TYPE_CC + ' ON URL '  + BASE_URL , function (test) {
     casper.start(BASE_URL);
+    casper.clear();
     phantom.clearCookies();
 
     /* Choose an item on home */

@@ -5,7 +5,9 @@ COLOR_SUCCESS='\033[0;32m'
 NC='\033[0m'
 ENV_DEVELOPMENT="development"
 ENV_STAGE="stage"
-PREFIX=$RANDOM
+PREFIX_STORE1=$RANDOM
+PREFIX_STORE2=$RANDOM
+PREFIX_STORE3=$RANDOM
 
 printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
 printf "\n${COLOR_SUCCESS}       CHECK MAGENTO INSTALLATION        ${NC}\n"
@@ -56,11 +58,20 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
 
     n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT"  db:query "UPDATE eav_entity_store
                                INNER JOIN eav_entity_type ON eav_entity_type.entity_type_id = eav_entity_store.entity_type_id
-                               SET eav_entity_store.increment_prefix='$PREFIX'
-                               ,eav_entity_store.increment_last_id='$PREFIX0000001'
-                               WHERE eav_entity_type.entity_type_code='order';"
+                               SET eav_entity_store.increment_prefix='$PREFIX_STORE1'
+                               WHERE eav_entity_type.entity_type_code='order' and eav_entity_store.store_id = 1 ;"
 
-    echo " Prefix for order id : $PREFIX"
+    n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT"  db:query "UPDATE eav_entity_store
+                               INNER JOIN eav_entity_type ON eav_entity_type.entity_type_id = eav_entity_store.entity_type_id
+                               SET eav_entity_store.increment_prefix='$PREFIX_STORE2'
+                               WHERE eav_entity_type.entity_type_code='order' and eav_entity_store.store_id = 2 ;"
+
+    n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT"  db:query "UPDATE eav_entity_store
+                               INNER JOIN eav_entity_type ON eav_entity_type.entity_type_id = eav_entity_store.entity_type_id
+                               SET eav_entity_store.increment_prefix='$PREFIX_STORE3'
+                               WHERE eav_entity_type.entity_type_code='order' and eav_entity_store.store_id = 3 ;"
+
+    echo " Prefix for order id : $PREFIX_STORE1"
 
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     printf "\n${COLOR_SUCCESS}          SET HIPAY CREDENTIALS          ${NC}\n"
