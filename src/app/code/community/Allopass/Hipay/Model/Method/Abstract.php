@@ -984,7 +984,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $gatewayParams = array('operation'=>'refund','amount'=>$amount);
 
         if (Mage::getStoreConfig('hipay/hipay_basket/activate_basket', Mage::app()->getStore())) {
-            $gatewayParams['basket'] = Mage::helper('hipay')->getCartInformation($payment->getOrder());
+            $gatewayParams['basket'] = Mage::helper('hipay')->getCartInformation($payment->getOrder(),true);
         }
 
         /* @var $request Allopass_Hipay_Model_Api_Request */
@@ -1348,8 +1348,11 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $gatewayParams = array('operation'=>'capture','amount'=>$amount);
 
         if (Mage::getStoreConfig('hipay/hipay_basket/activate_basket', Mage::app()->getStore())) {
-            $gatewayParams['basket'] = Mage::helper('hipay')->getCartInformation($payment->getOrder());
+            $gatewayParams['basket'] = Mage::helper('hipay')->getCartInformation($payment->getOrder(),false,true);
         }
+
+        var_dump($gatewayParams);
+        die;
 
         $this->_debug($gatewayParams);
         /* @var $request Allopass_Hipay_Model_Api_Request */
