@@ -980,7 +980,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $gatewayParams = array('operation' => 'refund', 'amount' => $amount);
 
         if (Mage::getStoreConfig('hipay/hipay_basket/activate_basket', Mage::app()->getStore())) {
-            $gatewayParams['basket'] = Mage::helper('hipay')->getCartInformation($payment->getOrder());
+            $gatewayParams['basket'] = Mage::helper('hipay')->getCartInformation($payment->getOrder(),true);
         }
 
         /* @var $request Allopass_Hipay_Model_Api_Request */
@@ -1155,11 +1155,13 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $customDataHipay = Mage::helper('hipay')->getCustomData($payment, $amount, $this, $split_number);
 
         // Add custom data for transaction request
-        if (class_exists('Allopass_Hipay_Helper_CustomData', true)) {
-            if (method_exists(Mage::helper('hipay/customData'), 'getCustomData')) {
-                $customData = Mage::helper('hipay/customData')->getCustomData($payment, $amount);
-                if (is_array($customData)) {
-                    $customDataHipay = array_merge($customData, $customDataHipay);
+        if(file_exists(Mage::getModuleDir('','Allopass_Hipay')   . DS . 'Helper'    . DS .  'CustomData.php')){
+            if (class_exists('Allopass_Hipay_Helper_CustomData',true)){
+                if (method_exists(Mage::helper('hipay/customData'),'getCustomData')){
+                    $customData = Mage::helper('hipay/customData')->getCustomData($payment,$amount);
+                    if (is_array($customData)){
+                        $customDataHipay = array_merge($customData,$customDataHipay);
+                    }
                 }
             }
         }
@@ -1346,8 +1348,11 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $gatewayParams = array('operation' => 'capture', 'amount' => $amount);
 
         if (Mage::getStoreConfig('hipay/hipay_basket/activate_basket', Mage::app()->getStore())) {
-            $gatewayParams['basket'] = Mage::helper('hipay')->getCartInformation($payment->getOrder());
+            $gatewayParams['basket'] = Mage::helper('hipay')->getCartInformation($payment->getOrder(),false,true);
         }
+
+        var_dump($gatewayParams);
+        die;
 
         $this->_debug($gatewayParams);
         /* @var $request Allopass_Hipay_Model_Api_Request */
