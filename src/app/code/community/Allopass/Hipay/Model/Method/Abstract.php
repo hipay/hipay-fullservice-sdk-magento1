@@ -227,7 +227,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction', Mage::app()->getStore());
 
         if ($useOrderCurrency) {
-            $currency = Mage::app()->getStore()->getCurrency();
+            $currency = $order->getOrderCurrency();
             $total = $order->getGrandTotal();
         } else {
             $currency = Mage::app()->getStore()->getBaseCurrency();
@@ -453,7 +453,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
                             Mage::helper('hipay')
                                 ->__("Waiting for capture transaction ID '%s' of amount %s",
                                     $gatewayResponse->getTransactionReference(),
-                                    $currency->formatTxt($order->getBaseTotalDue())),
+                                    $currency->formatTxt($total)),
                             $notified = true);
 
                         $order->save();
@@ -529,7 +529,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
                             $this->getHelper()->insertSplitPayment($order, $profile, $customer->getId(), $token);
                         }
 
-                        if ($amount != $order->getBaseGrandTotal() && !$profile && $order->getState() != Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW) {
+                        if ($amount != $total && !$profile && $order->getState() != Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW) {
                             $transactionId = $gatewayResponse->getTransactionReference();
                             $order->addStatusHistoryComment(Mage::helper('hipay')->__('Notification "Capture". Capture issued by merchant. Registered notification about captured amount of %s. Transaction ID: "%s". Invoice has not been created. Please create offline Invoice.',
                                 $currency->formatTxt($amount), $transactionId), false);
@@ -657,7 +657,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
                                 }
                             }
                         } elseif ($order->canCreditmemo()) {
-                            if ($amount != $order->getBaseGrandTotal()) {
+                            if ($amount != $total) {
                                 $transactionId = $gatewayResponse->getTransactionReference();
                                 $order->addStatusHistoryComment(Mage::helper('hipay')->__('Notification "Refunded". Refund issued by merchant. Registered notification about refunded amount of %s. Transaction ID: "%s". Credit Memo has not been created. Please create offline Credit Memo.',
                                     $currency->formatTxt($amount), $transactionId), false);
