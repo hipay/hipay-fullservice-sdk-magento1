@@ -1351,9 +1351,6 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
             $gatewayParams['basket'] = Mage::helper('hipay')->getCartInformation($payment->getOrder(),false,true);
         }
 
-        var_dump($gatewayParams);
-        die;
-
         $this->_debug($gatewayParams);
         /* @var $request Allopass_Hipay_Model_Api_Request */
         $request = Mage::getModel('hipay/api_request', array($this));
