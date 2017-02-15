@@ -9,3 +9,5 @@ package/*
 *.lock
 dist
 .idea
+web
+data
