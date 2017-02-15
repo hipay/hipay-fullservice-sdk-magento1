@@ -183,7 +183,7 @@ class Allopass_Hipay_Model_Observer
 			$order->setForcedCanCreditmemo(false);
 			$order->setForcedCanCreditmemoFromHipay(true);
 		}
-		elseif($order->getPayment()->getMethod() == 'hipay_cc' && strtolower($order->getPayment()->getCcType()) == 'bcmc')
+		elseif($order->getPayment() && $order->getPayment()->getMethod() == 'hipay_cc' && strtolower($order->getPayment()->getCcType()) == 'bcmc')
 		{
 			$order->setForcedCanCreditmemo(false);
 			$order->setForcedCanCreditmemoFromHipay(true);
