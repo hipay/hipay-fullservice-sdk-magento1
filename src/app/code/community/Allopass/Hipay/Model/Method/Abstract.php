@@ -529,12 +529,6 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
                             $this->getHelper()->insertSplitPayment($order, $profile, $customer->getId(), $token);
                         }
 
-                        if ($amount != $total && !$profile && $order->getState() != Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW) {
-                            $transactionId = $gatewayResponse->getTransactionReference();
-                            $order->addStatusHistoryComment(Mage::helper('hipay')->__('Notification "Capture". Capture issued by merchant. Registered notification about captured amount of %s. Transaction ID: "%s". Invoice has not been created. Please create offline Invoice.',
-                                $currency->formatTxt($amount), $transactionId), false);
-                            break;
-                        }
 
                         if ($order->getState() == Mage_Sales_Model_Order::STATE_HOLDED) {
                             $order->unhold();
@@ -542,6 +536,14 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
                         // Create invoice
                         if ($this->getConfigData('invoice_create', $order->getStoreId()) && !$order->hasInvoices()) {
+
+                            if ($amount != $total && !$profile && $order->getState() != Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW) {
+                              $transactionId = $gatewayResponse->getTransactionReference();
+                              $order->addStatusHistoryComment(Mage::helper('hipay')->__('Notification "Capture". Capture issued by merchant. Registered notification about captured amount of %s. Transaction ID: "%s". Invoice has not been created. Please create offline Invoice.',
+                                  $currency->formatTxt($amount), $transactionId), false);
+                              break;
+                            }
+
                             $invoice = $this->create_invoice($order, $gatewayResponse->getTransactionReference(),
                                 false);
 
