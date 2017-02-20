@@ -14,20 +14,20 @@ an issue to discuss it, in order to minimize duplication of effort.
 For the setting up of your development environment, the only prerequisites are to have **docker** and **[docker-compose][docker-compose]** installed on 
 your host machine.
 
-Docker compose is used for orchestration of containers as we need for your complete envrionment.
+Docker compose is used for orchestration of containers as we need for our complete envrionment.
 
-The complete environment contains  PHP, APACHE, MYSQL and SMTP.
+The complete environment contains PHP, APACHE, MYSQL and SMTP.
 The web container installs and preconfigures a magento 1.9 with the Hipay payment module.
 
  - After cloning the repositiory, retrieve the branch develop
         
             git checkout develop
  
- - Launch a build of images with the two configuration files in parameters:
+ - Launch a build  with the two folow configuration files in parameters
 
             sudo docker-compose -f docker-compose.yml -f docker-compose.dev build --no-cache
 
- - For an automatic configuration of the Hipay module, fill in your "Hipay credentials" in the file
+ - For an automatic configuration of the Hipay module with your credentials, fill in your "Hipay credentials" in env_dev
 
         .bin/conf/development/env_dev
         
@@ -39,7 +39,7 @@ The web container installs and preconfigures a magento 1.9 with the Hipay paymen
         HIPAY_TOKENJS_USERNAME_TEST=
         HIPAY_SECRET_PASSPHRASE_TEST=
 
- - If you want to change the url and the port used, plese change the properties (by default the port is 8095).
+ - If you want to change the default url and port used, please change the properties (by default the port is 8095).
 
         MAGENTO_URL=http://localhost:8095/
         PORT_WEB=8095
@@ -50,11 +50,11 @@ The web container installs and preconfigures a magento 1.9 with the Hipay paymen
     
     You can find these codes in payment method templates (Variable $ _code)
     
- -  You can now launch the container with the command: 
+ -  You are ready and you can now launch the container with the command: 
 
-        sudo docker-compose -f docker-compose.yml -f docker-compose.dev up
+        sudo docker-compose -f docker-compose.yml -f docker-compose.dev up -d
  
-When all containers are started you will be able to access the magento via the url defined in MAGENTO_URL.
+When all containers are started you will be able to access magento via the url defined in MAGENTO_URL.
 
   - Check if all containers are up with
     
@@ -68,9 +68,9 @@ When all containers are started you will be able to access the magento via the u
 
 By default the urls are:
 -   Frontend : [http://localhost:8095][url]
--   Backend : [http://localhost:8095/admin][url-admin].
+-   Backend  : [http://localhost:8095/admin][url-admin].
 
-The sources of the hipay module are available in the src folder, any modifications in these sources will be
+The sources of the hipay module are available in the *src* folder, any modifications in these sources will be immediatly
 reflected in the web container.
 
 Three volumes were created at the root of your project after the launch of the containers
@@ -84,7 +84,7 @@ The Docker image does not include a mysql client, so you must use your favorite 
 You can connect by default with the following information:
     
         Hostname:localhost
-        Port:3307
+        Port    :3307
         Username:magento
         Password:magento
         
@@ -96,11 +96,10 @@ You may access at all mails sent by magento via a mailcatcher container at the u
 
 ### Testing
 
-The CasperJS tests are located in the /bin/tests directory. Currently, the tests do not cover all
-features offered by Hipay, but tests for the frontend and for the backend are present.
+The CasperJS tests are located in */bin/tests*. Currently, the tests do not cover all
+features offered by Hipay, but some tests for the frontend and for the backend are present.
  
 **[CasperJs][casperjs]** and **[PhantomJs][phamtomjs]** are installed by default in the container, so you can run the tests via an exec docker command.
-  
 
         sudo docker exec -it jira-mg-latest.hipay-pos-platform.com sh /tmp/development/launch-all-tests-docker.sh
         
@@ -108,7 +107,7 @@ If CasperJs and PhantomJs are installed on you host, you may launch the tests wi
 
         sh /bin/conf/tests/launch-all-tests.sh
 
-Any contributions should pass all tests.
+** Any contributions should pass all tests **.
 
 ### Making the request
 
