@@ -19,11 +19,11 @@ Docker compose is used for orchestration of containers as we need for our comple
 The complete environment contains PHP, APACHE, MYSQL and SMTP.
 The web container installs and preconfigures a magento 1.9 with the Hipay payment module.
 
- - After cloning the repositiory, retrieve the branch develop
+ - After cloning the repositiory, retrieve the branch develop :
         
             git checkout develop
  
- - Launch a build  with the two folow configuration files in parameters
+ - Launch a build  with the two folow configuration files in parameters :
 
             sudo docker-compose -f docker-compose.yml -f docker-compose.dev build --no-cache
 
