@@ -33,15 +33,14 @@ test:
     - docker-compose -f docker-compose.yml -f docker-compose.stage-php5-4.yml up -d
     - sleep 60
     - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
-    - cd ./bin/tests/ && sh launch-all-tests.sh
-    - docker-compose stop
-    - docker-compose rm -fv
-    - docker-compose -f docker-compose.yml -f docker-compose.stage-php7-0.yml build --no-cache
-    - docker-compose -f docker-compose.yml -f docker-compose.stage-php7-0.yml up -d
-    - sleep 60
-    - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
-    - cd ./bin/tests/ && sh launch-all-tests.sh
-
+#    - cd ./bin/tests/ && sh launch-all-tests.sh
+#    - docker-compose stop
+#    - docker-compose rm -fv
+#    - docker-compose -f docker-compose.yml -f docker-compose.stage-php7-0.yml build --no-cache
+#    - docker-compose -f docker-compose.yml -f docker-compose.stage-php7-0.yml up -d
+#    - sleep 60
+#    - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
+#    - cd ./bin/tests/ && sh launch-all-tests.sh
 deployment:
   feature:
     branch: /feature*/

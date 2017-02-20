@@ -550,8 +550,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
                                 ->save();
                         } elseif ($order->hasInvoices()) {
                             foreach ($order->getInvoiceCollection() as $invoice) {
-                                if ($invoice->getState() == Mage_Sales_Model_Order_Invoice::STATE_OPEN && round(($invoice->getBaseGrandTotal() + $order->getBaseTotalPaid()),
-                                        2) == $gatewayResponse->getCapturedAmount()
+                                if ($invoice->getState() == Mage_Sales_Model_Order_Invoice::STATE_OPEN && (round(($invoice->getBaseGrandTotal() + $order->getBaseTotalPaid()),
+                                        2) == $gatewayResponse->getCapturedAmount() || round(($invoice->getBaseGrandTotal()),2) == $gatewayResponse->getCapturedAmount())
                                 ) {
                                     $invoice->pay();
                                     Mage::getModel('core/resource_transaction')
@@ -607,7 +607,6 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
                         }
 
                         break;
-
                     case 124: //Refund Requested
 
                         $message = Mage::helper("hipay")->__('Refund Requested by Hipay.');
@@ -1192,6 +1191,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $order = $payment->getOrder();
         $params['email'] = $order->getCustomerEmail();
         $params['phone'] = $order->getBillingAddress()->getTelephone();
+
         if (($dob = $order->getCustomerDob()) != "") {
             $dob = new Zend_Date($dob);
             $validator = new Zend_Validate_Date();
@@ -1253,6 +1253,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         //$params['shipto_state'] = $shippingAddress; //TODO check if country is US or Canada
         $params['shipto_zipcode'] = $shippingAddress->getPostcode();
         $params['shipto_country'] = $shippingAddress->getCountry();
+        $params['shipto_msisdn'] = $shippingAddress->getTelephone();
+
 
         return $params;
     }

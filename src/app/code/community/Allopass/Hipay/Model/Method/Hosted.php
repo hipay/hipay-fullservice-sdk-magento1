@@ -78,6 +78,7 @@ class Allopass_Hipay_Model_Method_Hosted extends Allopass_Hipay_Model_Method_Abs
         if(is_null($token))
         {
             $gatewayParams['payment_product'] = 'cb' ;
+
             $gatewayParams['operation'] = $this->getOperation();
             $gatewayParams['css'] = $this->getConfigData('css_url');
             $gatewayParams['template'] = $this->getConfigData('display_iframe') ? 'iframe' :  $this->getConfigData('template');
@@ -96,8 +97,10 @@ class Allopass_Hipay_Model_Method_Hosted extends Allopass_Hipay_Model_Method_Abs
             if(Mage::getStoreConfig('general/store_information/name') != "")
                 $gatewayParams['merchant_display_name'] = Mage::getStoreConfig('general/store_information/name');
 
-            $this->_debug($gatewayParams);
+            // Override params to gateaways
+            $gatewayParams = $this->getSpecificsParams($gatewayParams,$payment);
 
+            $this->_debug($gatewayParams);
             $gatewayResponse = $request->gatewayRequest(Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_HOSTED,$gatewayParams,$payment->getOrder()->getStoreId(),$this->isAdmin());
 
             $this->_debug($gatewayResponse->debug());
@@ -127,5 +130,16 @@ class Allopass_Hipay_Model_Method_Hosted extends Allopass_Hipay_Model_Method_Abs
             return $redirectUrl;
         }
 
+    }
+
+    /**
+     *  Update or not default params
+     *
+     * @param $gatewayParams
+     * @return mixed
+     */
+    public function getSpecificsParams($gatewayParams)
+    {
+        return $gatewayParams;
     }
 }
