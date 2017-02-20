@@ -324,6 +324,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
                         $basket[] = $item;
                     }
             }
+
         }
 
         return json_encode($basket);
