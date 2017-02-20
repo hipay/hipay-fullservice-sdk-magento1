@@ -151,6 +151,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     private function returnUnitPrice($product,$quantity){
         $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction', Mage::app()->getStore());
 
+
         if (!$useOrderCurrency) {
             return $product->getBasePrice() + $product->getBaseTaxAmount() / $quantity;
         }else{
@@ -241,6 +242,14 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 
             if (!empty($ean) && $ean != 'null') {
                 $item['european_article_numbering'] = $ean;
+
+                // Basket from product himself ( Simple product )
+                $taxPercent = $product->getData('tax_percent');
+                $total_amount = $product->getData($fieldBaseRow) + $product->getData($fieldBaseTax) - $product->getData($fieldBaseDiscount);
+                $unitPrice = $product->getData('price_incl_tax');
+
+                $sku = $product->getData('sku');
+                $discount = $product->getData($fieldBaseDiscount);
             }
             $item['product_reference'] = $sku;
             $item['name'] = $product->getName();
@@ -250,8 +259,6 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 
             return $item;
         }
-
-
     }
     /**
      *  Return to TPP API basket informations
@@ -289,6 +296,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
                 }
             }
         }
+
 
         // Partial capture
         if ($action == Allopass_Hipay_Helper_Data::STATE_CAPTURE) {
