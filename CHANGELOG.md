@@ -1,3 +1,23 @@
+# Version 1.6.0
+New - Docker environnement development, stage and production
+New - Payment MO/TO configuration
+New - Payment MO/TO send to customer the payment page link
+New - New Branding HiPay
+New - New order_id nomenclature on the split payment
+New - Optimization the split payment profil labels 
+New - Add Request sources send to the request API
+New - Change "Hipay's Cards" titles
+New - Basket configuration
+New - Basket: Send the basket to transaction
+New - Basket: Available to capture and refund
+New - Additional parameters: use order currency to transaction
+New - Payment method: add Klarna integration associated with the basket feature
+New - Changing Payment Methods at Store View in addition to the general config
+Fix - tax-rate to the split payment
+Fix - The cancel management by the back office HiPay towards Magento
+Fix - Callback 142 Authorization requested
+Fix - Custom_data file is on error when it's not used 
+
 # Version 1.5.1
 Fix - Add a specific success page management 
  
