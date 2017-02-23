@@ -17,7 +17,7 @@ class Allopass_Hipay_Block_Card extends Mage_Core_Block_Template
 
         $this->setCards($cards);
 
-        Mage::app()->getFrontController()->getAction()->getLayout()->getBlock('root')->setHeaderTitle(Mage::helper('hipay')->__("Hipay's Cards"));
+        Mage::app()->getFrontController()->getAction()->getLayout()->getBlock('root')->setHeaderTitle(Mage::helper('hipay')->__("My Payment Cards"));
     }
 
     protected function _prepareLayout()

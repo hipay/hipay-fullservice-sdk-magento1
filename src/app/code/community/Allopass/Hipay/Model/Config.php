@@ -28,24 +28,61 @@ class Allopass_Hipay_Model_Config extends Varien_Object
 	const GATEWAY_ENDPOINT_TEST = 'gateway_endpoint_stage';
 	
 	const GATEWAY_ENDPOINT = 'gateway_endpoint_production';
-	
-	
+
+
+    /**
+     *  Use as Helper
+     *
+     *  @param    string $key Var path key
+     *  @param    int $storeId Store View Id
+     *  @return	  mixed
+     */
+    public function getConfigData($key, $storeId = null)
+    {
+        return $this->getInternalConfig('hipay_api',$key, $storeId = null);
+    }
+
 	/**
-	 *  Return config var
+	 *  Internal to get config and cache it
 	 *
+     *  @param    string $key context key
 	 *  @param    string $key Var path key
 	 *  @param    int $storeId Store View Id
 	 *  @return	  mixed
 	 */
-	public function getConfigData($key, $storeId = null)
+	private function getInternalConfig($key_api,$key, $storeId = null)
 	{
-		
-		if (!$this->hasData($key)) {
-			$value = Mage::getStoreConfig('hipay/hipay_api/' . $key, $storeId);
-			$this->setData($key, $value);
-		}
-		return $this->getData($key);
+        $index = 'hipay' . $key_api  . $key . $storeId;
+        if (!$this->hasData($index)) {
+            $value = Mage::getStoreConfig('hipay/' . $key_api . '/' . $key, $storeId);
+            $this->setData($index, $value);
+        }
+        return $this->getData($index);
 	}
+
+    /**
+     *  Return config NORMAL ( HIPAY_API )
+     *
+     *  @param    string $key Var path key
+     *  @param    int $storeId Store View Id
+     *  @return	  mixed
+     */
+    public function getConfig($key, $storeId = null)
+    {
+        return $this->getInternalConfig('hipay_api',$key, $storeId = null);
+    }
+
+    /**
+     *  Return config MOTO ( HIPAY_MOT)
+     *
+     *  @param    string $key Var path key
+     *  @param    int $storeId Store View Id
+     *  @return	  mixed
+     */
+    public function getConfigDataMoto($key, $storeId = null)
+    {
+        return $this->getInternalConfig('hipay_api_moto',$key, $storeId = null);
+    }
 	
 	/**
 	 *  Return config var
@@ -132,6 +169,30 @@ class Allopass_Hipay_Model_Config extends Varien_Object
 	{
 		return $this->getConfigData(self::GATEWAY_ENDPOINT_TEST,$storeId);
 	}
+
+    public function getApiUsernameMoto($storeId =null)
+    {
+        return $this->getConfigDataMoto(self::API_USERNAME,$storeId);
+    }
+
+    public function getApiPasswordMoto($storeId=null)
+    {
+        return $this->getConfigDataMoto(self::API_PASSWORD,$storeId);
+    }
+
+    public function getApiUsernameTestMoto($storeId =null)
+    {
+        return $this->getConfigDataMoto(self::API_USERNAME_TEST,$storeId);
+    }
+
+    public function getApiPasswordTestMoto($storeId=null)
+    {
+        return $this->getConfigDataMoto(self::API_PASSWORD_TEST,$storeId);
+    }
+
+
+
+
 	
 	/**
 	 * Retrieve array of credit card types
