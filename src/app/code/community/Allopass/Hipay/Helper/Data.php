@@ -26,6 +26,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     const STATE_AUTHORIZATION = '0';
     const STATE_REFUND = '1';
     const STATE_CAPTURE = '2';
+    const EPSYLON = 0.00001;
 
     /**
      *  Return to TPP Tax rate only if all products have the same tax
