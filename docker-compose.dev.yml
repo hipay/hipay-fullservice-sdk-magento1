@@ -5,7 +5,7 @@ web:
   ports:
     - "8095:8095"
   env_file:
-    - ./bin/conf/development/env_dev
+    - ./bin/conf/development/hipay.env
   volumes:
     - ./src/app/code/community/Allopass:/var/www/htdocs/app/code/community/Allopass
     - ./src/app/design/frontend/base/default/template/hipay:/var/www/htdocs/app/design/frontend/base/default/template/hipay
@@ -15,7 +15,7 @@ web:
     - ./log:/var/www/htdocs/var/log
 mysql:
   env_file:
-    - ./bin/conf/development/env_dev
+    - ./bin/conf/development/hipay.env
   volumes:
     - ./data/mysql:/var/lib/mysql
 
