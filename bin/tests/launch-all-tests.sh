@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 
-BASE_URL="http://localhost"
-PORT_WEB="8095"
+BASE_URL=$MAGENTO_URL
 if [ "$PORT_WEB" != "80" ];then
     BASE_URL=$BASE_URL:$PORT_WEB
 fi
 
 if [ "$URL_MAILCATCHER" = "" ];then
-    URL_MAILCATCHER="http://localhost:1095/"
+    URL_MAILCATCHER="http://smtp:1080/"
 fi
 
 # voir pour mettre des options en paramètres de la commande casperjs afin de lancer des scénarios de test précisément sur une action

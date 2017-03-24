@@ -5,40 +5,37 @@
  *  To launch test, please pass two arguments URL (BASE URL)  and TYPE_CC ( CB,VI,MC )
  *
 /**********************************************************************************************/
-casper.test.begin('Test Checkout HiPay Credit Card WITH ' + typeCC + ' ON URL '  + headlink , function (test) {
-    casper.start(headlink);
-    casper.clear();
+casper.test.begin('Test Checkout HiPay Credit Card WITH ' + typeCC, function (test) {
+    casper.start(headlink, function() {
+        this.clear();
+    });
     phantom.clearCookies();
-
     /* Choose an item on home */
-    casper.waitForSelector("img[alt=\"Lafayette Convertible Dress\"]",
-        function success() {
-            this.click("img[alt=\"Lafayette Convertible Dress\"]");
-        },
-        function fail() {
-            test.assertExists("img[alt=\"Lafayette Convertible Dress\"]");
+    .then(function() {
+        this.waitForSelector('img[alt="Lafayette Convertible Dress"]', function success() {
+            this.click('img[alt="Lafayette Convertible Dress"]');
+        }, function fail() {
+            test.assertExists('img[alt="Lafayette Convertible Dress"]');
         });
 
-    casper.waitForSelector("#swatch73 span",
-        function success() {
-            this.click("#swatch73 span");
-        },
-        function fail() {
-            test.assertExists("#swatch73 span");
+        this.waitForSelector("#swatch73 span", function success() {
+                this.click("#swatch73 span");
+        }, function fail() {
+                test.assertExists("#swatch73 span");
         });
 
-    casper.waitForSelector("#swatch27 img",
-        function success() {
-            this.click("#swatch27 img");
-        },
-        function fail() {
-            test.assertExists("#swatch27 img");
-        });
+        this.waitForSelector("#swatch27 img",
+            function success() {
+                this.click("#swatch27 img");
+            },
+            function fail() {
+                test.assertExists("#swatch27 img");
+            });
 
     //============================================================== //
     //===           ADD ITEM                                     === //
     //============================================================== //
-    casper.waitForSelector("form#product_addtocart_form .add-to-cart-buttons button",
+    this.waitForSelector("form#product_addtocart_form .add-to-cart-buttons button",
         function success() {
             this.click("form#product_addtocart_form .add-to-cart-buttons button");
             test.assertNotExists('.validation-advice');
@@ -49,7 +46,7 @@ casper.test.begin('Test Checkout HiPay Credit Card WITH ' + typeCC + ' ON URL ' 
         });
 
     /* Go to checkout */
-    casper.waitForSelector(".cart-totals .checkout-types .btn-checkout",
+    this.waitForSelector(".cart-totals .checkout-types .btn-checkout",
         function success() {
             this.click(".cart-totals .checkout-types .btn-checkout");
             test.comment('Checkout cart');
@@ -62,7 +59,7 @@ casper.test.begin('Test Checkout HiPay Credit Card WITH ' + typeCC + ' ON URL ' 
     //============================================================== //
     //===           CHECKOUT AS GUEST                            === //
     //============================================================== //
-    casper.waitForSelector("button#onepage-guest-register-button",
+    this.waitForSelector("button#onepage-guest-register-button",
         function success() {
             this.click("button#onepage-guest-register-button");
         },
@@ -70,7 +67,7 @@ casper.test.begin('Test Checkout HiPay Credit Card WITH ' + typeCC + ' ON URL ' 
             test.assertExists("button#onepage-guest-register-button");
         });
 
-    casper.waitForSelector("form#co-billing-form",
+    this.waitForSelector("form#co-billing-form",
         function success() {
             this.fill('form#co-billing-form', {
                 'billing[country_id]': 'US',
@@ -83,7 +80,7 @@ casper.test.begin('Test Checkout HiPay Credit Card WITH ' + typeCC + ' ON URL ' 
     //============================================================== //
     //===           FILL BILLING OPERATION                       === //
     //============================================================== //
-    casper.waitForSelector("form#co-billing-form",
+    this.waitForSelector("form#co-billing-form",
         function success() {
             this.fill('form#co-billing-form', {
                 'billing[region_id]': '2',
@@ -108,7 +105,7 @@ casper.test.begin('Test Checkout HiPay Credit Card WITH ' + typeCC + ' ON URL ' 
     //============================================================== //
     //===           FILL SHIPPING METHOD                         === //
     //============================================================== //
-    casper.waitUntilVisible('#checkout-step-shipping_method', function () {
+    this.waitUntilVisible('#checkout-step-shipping_method', function () {
         this.fill('form#co-shipping-method-form', {
             'shipping_method': 'ups_GND',
         }, false);
@@ -121,7 +118,7 @@ casper.test.begin('Test Checkout HiPay Credit Card WITH ' + typeCC + ' ON URL ' 
     //============================================================== //
     //===           FILL STEP PAYMENT                            === //
     //============================================================== //
-    casper.waitUntilVisible('#checkout-step-payment',
+    this.waitUntilVisible('#checkout-step-payment',
         function success() {
             this.click("form#co-payment-form #p_method_hipay_cc");
             test.assertExists("form#co-payment-form");
@@ -174,7 +171,7 @@ casper.test.begin('Test Checkout HiPay Credit Card WITH ' + typeCC + ' ON URL ' 
     //============================================================== //
     //===           PLACE ORDER                           === //
     //============================================================== //
-    casper.waitUntilVisible('#checkout-step-review', function () {
+    this.waitUntilVisible('#checkout-step-review', function () {
         test.assertExists('button.btn-checkout');
         this.click('button.btn-checkout');
         test.comment('Place order with hipay_cc');
@@ -183,13 +180,13 @@ casper.test.begin('Test Checkout HiPay Credit Card WITH ' + typeCC + ' ON URL ' 
     //============================================================== //
     //===           CHECK ORDER SUCCESS                          === //
     //============================================================== //
-    casper.waitForUrl(BASE_URL + 'checkout/onepage/success/', function () {
+    this.waitForUrl(BASE_URL + 'checkout/onepage/success/', function () {
         test.assertHttpStatus(200);
         test.assertExists('.checkout-onepage-success');
         test.pass('The order has been placed successfully with method hipay_cc');
     }, null, 20000);
 
-    casper.run(function () {
+    .run(function () {
         test.done();
     });
 })
