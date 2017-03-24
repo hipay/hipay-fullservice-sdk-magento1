@@ -1,25 +1,3 @@
-
-var x = require('casper').selectXPath;
-var BASE_URL = casper.cli.get('url');
-var TYPE_CC = casper.cli.get('type-cc');
-
-
-casper.on('remote.alert', function (message) {
-    this.echo('alert message: ' + message);
-});
-
-casper.on('remote.message', function (msg) {
-    this.echo('remote message caught: ' + msg);
-});
-
-casper.on('page.error', function (msg, trace) {
-    this.echo('Error: ' + msg, 'ERROR');
-    for (var i = 0; i < trace.length; i++) {
-        var step = trace[i];
-        this.echo('   ' + step.file + ' (line ' + step.line + ')', 'ERROR');
-    }
-});
-
 /**********************************************************************************************
  *
  *                       VALIDATION TEST METHOD : CREDIT CART (DIRECT)
@@ -27,8 +5,8 @@ casper.on('page.error', function (msg, trace) {
  *  To launch test, please pass two arguments URL (BASE URL)  and TYPE_CC ( CB,VI,MC )
  *
 /**********************************************************************************************/
-casper.test.begin('CHECKOUT HIPAY-CC WITH ' + TYPE_CC + ' ON URL '  + BASE_URL , function (test) {
-    casper.start(BASE_URL);
+casper.test.begin('Test Checkout HiPay Credit Card WITH ' + typeCC + ' ON URL '  + headlink , function (test) {
+    casper.start(headlink);
     casper.clear();
     phantom.clearCookies();
 
