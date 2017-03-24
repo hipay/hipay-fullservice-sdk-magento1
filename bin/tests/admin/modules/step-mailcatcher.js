@@ -14,7 +14,7 @@ exports.checkMail = function checkMail(test) {
                             this.page.switchToChildFrame(0);
 
                             // Process payment
-                            this.waitForSelector(x('//a[text()=" Je paye ma commande maintenant!"]'),
+                            this.waitForSelector(x('//a[@id="pay_order"]'),
                                 function success() {
                                     // TODO Test number of order
                                     url = this.getElementAttribute('a#pay_order', 'href');
@@ -25,7 +25,7 @@ exports.checkMail = function checkMail(test) {
                                                 test.comment('Redirect to hosted page DONE');
 
                                                 // Fill payment form hosted
-                                                pay.proceed(test,this);
+                                                pay.proceed(test);
 
                                                 // Check if payment is OK
                                                 casper.waitForUrl(BASE_URL + 'checkout/onepage/success/', function () {
@@ -49,7 +49,7 @@ exports.checkMail = function checkMail(test) {
                 });
         },
         function fail() {
-
+            this.echo("Erreur", "ERROR");
         }
     );
 

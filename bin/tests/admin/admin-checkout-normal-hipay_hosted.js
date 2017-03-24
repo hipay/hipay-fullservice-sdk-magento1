@@ -65,38 +65,8 @@ casper.test.begin('ADMIN CHECKOUT NORMAL HIPAY-HOSTED WITH ' + TYPE_CC + ' ON UR
                     this.click(x('//span[text()="Submit Order"]'));
                     casper.wait(10000, function () {
                         casper.waitForUrl('/payment\/web\/pay/', function () {
-                            test.comment('Fill payment in hosted page');
-                            test.assertHttpStatus(200);
-
-                            this.fill('#form-payment', {
-                                paymentproductswitcher: 'visa'
-                            }, false);
-
-                            //============================================================== //
-                            casper.wait(5000,
-                                function () {
-                                    this.page.switchToChildFrame(0);
-                                    this.fill('#tokenizerForm', {
-                                        'tokenizerForm:cardNumber': '4111111111111111',
-                                        'tokenizerForm:cardHolder': 'MC',
-                                        'tokenizerForm:cardExpiryMonth': '12',
-                                        'tokenizerForm:cardExpiryYear': '2020',
-                                        'tokenizerForm:cardSecurityCode': '500',
-                                    }, false);
-
-                                    this.page.switchToParentFrame();
-                                    this.click('#submit-button');
-                                }, null);
-
-                            casper.wait(100,
-                                function () {
-                                    this.page.switchToParentFrame();
-                                    this.click('#submit-button');
-                                }, null);
-
-                        }, function fail() {
-                            test.fail('Submit Error')
-                        }, 10000);
+                            pay.proceed(test);
+                        });
 
                         casper.waitForUrl('/admin/sales_order/view/order_id/', function () {
                             test.assertHttpStatus(200);
