@@ -43,32 +43,24 @@ casper.test.begin('Test Checkout HiPay Credit Card WITH ' + typeCC, function(tes
         });
         this.waitForSelector(".cart-totals .checkout-types .btn-checkout", function success() {
             this.click(".cart-totals .checkout-types .btn-checkout");
-            test.comment('Checkout cart');
+            test.info('Proceed to checkout');
         }, function fail() {
-            this.echo(this.currentUrl);
             test.assertExists(".cart-totals .checkout-types .btn-checkout");
         });
     })
-    //============================================================== //
-    //===           CHECKOUT AS GUEST                            === //
-    //============================================================== //
-    this.waitForSelector("button#onepage-guest-register-button",
-        function success() {
-            this.click("button#onepage-guest-register-button");
-        },
-        function fail() {
-            test.assertExists("button#onepage-guest-register-button");
-        });
-
-    this.waitForSelector("form#co-billing-form",
-        function success() {
-            this.fill('form#co-billing-form', {
-                'billing[country_id]': 'US',
-            }, false);
-        },
-        function fail() {
-            test.assertExists("button#onepage-guest-register-button");
-        });
+    /* Checkout as guest */
+    this.waitForSelector("button#onepage-guest-register-button", function success() {
+        this.click("button#onepage-guest-register-button");
+    },function fail() {
+        test.assertExists("button#onepage-guest-register-button");
+    });
+    this.waitForSelector("form#co-billing-form", function success() {
+        this.fillSelectors('form#co-billing-form', {
+            'select[name="billing[country_id]"]': 'US',
+        }, false);
+    }, function fail() {
+        test.assertExists("button#onepage-guest-register-button");
+    });
 
     //============================================================== //
     //===           FILL BILLING OPERATION                       === //
