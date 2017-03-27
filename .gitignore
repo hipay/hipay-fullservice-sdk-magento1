@@ -11,3 +11,4 @@ dist
 .idea
 web
 data
+bin/conf/development/.env

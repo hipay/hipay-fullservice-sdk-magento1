@@ -5,57 +5,50 @@
  *  To launch test, please pass two arguments URL (BASE URL)  and TYPE_CC ( CB,VI,MC )
  *
 /**********************************************************************************************/
-casper.test.begin('Test Checkout HiPay Credit Card WITH ' + typeCC, function (test) {
+casper.test.begin('Test Checkout HiPay Credit Card WITH ' + typeCC, function(test) {
+    phantom.clearCookies();
+
     casper.start(headlink, function() {
         this.clear();
     });
-    phantom.clearCookies();
     /* Choose an item on home */
     .then(function() {
+        this.echo("Selecting item and its options...", "INFO");
         this.waitForSelector('img[alt="Lafayette Convertible Dress"]', function success() {
             this.click('img[alt="Lafayette Convertible Dress"]');
         }, function fail() {
-            test.assertExists('img[alt="Lafayette Convertible Dress"]');
+            test.assertExists('img[alt="Lafayette Convertible Dress"]', "'Lafayette Convertible Dress' image exists");
         });
-
         this.waitForSelector("#swatch73 span", function success() {
-                this.click("#swatch73 span");
+            this.click("#swatch73 span");
         }, function fail() {
-                test.assertExists("#swatch73 span");
+            test.assertExists("#swatch73 span", "Size button exists");
         });
-
-        this.waitForSelector("#swatch27 img",
-            function success() {
-                this.click("#swatch27 img");
-            },
-            function fail() {
-                test.assertExists("#swatch27 img");
-            });
-
-    //============================================================== //
-    //===           ADD ITEM                                     === //
-    //============================================================== //
-    this.waitForSelector("form#product_addtocart_form .add-to-cart-buttons button",
-        function success() {
+        this.waitForSelector("#swatch27 img", function success() {
+            this.click("#swatch27 img");
+        }, function fail() {
+            test.assertExists("#swatch27 img", "Color button exists");
+        });
+        test.info("Done");
+    })
+    /* add item and go to checkout */
+    .then(function() {
+        this.echo("Adding this item then, accessing to the checkout...", "INFO");
+        this.waitForSelector("form#product_addtocart_form .add-to-cart-buttons button", function success() {
             this.click("form#product_addtocart_form .add-to-cart-buttons button");
-            test.assertNotExists('.validation-advice');
-            test.comment('Add item to cart');
-        },
-        function fail() {
-            test.assertExists("form#product_addtocart_form .add-to-cart-buttons button");
+            test.assertNotExists('.validation-advice', "Warning message not present for submitting formular");
+            test.info('Item added to cart');
+        }, function fail() {
+            test.assertExists("form#product_addtocart_form .add-to-cart-buttons button", "Submit button exists");
         });
-
-    /* Go to checkout */
-    this.waitForSelector(".cart-totals .checkout-types .btn-checkout",
-        function success() {
+        this.waitForSelector(".cart-totals .checkout-types .btn-checkout", function success() {
             this.click(".cart-totals .checkout-types .btn-checkout");
             test.comment('Checkout cart');
-        },
-        function fail() {
-            this.echo(this.getCurrentUrl());
+        }, function fail() {
+            this.echo(this.currentUrl);
             test.assertExists(".cart-totals .checkout-types .btn-checkout");
         });
-
+    })
     //============================================================== //
     //===           CHECKOUT AS GUEST                            === //
     //============================================================== //
