@@ -3,6 +3,6 @@ casper.test.begin('Functions', function(test) {
 		casper.echo('Tests réussis : ' + test.currentSuite.passes.length, 'WARNING');
 	});
 	casper.echo('Fonctions chargées !', 'INFO');
-	test.info("Based URL :" + headlink);
+	test.info("Based URL: " + headlink);
     test.done();
 });
