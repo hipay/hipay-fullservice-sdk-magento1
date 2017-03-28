@@ -1,0 +1,57 @@
+exports.proceed = function proceed(test) {
+
+    casper.fillHostedForm = function fillHostedForm(secondTemplate) {
+        var holder = "MC",
+            month = "12",
+            year = "2020",
+            code = "500";
+        this.wait(3000, function() {
+            if(!secondTemplate) {
+                this.fillSelectors('#form-payment', {
+                    'input[name="cardNumber"]': cardsNumber[0],
+                    'input[name="cardHolder"]': holder,
+                    'select[name="cardExpiryMonth"]': month,
+                    'select[name="cardExpiryYear"]': year,
+                    'input[name="cardSecurityCode"]': code
+                }, false);
+            }
+            else {
+                this.withFrame(0, function() {
+                    this.fillSelectors('#tokenizerForm', {
+                        'input[name="tokenizerForm:cardNumber"]': cardsNumber[0],
+                        'input[name="tokenizerForm:cardHolder"]': holder,
+                        'select[name="tokenizerForm:cardExpiryMonth"]': month,
+                        'select[name="tokenizerForm:cardExpiryYear"]': year,
+                        'input[name="tokenizerForm:cardSecurityCode"]': code
+                    }, false);
+                });
+            }
+            this.thenClick('#submit-button', function() {
+                test.info("Done");
+            });
+        });
+    };
+
+    /* hosted payment formular filling */
+    casper.then(function() {
+        this.echo("Filling hosted payment formular...", "INFO");
+        test.assertHttpStatus(200, "Correct HTTP Status Code 200");
+        this.waitForSelector('input#payment-product-switcher-visa', function success() {
+            this.evaluate(function() {
+                document.querySelector('input#payment-product-switcher-visa').click();
+            });
+            this.fillHostedForm(false);
+        }, function fail() {
+            this.echo("VISA input doesn't exists. Checking for select field...", 'WARNING');
+            this.waitForSelector('select#payment-product-switcher', function success() {
+                this.warn("OK. This payment template is deprecated");
+                this.fillSelectors('#form-payment', {
+                    'select[name="paymentproductswitcher"]': "visa"
+                });
+                this.fillHostedForm(true);
+            }, function fail() {
+                test.assertExists('select#payment-product-switcher', "VISA input exists");
+            });
+        });
+    });
+};
