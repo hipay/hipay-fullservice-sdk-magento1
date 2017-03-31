@@ -1,14 +1,16 @@
 web:
-  container_name: jira-mg-develop.hipay-pos-platform.com
+  container_name: {CONTAINER_NAME_WEB}
   build: .
   dockerfile: ./bin/docker/php5-6/Dockerfile
   ports:
-      - "80:80"
+      - "{PORT_WEB}:80"
   env_file:
-    - ./bin/conf/production/env_production
+    - ./bin/conf/production/hipay.env
 mysql:
   image: mysql:5.6.23
+  ports:
+    - "{PORT_MYSQL}:3306"
   env_file:
-     - ./bin/conf/production/env_production
+     - ./bin/conf/production/hipay.env
 smtp:
-  container_name: smtp-hipay-mg-develop
+  container_name: {CONTAINER_NAME_SMTP}
