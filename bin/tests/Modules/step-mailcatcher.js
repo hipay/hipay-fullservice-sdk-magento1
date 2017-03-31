@@ -17,12 +17,15 @@ exports.checkMail = function checkMail(test, paymentType) {
                 this.thenOpen(link, function() {
                     this.waitForUrl(/payment\/web\/pay/, function success() {
                         pay.proceed(test);
-                        this.waitForUrl(/checkout\/onepage\/success/, function success() {
-                            test.assertHttpStatus(200, "Correct HTTP Status Code 200");
-                            test.assertExists('.checkout-onepage-success', "The order has been successfully placed with method " + paymentType + " !");
-                        }, function fail() {
-                            test.assertUrlMatch(/checkout\/onepage\/success/, "Checkout result page exists");
-                        }, 10000);
+                        this.then(function() {
+                            this.echo("Checking order success...", "INFO");
+                            this.waitForUrl(/checkout\/onepage\/success/, function success() {
+                                test.assertHttpStatus(200, "Correct HTTP Status Code 200");
+                                test.assertExists('.checkout-onepage-success', "The order has been successfully placed with method " + paymentType + " !");
+                            }, function fail() {
+                                test.assertUrlMatch(/checkout\/onepage\/success/, "Checkout result page exists");
+                            }, 10000);
+                        });
                     }, function fail() {
                         test.assertUrlMatch(/payment\/web\/pay/, "Hosted payment page exists");
                     });

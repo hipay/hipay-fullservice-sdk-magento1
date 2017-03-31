@@ -1,11 +1,11 @@
 /**********************************************************************************************
  *
- *                     TEST CHECKOUT IN ADMIN : HOSTED
+ *                              TEST CHECKOUT IN ADMIN : HOSTED
  *
- *  To launch the test, please pass two arguments URL (BASE URL)  and TYPE_CC ( CB,VI,MC )
+ *  To launch test, please pass two arguments URL (BASE URL)  and TYPE_CC ( CB,VI,MC )
  *
  /**********************************************************************************************/
-var paymentType = "MOTO Hipay Hosted";
+var paymentType = "HiPay Enterprise Hosted Page";
 
 casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(test) {
     phantom.clearCookies();
@@ -16,6 +16,8 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
         authentification.proceed(test);
         /* configuration */
         configuration.proceedMotoSendMail(test, '1');
+        /* payment method activation */
+        method.proceed(test, paymentType, "hosted");
         /* selection item and adding it to cart */
         checkout.proceed(test);
     })

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 if [ "$MAGENTO_URL" != "" ]; then
 	BASE_URL=$MAGENTO_URL
@@ -17,6 +17,9 @@ header="bin/tests/"
 
 # voir pour mettre des options en paramètres de la commande casperjs afin de lancer des scénarios de test précisément sur une action
 
-casperjs test ${header}000*/*.js ${header}002*/*/*.js --url=$BASE_URL --type-cc=VISA --url-mailcatcher=$URL_MAILCATCHER \
-&& casperjs test ${header}000*/*.js ${header}001*/*/*.js --url=$BASE_URL --type-cc=VISA \
-&& casperjs test ${header}000*/*.js ${header}001*/*/*.js --url=$BASE_URL --type-cc=MasterCard
+# Complete
+# casperjs test ${header}000*/*.js ${header}00[123]*/*/*.js --url=$BASE_URL/ --type-cc=VISA --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --xunit=${header}resultVisa.xml \
+# && casperjs test ${header}000*/*.js ${header}001*/*/*.js --url=$BASE_URL/ --type-cc=MasterCard --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --xunit=${header}resultMastercard.xml
+
+# Specific
+casperjs test ${header}000*/*.js ${header}002*/*/*.js --url=$BASE_URL --type-cc=VISA --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --xunit=${header}result.xml

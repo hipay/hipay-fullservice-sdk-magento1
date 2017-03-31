@@ -47,11 +47,11 @@ exports.proceed = function proceed(test) {
         this.echo("Selecting shipping method...", "INFO");
         this.waitForSelector('#order-shipping-method-summary>a', function success() {
             this.click('#order-shipping-method-summary>a');
-            this.waitForSelector('input#s_method_ups_3DS', function success() {
-                this.click('input#s_method_ups_3DS');
+            this.waitForSelector('input#s_method_flatrate_flatrate', function success() {
+                this.click('input#s_method_flatrate_flatrate');
                 test.info("Shipping method selected");
             }, function fail() {
-                test.assertExists('input#s_method_ups_3DS', "3DS shipping method exists");
+                test.assertExists('input#s_method_flatrate_flatrate', "Flat Rate shipping method exists");
             }, 20000);
         }, function fail() {
             test.assertExists('#order-shipping-method-summary>a', "Shipping method link exists");
