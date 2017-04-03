@@ -211,9 +211,12 @@ class Allopass_Hipay_Model_Observer
             $order->unsetData('forced_can_creditmemo_from_hipay');
         }
 
-        // Cancel transaction in TPP if state is cancel
-        if ($order->getStatus() == Mage_Sales_Model_Order::STATE_CANCELED) {
-            $order->getPayment()->getMethodInstance()->cancelTransaction($order->getPayment());
+        if ($order->getPayment()->getMethodInstance() &&
+                $order->getPayment()->getMethodInstance() instanceof Allopass_Hipay_Model_Method_Abstract ) {
+            // Cancel transaction in TPP if state is cancel
+            if ($order->getStatus() == Mage_Sales_Model_Order::STATE_CANCELED) {
+                $order->getPayment()->getMethodInstance()->cancelTransaction($order->getPayment());
+            }
         }
     }
 }
