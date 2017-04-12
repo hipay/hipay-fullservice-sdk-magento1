@@ -1067,11 +1067,13 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $remoteIp = $payment->getOrder()->getRemoteIp();
 
         //Check if it's forwarded and in this case, explode and retrieve the first part
-        if (!is_null($payment->getOrder()->getXForwardedFor()) && strpos($payment->getOrder()->getXForwardedFor(),
-                ",") !== false
-        ) {
-            $xfParts = explode(",", $payment->getOrder()->getXForwardedFor());
-            $remoteIp = current($xfParts);
+        if (!is_null($payment->getOrder()->getXForwardedFor())) {
+            if (strpos($payment->getOrder()->getXForwardedFor(), ",") !== false) {
+                $xfParts = explode(",", $payment->getOrder()->getXForwardedFor());
+                $remoteIp = current($xfParts);
+            } else {
+                $remoteIp = $payment->getOrder()->getXForwardedFor();
+            }
         }
 
         $params['ipaddr'] = $remoteIp;

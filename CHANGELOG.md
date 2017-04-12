@@ -1,3 +1,8 @@
+# Version 1.6.1
+Fix - [SECURITY] Check notification signature if passphrase is not empty
+Fix - X-forward-for without proxy
+  
+
 # Version 1.6.0
 New - Docker environnement development, stage and production
 New - Payment MO/TO configuration
