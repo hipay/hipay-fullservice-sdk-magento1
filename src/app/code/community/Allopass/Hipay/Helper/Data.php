@@ -26,6 +26,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     const STATE_AUTHORIZATION = '0';
     const STATE_REFUND = '1';
     const STATE_CAPTURE = '2';
+    const EPSYLON = 0.00001;
 
     /**
      *  Return to TPP Tax rate only if all products have the same tax
@@ -823,7 +824,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Send email id payment is in Fraud status
-     * @param Mage_Customer_Model_Customer $receiver
+     * @param Mage_Customer_Model_Customer|Mage_Core_Model_Abstract $receiver
      * @param Mage_Sales_Model_Order $order
      * @param string $message
      * @return Mage_Checkout_Helper_Data
