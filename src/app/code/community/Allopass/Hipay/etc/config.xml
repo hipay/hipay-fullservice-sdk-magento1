@@ -350,6 +350,7 @@
 				<api_password backend_model="adminhtml/system_config_backend_encrypted"/>
 				<api_password_test backend_model="adminhtml/system_config_backend_encrypted"/>
 				<secret_passphrase backend_model="adminhtml/system_config_backend_encrypted"/>
+				<secret_passphrase_test backend_model="adminhtml/system_config_backend_encrypted"/>
 				<vault_endpoint_stage>https://stage-secure-vault.hipay-tpp.com/rest/v1/token/</vault_endpoint_stage>
 				<vault_endpoint_production>https://secure-vault.hipay-tpp.com/rest/v1/token/</vault_endpoint_production>
 				<gateway_endpoint_stage>https://stage-secure-gateway.hipay-tpp.com/rest/v1/</gateway_endpoint_stage>
