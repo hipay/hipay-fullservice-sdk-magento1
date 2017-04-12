@@ -524,18 +524,15 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
             }
         }
 
-
-        if (empty($passphrase) || empty($signature)) {
+        if (empty($passphrase) && empty($signature)) {
             return true;
         }
 
         if ($fromNotification) {
             $rawPostData = file_get_contents("php://input");
             if ($signature == sha1($rawPostData . $passphrase)) {
-                ;
+                return true;
             }
-            return true;
-
             return false;
         }
 
