@@ -16,6 +16,7 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
 
 		if (!$this->_validateSignature()) {
 			$this->getResponse()->setBody("NOK. Wrong Signature!");
+            $this->getResponse()->setHttpResponseCode(403);
 			$this->setFlag('', 'no-dispatch', true);
 		}		
 	}
