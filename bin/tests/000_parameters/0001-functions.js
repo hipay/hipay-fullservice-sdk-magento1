@@ -1,10 +1,13 @@
 casper.test.begin('Functions', function(test) {
-	var orderID = 0;
-	/* Show current number of succesful tests */
+	var orderID = 0,
+        img = 0,
+        pathErrors = "bin/tests/errors/";
+	/* Show current number of successful tests */
 	test.on('fail', function() {
+        img++;
 		casper.echo("URL: " + casper.currentUrl, "WARNING");
-		casper.capture('fail.png');
-		test.comment("Image 'fail.png' captured into current folder");
+		casper.capture(pathErrors + 'fail' + img + '.png');
+		test.comment("Image 'fail" + img + ".png' captured into '" + pathErrors + "'");
 		casper.echo('Tests réussis : ' + test.currentSuite.passes.length, 'WARNING');
 	});
 	// casper.on('step.complete', function() {
