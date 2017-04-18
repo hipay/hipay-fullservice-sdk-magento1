@@ -49,7 +49,7 @@ test:
 #    - sh bin/tests/casper_run_circle.sh
   post:
     - mkdir $CIRCLE_ARTIFACTS/casper_report
-    - mkdir $$CIRCLE_ARTIFACTS/screenshots
+    - mkdir $CIRCLE_ARTIFACTS/screenshots
     - cp bin/tests/reportVisa1.html $CIRCLE_ARTIFACTS/casper_report/
     - cp bin/tests/reportVisa2.html $CIRCLE_ARTIFACTS/casper_report/
     - cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots/
