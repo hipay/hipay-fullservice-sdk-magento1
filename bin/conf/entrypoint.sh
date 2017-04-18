@@ -164,12 +164,9 @@ fi
 
 chown -R www-data:www-data /var/www/htdocs
 
-export APACHE_RUN_USER=www-data
-export APACHE_RUN_GROUP=www-data
-export APACHE_PID_FILE=/var/run/apache2/apache2.pid
-export APACHE_RUN_DIR=/var/run/apache2
-export APACHE_LOCK_DIR=/var/lock/apache2
-export APACHE_LOG_DIR=/var/log/apache2
+if [ -f /var/run/apache2/apache2.pid  ]; then
+    rm -f /var/run/apache2/apache2.pid
+fi
 
 printf "${COLOR_SUCCESS}    |======================================================================${NC}\n"
 printf "${COLOR_SUCCESS}    |                                                                      ${NC}\n"
@@ -187,5 +184,4 @@ if [ -f /var/run/apache2/apache2.pid  ]; then
     rm -f /var/run/apache2/apache2.pid
 fi
 
-exec apache2 -DFOREGROUND
-
+exec apache2-foreground
