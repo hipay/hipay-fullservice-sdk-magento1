@@ -12,7 +12,6 @@ dist
 .idea
 web
 data
-bin/conf/development/.env
-bin/conf/development/test.env
+bin/conf/development/hipay.env
 bin/tests/result.xml
 bin/tests/errors/*

@@ -29,7 +29,7 @@ BASE_URL="http://localhost:8095/"
 URL_MAILCATCHER="http://localhost:1095/"
 header="bin/tests/"
 pathPreFile=${header}000*/*.js
-pathDir=${header}0[0-1][1-9]*
+pathDir=${header}00[123]*
 pathFile=${pathDir}/[0-1]*/[0-1][0-9][0-9][0-9]-*.js
 
 case $menu in
@@ -55,12 +55,12 @@ case $menu in
 
 		if [[ "$failfast" == "y" ]]; then
 			printf "${yellow}Exécution des tests CasperJS avec fail-fast${noColor}\n\n"
-			casperjs test ${header}000*/*.js ${header}00[123]*/*/*.js --url=$BASE_URL/ --type-cc=VISA --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --xunit=${header}resultVisa.xml \
-			&& casperjs test ${header}000*/*.js ${header}001*/*/*.js --url=$BASE_URL/ --type-cc=MasterCard --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --xunit=${header}resultMastercard.xml
+			casperjs test $pathPreFile ${pathDir}/*/*.js --url=$BASE_URL --type-cc=VISA --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --xunit=${header}result.xml \
+			&& casperjs test $pathPreFile ${header}001*/*/*.js --url=$BASE_URL --type-cc=MasterCard --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND
 		else
 			printf "${yellow}Exécution des tests CasperJS sans fail-fast${noColor}\n\n"
-			casperjs test ${header}000*/*.js ${header}00[123]*/*/*.js --url=$BASE_URL/ --type-cc=VISA --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --xunit=${header}resultVisa.xml \
-			&& casperjs test ${header}000*/*.js ${header}001*/*/*.js --url=$BASE_URL/ --type-cc=MasterCard --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --xunit=${header}resultMastercard.xml
+			casperjs test $pathPreFile ${pathDir}/*/*.js --url=$BASE_URL --type-cc=VISA --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --xunit=${header}result.xml \
+			&& casperjs test $pathPreFile ${header}001*/*/*.js --url=$BASE_URL --type-cc=MasterCard --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND
 		fi
 		;;
 	2)
@@ -78,5 +78,5 @@ case $menu in
 	*)
 		printf "${red}Commande invalide ! Veuillez réessayez...${noColor}"
 		sleep 2
-		bash $header'casper_run.sh';;
+		bash $header'prototype.sh';;
 esac

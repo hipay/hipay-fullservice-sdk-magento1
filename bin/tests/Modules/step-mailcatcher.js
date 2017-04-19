@@ -33,6 +33,6 @@ exports.checkMail = function checkMail(test, paymentType) {
             });
         }, function fail() {
             test.assertExists('nav#messages tbody tr:first-child', "Caught mails list exists and is not empty");
-        });
+        }, 10000);
     });
 };

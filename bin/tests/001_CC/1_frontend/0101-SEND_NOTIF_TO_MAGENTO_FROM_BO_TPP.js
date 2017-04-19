@@ -6,16 +6,17 @@
  *
 /**********************************************************************************************/
 
-phantom.injectJs('bin/tests/001_CC/1_frontend/0100-CREDIT_CARD_FRONTEND.js');
+// phantom.injectJs('bin/tests/001_CC/1_frontend/0100-CREDIT_CARD_FRONTEND.js');
 
 var paymentType = "HiPay Enterprise Credit Card";
 
 casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paymentType + ' with ' + typeCC, function(test) {
 	phantom.clearCookies();
 	var	data = "",
+		hash = "",
 		output = "",
-		orderID = casper.getOrderId();
-		// orderID = "13257145000027";
+		// orderID = casper.getOrderId();
+		orderID = "30697145000010";
 
 	/* Same function for getting data request from the details */
 	casper.openingNotif = function(status) {
@@ -28,17 +29,26 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 	casper.gettingData = function(status) {
 		this.echo("Getting data request from details...", "INFO");
 		this.waitUntilVisible('div#fsmodal', function success() {
+			hash = this.fetchText(x('//tr/td/pre[contains(., "Hash")]')).split('\n')[7].split(':')[1].trim();
 			data = this.fetchText('textarea.copy-transaction-message-textarea');
-			test.assertNotEquals(data.indexOf("status=" + status), -1, "Data request captured !");
+			try {
+				test.assert(hash.length > 1, "Hash Code captured !");
+				test.assertNotEquals(data.indexOf("status=" + status), -1, "Data request captured !");
+			} catch(e) {
+				if(String(e).indexOf("Hash") != -1)
+					test.fail("Failure: Hash Code not captured");
+				else
+					test.fail("Failure: data request not captured");
+			}
 			this.click("div.modal-backdrop");
 		}, function fail() {
 			test.assertVisible('div#fsmodal', "Modal window exists");
 		});
 	};
 	/* Executing shell command for posting POST data request to Magento server */
-	casper.execCommand = function() {
+	casper.execCommand = function(code) {
 		data = data.replace(/\n/g, '&');
-		child = spawn('/bin/bash', ['bin/generator/generator.sh', data]);
+		child = spawn('/bin/bash', ['bin/generator/generator.sh', data, code]);
 		child.stdout.on('data', function(out) {
 			casper.wait(3000, function() {
 				if(out.indexOf("CURL") != -1)
@@ -55,9 +65,9 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 		});
 	};
 	/* Testing HTTP Status Code of the shell command */
-	casper.checkHTTPCurl = function() {
+	casper.checkHTTPCurl = function(httpCode) {
 		try {
-			test.assertNotEquals(output.indexOf("200"), -1, "Correct HTTP Status Code 200 from CURL command !");
+			test.assertNotEquals(output.indexOf(httpCode), -1, "Correct HTTP Status Code " + httpCode + " from CURL command !");
 		} catch(e) {
 			if(output.indexOf("503") != -1)
 				test.fail("Failure on HTTP Status Code from CURL command: 503");
@@ -151,10 +161,10 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 		this.gettingData("116");
 	})
 	.then(function() {
-		this.execCommand();
+		this.execCommand(hash);
 	})
 	.then(function() {
-		this.checkHTTPCurl();
+		this.checkHTTPCurl("200");
 	})
 	.then(function() {
 		this.openingNotif("117");
@@ -163,10 +173,10 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 		this.gettingData("117");
 	})
 	.then(function() {
-		this.execCommand();
+		this.execCommand(hash);
 	})
 	.then(function() {
-		this.checkHTTPCurl();
+		this.checkHTTPCurl("200");
 	})
 	.then(function() {
 		this.openingNotif("118");
@@ -175,10 +185,10 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 		this.gettingData("118");
 	})
 	.then(function() {
-		this.execCommand();
+		this.execCommand(hash);
 	})
 	.then(function() {
-		this.checkHTTPCurl();
+		this.checkHTTPCurl("200");
 	})
 	/* Opening admin panel Magento and accessing to details of this order */
 	.thenOpen(headlink + "admin/", function() {
@@ -205,6 +215,13 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 	})
 	.then(function() {
 		this.checkNotifMagento("118");
+	})
+	/* Check HTTP Code 403 from shell command for notification to Magento server */
+	.then(function() {
+		this.execCommand("randomString");
+	})
+	.then(function() {
+		this.checkHTTPCurl("403");
 	})
 	.run(function() {
         test.done();
