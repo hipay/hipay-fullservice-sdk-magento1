@@ -1,7 +1,5 @@
 casper.test.begin('Functions', function(test) {
-	var orderID = 0,
-        img = 0,
-        pathErrors = "bin/tests/errors/";
+    var img = 0;
 	/* Show current number of successful tests */
 	test.on('fail', function() {
         img++;
@@ -77,6 +75,7 @@ casper.test.begin('Functions', function(test) {
                 'select[name="billing[region_id]"]': '2'
             }, false);
             this.click("div#billing-buttons-container>button");
+            this.capture(pathErrors + "test.png");
             test.info("Done");
         }, function fail() {
             test.assertExists("form#co-billing-form", "'Billing Information' formular exists");
@@ -100,7 +99,6 @@ casper.test.begin('Functions', function(test) {
             this.click('button.btn-checkout');
             test.info('Done');
         }, function fail() {
-        	this.capture('ok.png');
             test.assertVisible("#checkout-step-payment", "'Order Review' exists");
         }, 10000);
 	};
@@ -115,7 +113,10 @@ casper.test.begin('Functions', function(test) {
 		test.info("Order ID : " + orderID);
 	};
 	casper.getOrderId = function() {
-		return orderID;
+        if(typeof order == "undefined")
+            return orderID;
+        else
+            return order;
 	};
 	/* check order success */
 	casper.orderResult = function(paymentType) {
@@ -136,6 +137,16 @@ casper.test.begin('Functions', function(test) {
         	});
         }, 25000);
 	};
+    casper.testOtherTypeCC = function(file) {
+        casper.then(function() {  
+            if(typeof casper.cli.get('type-cc') == "undefined") {
+                if(typeCC == "VISA") {
+                    typeCC = "MasterCard";
+                    phantom.injectJs(pathHeader + file);
+                }
+            }
+        });
+    };
 
 	casper.echo('Fonctions chargées !', 'INFO');
 	test.info("Based URL: " + headlink);

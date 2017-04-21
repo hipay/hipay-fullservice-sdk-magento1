@@ -23,10 +23,10 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
     phantom.clearCookies();
 
     casper.start(headlink + "admin/")
-    .then(function() {
-        authentification.proceed(test);
-        method.proceed(test, paymentType, "cc");
-    })
+    // .then(function() {
+    //     authentification.proceed(test);
+    //     method.proceed(test, paymentType, "cc");
+    // })
     .thenOpen(headlink, function() {
         this.selectItemAndOptions();
     })
@@ -50,7 +50,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
             if(typeCC == 'VISA')
                 this.fillFormPaymentInformation('VI', cardsNumber[0]);
             else if(typeCC == 'CB' || typeCC == "MasterCard")
-                this.fillFormPaymentInformation('CB', cardsNumber[1]);
+                this.fillFormPaymentInformation('MC', cardsNumber[1]);
 
             this.click("div#payment-buttons-container>button");
             test.info("Done");
@@ -68,3 +68,5 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
         test.done();
     });
 });
+
+// casper.testOtherTypeCC('001_CREDIT_CARD/1_frontend/0100-CREDIT_CARD_FRONTEND.js');

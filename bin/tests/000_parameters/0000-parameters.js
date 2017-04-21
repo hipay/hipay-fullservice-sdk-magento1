@@ -8,6 +8,10 @@ var fs = require('fs'),
 	typeCC = casper.cli.get('type-cc'),
 	loginBackend = casper.cli.get('login-backend'),
 	passBackend = casper.cli.get('pass-backend'),
+	paypalLogin = "ctorres@hipay.com",
+	paypalPass = "provider123",
+	order = casper.cli.get('order'),
+	orderID = 0,
 	cardsNumber = [
 		"4111111111111111", // VISA
 		"5234131094136942", // CB & MC
@@ -28,12 +32,21 @@ var fs = require('fs'),
     authentification = require(headerModule + 'step-authentification'),
     configuration = require(headerModule + 'step-configuration'),
     mailcatcher = require(headerModule + 'step-mailcatcher'),
-    pay = require(headerModule + 'step-pay-hosted');
+    pay = require(headerModule + 'step-pay-hosted'),
+    pathHeader = "bin/tests/",
+    pathErrors = pathHeader + "errors/";
 
 casper.test.begin('Parameters', function(test) {
 	casper.userAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36');
 	casper.options.viewportSize = {width: defaultViewPortSizes["width"], height: defaultViewPortSizes["height"]};
 
+	if(typeof typeCC == "undefined")
+		typeCC = "VISA";
+
+	if(typeof loginBackend != "undefined" && typeof passBackend != "undefined")
+		test.info("Backend credentials set");
+	else
+		test.comment("No Backend credentials");
 	casper.echo('Paramètres chargés !', 'INFO');
 	test.done();
 });

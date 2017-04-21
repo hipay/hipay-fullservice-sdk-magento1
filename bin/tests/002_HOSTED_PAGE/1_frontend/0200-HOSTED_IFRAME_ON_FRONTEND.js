@@ -45,7 +45,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' with Iframe', function(test
         this.orderReview(paymentType);
     })
     .then(function() {
-    	this.wait(3000, function() {
+    	this.wait(5000, function() {
 			this.withFrame(0, function() {
 				pay.proceed(test, true);
 			});

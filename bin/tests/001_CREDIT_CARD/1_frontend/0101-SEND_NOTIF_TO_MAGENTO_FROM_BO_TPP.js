@@ -6,8 +6,6 @@
  *
 /**********************************************************************************************/
 
-// phantom.injectJs('bin/tests/001_CC/1_frontend/0100-CREDIT_CARD_FRONTEND.js');
-
 var paymentType = "HiPay Enterprise Credit Card";
 
 casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paymentType + ' with ' + typeCC, function(test) {
@@ -15,8 +13,8 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 	var	data = "",
 		hash = "",
 		output = "",
-		// orderID = casper.getOrderId();
-		orderID = "30697145000010";
+		orderID = casper.getOrderId();
+		// orderID = "6476145000008";
 
 	/* Same function for getting data request from the details */
 	casper.openingNotif = function(status) {
@@ -47,6 +45,7 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 	};
 	/* Executing shell command for posting POST data request to Magento server */
 	casper.execCommand = function(code) {
+
 		data = data.replace(/\n/g, '&');
 		child = spawn('/bin/bash', ['bin/generator/generator.sh', data, code]);
 		child.stdout.on('data', function(out) {
@@ -218,10 +217,12 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 	})
 	/* Check HTTP Code 403 from shell command for notification to Magento server */
 	.then(function() {
-		this.execCommand("randomString");
-	})
-	.then(function() {
-		this.checkHTTPCurl("403");
+		if(typeof order == "undefined") {
+			this.execCommand("randomString");
+			this.then(function() {
+				this.checkHTTPCurl("403");
+			});
+		}
 	})
 	.run(function() {
         test.done();

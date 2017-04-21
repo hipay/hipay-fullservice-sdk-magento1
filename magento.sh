@@ -6,14 +6,37 @@
 #  WARNING : Put your credentials in hipay.env
 #==============================================================================
 
+BASE_URL="http://localhost:8095/"
+URL_MAILCATCHER="http://localhost:1095/"
+header="bin/tests/"
+pathPreFile=${header}000*/*.js
+pathDir=${header}0[0-1][0-9]*
+
+setBackendCredentials() {
+    printf "\n"
+    if [ "$LOGIN_BACKEND" = "" ] || [ "$PASS_BACKEND" = "" ]; then
+        while [ "$LOGIN_BACKEND" = "" ]; do
+            read -p "LOGIN_BACKEND variable is empty. Insert your BO TPP login here : " login
+            LOGIN_BACKEND=$login
+        done
+        while [ "$PASS_BACKEND" = "" ]; do
+            read -p "PASS_BACKEND variable is empty. Insert your BO TPP password here : " pass
+            PASS_BACKEND=$pass
+        done
+        printf "\n"
+    fi
+}
+
 if [ "$1" = '' ] || [ "$1" = '--help' ]; then
     echo " ==================================================== "
     echo "                     HIPAY'S HELPER                 "
     echo " ==================================================== "
-    echo "      - init      : Build images and run containers (Delete existing volumes)"
-    echo "      - restart   : Run all containers if they already exist"
-    echo "      - logs      : Show all containers logs continually"
-    echo "      - test      : Execute the tests battery"
+    echo "      - init        : Build images and run containers (Delete existing volumes)"
+    echo "      - restart     : Run all containers if they already exist"
+    echo "      - logs        : Show all containers logs continually"
+    echo "      - test        : Execute the tests battery"
+    echo "      - test-engine : Launch advanced shell script for tests battery"
+    echo "      - notif       : Simulate a notification to Magento server"
     echo ""
 elif [ "$1" = 'init' ]; then
     if [ -f ./bin/conf/development/hipay.env ]; then
@@ -30,34 +53,26 @@ elif [ "$1" = 'restart' ]; then
 elif [ "$1" = 'logs' ]; then
     docker-compose logs -f
 elif [ "$1" = 'test' ]; then
-    BASE_URL="http://localhost:8095/"
-    URL_MAILCATCHER="http://localhost:1095/"
-    header="bin/tests/"
-    pathPreFile=${header}000*/*.js
-    pathDir=${header}00[123]*
+    setBackendCredentials
 
-    if [ "$LOGIN_BACKEND" = "" ] || [ "$PASS_BACKEND" = "" ]; then
-        while [ "$LOGIN_BACKEND" = "" ]; do
-            read -p "LOGIN_BACKEND variable is empty. Insert your BO TPP login here : " login
-            LOGIN_BACKEND=$login
-        done
-        while [ "$PASS_BACKEND" = "" ]; do
-            read -p "PASS_BACKEND variable is empty. Insert your BO TPP password here : " pass
-            PASS_BACKEND=$pass
-        done
-    fi
-
-    if [ -d ~/.local/share/Ofi\ Labs/PhantomJS/ ]; then
+    if [ "$(ls -A ~/.local/share/Ofi\ Labs/PhantomJS/)" ]; then
         rm -rf ~/.local/share/Ofi\ Labs/PhantomJS/*
-        echo "Cache cleared !\n"
+        printf "Cache cleared !\n\n"
     else
-        echo "Pas de cache à effacer !\n"
+        printf "Pas de cache à effacer !\n\n"
     fi
 
-    casperjs test $pathPreFile ${pathDir}/*/*.js --url=$BASE_URL --type-cc=VISA --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --xunit=${header}result.xml \
-    && casperjs test $pathPreFile ${header}001*/*/*.js --url=$BASE_URL --type-cc=MasterCard --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND
+    casperjs test $pathPreFile ${pathDir}/*/*.js --url=$BASE_URL --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --xunit=${header}result.xml --ignore-ssl-errors=true --ssl-protocol=any
 elif [ "$1" = "test-engine" ]; then
     bash bin/tests/prototype.sh
+elif [ "$1" = "notif" ]; then
+    setBackendCredentials
+
+    while [ "$order" = "" ]; do
+        read -p "In order to simulate notification to Magento server, put here an order ID : " order
+    done
+
+    casperjs test $pathPreFile ${header}001*/1*/0101-*.js --url=$BASE_URL --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --ignore-ssl-errors=true --ssl-protocol=any --order=$order
 else
     echo "Incorrect argument ! Please check the HiPay's Helper via the following command : 'sh magento.sh' or 'sh magento.sh --help'"
 fi
