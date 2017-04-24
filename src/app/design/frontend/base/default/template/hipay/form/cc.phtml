@@ -2,7 +2,9 @@
 /** @var $this Allopass_Hipay_Block_Form_Abstract */
 $_code=$this->getMethodCode();
 $_cards = $this->getCards();
+$useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction', Mage::app()->getStore());
 $_typeNationalIdentification = $this->getTypeNationalIdentification();
+
 ?>
 <div id="payment_form_<?php echo $_code ?>" style="display:none;">
 <?php if($this->allowSplitPayment()) : ?>
@@ -56,7 +58,7 @@ $_typeNationalIdentification = $this->getTypeNationalIdentification();
 					oninput="setCustomValidity('')"  pattern="(\d{2}[.]?\d{3}[.]?\d{3}[/]?\d{4}[-]?\d{2})|(\d{3}[.]?\d{3}[.]?\d{3}[-]?\d{2})" id="<?php echo $_code ?>_national_identification" name="payment[national_identification_number]" />
 				</div>
 			</li>
-		</ul>	
+		</ul>
 	<?php endif ?>
 <?php elseif($_code != "hipay_sdd" ) : ?>
 <ul class="form-list" id="card_payment_form_<?php echo $_code ?>" >
@@ -204,12 +206,17 @@ $_typeNationalIdentification = $this->getTypeNationalIdentification();
  </script>
  <?php endif; ?>
  <div id="<?php echo $_code ?>_debit_amount">
- <?php echo $this->__('You will be debit of amount %s only after submit order.',Mage::app()->getStore()->getBaseCurrency()->format($this->getQuote()->getGrandTotal(), array(), true))?>
+     <?php if  ($useOrderCurrency) { ?>
+         <?php $this->getQuote()->setBaseCurrencyCode($this->getQuote()->getQuoteCurrencyCode()); ?>
+        <?php echo $this->__('You will be debit of amount %s only after submit order.',Mage::app()->getStore()->getCurrentCurrency()->format($this->getQuote()->getGrandTotal(), array(), true))?>
+     <?php } else { ?>
+        <?php echo $this->__('You will be debit of amount %s only after submit order.',Mage::app()->getStore()->getBaseCurrency()->format($this->getQuote()->getGrandTotal(), array(), true))?>
+     <?php } ?>
  </div>
  <script type="text/javascript">
  	//<![CDATA[
  	    
- 	   Validation.creditCartTypes.set('BCMC',[false, new RegExp('^([0-9]{3}|[0-9]{4})?$'), false]);
+ 	    Validation.creditCartTypes.set('BCMC',[false, new RegExp('^([0-9]{3}|[0-9]{4})?$'), false]);
  	   Validation.creditCartTypes.set('CB',[new RegExp('^4[0-9]{12}([0-9]{3})?$'), new RegExp('^[0-9]{3}$'), true]);
  	        
         var ToogleCvn<?php echo $_code ?> = function() {
@@ -280,8 +287,8 @@ $_typeNationalIdentification = $this->getTypeNationalIdentification();
 		UpdateDebitAmount<?php echo $_code ?>();
         <?php endif; ?>
  	 //]]>
- </script>	
-<?php elseif($_code == "hipay_sdd")  : ?>
+ </script>
+<?php else : ?>
 	<?php
 
 	// TPPMAG1-2 - SEPA Payment.
@@ -339,7 +346,12 @@ $_typeNationalIdentification = $this->getTypeNationalIdentification();
    	</ul>
  	<?php endif; ?>
  	<div id="debit_amount">
-	<?php echo $this->__('You will be debit of amount %s only after submit order.',Mage::app()->getStore()->getBaseCurrency()->format($this->getQuote()->getGrandTotal(), array(), true))?>
+        <?php if  ($useOrderCurrency) { ?>
+            <?php $this->getQuote()->setBaseCurrencyCode($this->getQuote()->getQuoteCurrencyCode()); ?>
+            <?php echo $this->__('You will be debit of amount %s only after submit order.',Mage::app()->getStore()->getCurrentCurrency()->format($this->getQuote()->getGrandTotal(), array(), true))?>
+        <?php } else { ?>
+            <?php echo $this->__('You will be debit of amount %s only after submit order.',Mage::app()->getStore()->getBaseCurrency()->format($this->getQuote()->getGrandTotal(), array(), true))?>
+        <?php } ?>
  	</div>
 <?php endif; ?>
 
