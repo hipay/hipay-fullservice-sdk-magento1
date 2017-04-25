@@ -43,7 +43,7 @@ casper.test.begin('Parameters', function(test) {
 
 	if(typeof typeCC == "undefined")
 		// HERE
-		typeCC = "MasterCard";
+		typeCC = "VISA";
 
 	if(typeof loginBackend != "undefined" && typeof passBackend != "undefined")
 		test.info("Backend credentials set");

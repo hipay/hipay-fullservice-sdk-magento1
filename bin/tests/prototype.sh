@@ -308,6 +308,7 @@ case $menu in
 					bash $header'prototype.sh'
 					break
 				fi
+				cardTypeDefault='VISA'
 			done
 		else
 			printf "${yellow}Aucun fichier de tests !${noColor}\n"

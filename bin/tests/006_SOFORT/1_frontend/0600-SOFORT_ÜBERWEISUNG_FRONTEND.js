@@ -48,37 +48,41 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
     	this.echo("Filling payment formular...", "INFO");
     	this.waitForUrl(/go\/select_country/, function success() {
     		this.fillSelectors('form#WizardForm', {
-    			'select[name="data[MultipaysSession][sender_country_id]"]': "FR",
-    			'select[name="data[MultipaysSession][SenderBank]"]': "00000"
+    			'select[name="data[MultipaysSession][sender_country_id]"]': "FR"
     		}, false);
-    		this.click("button.form-submitter");
-    		test.info("Bank and country selected");
-    		this.waitForUrl(/go\/login/, function success() {
-    			this.fillSelectors('form#WizardForm', {
-    				'input[name="data[BackendForm][LOGINNAME__USER_ID]"]': "00000",
-    				'input[name="data[BackendForm][USER_PIN]"]': "123456789"
-    			}, false);
-    			this.click("button.form-submitter");
-    			test.info("Credentials inserted");
-    			this.waitForUrl(/go\/select_account/, function success() {
-    				this.click('ul.radio-list>li:first-of-type>label');
-    				this.click("button.form-submitter");
-    				test.info("Account selected");
-    				this.waitForUrl(/go\/provide_tan/, function success() {
-    					this.fillSelectors('form#WizardForm', {
-    						'input[name="data[BackendForm][TAN]"]': "12345"
-    					}, false);
-    					this.click("button.form-submitter");
-    					test.info("TAN code inserted");
-    				}, function fail() {
-    					test.assertUrlMatch(/go\/provide_tan/, "Payment TAN page exists");
-    				});
-    			}, function fail() {
-    				test.assertUrlMatch(/go\/select_account/, "Payment account page exists");
-    			});
-    		}, function fail() {
-    			test.assertUrlMatch(/go\/login/, "Payment login page exists");
-    		});
+            this.wait(2000, function() {
+                this.fillSelectors('form#WizardForm', {
+                    'select[name="data[MultipaysSession][SenderBank]"]': "00000"
+                }, false);
+                this.click("button.form-submitter");
+                test.info("Bank and country selected");
+                this.waitForUrl(/go\/login/, function success() {
+                    this.fillSelectors('form#WizardForm', {
+                        'input[name="data[BackendForm][LOGINNAME__USER_ID]"]': "00000",
+                        'input[name="data[BackendForm][USER_PIN]"]': "123456789"
+                    }, false);
+                    this.click("button.form-submitter");
+                    test.info("Credentials inserted");
+                    this.waitForUrl(/go\/select_account/, function success() {
+                        this.click('ul.radio-list>li:first-of-type>label');
+                        this.click("button.form-submitter");
+                        test.info("Account selected");
+                        this.waitForUrl(/go\/provide_tan/, function success() {
+                            this.fillSelectors('form#WizardForm', {
+                                'input[name="data[BackendForm][TAN]"]': "12345"
+                            }, false);
+                            this.click("button.form-submitter");
+                            test.info("TAN code inserted");
+                        }, function fail() {
+                            test.assertUrlMatch(/go\/provide_tan/, "Payment TAN page exists");
+                        });
+                    }, function fail() {
+                        test.assertUrlMatch(/go\/select_account/, "Payment account page exists");
+                    });
+                }, function fail() {
+                    test.assertUrlMatch(/go\/login/, "Payment login page exists");
+                });
+            });
     	}, function fail() {
     		test.assertUrlMatch(/go\/select_country/, "Payment country page exists");
     	}, 20000);
