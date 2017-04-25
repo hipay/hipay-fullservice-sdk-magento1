@@ -1,23 +1,23 @@
 /**********************************************************************************************
  *
- *                       VALIDATION TEST METHOD : HOSTED
+ *                       VALIDATION TEST METHOD : PRZELEWY24
  *
  *  To launch test, please pass two arguments URL (BASE URL)  and TYPE_CC ( CB,VI,MC )
  *
 /**********************************************************************************************/
 
-var paymentType = "HiPay Enterprise Hosted Page";
+var paymentType = "HiPay Enterprise Przelewy24";
 
-casper.test.begin('Test Checkout ' + paymentType + ' with Iframe', function(test) {
-	phantom.clearCookies();
+casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(test) {
+    phantom.clearCookies();
 
-	casper.start(headlink + "admin/")
+    casper.start(headlink + "admin/")
     .then(function() {
         authentification.proceed(test);
-        method.proceed(test, paymentType, "hosted", ['select[name="groups[hipay_hosted][fields][display_iframe][value]"]', '1']);
+        method.proceed(test, paymentType, "przelewy24api");
     })
     .thenOpen(headlink, function() {
-    	this.selectItemAndOptions();
+        this.selectItemAndOptions();
     })
     .then(function() {
         this.addItemGoCheckout();
@@ -34,7 +34,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' with Iframe', function(test
     .then(function() {
     	this.echo("Choosing payment method...", "INFO");
     	this.waitUntilVisible('#checkout-step-payment', function success() {
-    		this.click('#dt_method_hipay_hosted>input[name="payment[method]"]');
+    		this.click('#dt_method_hipay_przelewy24api>input[name="payment[method]"]');
     		this.click("div#payment-buttons-container>button");
     		test.info("Done");
 		}, function fail() {
@@ -45,11 +45,13 @@ casper.test.begin('Test Checkout ' + paymentType + ' with Iframe', function(test
         this.orderReview(paymentType);
     })
     .then(function() {
-    	this.wait(10000, function() {
-			this.withFrame(0, function() {
-				pay.proceed(test, true);
-			});
-    	});
+    	this.echo("Filling payment method...", "INFO");
+    	this.waitForUrl(/provider\/sisal/, function success() {
+    		this.click('a#submit-button');
+    		test.info("Done");
+    	}, function fail() {
+    		test.assertUrlMatch(/provider\/sisal/, "Payment page exists");
+    	}, 10000);
     })
     .then(function() {
         this.orderResult(paymentType);

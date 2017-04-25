@@ -14,7 +14,11 @@ exports.proceed = function proceed(test) {
                 test.assertExists(".error-msg", "Incorrect credentials !");
             }, 20000);
         }, function fail() {
-            test.assertExists("#loginForm", "Admin login formular exists");
+            this.waitForUrl(/admin\/dashboard/, function success() {
+                test.info("Already logged to admin panel !");
+            }, function fail() {
+                test.assertUrlMatch(/admin\/dashboard/, "Admin dashboard exists");
+            });
         });
     });
 };

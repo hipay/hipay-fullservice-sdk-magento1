@@ -15,21 +15,22 @@ casper.test.begin('Functions', function(test) {
 	/* Choose an item at home page */
 	casper.selectItemAndOptions = function() {
         this.echo("Selecting item and its options...", "INFO");
-        this.waitForSelector('img[alt="Lafayette Convertible Dress"]', function success() {
-            this.click('img[alt="Lafayette Convertible Dress"]');
+        this.waitForSelector('div.widget-products>ul>li:first-of-type>a>img', function success() {
+            this.click('div.widget-products>ul>li:first-of-type>a>img');
         }, function fail() {
-            test.assertExists('img[alt="Lafayette Convertible Dress"]', "'Lafayette Convertible Dress' image exists");
+            var altImg = this.getElementAttribute('div.widget-products>ul>li:first-of-type>a>img', 'alt');
+            test.assertExists('div.widget-products>ul>li:first-of-type>a>img', "'" + altImg + "' image exists");
         });
-        this.waitForSelector("#swatch73 span", function success() {
-            this.click("#swatch73 span");
+        this.waitForSelector("ul#configurable_swatch_size>li:first-of-type>a>span", function success() {
+            this.click("ul#configurable_swatch_size>li:first-of-type>a>span");
         }, function fail() {
-            test.assertExists("#swatch73 span", "Size button exists");
+            test.assertExists("ul#configurable_swatch_size>li:first-of-type>a>span", "Size button exists");
         });
-        this.waitForSelector("#swatch27 img", function success() {
-            this.click("#swatch27 img");
+        this.waitForSelector("ul#configurable_swatch_color>li:first-of-type>a>span>img", function success() {
+            this.click("ul#configurable_swatch_color>li:first-of-type>a>span>img");
             test.info("Done");
         }, function fail() {
-            test.assertExists("#swatch27 img", "Color button exists");
+            test.assertExists("ul#configurable_swatch_color>li:first-of-type>a>span>img", "Color button exists");
         });
 	};
 	/* add item and go to checkout */
@@ -47,7 +48,7 @@ casper.test.begin('Functions', function(test) {
             test.info('Proceed to checkout');
         }, function fail() {
             test.assertExists(".cart-totals .checkout-types .btn-checkout", "Checkout button exists");
-        });
+        }, 7500);
 	};
 	/* Checkout as guest */
 	casper.checkoutMethod = function() {
@@ -57,25 +58,37 @@ casper.test.begin('Functions', function(test) {
             test.info("Done");
         },function fail() {
             test.assertExists("button#onepage-guest-register-button", "'Continue' button exists");
-        });
+        }, 10000);
 	};
 	/* fill billing operation */
-	casper.billingInformation = function() {
+	casper.billingInformation = function(FRAddress) {
         this.echo("Filling 'Billing Information' formular...", "INFO");
         this.waitForSelector("form#co-billing-form", function success() {
+            var street = '1249 Tongass Avenue, Suite B',
+                city = 'Ketchikan',
+                cp = '99901',
+                country = 'US',
+                region = '2';
+            if(FRAddress) {
+                street = 'Rue de la paix';
+                city = 'PARIS';
+                cp = '75000';
+                country = 'FR';
+                region = '257';
+                test.comment("FR Address");
+            }
             this.fillSelectors('form#co-billing-form', {
                 'input[name="billing[firstname]"]': 'TEST',
                 'input[name="billing[lastname]"]': 'TEST',
                 'input[name="billing[email]"]': 'email@yopmail.com',
-                'input[name="billing[street][]"]': 'Rue de la paix',
-                'input[name="billing[city]"]': 'PARIS',
-                'input[name="billing[postcode]"]': '75000',
-                'select[name="billing[country_id]"]': 'US',
+                'input[name="billing[street][]"]': street,
+                'input[name="billing[city]"]': city,
+                'input[name="billing[postcode]"]': cp,
+                'select[name="billing[country_id]"]': country,
                 'input[name="billing[telephone]"]': '0171000000',
-                'select[name="billing[region_id]"]': '2'
+                'select[name="billing[region_id]"]': region
             }, false);
             this.click("div#billing-buttons-container>button");
-            this.capture(pathErrors + "test.png");
             test.info("Done");
         }, function fail() {
             test.assertExists("form#co-billing-form", "'Billing Information' formular exists");
@@ -90,7 +103,7 @@ casper.test.begin('Functions', function(test) {
 	        test.info("Done");
 	    }, function fail() {
 	        test.assertVisible("form#co-shipping-method-form", "'Shipping Method' formular exists");
-	    }, 20000);
+	    }, 25000);
 	};
 	/* place order */
 	casper.orderReview = function(paymentType) {
@@ -100,7 +113,7 @@ casper.test.begin('Functions', function(test) {
             test.info('Done');
         }, function fail() {
             test.assertVisible("#checkout-step-payment", "'Order Review' exists");
-        }, 10000);
+        }, 12000);
 	};
 	/* Get order ID after purchase */
 	casper.setOrderId = function(pending) {
@@ -135,7 +148,7 @@ casper.test.begin('Functions', function(test) {
         	}, function fail() {
             	test.assertUrlMatch(/hipay\/checkout\/pending/, "Checkout result page exists");
         	});
-        }, 25000);
+        }, 30000);
 	};
     casper.testOtherTypeCC = function(file) {
         casper.then(function() {  
@@ -144,6 +157,8 @@ casper.test.begin('Functions', function(test) {
                     typeCC = "MasterCard";
                     phantom.injectJs(pathHeader + file);
                 }
+                else if(typeCC == "MasterCard")
+                    typeCC = "VISA"; // retour du typeCC à la normale --> VISA pour la suite des tests
             }
         });
     };

@@ -24,7 +24,7 @@ exports.checkMail = function checkMail(test, paymentType) {
                                 test.assertExists('.checkout-onepage-success', "The order has been successfully placed with method " + paymentType + " !");
                             }, function fail() {
                                 test.assertUrlMatch(/checkout\/onepage\/success/, "Checkout result page exists");
-                            }, 10000);
+                            }, 20000);
                         });
                     }, function fail() {
                         test.assertUrlMatch(/payment\/web\/pay/, "Hosted payment page exists");

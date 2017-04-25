@@ -37,7 +37,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
                     test.assertExists(x('//span[text()="The order has been created."]'), "The order has been successfully placed with method " + paymentType + " !");
                 }, function fail() {
                     test.assertUrlMatch(/admin\/sales_order\/view\/order_id/, "Hosted payment page exists");
-                }, 15000);
+                }, 20000);
             });
         }, function fail() {
             test.assertUrlMatch(/payment\/web\/pay/, "Hosted payment page exists");

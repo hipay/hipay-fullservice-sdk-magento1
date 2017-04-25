@@ -10,6 +10,7 @@ var fs = require('fs'),
 	passBackend = casper.cli.get('pass-backend'),
 	paypalLogin = "ctorres@hipay.com",
 	paypalPass = "provider123",
+	paypalTestFRAddress = false,
 	order = casper.cli.get('order'),
 	orderID = 0,
 	cardsNumber = [
@@ -41,7 +42,8 @@ casper.test.begin('Parameters', function(test) {
 	casper.options.viewportSize = {width: defaultViewPortSizes["width"], height: defaultViewPortSizes["height"]};
 
 	if(typeof typeCC == "undefined")
-		typeCC = "VISA";
+		// HERE
+		typeCC = "MasterCard";
 
 	if(typeof loginBackend != "undefined" && typeof passBackend != "undefined")
 		test.info("Backend credentials set");

@@ -1,11 +1,3 @@
-/**********************************************************************************************
- *
- *                       VALIDATION TEST METHOD : CREDIT CARD (DIRECT)
- *
- *  To launch test, please pass two arguments URL (BASE URL)  and TYPE_CC ( CB,VI,MC )
- *
-/**********************************************************************************************/
-
 var paymentType = "HiPay Enterprise Credit Card";
 
 casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paymentType + ' with ' + typeCC, function(test) {
@@ -14,7 +6,7 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 		hash = "",
 		output = "",
 		orderID = casper.getOrderId();
-		// orderID = "6476145000008";
+		// orderID = "9660145000032";
 
 	/* Same function for getting data request from the details */
 	casper.openingNotif = function(status) {
@@ -112,9 +104,9 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 		this.echo("Selecting sub-account...", "INFO");
 		this.waitForUrl(/dashboard/, function success() {
 			this.thenClick('div#s2id_dropdown-merchant-input>a', function() {
-				this.sendKeys('input[placeholder="Account name or API credential"]', "MAGENTO1");
+				this.sendKeys('input[placeholder="Account name or API credential"]', "OGONE_DEV");
 				this.wait(1000, function() {	
-					this.click(x('//span[contains(., "HIPAY_RE7_MAGENTO1 -")]'));
+					this.click(x('//span[contains(., "HIPAY_RE7_OGONE_DEV -")]'));
 				});
 			});
 		}, function fail() {
@@ -217,12 +209,12 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 	})
 	/* Check HTTP Code 403 from shell command for notification to Magento server */
 	.then(function() {
-		if(typeof order == "undefined") {
+		if(typeof order == "undefined")
 			this.execCommand("randomString");
-			this.then(function() {
-				this.checkHTTPCurl("403");
-			});
-		}
+	})
+	.then(function() {
+		if(typeof order == "undefined")
+			this.checkHTTPCurl("403");
 	})
 	.run(function() {
         test.done();

@@ -13,8 +13,10 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
 
     casper.start(headlink + "admin/")
     .then(function() {
-        authentification.proceed(test);
-        method.proceed(test, paymentType, "paypalapi");
+        if(!paypalTestFRAddress) {
+            authentification.proceed(test);
+            method.proceed(test, paymentType, "paypalapi");
+        }
     })
     .thenOpen(headlink, function() {
         this.selectItemAndOptions();
@@ -26,7 +28,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
         this.checkoutMethod();
     })
     .then(function() {
-        this.billingInformation();
+        this.billingInformation(paypalTestFRAddress);
     })
     .then(function() {
         this.shippingMethod();
@@ -47,22 +49,24 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
     .then(function() {
         this.echo("Filling payment formular...", "INFO");
         this.waitForUrl(/sandbox\.paypal/, function success() {
-            this.withFrame('injectedUl', function() {
-                this.fillSelectors('form[name="login"]', {
-                    'input[name="login_email"]': paypalLogin,
-                    'input[name="login_password"]': paypalPass
-                }, true);
-                test.info("Credentials inserted");
+            this.wait(5000, function() {
+                this.withFrame('injectedUl', function() {
+                    this.fillSelectors('form[name="login"]', {
+                        'input[name="login_email"]': paypalLogin,
+                        'input[name="login_password"]': paypalPass
+                    }, true);
+                    test.info("Credentials inserted");
+                });
+                this.waitForUrl(/checkout\/review/, function success() {
+                    this.click('input#confirmButtonTop');
+                    test.info("Done");
+                }, function fail() {
+                    test.assertUrlMatch(/checkout\/review/, "Payment review page exists");
+                }, 10000);
             });
-            this.waitForUrl(/checkout\/review/, function success() {
-                this.click('input#confirmButtonTop');
-                test.info("Done");
-            }, function fail() {
-                test.assertUrlMatch(/checkout\/review/, "Payment review page exists");
-            }, 10000);
         }, function fail() {
             test.assertUrlMatch(/sandbox\.paypal/, "Payment page exists");
-        }, 15000);
+        }, 25000);
     })
     .then(function() {
         this.orderResult(paymentType);
@@ -70,4 +74,11 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
     .run(function() {
         test.done();
     });
+});
+
+casper.then(function() {
+    if(!paypalTestFRAddress) {
+        paypalTestFRAddress = true;
+        phantom.injectJs(pathHeader + "012_PAYPAL/1_frontend/1200-PAYPAL_FRONTEND.js");
+    }
 });

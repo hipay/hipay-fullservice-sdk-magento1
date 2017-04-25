@@ -10,7 +10,7 @@ BASE_URL="http://localhost:8095/"
 URL_MAILCATCHER="http://localhost:1095/"
 header="bin/tests/"
 pathPreFile=${header}000*/*.js
-pathDir=${header}0[0-1][0-9]*
+pathDir=${header}001*
 
 setBackendCredentials() {
     printf "\n"
@@ -62,7 +62,7 @@ elif [ "$1" = 'test' ]; then
         printf "Pas de cache à effacer !\n\n"
     fi
 
-    casperjs test $pathPreFile ${pathDir}/*/*.js --url=$BASE_URL --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --xunit=${header}result.xml --ignore-ssl-errors=true --ssl-protocol=any
+    casperjs test $pathPreFile ${pathDir}/[0-1]*/[0-9][0-9][0-9][0-9]-*.js --url=$BASE_URL --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --xunit=${header}result.xml --ignore-ssl-errors=true --ssl-protocol=any
 elif [ "$1" = "test-engine" ]; then
     bash bin/tests/prototype.sh
 elif [ "$1" = "notif" ]; then
