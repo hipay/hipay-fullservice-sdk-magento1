@@ -1050,18 +1050,17 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         }
 
         return $this;
-    }
-
-    /**
-     *
-     * @param Mage_Sales_Model_Order_Payment $payment
-     * @param float $amount
-     * @param string|null $token
-     * @param null $split_number
-     * @return array :
-     */
-    public function getGatewayParams($payment, $amount, $token = null, $split_number = null)
-    {
+	}
+	
+	/**
+	 *
+	 * @param Mage_Sales_Model_Order_Payment $payment
+	 * @param float $amount
+	 * @param string|null $token
+	 * @return multitype:
+	 */
+	public function getGatewayParams($payment,$amount,$token=null)
+	{
         $params = array();
         $params['orderid'] = $payment->getOrder()->getIncrementId();
         $paymentProduct = null;
@@ -1099,6 +1098,11 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $params['tax_rate'] = Mage::helper('hipay')->getTaxeRateInformation($payment->getOrder());
 
         $params['cid'] = $payment->getOrder()->getCustomerId();//CUSTOMER ID
+
+        // Astropay needs National identification number
+        if (!empty($payment->getAdditionalInformation('national_identification_number'))){
+            $params['national_identification_number']  = $payment->getAdditionalInformation('national_identification_number');
+        }
 
         $remoteIp = $payment->getOrder()->getRemoteIp();
 
@@ -1620,9 +1624,10 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
      */
     public function canUseForCurrency($currencyCode)
     {
-        /* if (!in_array($currencyCode, $this->_allowCurrencyCode)) {
-             return false;
-         }*/
+        if (empty( $this->getConfigData('currency')) || $currencyCode == $this->getConfigData('currency')
+            || in_array($currencyCode, $this->getConfigData('currency'))) {
+            return true;
+        }
         return true;
     }
 

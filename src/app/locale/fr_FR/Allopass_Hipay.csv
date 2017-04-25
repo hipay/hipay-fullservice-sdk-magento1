@@ -169,3 +169,5 @@
 "Please check the configuration","Merci de vérifier la configuration"
 "here","ici"
 "You have to activate and configuring the support of basket before activate the payment method klarna","Vous devez activer et configurer la gestion du panier avant d'activer la méthode de paiement klarna."
+"The CPF format is invalid.","Le format du numéro d'identification est incorrect."
+"The CPN format is invalid.","Le format du numéro d'identification est incorrect."
