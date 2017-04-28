@@ -19,7 +19,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
         /* payment method activation */
         method.proceed(test, paymentType, "hosted");
         /* selection item and adding it to cart */
-        checkout.proceed(test);
+        checkout.proceed(test, paymentType, "hosted");
     })
     /* submit created order */
     .then(function() {

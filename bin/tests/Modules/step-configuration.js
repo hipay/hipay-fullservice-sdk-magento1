@@ -8,18 +8,23 @@ exports.proceedMotoSendMail = function proceedMotoSendMail(test, state) {
                 this.click(x('//span[contains(.,"HiPay Enterprise")]'));
                 this.waitForSelector('#hipay_hipay_api_moto-head', function success() {
                     this.click('#hipay_hipay_api_moto-head');
-                    this.fillSelectors('form#config_edit_form', {
-                        'select[name="groups[hipay_api_moto][fields][moto_send_email][value]"]': state
-                    }, false);
-                    this.click(x('//span[text()="Save Config"]'));
-                    this.waitForSelector(x('//span[contains(.,"The configuration has been saved.")]'), function success() {
-                        if(state == 1)
-                            test.info("MOTO Configuration done");
-                        else
-                            test.info("Normal Configuration done");
-                    }, function fail() {
-                        test.fail('Failed to apply MOTO Configuration on the system');
-                    },10000);
+                    var valueMOTO = this.evaluate(function() { return document.querySelector('select[name="groups[hipay_api_moto][fields][moto_send_email][value]"]').value; });
+                    if(valueMOTO != state) {
+                        this.fillSelectors('form#config_edit_form', {
+                            'select[name="groups[hipay_api_moto][fields][moto_send_email][value]"]': state
+                        }, false);
+                        this.click(x('//span[text()="Save Config"]'));
+                        this.waitForSelector(x('//span[contains(.,"The configuration has been saved.")]'), function success() {
+                            if(state == 1)
+                                test.info("MOTO Configuration done");
+                            else
+                                test.info("Normal Configuration done");
+                        }, function fail() {
+                            test.fail('Failed to apply MOTO Configuration on the system');
+                        },10000);
+                    }
+                    else
+                        test.info("MOTO configuration already done");
                 }, function fail() {
                     test.assertExists('#hipay_hipay_api_moto-head', "HiPay Enterprise MOTO Configuration tab exists");
                 });

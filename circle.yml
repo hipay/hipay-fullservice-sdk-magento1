@@ -54,7 +54,7 @@ test:
     - cp bin/tests/report1.html $CIRCLE_ARTIFACTS/casper_report/
     # - cp bin/tests/report2.html $CIRCLE_ARTIFACTS/casper_report/
     # - cp bin/tests/report3.html $CIRCLE_ARTIFACTS/casper_report/
-    - cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots/
+    - if [ -d bin/tests/errors/ ]; then cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots; fi
 deployment:
   feature:
     branch: /feature*/

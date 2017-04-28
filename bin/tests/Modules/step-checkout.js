@@ -1,4 +1,4 @@
-exports.proceed = function proceed(test) {
+exports.proceed = function proceed(test, paymentType, method) {
     /* store and customer selection */
     casper.then(function() {
         this.echo("Selecting customer in order to create a new order...", "INFO");
@@ -60,9 +60,11 @@ exports.proceed = function proceed(test) {
     /* payment method selection */
     .then(function() {
         this.echo("Selecting payment method...", "INFO");
-        this.waitForSelector('#p_method_hipay_hosted', function success() {
-            this.click('#p_method_hipay_hosted');
+        this.waitForSelector('#p_method_hipay_' + method, function success() {
+            this.click('#p_method_hipay_' + method);
             test.info("Done");
+        }, function fail() {
+            test.assertExists('#p_method_hipay_' + method, paymentType + " payment method exists");
         });
     });
 };

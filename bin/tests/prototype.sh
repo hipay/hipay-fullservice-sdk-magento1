@@ -315,10 +315,138 @@ case $menu in
 			printf "${red}Redirection dans le menu principal...${noColor}"
 			sleep 2
 			bash $header'prototype.sh'
-		fi
-;;
+		fi;;
 	4)
-		echo "wait";;
+		while [[ "$autre" == "y" ]]; do
+			relance='y'
+			# création et réinitialisation du talbeau
+			tabFile=()
+			file=()
+
+			for t in $pathFile; do
+				if [[ "$t" != "$header$param" ]] && [[ "$t" != "$header$func" ]]; then
+					tabFile+=($t)
+				fi
+			done
+
+			if [[ "${tabFile[0]}" == "$pathFile" ]]; then
+				unset tabFile[0]
+			fi
+			
+			if [ ${#tabFile[*]} -ne 0 ]; then
+
+				clear
+
+				printf "${yellow}Liste des fichiers de tests Casper${noColor}\n\n"
+				numero=0
+				for f in ${tabFile[@]}; do
+					array[numero]=$(echo $f | cut -d '/' -f3,4,5)
+					numero=$((numero+1))
+					if [ $((numero%2)) -eq 0 ]; then
+						printf "${green}$numero${noColor}: ${blue}$(echo $f | cut -d '/' -f5)${noColor}\n"
+					else
+						printf "${green}$numero${noColor}: $(echo $f | cut -d '/' -f5)\n"
+					fi
+				done
+
+				# index tableau des fichiers séléctionnées par l'utilisateur
+				i=0
+				# initialisation de la variable $fichier à 1 pour passer dans la boucle until
+				fichier=1
+
+				# jusqu'à ce que l'utilisateur est tapé la valeur 0
+				until [ $fichier -eq 0 ]; do
+
+					fichierDefault=$numero
+					printf "\n"
+					read -p "Saisissez le numéro correspondant au fichier Casper que vous voulez tester. Taper $(printf $yellow)0$(printf $noColor) pour terminer votre séléction. Default: [$(printf $yellow)$(echo ${array[$((fichierDefault-1))]} | cut -d '/' -f3)$(printf $noColor)] : " fichier
+					fichier=${fichier:-$fichierDefault}
+
+					if [ $fichier -ge 0 ] && [ $fichier -le $((${#tabFile[@]}-${#file[@]})) ]; then
+						# Si l'utilisateur tape une valeur autre que 0
+						if [ $fichier -ne 0 ]; then
+
+							# On supprime du talbeau qui affiche la liste des fichiers tests le(s) fichier(s) que l'utilisateur a déjà séléctionné
+							file[$i]=${array[$((fichier-1))]}
+							for f in ${file[@]}; do
+								f="$header$f"
+								tabFile=("${tabFile[@]/$f}")
+							done
+
+							clear
+
+							# On affiche alors la liste des fichiers mise à jour (sans les fichiers déjà séléctionnés)
+							printf "${yellow}Liste des fichiers de tests Casper${noColor}\n\n"
+							numero=0
+							for f in ${tabFile[@]}; do
+								array[numero]=$(echo $f | cut -d '/' -f3,4,5)
+								numero=$((numero+1))
+								if [ $((numero%2)) -eq 0 ]; then
+									printf "${green}$numero${noColor}: ${blue}$(echo $f | cut -d '/' -f5)${noColor}\n"
+								else
+									printf "${green}$numero${noColor}: $(echo $f | cut -d '/' -f5)\n"
+								fi
+							done
+							# Incrémente l'index du tableau des fichiers séléctionnés pour un possible prochain fichier test séléctionné par l'utilisateur
+							i=$((i+1))
+						# Si la valeur tapée par l'utilisateur est égale à 0
+						else
+
+							# On affiche le(s) fichier(s) séléctionné(s) ou un message s'il n'y a aucun fichier séléctionné
+							printf "\n"
+							if [ ${#file[@]} -ne 0 ]; then
+								printf "${yellow}%s${noColor}\n" "${file[@]}"
+							else
+								printf "${yellow}Aucun fichier séléctionné !\n${noColor}"
+							fi
+
+							# Ajoute la chaine "tests/" dans chaque fichier (chaine) séléctionné pour compiler les fichiers test
+							for ((f=0; f<${#file[@]}; f++)); do
+								file[$f]="$header${file[$f]}"
+							done
+
+							printf "\n${green}1${noColor}: VISA\n${green}2${noColor}: MasterCard\n${green}3${noColor}: CB\n\n"
+							read -p "Choisissez votre type de carte de crédit : Default [$(printf $yellow)${cardTypeDefault}$(printf $noColor)] : " cardType
+							cardTypeDefault='1'
+							cardType=${cardType:-$cardTypeDefault}
+
+							affectTypeCC $cardType
+
+							while [[ "$relance" == "y" ]]; do
+								if [[ "${file[@]}" == *"1"*"/0101"* ]]; then
+									setBackendCredentials
+
+									printf "\n"
+									while [ "$order" = "" ]; do
+								        read -p "In order to simulate notification to Magento server, put here an order ID : " order
+								    done
+								fi
+
+								if [ "$setTypeCard" != "0" ]; then
+									casperjs test $pathPreFile ${file[@]} --url=$BASE_URL --type-cc=$setTypeCard --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --ignore-ssl-errors=true --ssl-protocol=any --order=$order
+								else
+									invalidCommand
+								fi
+
+								relanceDefault='y'
+								printf "\n"
+								read -p "Relancer le test. Default : [$(printf $yellow)${relanceDefault}$(printf $noColor)] : " relance
+								relance=${relance:-$relanceDefault}
+							done
+
+							printf "\n"
+							read -p "Tester d'autres fichiers. Default : [$(printf $yellow)${autreDefault}$(printf $noColor)] : " autre
+							autre=${autre:-$autreDefault}
+						fi
+					else
+						invalidCommand
+					fi
+					cardTypeDefault='VISA'
+				done
+			else
+				invalidCommand
+			fi
+		done;;
 	5)
 		echo "wait";;
 	*)

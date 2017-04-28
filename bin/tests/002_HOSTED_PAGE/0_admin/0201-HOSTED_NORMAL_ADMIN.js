@@ -15,7 +15,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
         authentification.proceed(test);
         configuration.proceedMotoSendMail(test, '0');
         method.proceed(test, paymentType, "hosted");
-        checkout.proceed(test);
+        checkout.proceed(test, paymentType, "hosted");
     })
     .then(function() {
         this.echo("Submitting order...", "INFO");

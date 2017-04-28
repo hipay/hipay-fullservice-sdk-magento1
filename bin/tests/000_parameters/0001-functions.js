@@ -1,6 +1,15 @@
+function concatTable(arrToConvert) {
+    var newArr = [];
+    for(var i = 0; i < arrToConvert.length; i++)
+    {
+        newArr = newArr.concat(arrToConvert[i]);
+    }
+    return newArr;
+};
+
 casper.test.begin('Functions', function(test) {
+	/* For each fails, show current successful tests and show current URL and capture image */
     var img = 0;
-	/* Show current number of successful tests */
 	test.on('fail', function() {
         img++;
 		casper.echo("URL: " + casper.currentUrl, "WARNING");
@@ -8,10 +17,21 @@ casper.test.begin('Functions', function(test) {
 		test.comment("Image 'fail" + img + ".png' captured into '" + pathErrors + "'");
 		casper.echo('Tests réussis : ' + test.currentSuite.passes.length, 'WARNING');
 	});
-	// casper.on('step.complete', function() {
-	// 	this.echo(Date.now()-start + "ms");
- //    	start = Date.now();
-	// });
+    // casper.on('step.complete', function() {
+    // 	    this.echo(Date.now()-start + "ms");
+    //    	start = Date.now();
+    // });
+    
+    /* Function which fills formular during Step Payment according to the card type and its number */
+    casper.fillFormPaymentHipayCC = function(type, card) {
+        this.fillSelectors('form#co-payment-form', {
+            'select[name="payment[hipay_cc_cc_type]"]': type,
+            'input[name="payment[hipay_cc_cc_number]"]': card,
+            'select[name="payment[hipay_cc_cc_exp_month]"]': '2',
+            'select[name="payment[hipay_cc_cc_exp_year]"]': '2020',
+            'input[name="payment[hipay_cc_cc_cid]"]': '500'
+        }, false);
+    };
 	/* Choose an item at home page */
 	casper.selectItemAndOptions = function() {
         this.echo("Selecting item and its options...", "INFO");
@@ -126,7 +146,7 @@ casper.test.begin('Functions', function(test) {
 		test.info("Order ID : " + orderID);
 	};
 	casper.getOrderId = function() {
-        if(typeof order == "undefined")
+        if(order == "")
             return orderID;
         else
             return order;
@@ -162,7 +182,25 @@ casper.test.begin('Functions', function(test) {
             }
         });
     };
-
+    casper.fillFormHipayEnterprise = function(credentials, moto) {
+        var stringMoto = "";
+        if(moto)
+            stringMoto = " MOTO";
+        if(credentials == "blabla")
+            this.echo("Editing Credentials" + stringMoto + " configuration with bad credentials...", "INFO");
+        else
+            this.echo("Reinitializing Credentials" + stringMoto + " configuration...", "INFO");
+        if(moto)
+            this.fillSelectors("form#config_edit_form", { 'input[name="groups[hipay_api_moto][fields][api_username_test][value]"]': credentials }, false);
+        else
+            this.fillSelectors("form#config_edit_form", { 'input[name="groups[hipay_api][fields][api_username_test][value]"]': credentials }, false);
+        this.click(x('//span[text()="Save Config"]'));
+        this.waitForSelector(x('//span[contains(.,"The configuration has been saved.")]'), function success() {
+            test.info("HiPay Enterprise credentials configuration done");
+        }, function fail() {
+            test.fail('Failed to apply HiPay Enterprise credentials configuration on the system');
+        },10000);
+    };
 	casper.echo('Fonctions chargées !', 'INFO');
 	test.info("Based URL: " + headlink);
     test.done();

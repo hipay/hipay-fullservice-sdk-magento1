@@ -6,17 +6,6 @@
  *
 /**********************************************************************************************/
 
-/* Function which fills formular during Step Payment according to the card type and its number */
-casper.fillFormPaymentInformation = function fillFormPaymentInformation(type, card) {
-    this.fillSelectors('form#co-payment-form', {
-        'select[name="payment[hipay_cc_cc_type]"]': type,
-        'input[name="payment[hipay_cc_cc_number]"]': card,
-        'select[name="payment[hipay_cc_cc_exp_month]"]': '2',
-        'select[name="payment[hipay_cc_cc_exp_year]"]': '2020',
-        'input[name="payment[hipay_cc_cc_cid]"]': '500'
-    }, false);
-};
-
 var paymentType = "HiPay Enterprise Credit Card";
 
 casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(test) {
@@ -50,9 +39,9 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
         this.waitUntilVisible('#checkout-step-payment', function success() {
             this.click('#dt_method_hipay_cc>input[name="payment[method]"]');
             if(typeCC == 'VISA')
-                this.fillFormPaymentInformation('VI', cardsNumber[0]);
+                this.fillFormPaymentHipayCC('VI', cardsNumber[0]);
             else if(typeCC == 'CB' || typeCC == "MasterCard")
-                this.fillFormPaymentInformation('MC', cardsNumber[1]);
+                this.fillFormPaymentHipayCC('MC', cardsNumber[1]);
 
             this.click("div#payment-buttons-container>button");
             test.info("Done");
