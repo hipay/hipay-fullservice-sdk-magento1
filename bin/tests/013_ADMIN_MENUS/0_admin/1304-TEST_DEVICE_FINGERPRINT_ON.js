@@ -1,41 +1,16 @@
-casper.test.begin('Test Magento Device Fingerprint', function(test) {
+casper.test.begin('Test Magento With Device Fingerprint', function(test) {
 	phantom.clearCookies();
     var paymentType = "HiPay Enterprise Credit Card",
         ioBB = "";
 
     casper.start(headlink + "admin/")
-    // .then(function() {
-    // 	authentification.proceed(test);
-    // })
-    // .then(function() {
-    // 	this.echo("Accessing Hipay Enterprise menu...", "INFO");
-    // 	this.click(x('//span[text()="Configuration"]'));
-    // 	this.waitForUrl(/admin\/system_config/, function success() {
-    // 		this.click(x('//span[contains(., "HiPay Enterprise")]'));
-    //         test.info("Done");
-    // 		this.waitForSelector(x('//h3[text()="HiPay Enterprise"]'), function success() {
-    // 			this.echo("Changing Device Fingerprint field...", "INFO");
-    //             var valueFingerprint = this.evaluate(function() { return document.querySelector('select[name="groups[hipay_api][fields][fingerprint][value]"]').value; });
-    //             if(valueFingerprint == 1)
-    //                 test.info("Device Fingerprint configuration already done");
-    //             else {
-    //                 this.fillSelectors("form#config_edit_form", {
-    //                     'select[name="groups[hipay_api][fields][fingerprint][value]"]': "1"
-    //                 }, false);
-    //                 this.click(x('//span[text()="Save Config"]'));
-    //                 this.waitForSelector(x('//span[contains(.,"The configuration has been saved.")]'), function success() {
-    //                     test.info("Device Fingerprint Configuration done");
-    //                 }, function fail() {
-    //                     test.fail('Failed to apply Device Fingerprint Configuration on the system');
-    //                 }, 15000);
-    //             }
-    // 		}, function fail() {
-    // 			test.assertExists(x('//h3[text()="HiPay Enterprise"]'), "Hipay Enterprise admin page exists");
-    // 		}, 10000);
-    // 	}, function fail() {
-    // 		test.assertUrlMatch(/admin\/system_config/, "Configuration admin page exists");
-    // 	}, 10000);
-    // })
+    .then(function() {
+    	authentification.proceed(test);
+        method.proceed(test, paymentType, "cc");
+    })
+    .then(function() {
+        this.setDeviceFingerprint('1');
+    })
     .thenOpen(headlink, function() {
         this.selectItemAndOptions();
     })
@@ -46,22 +21,17 @@ casper.test.begin('Test Magento Device Fingerprint', function(test) {
         this.checkoutMethod();
     })
     .then(function() {
-        this.echo("Checking 'ioBB' field inside checkout page...", "INFO");
-        this.wait(3000, function() {
-            ioBB = this.getElementAttribute('input#ioBB', 'value');
-            test.comment(ioBB);
-            test.assert(this.exists('input#ioBB') && ioBB != "", "'ioBB' field is present and not empty !");
-        });
-    })
-    .then(function() {
         this.billingInformation();
     })
     .then(function() {
         this.shippingMethod();
     })
     .then(function() {
-        this.echo("Choosing payment method and filling 'Payment Information' formular with " + typeCC + "...", "INFO");
+        this.echo("Checking 'ioBB' field inside checkout page...", "INFO");
         this.waitUntilVisible('#checkout-step-payment', function success() {
+            ioBB = this.getElementAttribute('input#ioBB_fingerprint', 'value');
+            test.assert(this.exists('input#ioBB_fingerprint') && ioBB != "", "'ioBB' field is present and not empty !");
+            this.echo("Choosing payment method and filling 'Payment Information' formular with " + typeCC + "...", "INFO");
             this.click('#dt_method_hipay_cc>input[name="payment[method]"]');
             if(typeCC == 'VISA')
                 this.fillFormPaymentHipayCC('VI', cardsNumber[0]);
@@ -132,8 +102,6 @@ casper.test.begin('Test Magento Device Fingerprint', function(test) {
             this.thenClick('a[href="#customer-details"]', function() {
                 this.wait(1000, function() {
                     var BOioBB = this.fetchText(x('//td[text()="Device Fingerprint"]/following-sibling::td/span')).split('.')[0];
-                    test.info(ioBB);
-                    test.comment(BOioBB);
                     test.assert(BOioBB != "" && ioBB.indexOf(BOioBB) != -1, "'ioBB' is correctly present into transaction details of BackOffice TPP !");
                 });
             });

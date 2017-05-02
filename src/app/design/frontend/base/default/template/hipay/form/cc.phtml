@@ -60,7 +60,8 @@ $_typeNationalIdentification = $this->getTypeNationalIdentification();
 			</li>
 		</ul>
 	<?php endif ?>
-<?php elseif($_code != "hipay_sdd" ) : ?>
+  <?php endif ?>
+<?php if($_code != "hipay_sdd" ) : ?>
 <ul class="form-list" id="card_payment_form_<?php echo $_code ?>" >
 <?php if (Mage::getStoreConfig('hipay/hipay_api/fingerprint',Mage::app()->getStore())) : ?>
 	<script type="text/javascript">
