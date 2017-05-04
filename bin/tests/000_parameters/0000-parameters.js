@@ -43,7 +43,7 @@ var fs = require('fs'),
     	{ currency: 'USD', symbol: '$' }
     ],
     currentCurrency = allowedCurrencies[0],
-    generatedCPF = "656.148.764-80";
+    generatedCPF = "373.243.176-26";
 
 casper.test.begin('Parameters', function(test) {
 	casper.userAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36');

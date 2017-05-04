@@ -52,6 +52,12 @@ invalidCommand() {
 	sleep 2
 	bash $header'casper_debug.sh'
 }
+noFileOrDir() {
+	printf "${yellow}Aucun $1 !${noColor}\n"
+	printf "${red}Redirection dans le menu principal...${noColor}"
+	sleep 2
+	bash $header'casper_debug.sh'
+}
 adminTests() {
 	affectTypeCC $1
 	if [ "$setTypeCard" != "0" ]; then
@@ -239,10 +245,7 @@ case $menu in
 				invalidCommand
 			fi
 		else
-			printf "${yellow}Aucun dossier de tests !${noColor}\n"
-			printf "${red}Redirection dans le menu principal...${noColor}"
-			sleep 2
-			bash $header'casper_debug.sh'
+			noFileOrDir "Aucun dossier de test"
 		fi;;
 	3)
 		for t in $pathFile; do
@@ -252,7 +255,7 @@ case $menu in
 		deleteRegexFromArray tabFile[0] $pathFile
 
 		if [ ${#tabFile[*]} -ne 0 ]; then
-			while [[ "$autre" == "y" ]]; do
+			while [ "$autre" = "y" ]; do
 				relance='y'
 
 				clear
@@ -277,7 +280,7 @@ case $menu in
 					
 					affectTypeCC $cardType
 
-					while [[ "$relance" == "y" ]]; do
+					while [ "$relance" = "y" ]; do
 						if [[ "$file" == *"1"*"/0101"* ]]; then
 							setBackendCredentials
 
@@ -303,21 +306,16 @@ case $menu in
 					read -p "Tester un autre fichier. Default : [$(printf $yellow)${autreDefault}$(printf $noColor)] : " autre
 					autre=${autre:-$autreDefault}
 				else
-					printf "${red}Commande invalide ! Veuillez réessayez...${noColor}"
-					sleep 2
-					bash $header'casper_debug.sh'
+					invalidCommand
 					break
 				fi
 				cardTypeDefault='VISA'
 			done
 		else
-			printf "${yellow}Aucun fichier de tests !${noColor}\n"
-			printf "${red}Redirection dans le menu principal...${noColor}"
-			sleep 2
-			bash $header'casper_debug.sh'
+			noFileOrDir "fichier de test"
 		fi;;
 	4)
-		while [[ "$autre" == "y" ]]; do
+		while [ "$autre" = "y" ]; do
 			relance='y'
 			# création et réinitialisation du talbeau
 			tabFile=()
@@ -391,7 +389,7 @@ case $menu in
 
 							affectTypeCC $cardType
 
-							while [[ "$relance" == "y" ]]; do
+							while [ "$relance" = "y" ]; do
 								if [[ "${file[@]}" == *"1"*"/0101"* ]]; then
 									setBackendCredentials
 
@@ -419,11 +417,12 @@ case $menu in
 						fi
 					else
 						invalidCommand
+						break 2
 					fi
 					cardTypeDefault='VISA'
 				done
 			else
-				invalidCommand
+				noFileOrDir "fichier de test"
 			fi
 		done;;
 	5)

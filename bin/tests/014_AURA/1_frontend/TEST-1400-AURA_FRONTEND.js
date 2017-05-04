@@ -11,6 +11,10 @@ var paymentType = "Aura";
 casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(test) {
     phantom.clearCookies();
 
+    casper.on('url.changed', function(url) {
+        this.echo(url, "WARNING");
+    });
+
     casper.setCurrencySetup = function(currency) {
         if(currency == 'BRL')
             this.echo("Changing currency setup...", "INFO");
@@ -75,7 +79,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
     })
     .then(function() {
         this.echo("Filling payment page...", "INFO");
-        this.waitForUrl(/test_bank\/payment/, function success() {
+        this.waitForSelector(x('//h2[text()="Identification"]'), function success() {
             this.click('input[name="btnSubmit"]');
             this.waitUntilVisible(x('//h2[text()="Payment resume"]'), function success() {
                 this.click('input#optStatusAccepted');
@@ -90,8 +94,8 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
                 test.assertVisible(x('//h2[text()="Payment resume"]'), "Modal window 'Payment resume' exists");
             });
         }, function fail() {
-            test.assertUrlMatch(/test_bank\/payment/, "AURA payment page exists");
-        }, 10000)
+            test.assertExists(x('//h2[text()="Identification"]'), "AURA payment page exists");
+        }, 15000);
     })
     .then(function() {
         this.orderResult(paymentType);
