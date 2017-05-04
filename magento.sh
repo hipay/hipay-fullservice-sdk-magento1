@@ -64,7 +64,7 @@ elif [ "$1" = 'test' ]; then
 
     casperjs test $pathPreFile ${pathDir}/[0-1]*/[0-9][0-9][0-9][0-9]-*.js --url=$BASE_URL --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --xunit=${header}result.xml --ignore-ssl-errors=true --ssl-protocol=any
 elif [ "$1" = "test-engine" ]; then
-    bash bin/tests/prototype.sh
+    bash bin/tests/casper_debug.sh
 elif [ "$1" = "notif" ]; then
     setBackendCredentials
 

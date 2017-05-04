@@ -1,4 +1,5 @@
 var fs = require('fs'),
+	utils = require('utils'),
 	childProcess = require("child_process"),
 	spawn = childProcess.spawn,
 	x = require('casper').selectXPath,
@@ -36,7 +37,13 @@ var fs = require('fs'),
     mailcatcher = require(headerModule + 'step-mailcatcher'),
     pay = require(headerModule + 'step-pay-hosted'),
     pathHeader = "bin/tests/",
-    pathErrors = pathHeader + "errors/";
+    pathErrors = pathHeader + "errors/",
+    allowedCurrencies = [
+    	{ currency: 'EUR', symbol: '€' },
+    	{ currency: 'USD', symbol: '$' }
+    ],
+    currentCurrency = allowedCurrencies[0],
+    generatedCPF = "656.148.764-80";
 
 casper.test.begin('Parameters', function(test) {
 	casper.userAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36');
@@ -49,6 +56,7 @@ casper.test.begin('Parameters', function(test) {
 		test.info("Backend credentials set");
 	else
 		test.comment("No Backend credentials");
+
 	casper.echo('Paramètres chargés !', 'INFO');
 	test.done();
 });

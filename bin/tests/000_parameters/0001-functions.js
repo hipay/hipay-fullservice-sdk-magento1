@@ -6,6 +6,9 @@ function concatTable(arrToConvert) {
     }
     return newArr;
 };
+function randNumbInRange(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+};
 
 casper.test.begin('Functions', function(test) {
 	/* For each fails, show current successful tests and show current URL and capture image */
@@ -81,21 +84,21 @@ casper.test.begin('Functions', function(test) {
         }, 10000);
 	};
 	/* fill billing operation */
-	casper.billingInformation = function(FRAddress) {
+	casper.billingInformation = function(country) {
         this.echo("Filling 'Billing Information' formular...", "INFO");
         this.waitForSelector("form#co-billing-form", function success() {
-            var street = '1249 Tongass Avenue, Suite B',
-                city = 'Ketchikan',
-                cp = '99901',
-                country = 'US',
-                region = '2';
-            if(FRAddress) {
-                street = 'Rue de la paix';
-                city = 'PARIS';
-                cp = '75000';
-                country = 'FR';
-                region = '257';
-                test.comment("FR Address");
+            var street = '1249 Tongass Avenue, Suite B', city = 'Ketchikan', cp = '99901', region = '2';
+            switch(country) {
+                case "FR":
+                    street = 'Rue de la paix'; city = 'PARIS'; cp = '75000'; region = '257';
+                    test.comment("French Address");
+                    break;
+                case "BR":
+                    test.comment("Brazilian Address");
+                    break;
+                default:
+                    country = 'US';
+                    test.comment("US Address");
             }
             this.fillSelectors('form#co-billing-form', {
                 'input[name="billing[firstname]"]': 'TEST',
@@ -105,9 +108,13 @@ casper.test.begin('Functions', function(test) {
                 'input[name="billing[city]"]': city,
                 'input[name="billing[postcode]"]': cp,
                 'select[name="billing[country_id]"]': country,
-                'input[name="billing[telephone]"]': '0171000000',
-                'select[name="billing[region_id]"]': region
+                'input[name="billing[telephone]"]': '0171000000'
             }, false);
+            if(this.visible('select[name="billing[region_id]"]')) {
+                this.fillSelectors('form#co-billing-form', {
+                    'select[name="billing[region_id]"]': region
+                }, false);
+            }
             this.click("div#billing-buttons-container>button");
             test.info("Done");
         }, function fail() {
@@ -135,6 +142,34 @@ casper.test.begin('Functions', function(test) {
             test.assertVisible("#checkout-step-payment", "'Order Review' exists");
         }, 12000);
 	};
+    casper.logToBackend = function() {
+        this.echo("Accessing and logging to TPP BackOffice...", "INFO");
+        this.waitForUrl(/login/, function success() {
+            this.fillSelectors('form', {
+                'input[name="email"]': loginBackend,
+                'input[name="password"]': passBackend
+            }, true);
+            if(loginBackend != "" && passBackend != "")
+                test.info("Done");
+            else
+                this.echo("WARNING: No Backend credentials available !", "WARNING");
+        }, function fail() {
+            test.assertUrlMatch(/login/, "Login page exists");
+        });
+    };
+    casper.selectAccountBackend = function(name) {
+        this.echo("Selecting sub-account...", "INFO");
+        this.waitForUrl(/dashboard/, function success() {
+            this.thenClick('div#s2id_dropdown-merchant-input>a', function() {
+                this.sendKeys('input[placeholder="Account name or API credential"]', name);
+                this.wait(1000, function() {    
+                    this.click(x('//span[contains(., "HIPAY_RE7_' + name + ' -")]'));
+                });
+            });
+        }, function fail() {
+            test.assertUrlMatch(/dashboard/, "dashboard page exists");
+        });
+    };
 	/* Get order ID after purchase */
 	casper.setOrderId = function(pending) {
 		if(pending)
@@ -172,7 +207,7 @@ casper.test.begin('Functions', function(test) {
 	};
     casper.testOtherTypeCC = function(file) {
         casper.then(function() {  
-            if(typeof casper.cli.get('type-cc') == "undefined") {
+            if(typeof this.cli.get('type-cc') == "undefined") {
                 if(typeCC == "VISA") {
                     typeCC = "MasterCard";
                     phantom.injectJs(pathHeader + file);
@@ -180,6 +215,16 @@ casper.test.begin('Functions', function(test) {
                 else if(typeCC == "MasterCard")
                     typeCC = "VISA"; // retour du typeCC à la normale --> VISA pour la suite des tests
             }
+        });
+    };
+    casper.testOtherCurrency = function(file) {
+        casper.then(function() {
+            if(currentCurrency == allowedCurrencies[0]) {
+                currentCurrency = allowedCurrencies[1];
+                phantom.injectJs(pathHeader + file);
+            }
+            else if(currentCurrency == allowedCurrencies[1])
+                currentCurrency = allowedCurrencies[0]; // retour du currency à la normale --> EURO pour la suite des tests
         });
     };
     casper.fillFormHipayEnterprise = function(credentials, moto) {
