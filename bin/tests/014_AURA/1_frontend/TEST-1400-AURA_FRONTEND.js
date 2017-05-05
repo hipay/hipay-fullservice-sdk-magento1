@@ -9,10 +9,13 @@
 var paymentType = "Aura";
 
 casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(test) {
-    phantom.clearCookies();
+    // phantom.clearCookies();
 
     casper.on('url.changed', function(url) {
-        this.echo(url, "WARNING");
+        test.comment(url);
+        test.info("cookie : " + this.evaluate(function() {
+            return document.cookie;
+        }));
     });
 
     casper.setCurrencySetup = function(currency) {
@@ -39,13 +42,13 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
     };
 
     casper.start(headlink + "admin/")
-    .then(function() {
-        authentification.proceed(test);
-        method.proceed(test, paymentType, "aura");
-    })
-    .then(function() {
-        this.setCurrencySetup('BRL');
-    })
+    // .then(function() {
+    //     authentification.proceed(test);
+    //     method.proceed(test, paymentType, "aura");
+    // })
+    // .then(function() {
+    //     this.setCurrencySetup('BRL');
+    // })
     .thenOpen(headlink, function() {
         this.selectItemAndOptions();
     })
@@ -79,23 +82,34 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
     })
     .then(function() {
         this.echo("Filling payment page...", "INFO");
-        this.waitForSelector(x('//h2[text()="Identification"]'), function success() {
-            this.click('input[name="btnSubmit"]');
-            this.waitUntilVisible(x('//h2[text()="Payment resume"]'), function success() {
-                this.click('input#optStatusAccepted');
-                this.click('input#btnConfirmPayment');
-                this.waitForText('Transaction made!', function success() {
-                    this.click('input#new-sexy-button');
-                    test.info("Done");
-                }, function fail() {
-                    test.assertTextExists('Transaction made!', "Transaction informations alert exists");
-                });
-            }, function fail() {
-                test.assertVisible(x('//h2[text()="Payment resume"]'), "Modal window 'Payment resume' exists");
-            });
+        this.waitForUrl(/go_to_bank_cath/, function success() {
+            test.info("go_to_bank page exists");
         }, function fail() {
-            test.assertExists(x('//h2[text()="Identification"]'), "AURA payment page exists");
+            test.assertUrlMatch(/go_to_bank_cath/, "Payment redirected page exists");
         }, 15000);
+        // this.waitForUrl(/payment$/, function success() {
+        //     this.click('input[name="btnSubmit"]');
+        //     this.waitUntilVisible(x('//h2[text()="Payment resume"]'), function success() {
+        //         this.click('input#optStatusAccepted');
+        //         this.click('input#btnConfirmPayment');
+        //         this.waitForText('Transaction made!', function success() {
+        //             this.click('input#new-sexy-button');
+        //             test.info("Done");
+        //         }, function fail() {
+        //             test.assertTextExists('Transaction made!', "Transaction informations alert exists");
+        //         });
+        //     }, function fail() {
+        //         test.assertVisible(x('//h2[text()="Payment resume"]'), "Modal window 'Payment resume' exists");
+        //     });
+        // }, function fail() {
+        //     test.comment(this.currentUrl);
+        //     this.thenOpen("https://sandbox.astropaycard.com/test_bank/payment", function() {
+        //         this.wait(2000, function() {
+        //             this.capture(pathErrors + 'ok.png');
+        //         });
+        //     });
+        //     // test.assertUrlMatch(/payment$/, "AURA payment page exists");
+        // }, 15000);
     })
     .then(function() {
         this.orderResult(paymentType);

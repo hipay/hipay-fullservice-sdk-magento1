@@ -13,7 +13,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
 
     casper.start(headlink + "admin/")
     .then(function() {
-        if(!paypalTestFRAddress) {
+        if(countryPaypal == 'US') {
             authentification.proceed(test);
             method.proceed(test, paymentType, "paypalapi");
         }
@@ -28,7 +28,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
         this.checkoutMethod();
     })
     .then(function() {
-        this.billingInformation("FR");
+        this.billingInformation(countryPaypal);
     })
     .then(function() {
         this.shippingMethod();
@@ -66,7 +66,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
             });
         }, function fail() {
             test.assertUrlMatch(/sandbox\.paypal/, "Payment page exists");
-        }, 25000);
+        }, 30000);
     })
     .then(function() {
         this.orderResult(paymentType);
@@ -77,8 +77,8 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
 });
 
 casper.then(function() {
-    if(!paypalTestFRAddress) {
-        paypalTestFRAddress = true;
+    if(countryPaypal == 'US') {
+        countryPaypal = 'FR';
         phantom.injectJs(pathHeader + "012_PAYPAL/1_frontend/1200-PAYPAL_FRONTEND.js");
     }
 });

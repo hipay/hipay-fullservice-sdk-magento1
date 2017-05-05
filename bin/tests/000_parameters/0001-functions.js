@@ -20,6 +20,11 @@ casper.test.begin('Functions', function(test) {
 		test.comment("Image 'fail" + img + ".png' captured into '" + pathErrors + "'");
 		casper.echo('Tests réussis : ' + test.currentSuite.passes.length, 'WARNING');
 	});
+
+    // casper.on('remote.message', function(message) {
+    //     this.echo('remote message caught: ' + message);
+    // });
+
     // casper.on('step.complete', function() {
     // 	    this.echo(Date.now()-start + "ms");
     //    	start = Date.now();
@@ -44,16 +49,16 @@ casper.test.begin('Functions', function(test) {
             var altImg = this.getElementAttribute('div.widget-products>ul>li:first-of-type>a>img', 'alt');
             test.assertExists('div.widget-products>ul>li:first-of-type>a>img', "'" + altImg + "' image exists");
         });
-        this.waitForSelector("ul#configurable_swatch_size>li:first-of-type>a>span", function success() {
-            this.click("ul#configurable_swatch_size>li:first-of-type>a>span");
+        this.waitForSelector(x('//ul[@id="configurable_swatch_size"]/li[not(contains(@class, "not-available"))]'), function success() {
+            this.click(x('//ul[@id="configurable_swatch_size"]/li[not(contains(@class, "not-available"))][position()=1]/a/span'));
         }, function fail() {
-            test.assertExists("ul#configurable_swatch_size>li:first-of-type>a>span", "Size button exists");
+            test.assertExists(x('//ul[@id="configurable_swatch_size"]/li[not(contains(@class, "not-available"))]'), "Size button exists");
         });
-        this.waitForSelector("ul#configurable_swatch_color>li:first-of-type>a>span>img", function success() {
-            this.click("ul#configurable_swatch_color>li:first-of-type>a>span>img");
+        this.waitForSelector(x('//ul[@id="configurable_swatch_color"]/li[not(contains(@class, "not-available"))]'), function success() {
+            this.click(x('//ul[@id="configurable_swatch_color"]/li[not(contains(@class, "not-available"))][position()=1]/a/span'));
             test.info("Done");
         }, function fail() {
-            test.assertExists("ul#configurable_swatch_color>li:first-of-type>a>span>img", "Color button exists");
+            test.assertExists(x('//ul[@id="configurable_swatch_color"]/li[not(contains(@class, "not-available"))]'), "Color button exists");
         });
 	};
 	/* add item and go to checkout */

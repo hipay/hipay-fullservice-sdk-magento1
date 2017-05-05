@@ -26,6 +26,8 @@ exports.proceed = function proceed(test, method, nameField, option) {
                                 needConfig = false;
                         }
                         if(needConfig) {
+                            test.info("method " + method + " not activated");
+                            this.echo("Activating " + method + "...", "INFO");
                             var fill = {};
                             fill[enable] = "1";
                             fill[debug] = "1";
