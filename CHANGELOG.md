@@ -1,3 +1,6 @@
+# Version 1.6.2
+Fix - production url tokenJS
+
 # Version 1.6.1
 Fix - [SECURITY] Check notification signature if passphrase is not empty
 Fix - X-forward-for without proxy
