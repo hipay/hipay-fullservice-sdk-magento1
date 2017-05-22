@@ -15,12 +15,15 @@ debugDefault='n'
 partieDefault='1'
 cardTypeDefault='VISA'
 setTypeCard=""
+backendDefault='n'
+needOrderDefault='n'
 
 BASE_URL="http://localhost:8095/"
 URL_MAILCATCHER="http://localhost:1095/"
 pathPreFile=${header}000*/000[0-1]*.js
 pathDir=${header}0[0-1][0-9]*
 pathFile=${pathDir}/[0-1]*/[0-9][0-9][0-9][0-9]-*.js
+pathTest=${pathDir}/[0-1]*/TEST*.js
 
 setBackendCredentials() {
 	printf "\n"
@@ -67,7 +70,7 @@ adminTests() {
 	fi
 }
 frontendTests() {
-	if [[ "$folder" == *"001"* ]]; then
+	if [[ "$folder" == *"001"* ]] || [[ "$folder" == *"002"* ]]; then
 		setBackendCredentials
 	fi
 	affectTypeCC $1
@@ -281,7 +284,7 @@ case $menu in
 					affectTypeCC $cardType
 
 					while [ "$relance" = "y" ]; do
-						if [[ "$file" == *"1"*"/0101"* ]]; then
+						if [[ "$file" == *"0"*"/0104"* ]] || [[ "$file" == *"0"*"/0106"* ]] || [[ "$file" == *"1"*"/0201"* ]]; then
 							setBackendCredentials
 
 							printf "\n"
@@ -390,7 +393,8 @@ case $menu in
 							affectTypeCC $cardType
 
 							while [ "$relance" = "y" ]; do
-								if [[ "${file[@]}" == *"1"*"/0101"* ]]; then
+								if [[ "${file[@]}" == *"1"*"/0104"* ]] || [[ "${file[@]}" == *"0"*"/0106"* ]] || [[ "${file[@]}
+									" == *"1"*"/0201"* ]]; then
 									setBackendCredentials
 
 									printf "\n"
@@ -426,7 +430,87 @@ case $menu in
 			fi
 		done;;
 	5)
-		echo "wait";;
+		for t in $pathTest; do
+			tabFile+=($t)
+		done
+
+		deleteRegexFromArray tabFile[0] $pathTest
+		
+		if [ ${#tabFile[*]} -ne 0 ]; then
+
+			while [ "$autre" = "y" ]; do
+				relance='y'
+
+				clear
+
+				showList tabFile[@] "fichiers de test debug" 4,5 5
+
+				fichierDefault=$numero
+				printf "\n"
+				read -p "Saisissez le numéro correspondant au fichier Casper que vous voulez tester. Default: [$(printf $yellow)$(echo ${array[$((fichierDefault-1))]} | cut -d '/' -f3)$(printf $noColor)] : " fichier
+				fichier=${fichier:-$fichierDefault}
+				
+				if [ $fichier -ge 1 ] && [ $fichier -le $(echo ${#array[*]}) ]; then
+
+					file=${array[$((fichier-1))]}
+
+					printf "\n"
+					printf "${yellow}${file}${noColor}\n"
+
+					printf "\n${green}1${noColor}: VISA\n${green}2${noColor}: MasterCard\n${green}3${noColor}: CB\n\n"
+					read -p "Choisissez votre type de carte de crédit : Default [$(printf $yellow)${cardTypeDefault}$(printf $noColor)] : " cardType
+					cardTypeDefault='1'
+					cardType=${cardType:-$cardTypeDefault}
+					
+					printf "\n"
+					read -p "Effacer le cache pour les tests (y/n) Default: [$(printf $yellow)${cacheDefault}$(printf $noColor)] : " cache
+					cache=${cache:-$cacheDefault}
+
+					printf "\n"
+					read -p "Récupérer les identifiants de connexion au BO TPP pour le test (y/n) Default: [$(printf $yellow)${backendDefault}$(printf $noColor)] : " backend
+					backend=${backend:-backendDefault}
+
+					if [ "$backend" = "y" ]; then
+						setBackendCredentials
+					fi
+
+					printf "\n"
+					read -p "Récupérer un order ID pour le test (y/n) Default: [$(printf $yellow)${needOrderDefault}$(printf $noColor)] : " needOrder
+					needOrder=${needOrder:-needOrderDefault}
+
+					if [ "$needOrder" = "y" ]; then
+						while [ "$order" = "" ]; do
+							printf "\n"
+					        read -p "In order to simulate notification to Magento server, put here an order ID : " order
+					    done
+					fi
+
+					clear
+
+					affectTypeCC $cardType
+
+					cacheClear $cache
+
+					while [ "$relance" = "y" ]; do
+						casperjs test $pathPreFile $header$file --url=$BASE_URL --type-cc=$setTypeCard --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --ignore-ssl-errors=true --ssl-protocol=any --order=$order --verbose=true --log-level=debug
+
+						relanceDefault='y'
+						printf "\n"
+						read -p "Relancer le test. Default : [$(printf $yellow)${relanceDefault}$(printf $noColor)] : " relance
+						relance=${relance:-$relanceDefault}
+					done
+
+					printf "\n"
+					read -p "Tester un autre fichier. Default : [$(printf $yellow)${autreDefault}$(printf $noColor)] : " autre
+					autre=${autre:-$autreDefault}
+				else
+					invalidCommand
+					break
+				fi
+			done
+		else
+			noFileOrDir "fichier de test debug"
+		fi;;
 	*)
 		invalidCommand;;
 esac

@@ -132,7 +132,7 @@ casper.test.begin('Test Magento Using Order Currency For Transactions', function
     .then(function() {
         this.orderResult(paymentType);
     })
-    .thenOpen(urlbackend, function() {
+    .thenOpen(urlBackend, function() {
         orderID = this.getOrderId();
         this.logToBackend();
     })

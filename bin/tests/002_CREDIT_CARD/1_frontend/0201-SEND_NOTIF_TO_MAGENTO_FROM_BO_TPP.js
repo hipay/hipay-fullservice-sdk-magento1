@@ -85,7 +85,7 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 	};
 
 	/* Opening URL to HiPay TPP BackOffice */
-	casper.start(urlbackend)
+	casper.start(urlBackend)
 	/* Logging on the BackOffice */
 	.then(function() {
 		this.logToBackend();

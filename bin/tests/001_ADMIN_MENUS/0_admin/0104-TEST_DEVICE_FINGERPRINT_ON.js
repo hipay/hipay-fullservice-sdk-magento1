@@ -50,7 +50,7 @@ casper.test.begin('Test Magento With Device Fingerprint', function(test) {
     .then(function() {
         this.orderResult(paymentType);
     })
-    .thenOpen(urlbackend, function() {
+    .thenOpen(urlBackend, function() {
         orderID = this.getOrderId();
         this.logToBackend();
     })

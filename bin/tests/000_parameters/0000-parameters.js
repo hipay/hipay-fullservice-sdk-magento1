@@ -29,7 +29,7 @@ var fs = require('fs'),
 		"PSSTFRPPXXX"
 	],
 	headerModule = "../../Modules/",
-	urlbackend = "https://stage-merchant.hipay-tpp.com/",
+	urlBackend = "https://stage-merchant.hipay-tpp.com/",
 	method = require(headerModule + 'step-config-method'),
     checkout = require(headerModule + 'step-checkout'),
     authentification = require(headerModule + 'step-authentification'),
