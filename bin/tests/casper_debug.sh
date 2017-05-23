@@ -25,7 +25,7 @@ URL_MAILCATCHER="http://localhost:1095/"
 pathPreFile=${header}000*/000[0-1]*.js
 pathDir=${header}0[0-1][0-9]*
 pathFile=${pathDir}/[0-1]*/[0-9][0-9][0-9][0-9]-*.js
-pathTest=${pathDir}/[0-1]*/TEST*.js
+pathTest=${pathDir}/[0-1]*/TEST-*.js
 
 setBackendCredentials() {
 	printf "\n"
@@ -439,7 +439,7 @@ case $menu in
 			tabFile+=($t)
 		done
 
-		deleteRegexFromArray tabFile[0] $pathTest
+		# deleteRegexFromArray tabFile[0] $pathTest
 		
 		if [ ${#tabFile[*]} -ne 0 ]; then
 

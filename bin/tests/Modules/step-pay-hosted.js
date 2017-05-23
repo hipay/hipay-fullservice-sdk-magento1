@@ -6,17 +6,20 @@ exports.proceed = function proceed(test, iframe) {
             year = "2020",
             code = "500";
         this.wait(5000, function() {
-            if(this.exists('form#tokenizerForm')) {
-                this.fillSelectors('form#tokenizerForm', {
-                    'input[name="tokenizerForm:cardNumber"]': cardsNumber[0],
-                    'input[name="tokenizerForm:cardHolder"]': holder,
-                    'select[name="tokenizerForm:cardExpiryMonth"]': month,
-                    'select[name="tokenizerForm:cardExpiryYear"]': year,
-                    'input[name="tokenizerForm:cardSecurityCode"]': code
-                }, false);
+            this.echo(this.currentUrl);
+            if(this.exists('iframe')) {
+                this.withFrame(0, function() {
+                    this.fillSelectors('form#tokenizerForm', {
+                        'input[name="tokenizerForm:cardNumber"]': cardsNumber[0],
+                        'input[name="tokenizerForm:cardHolder"]': holder,
+                        'select[name="tokenizerForm:cardExpiryMonth"]': month,
+                        'select[name="tokenizerForm:cardExpiryYear"]': year,
+                        'input[name="tokenizerForm:cardSecurityCode"]': code
+                    }, false);
+                });
             }
             else {
-                this.fillSelectors('#form-payment', {
+                this.fillSelectors('form#form-payment', {
                     'input[name="cardNumber"]': cardsNumber[0],
                     'input[name="cardHolder"]': holder,
                     'select[name="cardExpiryMonth"]': month,
