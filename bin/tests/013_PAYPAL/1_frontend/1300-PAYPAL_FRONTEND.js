@@ -8,7 +8,7 @@
 
 var paymentType = "HiPay Enterprise PayPal";
 
-casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(test) {
+casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC + ' and ' + countryPaypal, function(test) {
     phantom.clearCookies();
 
     casper.start(headlink + "admin/")

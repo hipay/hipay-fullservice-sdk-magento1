@@ -5,7 +5,7 @@ exports.proceed = function proceed(test, iframe) {
             month = "12",
             year = "2020",
             code = "500";
-        this.wait(3000, function() {
+        this.wait(5000, function() {
             if(this.exists('form#tokenizerForm')) {
                 this.fillSelectors('form#tokenizerForm', {
                     'input[name="tokenizerForm:cardNumber"]': cardsNumber[0],

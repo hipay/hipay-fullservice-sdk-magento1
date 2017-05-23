@@ -59,4 +59,4 @@ deployment:
   feature:
     branch: /feature*/
     commands:
-      - sh deploy_project.sh
+      - sh bin/deployment/deploy_project.sh

@@ -10,6 +10,9 @@ casper.test.begin('Test Payment With Incorrect Credentials', function(test) {
     .then(function() {
         configuration.proceedMotoSendMail(test, '0');
     })
+    .then(function() {
+        this.fillFormHipayEnterprise("blabla");
+    })
     .thenOpen(headlink, function() {
         this.selectItemAndOptions();
     })
