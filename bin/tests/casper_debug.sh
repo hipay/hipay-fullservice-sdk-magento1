@@ -288,7 +288,9 @@ case $menu in
 					while [ "$relance" = "y" ]; do
 						if [[ "$file" == *"0"*"/0104"* ]] || [[ "$file" == *"0"*"/0106"* ]] || [[ "$file" == *"1"*"/0201"* ]]; then
 							setBackendCredentials
+						fi
 
+						if [[ "$file" == *"1"*"/0201"* ]]; then
 							printf "\n"
 							while [ "$order" = "" ]; do
 						        read -p "In order to simulate notification to Magento server, put here an order ID : " order
@@ -395,10 +397,11 @@ case $menu in
 							affectTypeCC $cardType
 
 							while [ "$relance" = "y" ]; do
-								if [[ "${file[@]}" == *"1"*"/0104"* ]] || [[ "${file[@]}" == *"0"*"/0106"* ]] || [[ "${file[@]}
-									" == *"1"*"/0201"* ]]; then
+								if [[ "${file[@]}" == *"1"*"/0104"* ]] || [[ "${file[@]}" == *"0"*"/0106"* ]] || [[ "${file[@]}" == *"1"*"/0201"* ]]; then
 									setBackendCredentials
+								fi
 
+								if [[ "${file[@]}" == *"1"*"/0201"* ]]; then
 									printf "\n"
 									while [ "$order" = "" ]; do
 								        read -p "In order to simulate notification to Magento server, put here an order ID : " order

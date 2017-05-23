@@ -23,8 +23,12 @@ exports.proceedMotoSendMail = function proceedMotoSendMail(test, state) {
                             test.fail('Failed to apply MOTO Configuration on the system');
                         },10000);
                     }
-                    else
-                        test.info("MOTO configuration already done");
+                    else {
+                        if(state == 1)
+                            test.info("MOTO configuration already done");
+                        else
+                            test.info("Normal configuration already done");
+                    }
                 }, function fail() {
                     test.assertExists('#hipay_hipay_api_moto-head', "HiPay Enterprise MOTO Configuration tab exists");
                 });

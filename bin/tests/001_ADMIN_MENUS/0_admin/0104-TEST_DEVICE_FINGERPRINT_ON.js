@@ -37,7 +37,6 @@ casper.test.begin('Test Magento With Device Fingerprint', function(test) {
                 this.fillFormPaymentHipayCC('VI', cardsNumber[0]);
             else if(typeCC == 'CB' || typeCC == "MasterCard")
                 this.fillFormPaymentHipayCC('MC', cardsNumber[1]);
-
             this.click("div#payment-buttons-container>button");
             test.info("Done");
         }, function fail() {

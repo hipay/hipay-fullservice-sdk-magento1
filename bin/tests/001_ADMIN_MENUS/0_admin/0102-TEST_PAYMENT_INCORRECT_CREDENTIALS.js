@@ -8,33 +8,52 @@ casper.test.begin('Test Payment With Incorrect Credentials', function(test) {
         method.proceed(test, paymentType, "hosted");
     })
     .then(function() {
-        this.click(x('//span[contains(., "HiPay Enterprise")]'));
-        this.waitForSelector(x('//h3[text()="HiPay Enterprise"]'), function success() {
-            this.fillFormHipayEnterprise("blabla");
+        configuration.proceedMotoSendMail(test, '0');
+    })
+    .thenOpen(headlink, function() {
+        this.selectItemAndOptions();
+    })
+    .then(function() {
+        this.addItemGoCheckout();
+    })
+    .then(function() {
+        this.checkoutMethod();
+    })
+    .then(function() {
+        this.billingInformation();
+    })
+    .then(function() {
+        this.shippingMethod();
+    })
+    .then(function() {
+        this.echo("Choosing payment method and filling 'Payment Information' formular with " + typeCC + "...", "INFO");
+        this.waitUntilVisible('#checkout-step-payment', function success() {
+            this.click('#dt_method_hipay_cc>input[name="payment[method]"]');
+            if(typeCC == 'VISA')
+                this.fillFormPaymentHipayCC('VI', cardsNumber[0]);
+            else if(typeCC == 'CB' || typeCC == "MasterCard")
+                this.fillFormPaymentHipayCC('MC', cardsNumber[1]);
+
+            this.click("div#payment-buttons-container>button");
+            test.info("Done");
         }, function fail() {
-            test.assertExists(x('//h3[text()="HiPay Enterprise"]'), "Hipay Enterprise admin page exists");
+            test.assertVisible("#checkout-step-payment", "'Payment Information' formular exists");
         }, 10000);
     })
     .then(function() {
-        checkout.proceed(test, paymentType, "hosted");
-    })
-    .then(function() {
-        this.echo("Submitting order...", "INFO");
-        this.waitForSelector(x('//span[text()="Submit Order"]'), function success() {
-            this.click(x('//span[text()="Submit Order"]'));
-            test.info("Done");
-        }, function fail() {
-            test.assertExists(x('//span[text()="Submit Order"]'), "Submit order button exists");
-        });
+        this.orderReview(paymentType);
     })
     .then(function() {
         this.echo("Checking order failure cause of incorrect credentials...", "INFO");
-        this.waitForUrl(/admin\/sales_order\/index/, function success() {
+        this.waitForUrl(/checkout\/cart/, function success() {
             test.assertHttpStatus(200, "Correct HTTP Status Code 200");
-            test.assertTextExists('Incorrect Credentials : API User Not Found', "Correct response from Magento server !");
+            test.assertExists('li.error-msg', "Correct response from Magento server !");
         }, function fail() {
-            test.assertUrlMatch(/admin\/sales_order\/index/, "Orders admin page exists");
-        }, 10000);
+            test.assertUrlMatch(/checkout\/cart/, "Checkout page exists");
+        }, 15000);
+    })
+    .thenOpen(headlink + "admin/", function() {
+        authentification.proceed(test);
     })
     .then(function() {
         this.echo("Accessing to Hipay Enterprise menu...", "INFO");

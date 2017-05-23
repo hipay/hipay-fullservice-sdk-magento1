@@ -27,7 +27,7 @@ casper.test.begin('Test MOTO Payment With Incorrect Credentials', function(test)
         this.echo("Checking order failure cause of incorrect credentials...", "INFO");
         this.waitForUrl(/admin\/sales_order\/index/, function success() {
             test.assertHttpStatus(200, "Correct HTTP Status Code 200");
-            test.assertTextExists('Incorrect Credentials : API User Not Found', "Correct response from Magento server !");
+            test.assertExists('li.error-msg', "Correct response from Magento server !");
         }, function fail() {
             test.assertUrlMatch(/admin\/sales_order\/index/, "Orders admin page exists");
         }, 10000);

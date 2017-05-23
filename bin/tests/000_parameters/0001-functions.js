@@ -145,7 +145,7 @@ casper.test.begin('Functions', function(test) {
             test.info('Done');
         }, function fail() {
             test.assertVisible("#checkout-step-payment", "'Order Review' exists");
-        }, 12000);
+        }, 15000);
 	};
     casper.logToBackend = function() {
         this.echo("Accessing and logging to TPP BackOffice...", "INFO");
