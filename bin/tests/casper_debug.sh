@@ -94,7 +94,7 @@ cacheClear() {
 }
 deleteRegexFromArray() {
 	firstElement=("${!1}")
-	if [ "$firstElement" = "$2" ]; then
+	if [[ "$firstElement" == "$2" ]]; then
 		unset $1
 	fi
 }
@@ -157,7 +157,7 @@ case $menu in
 			fi
 		done
 
-		deleteRegexFromArray tabDir[0] $pathDir
+		deleteRegexFromArray tabDir[0] "$pathDir"
 
 		for d in ${tabDir[@]}; do
 			for f in $d/[0-1]*/[0-9][0-9][0-9][0-9]-*.js; do
@@ -257,7 +257,7 @@ case $menu in
 			tabFile+=($t)
 		done
 
-		deleteRegexFromArray tabFile[0] $pathFile
+		deleteRegexFromArray tabFile[0] "$pathFile"
 
 		if [ ${#tabFile[*]} -ne 0 ]; then
 			while [ "$autre" = "y" ]; do
@@ -329,12 +329,10 @@ case $menu in
 			file=()
 
 			for t in $pathFile; do
-				if [[ "$t" != "$header$param" ]] && [[ "$t" != "$header$func" ]]; then
-					tabFile+=($t)
-				fi
+				tabFile+=($t)
 			done
 
-			deleteRegexFromArray tabFile[0] $pathFile
+			deleteRegexFromArray tabFile[0] "$pathFile"
 			
 			if [ ${#tabFile[*]} -ne 0 ]; then
 
@@ -439,7 +437,7 @@ case $menu in
 			tabFile+=($t)
 		done
 
-		# deleteRegexFromArray tabFile[0] $pathTest
+		deleteRegexFromArray tabFile[0] "$pathTest"
 		
 		if [ ${#tabFile[*]} -ne 0 ]; then
 
