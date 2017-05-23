@@ -6,7 +6,7 @@
  *
 /**********************************************************************************************/
 
-var paymentType = "HiPay Enterprise PostFinance Card";
+var paymentType = "HiPay Fullservice PostFinance Card";
 
 casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(test) {
     phantom.clearCookies();

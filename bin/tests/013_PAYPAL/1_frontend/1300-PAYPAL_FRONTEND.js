@@ -79,6 +79,6 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
 casper.then(function() {
     if(countryPaypal == 'US') {
         countryPaypal = 'FR';
-        phantom.injectJs(pathHeader + "012_PAYPAL/1_frontend/1200-PAYPAL_FRONTEND.js");
+        phantom.injectJs(pathHeader + "013_PAYPAL/1_frontend/1300-PAYPAL_FRONTEND.js");
     }
 });

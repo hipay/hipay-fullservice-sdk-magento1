@@ -1,11 +1,11 @@
 casper.test.begin('Test Payment With Incorrect Credentials', function(test) {
 	phantom.clearCookies();
-    var paymentType = "HiPay Enterprise Hosted Page";
+    var paymentType = "HiPay Enterprise Credit Card";
 
     casper.start(headlink + "admin/")
     .then(function() {
         authentification.proceed(test);
-        method.proceed(test, paymentType, "hosted");
+        method.proceed(test, paymentType, "cc");
     })
     .then(function() {
         configuration.proceedMotoSendMail(test, '0');
