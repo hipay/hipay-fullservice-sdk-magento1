@@ -190,7 +190,7 @@ casper.test.begin('Functions', function(test) {
 		test.info("Order ID : " + orderID);
 	};
 	casper.getOrderId = function() {
-        if(order == "")
+        if(typeof order == "undefined")
             return orderID;
         else
             return order;

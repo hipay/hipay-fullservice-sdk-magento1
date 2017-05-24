@@ -28,8 +28,8 @@ pathFile=${pathDir}/[0-1]*/[0-9][0-9][0-9][0-9]-*.js
 pathTest=${pathDir}/[0-1]*/TEST-*.js
 
 setBackendCredentials() {
-	printf "\n"
 	if [ "$LOGIN_BACKEND" = "" ] || [ "$PASS_BACKEND" = "" ]; then
+		printf "\n"
 	    while [ "$LOGIN_BACKEND" = "" ]; do
 	        read -p "LOGIN_BACKEND variable is empty. Insert your BO TPP login here : " login
 	        LOGIN_BACKEND=$login

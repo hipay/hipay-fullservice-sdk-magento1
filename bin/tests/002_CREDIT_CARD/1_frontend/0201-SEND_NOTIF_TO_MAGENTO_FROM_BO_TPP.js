@@ -19,10 +19,10 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 	casper.gettingData = function(status) {
 		this.echo("Getting data request from details...", "INFO");
 		this.waitUntilVisible('div#fsmodal', function success() {
-			hash = this.fetchText(x('//tr/td/pre[contains(., "Hash")]')).split('\n')[7].split(':')[1].trim();
+			//hash = this.fetchText(x('//tr/td/pre[contains(., "Hash")]')).split('\n')[7].split(':')[1].trim();
 			data = this.fetchText('textarea.copy-transaction-message-textarea');
 			try {
-				test.assert(hash.length > 1, "Hash Code captured !");
+				//test.assert(hash.length > 1, "Hash Code captured !");
 				test.assertNotEquals(data.indexOf("status=" + status), -1, "Data request captured !");
 			} catch(e) {
 				if(String(e).indexOf("Hash") != -1)
@@ -36,24 +36,32 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 		});
 	};
 	/* Executing shell command for posting POST data request to Magento server */
-	casper.execCommand = function(code) {
-
+	casper.execCommand = function(code, retry) {
 		data = data.replace(/\n/g, '&');
 		child = spawn('/bin/bash', ['bin/generator/generator.sh', data, code]);
-		child.stdout.on('data', function(out) {
-			casper.wait(3000, function() {
-				if(out.indexOf("CURL") != -1)
-					this.echo(out.trim(), "INFO");
-				else if(out.indexOf("200") != -1 || out.indexOf("503") != -1)
-					test.info("Done");
-				output = out;
+		try {
+			child.stdout.on('data', function(out) {
+				casper.wait(3000, function() {
+					if(out.indexOf("CURL") != -1)
+						this.echo(out.trim(), "INFO");
+					else if(out.indexOf("200") != -1 || out.indexOf("503") != -1)
+						test.info("Done");
+					output = out;
+				});
 			});
-		});
-		child.stderr.on('data', function(err) {
-			casper.wait(2000, function() {
-				this.echo(err, "WARNING");
+			child.stderr.on('data', function(err) {
+				casper.wait(2000, function() {
+					this.echo(err, "WARNING");
+				});
 			});
-		});
+		} catch(e) {
+			if(!retry) {
+				this.echo("Error during file execution! Retry command...", "WARNING");
+				this.execCommand(code, true);
+			}
+			else
+				test.fail("Failure on child processing command");
+		}
 	};
 	/* Testing HTTP Status Code of the shell command */
 	casper.checkHTTPCurl = function(httpCode) {
