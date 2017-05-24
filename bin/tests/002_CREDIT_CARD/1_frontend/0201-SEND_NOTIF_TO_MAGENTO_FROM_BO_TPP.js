@@ -6,7 +6,7 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 		hash = "",
 		output = "",
 		orderID = casper.getOrderId();
-		// orderID = "9660145000032";
+		// orderID = "28997145000067";
 
 	/* Same function for getting data request from the details */
 	casper.openingNotif = function(status) {

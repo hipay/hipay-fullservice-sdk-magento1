@@ -165,12 +165,16 @@ casper.test.begin('Functions', function(test) {
     casper.selectAccountBackend = function(name) {
         this.echo("Selecting sub-account...", "INFO");
         this.waitForUrl(/dashboard/, function success() {
-            this.thenClick('div#s2id_dropdown-merchant-input>a', function() {
-                this.sendKeys('input[placeholder="Account name or API credential"]', name);
-                this.wait(1000, function() {    
-                    this.click(x('//span[contains(., "HIPAY_RE7_' + name + ' -")]'));
+            if(this.exists('div#s2id_dropdown-merchant-input>a')) {
+                this.thenClick('div#s2id_dropdown-merchant-input>a', function() {
+                    this.sendKeys('input[placeholder="Account name or API credential"]', name);
+                    this.wait(1000, function() {    
+                        this.click(x('//span[contains(., "HIPAY_RE7_' + name + ' -")]'));
+                    });
                 });
-            });
+            }
+            else
+                this.click(x('//td[contains(., "HIPAY_RE7_OGONE_DEV")]/preceding-sibling::td[@class="account-number"]/a'));
         }, function fail() {
             test.assertUrlMatch(/dashboard/, "dashboard page exists");
         });
