@@ -23,6 +23,11 @@ test:
     - echo "HIPAY_SECRET_PASSPHRASE_TEST=$HIPAY_SECRET_PASSPHRASE_TEST" >> ./bin/conf/stage/hipay.env
     - echo "LOGIN_BACKEND=$LOGIN_BACKEND" >> ./bin/conf/stage/hipay.env
     - echo "PASS_BACKEND=$PASS_BACKEND" >> ./bin/conf/stage/hipay.env
+    - mkdir $CIRCLE_ARTIFACTS/casper_report
+    - mkdir $CIRCLE_ARTIFACTS/screenshots
+    - mkdir $CIRCLE_ARTIFACTS/screenshots/php5.6
+    # - mkdir $CIRCLE_ARTIFACTS/screenshots/php5.4
+    - mkdir $CIRCLE_ARTIFACTS/screenshots/php5.7
   override:
     - sh bin/docker/generate_dockerfile.sh
     - docker-compose -f docker-compose.yml -f docker-compose.stage.yml build --no-cache
@@ -32,6 +37,7 @@ test:
     - curl --retry 30 --retry-delay 3 -v $URL_MAILCATCHER
     - sh bin/tests/casper_run_circle.sh
     - junit-viewer --results=bin/tests/result.xml --save=bin/tests/report1.html --minify=false --contracted
+    - if [ -d bin/tests/errors/ ]; then cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots/php5.6; fi
     # - docker-compose stop
     # - docker-compose rm -fv
     # - docker-compose -f docker-compose.yml -f docker-compose.stage-php5-4.yml build --no-cache
@@ -40,6 +46,7 @@ test:
     # - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
     # - sh bin/tests/casper_run_circle.sh
     # - junit-viewer --results=bin/tests/result.xml --save=bin/tests/report2.html --minify=false --contracted
+    # - if [ -d bin/tests/errors/ ]; then cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots/php5.4; fi
     - docker-compose stop
     - docker-compose rm -fv
     - docker-compose -f docker-compose.yml -f docker-compose.stage-php7-0.yml build --no-cache
@@ -48,13 +55,11 @@ test:
     - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
     - sh bin/tests/casper_run_circle.sh
     - junit-viewer --results=bin/tests/result.xml --save=bin/tests/report3.html --minify=false --contracted
+    - if [ -d bin/tests/errors/ ]; then cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots/php5.7; fi
   post:
-    - mkdir $CIRCLE_ARTIFACTS/casper_report
-    - mkdir $CIRCLE_ARTIFACTS/screenshots
     - cp bin/tests/report1.html $CIRCLE_ARTIFACTS/casper_report/
     # - cp bin/tests/report2.html $CIRCLE_ARTIFACTS/casper_report/
     - cp bin/tests/report3.html $CIRCLE_ARTIFACTS/casper_report/
-    - if [ -d bin/tests/errors/ ]; then cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots; fi
 deployment:
   feature:
     branch: /feature*/
