@@ -5,17 +5,18 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 	var	data = "",
 		hash = "",
 		output = "",
-		orderID = casper.getOrderId();
+		orderID = casper.getOrderId(); // Get order ID from previous order or from command line parameter
+		
 		// orderID = "28997145000067";
 
-	/* Same function for getting data request from the details */
+	/* Open notification details */
 	casper.openingNotif = function(status) {
 		if(status != "116")
 			this.echo("Opening Notification details with status " + status + "...", "INFO");
 		this.click(x('//tr/td/span[text()="' + status + '"]/parent::td/following-sibling::td[@class="cell-right"]/a'));
 		test.info("Done");
 	};
-	/* Getting data request from the details */
+	/* Get data request and hash code from the details */
 	casper.gettingData = function(status) {
 		this.echo("Getting data request from details...", "INFO");
 		this.waitUntilVisible('div#fsmodal', function success() {
@@ -35,7 +36,7 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 			test.assertVisible('div#fsmodal', "Modal window exists");
 		});
 	};
-	/* Executing shell command for posting POST data request to Magento server */
+	/* Execute shell command in order to simulate notification to Magento server */
 	casper.execCommand = function(code, retry) {
 		data = data.replace(/\n/g, '&');
 		child = spawn('/bin/bash', ['bin/generator/generator.sh', data, code, headlink]);
@@ -63,18 +64,18 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 				test.fail("Failure on child processing command");
 		}
 	};
-	/* Testing HTTP Status Code of the shell command */
-	casper.checkHTTPCurl = function(httpCode) {
+	/* Test CURL status code from shell command */
+	casper.checkCurl = function(httpCode) {
 		try {
-			test.assertNotEquals(output.indexOf(httpCode), -1, "Correct HTTP Status Code " + httpCode + " from CURL command !");
+			test.assertNotEquals(output.indexOf(httpCode), -1, "Correct CURL Status Code " + httpCode + " from CURL command !");
 		} catch(e) {
 			if(output.indexOf("503") != -1)
-				test.fail("Failure on HTTP Status Code from CURL command: 503");
+				test.fail("Failure on CURL Status Code from CURL command: 503");
 			else
-				test.fail("Failure on HTTP Status Code from CURL command: " + output.trim());
+				test.fail("Failure on CURL Status Code from CURL command: " + output.trim());
 		}
 	};
-	/* Checking status notification from Magento server on the order */
+	/* Check status notification from Magento server on the order */
 	casper.checkNotifMagento = function(status) {
 		try {
 			test.assertExists(x('//div[@id="order_history_block"]/ul/li[contains(., "Notification from Hipay: status: code-' + status + '")][position()=last()]'), "Notification " + status + " captured !");
@@ -92,17 +93,17 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 		}
 	};
 
-	/* Opening URL to HiPay TPP BackOffice */
+	/* Open URL to BackOffice HiPay TPP */
 	casper.start(urlBackend)
-	/* Logging on the BackOffice */
+	/* Log on the BackOffice */
 	.then(function() {
 		this.logToBackend();
 	})
-	/* Selecting sub-account related to Magento1 Server */
+	/* Select sub-account related to Magento1 Server */
 	.then(function() {
 		this.selectAccountBackend("OGONE_DEV");
 	})
-	/* Opening Transactions tab */
+	/* Open Transactions tab */
 	.then(function() {
 		this.waitForUrl(/maccount/, function success() {
 			this.click('a.nav-transactions');
@@ -111,7 +112,7 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 			test.assertUrlMatch(/maccount/, "Dashboard page with account ID exists");
 		});
 	})
-	/* Searching last created order */
+	/* Search last created order */
 	.then(function() {
 		this.echo("Finding order # " + orderID + " in order list...", "INFO");
 		this.waitForUrl(/manage/, function success() {
@@ -124,7 +125,7 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 			test.assertUrlMatch(/manage/, "Manage page exists");
 		});
 	})
-	/* Opening Notification tab of this order and opening details on the notification */
+	/* Open Notification tab and opening this notifications details */
 	.then(function() {
 		this.echo("Opening Notification details with status 116...", "INFO");
 		this.waitForSelector('a[href="#payment-notification"]', function success() {
@@ -137,18 +138,23 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 			test.assertExists('a[href="#payment-notification"]', "Notifications tab exists");
 		});
 	})
+	/* Get data from Notification with code 116 */
 	.then(function() {
 		this.gettingData("116");
 	})
+	/* Execute shell script */
 	.then(function() {
 		this.execCommand(hash);
 	})
+	/* Check CURL status code */
 	.then(function() {
-		this.checkHTTPCurl("200");
+		this.checkCurl("200");
 	})
+	/* Open Notification details with code 117 */
 	.then(function() {
 		this.openingNotif("117");
 	})
+	/* Idem Notification with code 116 */
 	.then(function() {
 		this.gettingData("117");
 	})
@@ -156,8 +162,9 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 		this.execCommand(hash);
 	})
 	.then(function() {
-		this.checkHTTPCurl("200");
+		this.checkCurl("200");
 	})
+	/* Idem Notification with code 117 */
 	.then(function() {
 		this.openingNotif("118");
 	})
@@ -168,9 +175,9 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 		this.execCommand(hash);
 	})
 	.then(function() {
-		this.checkHTTPCurl("200");
+		this.checkCurl("200");
 	})
-	/* Opening admin panel Magento and accessing to details of this order */
+	/* Open Magento admin panel and access to details of this order */
 	.thenOpen(headlink + "admin/", function() {
 		authentification.proceed(test);
 		this.waitForSelector(x('//span[text()="Orders"]'), function success() {
@@ -179,6 +186,7 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 			this.waitForSelector(x('//td[contains(., "' + orderID + '")]'), function success() {
 				this.click(x('//td[contains(., "' + orderID + '")]'));
 				this.waitForSelector('div#order_history_block', function success() {
+					/* Check notification with code 116 from Magento server */
 					this.checkNotifMagento("116");
 				}, function fail() {
 					test.assertExists('div#order_history_block', "History block of this order exists");
@@ -190,20 +198,23 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 			test.assertExists(x('//span[text()="Orders"]'), "Order tab exists");
 		});
 	})
+	/* Idem Notification with code 116 */
 	.then(function() {
 		this.checkNotifMagento("117");
 	})
+	/* Idem Notification with code 117 */
 	.then(function() {
 		this.checkNotifMagento("118");
 	})
-	/* Check HTTP Code 403 from shell command for notification to Magento server */
+	/* Execute shell script with random data in parameter */
 	.then(function() {
 		if(typeof order == "undefined")
 			this.execCommand("randomString");
 	})
+	/* Check returned CURL status code 403 from this shell command */
 	.then(function() {
 		if(typeof order == "undefined")
-			this.checkHTTPCurl("403");
+			this.checkCurl("403");
 	})
 	.run(function() {
         test.done();

@@ -7,9 +7,11 @@ casper.test.begin('Test Payment With Incorrect Credentials', function(test) {
         authentification.proceed(test);
         method.proceed(test, paymentType, "cc");
     })
+    /* Disactive MOTO option */
     .then(function() {
         configuration.proceedMotoSendMail(test, '0');
     })
+    /* Set bad credentials inside HiPay Entreprise formular */
     .then(function() {
         this.fillFormHipayEnterprise("blabla");
     })
@@ -28,6 +30,7 @@ casper.test.begin('Test Payment With Incorrect Credentials', function(test) {
     .then(function() {
         this.shippingMethod();
     })
+    /* HiPay CC payment */
     .then(function() {
         this.echo("Choosing payment method and filling 'Payment Information' formular with " + typeCC + "...", "INFO");
         this.waitUntilVisible('#checkout-step-payment', function success() {
@@ -46,6 +49,7 @@ casper.test.begin('Test Payment With Incorrect Credentials', function(test) {
     .then(function() {
         this.orderReview(paymentType);
     })
+    /* Check failure page */
     .then(function() {
         this.echo("Checking order failure cause of incorrect credentials...", "INFO");
         this.waitForUrl(/checkout\/cart/, function success() {
@@ -58,6 +62,7 @@ casper.test.begin('Test Payment With Incorrect Credentials', function(test) {
     .thenOpen(headlink + "admin/", function() {
         authentification.proceed(test);
     })
+    /* Reinitialize credentials inside HiPay Enterprise */
     .then(function() {
         this.echo("Accessing to Hipay Enterprise menu...", "INFO");
         this.click(x('//span[text()="Configuration"]'));

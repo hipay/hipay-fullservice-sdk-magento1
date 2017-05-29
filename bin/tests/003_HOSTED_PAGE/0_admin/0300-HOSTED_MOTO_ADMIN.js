@@ -18,7 +18,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
         configuration.proceedMotoSendMail(test, '1');
         /* payment method activation */
         method.proceed(test, paymentType, "hosted");
-        /* selection item and adding it to cart */
+        /* item selection and item addition to basket */
         checkout.proceed(test, paymentType, "hosted");
     })
     /* submit created order */

@@ -1,5 +1,5 @@
 exports.proceed = function proceed(test) {
-    /* connection to admin panel */
+    /* Connection to admin panel */
     casper.then(function() {
         this.echo("Connecting to admin panel...", "INFO");
         this.waitForSelector("#loginForm", function success() {

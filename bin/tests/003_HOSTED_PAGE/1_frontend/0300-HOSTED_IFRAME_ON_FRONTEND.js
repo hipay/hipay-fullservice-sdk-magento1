@@ -12,6 +12,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' with Iframe', function(test
 	phantom.clearCookies();
 
 	casper.start(headlink + "admin/")
+    /* Active Hosted payment method with display iframe */
     .then(function() {
         authentification.proceed(test);
         method.proceed(test, paymentType, "hosted", ['select[name="groups[hipay_hosted][fields][display_iframe][value]"]', '1']);
@@ -44,6 +45,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' with Iframe', function(test
     .then(function() {
         this.orderReview(paymentType);
     })
+    /* Fill payment formular inside iframe */
     .then(function() {
     	this.wait(10000, function() {
 			this.withFrame(0, function() {

@@ -5,6 +5,7 @@ casper.test.begin('Test Magento Using Order Currency For Transactions', function
     var paymentType = "HiPay Enterprise Credit Card",
         allowed = [];
 
+    /* Choose current currency from Magento1 homepage */
     casper.setCurrency = function(currency, symbol) {
         this.echo("Changing current currency...", "INFO");
         this.waitForSelector('select#select-currency', function success() {
@@ -28,6 +29,7 @@ casper.test.begin('Test Magento Using Order Currency For Transactions', function
             test.assertExists('select#select-currency', "'Currency' select field exists");
         }, 10000);    
     };
+    /* Set order currency option via formular */
     casper.setUseOrderCurrency = function(state) {
         this.echo("Accessing Hipay Enterprise menu...", "INFO");
         this.click(x('//span[text()="Configuration"]'));
@@ -58,6 +60,7 @@ casper.test.begin('Test Magento Using Order Currency For Transactions', function
         }, 10000);
     };
 
+    /* Get all currencies from variable */
     casper.start(headlink + "admin/", function() {
         this.each(allowedCurrencies, function(self, allowedCurrency) {
             allowed.push(allowedCurrency["currency"]);
@@ -67,9 +70,11 @@ casper.test.begin('Test Magento Using Order Currency For Transactions', function
         if(realCurrentCurrency["currency"] == "EUR") {
         	authentification.proceed(test);
             method.proceed(test, paymentType, "cc");
+            /* Active order currency option */
             this.then(function() {
                 this.setUseOrderCurrency('1');
             });
+            /* Choose different currencies via formular */
             this.thenClick(x('//span[contains(., "Currency Setup")]'), function() {
                 this.echo("Changing 'Allowed Currencies' field...", "INFO");
                 this.waitForUrl(/section\/currency/, function success() {
@@ -93,6 +98,7 @@ casper.test.begin('Test Magento Using Order Currency For Transactions', function
             });
         }
     })
+    /* Go to Magento1 homepage and choose current currency */
     .thenOpen(headlink, function() {
         this.setCurrency(realCurrentCurrency["currency"], realCurrentCurrency["symbol"]);
     })
@@ -111,6 +117,7 @@ casper.test.begin('Test Magento Using Order Currency For Transactions', function
     .then(function() {
         this.shippingMethod();
     })
+    /* Fill HiPay CC fomular */
     .then(function() {
         this.echo("Choosing payment method and filling 'Payment Information' formular with " + typeCC + "...", "INFO");
         this.waitUntilVisible('#checkout-step-payment', function success() {
@@ -132,6 +139,7 @@ casper.test.begin('Test Magento Using Order Currency For Transactions', function
     .then(function() {
         this.orderResult(paymentType);
     })
+    /* Access to BO TPP */
     .thenOpen(urlBackend, function() {
         orderID = this.getOrderId();
         this.logToBackend();
@@ -159,6 +167,7 @@ casper.test.begin('Test Magento Using Order Currency For Transactions', function
             test.assertUrlMatch(/manage/, "Manage page exists");
         });
     })
+    /* Check order currency from BO TPP */
     .then(function() {
         this.echo("Checking order currency from BO TPP...", "INFO");
         this.waitForText('Order Total:', function success() {
@@ -167,6 +176,7 @@ casper.test.begin('Test Magento Using Order Currency For Transactions', function
             test.assertTextExists('Order Total:', "Order summary page exists");
         });
     })
+    /* Set default current currency at Magento1 homepage */
     .then(function() {
         var lengthCurrencies = allowedCurrencies.length -1;
         if(realCurrentCurrency == allowedCurrencies[lengthCurrencies]) {
@@ -183,4 +193,5 @@ casper.test.begin('Test Magento Using Order Currency For Transactions', function
     });
 });
 
+/* Test it again with another currency */
 casper.testOtherCurrency('013_ADMIN_MENUS/0_admin/1306-TEST_ORDER_CURRENCY_FOR_TRANSACTIONS.js');

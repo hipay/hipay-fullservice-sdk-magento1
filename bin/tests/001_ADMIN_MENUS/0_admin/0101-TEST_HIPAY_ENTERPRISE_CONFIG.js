@@ -7,6 +7,7 @@ casper.test.begin('Test Magento Hipay Enterprise Config', function(test) {
     .then(function() {
     	authentification.proceed(test);
     })
+    /* Check HiPay Enterprise menu blocs */
     .then(function() {
     	this.echo("Accessing to Hipay Enterprise menu and checking blocs menu...", "INFO");
     	this.waitForUrl(/admin\/dashboard/, function success() {
@@ -27,6 +28,7 @@ casper.test.begin('Test Magento Hipay Enterprise Config', function(test) {
 	    	test.assertUrlMatch(/admin\/dashboard/, "Dashboard admin page exists");
 	    }, 10000);
     })
+    /* Get each configuration menu field value */
     .then(function() {
     	this.echo("Checking configurations menu fields...", "INFO");
     	this.each(configsID, function(self, config) {
@@ -38,6 +40,7 @@ casper.test.begin('Test Magento Hipay Enterprise Config', function(test) {
     	fields = concatTable(fields);
     	test.info(fields.length + " fields gotten !");
     })
+    /* Check each value */
     .then(function() {
     	this.each(fields, function(self, field, i) {
     		test.assert(field != "" && field != "undefined" && field != "null", "Field name n°" + (i+1) + " correct !");

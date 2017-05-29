@@ -7,13 +7,16 @@ casper.test.begin('Test MOTO Payment With Incorrect Credentials', function(test)
     	authentification.proceed(test);
         method.proceed(test, paymentType, "hosted");
     })
+    /* Active MOTO option */
     .then(function() {
         configuration.proceedMotoSendMail(test, '1');
     })
+    /* Set bad credentials inside HiPay Entreprise formular and create order via admin panel */
     .then(function() {
         this.fillFormHipayEnterprise("blabla", true);
         checkout.proceed(test, paymentType, "hosted");
     })
+    /* Submit order */
     .then(function() {
         this.echo("Submitting order...", "INFO");
         this.waitForSelector(x('//span[text()="Submit Order"]'), function success() {
@@ -23,6 +26,7 @@ casper.test.begin('Test MOTO Payment With Incorrect Credentials', function(test)
             test.assertExists(x('//span[text()="Submit Order"]'), "Submit order button exists");
         });
     })
+    /* Check failure page */
     .then(function() {
         this.echo("Checking order failure cause of incorrect credentials...", "INFO");
         this.waitForUrl(/admin\/sales_order\/index/, function success() {
@@ -32,6 +36,7 @@ casper.test.begin('Test MOTO Payment With Incorrect Credentials', function(test)
             test.assertUrlMatch(/admin\/sales_order\/index/, "Orders admin page exists");
         }, 10000);
     })
+    /* Reinitialize HiPay Enterprise credentials */
     .then(function() {
         this.echo("Accessing to Hipay Enterprise menu...", "INFO");
         this.click(x('//span[text()="Configuration"]'));

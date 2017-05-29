@@ -12,6 +12,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC + ' and ' +
     phantom.clearCookies();
 
     casper.start(headlink + "admin/")
+    /* Active PayPal payment method if country for payment formular is US */
     .then(function() {
         if(countryPaypal == 'US') {
             authentification.proceed(test);
@@ -46,6 +47,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC + ' and ' +
     .then(function() {
         this.orderReview(paymentType);
     })
+    /* Fill PayPal formular */
     .then(function() {
         this.echo("Filling payment formular...", "INFO");
         this.waitForUrl(/sandbox\.paypal/, function success() {
@@ -76,6 +78,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC + ' and ' +
     });
 });
 
+/* Test it again with another country inside formular */
 casper.then(function() {
     if(countryPaypal == 'US') {
         countryPaypal = 'FR';

@@ -46,12 +46,15 @@ var fs = require('fs'),
     generatedCPF = "373.243.176-26";
 
 casper.test.begin('Parameters', function(test) {
+	/* Set default viewportSize and UserAgent */
 	casper.userAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36');
 	casper.options.viewportSize = {width: defaultViewPortSizes["width"], height: defaultViewPortSizes["height"]};
 
+	/* Set default card type if it's not defined */
 	if(typeof typeCC == "undefined")
 		typeCC = "VISA";
 
+	/* Say if BackOffice TPP credentials are set or not */
 	if(loginBackend != "" && passBackend != "")
 		test.info("Backend credentials set");
 	else

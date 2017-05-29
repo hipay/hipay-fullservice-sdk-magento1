@@ -1,5 +1,6 @@
 exports.proceed = function proceed(test, iframe) {
 
+    /* Fill formular according to the template, with or without iframe */
     casper.fillHostedForm = function fillHostedForm() {
         var holder = "MC",
             month = "12",
@@ -32,7 +33,7 @@ exports.proceed = function proceed(test, iframe) {
         });
     };
 
-    /* hosted payment formular filling */
+    /* Check template formular and choose card type */
     casper.then(function() {
         this.echo("Filling hosted payment formular...", "INFO");
         if(!iframe)

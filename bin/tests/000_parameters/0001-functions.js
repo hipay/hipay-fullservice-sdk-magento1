@@ -1,3 +1,4 @@
+/* Return 1D array from multiple dimensional array */
 function concatTable(arrToConvert) {
     var newArr = [];
     for(var i = 0; i < arrToConvert.length; i++)
@@ -6,6 +7,7 @@ function concatTable(arrToConvert) {
     }
     return newArr;
 };
+/* return random number between 2 specific numbers */
 function randNumbInRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 };
@@ -21,16 +23,16 @@ casper.test.begin('Functions', function(test) {
 		casper.echo('Tests réussis : ' + test.currentSuite.passes.length, 'WARNING');
 	});
 
-    // casper.on('remote.message', function(message) {
-    //     this.echo('remote message caught: ' + message);
-    // });
+    /*casper.on('remote.message', function(message) {
+        this.echo('remote message caught: ' + message);
+    });
 
-    // casper.on('step.complete', function() {
-    // 	    this.echo(Date.now()-start + "ms");
-    //    	start = Date.now();
-    // });
+    casper.on('step.complete', function() {
+    	    this.echo(Date.now()-start + "ms");
+       	start = Date.now();
+    });*/
     
-    /* Function which fills formular during Step Payment according to the card type and its number */
+    /* Fill HiPayCC formular */
     casper.fillFormPaymentHipayCC = function(type, card) {
         this.fillSelectors('form#co-payment-form', {
             'select[name="payment[hipay_cc_cc_type]"]': type,
@@ -40,7 +42,7 @@ casper.test.begin('Functions', function(test) {
             'input[name="payment[hipay_cc_cc_cid]"]': '500'
         }, false);
     };
-	/* Choose an item at home page */
+	/* Choose first item at home page */
 	casper.selectItemAndOptions = function() {
         this.echo("Selecting item and its options...", "INFO");
         this.waitForSelector('div.widget-products>ul>li:first-of-type>a>img', function success() {
@@ -61,7 +63,7 @@ casper.test.begin('Functions', function(test) {
             test.assertExists(x('//ul[@id="configurable_swatch_color"]/li[not(contains(@class, "not-available"))]'), "Color button exists");
         });
 	};
-	/* add item and go to checkout */
+	/* Add item and go to checkout */
 	casper.addItemGoCheckout = function() {
         this.echo("Adding this item then, accessing to the checkout...", "INFO");
         this.waitForSelector("form#product_addtocart_form .add-to-cart-buttons button", function success() {
@@ -88,7 +90,7 @@ casper.test.begin('Functions', function(test) {
             test.assertExists("button#onepage-guest-register-button", "'Continue' button exists");
         }, 10000);
 	};
-	/* fill billing operation */
+	/* Fill billing operation */
 	casper.billingInformation = function(country) {
         this.echo("Filling 'Billing Information' formular...", "INFO");
         this.waitForSelector("form#co-billing-form", function success() {
@@ -126,7 +128,7 @@ casper.test.begin('Functions', function(test) {
             test.assertExists("form#co-billing-form", "'Billing Information' formular exists");
         });
 	};
-	/* fill shipping method */
+	/* Fill shipping method */
 	casper.shippingMethod = function() {
 	    this.echo("Filling 'Shipping Method' formular...", "INFO");
 	    this.waitUntilVisible('div#checkout-step-shipping_method', function success() {
@@ -137,7 +139,7 @@ casper.test.begin('Functions', function(test) {
 	        test.assertVisible("form#co-shipping-method-form", "'Shipping Method' formular exists");
 	    }, 25000);
 	};
-	/* place order */
+	/* Place order */
 	casper.orderReview = function(paymentType) {
         this.echo("Placing this order via " + paymentType + "...", "INFO");
         this.waitUntilVisible('#checkout-step-review', function success() {
@@ -147,6 +149,7 @@ casper.test.begin('Functions', function(test) {
             test.assertVisible("#checkout-step-payment", "'Order Review' exists");
         }, 15000);
 	};
+    /* Log to BO TPP */
     casper.logToBackend = function() {
         this.echo("Accessing and logging to TPP BackOffice...", "INFO");
         this.waitForUrl(/login/, function success() {
@@ -162,6 +165,7 @@ casper.test.begin('Functions', function(test) {
             test.assertUrlMatch(/login/, "Login page exists");
         });
     };
+    /* Select account for test from BO TPP */
     casper.selectAccountBackend = function(name) {
         this.echo("Selecting sub-account...", "INFO");
         this.waitForUrl(/dashboard/, function success() {
@@ -179,7 +183,7 @@ casper.test.begin('Functions', function(test) {
             test.assertUrlMatch(/dashboard/, "dashboard page exists");
         });
     };
-	/* Get order ID after purchase */
+	/* Get order ID, if it exists, after purchase, and set it in variable */
 	casper.setOrderId = function(pending) {
 		if(pending)
 			orderID = this.fetchText(x('//p[contains(., "Order #")]')).split('#')[1];
@@ -189,13 +193,14 @@ casper.test.begin('Functions', function(test) {
 		}
 		test.info("Order ID : " + orderID);
 	};
+    /* Get order ID variable value */
 	casper.getOrderId = function() {
         if(typeof order == "undefined")
             return orderID;
         else
             return order;
 	};
-	/* check order success */
+	/* Check order result */
 	casper.orderResult = function(paymentType) {
         this.echo("Checking order success...", "INFO");
         this.waitForUrl(/checkout\/onepage\/success/, function success() {
@@ -214,6 +219,7 @@ casper.test.begin('Functions', function(test) {
         	});
         }, 30000);
 	};
+    /* Test file again with another card type */
     casper.testOtherTypeCC = function(file) {
         casper.then(function() {  
             if(typeof this.cli.get('type-cc') == "undefined") {
@@ -226,6 +232,7 @@ casper.test.begin('Functions', function(test) {
             }
         });
     };
+    /* Test file again with another currency */
     casper.testOtherCurrency = function(file) {
         casper.then(function() {
             if(currentCurrency == allowedCurrencies[0]) {
@@ -236,6 +243,7 @@ casper.test.begin('Functions', function(test) {
                 currentCurrency = allowedCurrencies[0]; // retour du currency à la normale --> EURO pour la suite des tests
         });
     };
+    /* Configure HiPay Enterprise options via formular */
     casper.fillFormHipayEnterprise = function(credentials, moto) {
         var stringMoto = "";
         if(moto)
@@ -255,6 +263,7 @@ casper.test.begin('Functions', function(test) {
             test.fail('Failed to apply HiPay Enterprise credentials configuration on the system');
         },10000);
     };
+    /* Configure Device Fingerprint options via formular */
     casper.setDeviceFingerprint = function(state) {
         this.echo("Accessing Hipay Enterprise menu...", "INFO");
         this.click(x('//span[text()="Configuration"]'));

@@ -13,6 +13,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + realTypeCC, functi
     phantom.clearCookies();
 
     casper.start(headlink + "admin/")
+    /* Active HiPay CC payment method if default card type is not defined or is VISA */
     .then(function() {
         if(typeof casper.cli.get('type-cc') == "undefined" && realTypeCC == "VISA" || typeof casper.cli.get('type-cc') != "undefined") {
             authentification.proceed(test);
@@ -34,7 +35,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + realTypeCC, functi
     .then(function() {
         this.shippingMethod();
     })
-    /* fill steps payment */
+    /* Fill steps payment */
     .then(function() {
         this.echo("Choosing payment method and filling 'Payment Information' formular with " + realTypeCC + "...", "INFO");
         this.waitUntilVisible('#checkout-step-payment', function success() {
@@ -61,4 +62,5 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + realTypeCC, functi
     });
 });
 
+/* Test it again with another card type */
 casper.testOtherTypeCC('002_CREDIT_CARD/1_frontend/0200-CREDIT_CARD_FRONTEND.js');

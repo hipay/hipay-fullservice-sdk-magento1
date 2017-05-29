@@ -44,6 +44,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
     .then(function() {
         this.orderReview(paymentType);
     })
+    /* Fill Post Finance formular */
     .then(function() {
     	this.echo("Filling payment method...", "INFO");
     	this.waitForUrl(/secure\.ogone/, function success() {

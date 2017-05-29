@@ -44,6 +44,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
     .then(function() {
         this.orderReview(paymentType);
     })
+    /* Fill Sisal formular */
     .then(function() {
     	this.echo("Filling payment method...", "INFO");
     	this.waitForUrl(/provider\/sisal/, function success() {

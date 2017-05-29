@@ -6,6 +6,7 @@ casper.test.begin('Test Magento Without Device Fingerprint', function(test) {
     .then(function() {
     	authentification.proceed(test);
     })
+    /* Disactive device fingerprint */
     .then(function() {
         this.setDeviceFingerprint('0');
     })
@@ -15,6 +16,7 @@ casper.test.begin('Test Magento Without Device Fingerprint', function(test) {
     .then(function() {
         this.addItemGoCheckout();
     })
+    /* Check no ioBB field */
     .then(function() {
         this.waitForUrl(/checkout\/onepage/, function success() {
             this.echo("Checking 'ioBB' field NOT inside checkout page...", "INFO");

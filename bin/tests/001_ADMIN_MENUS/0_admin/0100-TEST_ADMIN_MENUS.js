@@ -5,6 +5,7 @@ casper.test.begin('Test Magento Admin Menus', function(test) {
     .then(function() {
     	authentification.proceed(test);
     })
+    /* Check HiPay Split Payments menu */
     .then(function() {
     	this.echo("Checking Hipay Split Payments menu...", "INFO");
     	this.waitForUrl(/admin\/dashboard/, function success() {
@@ -18,6 +19,7 @@ casper.test.begin('Test Magento Admin Menus', function(test) {
 	    	test.assertUrlMatch(/admin\/dashboard/, "Dashboard admin page exists");
 	    }, 10000);
     })
+    /* Check HiPay Enterprise menu */
     .then(function() {
     	this.echo("Checking Hipay Enterprise menu...", "INFO");
     	this.click(x('//span[text()="Configuration"]'));
@@ -32,6 +34,7 @@ casper.test.begin('Test Magento Admin Menus', function(test) {
     		test.assertUrlMatch(/admin\/system_config/, "Configuration admin page exists");
     	}, 10000);
     })
+    /* Check Payment Methods bloc count */
     .then(function() {
     	this.echo("Checking Payments Methods blocs...", "INFO");
     	this.click(x('//span[contains(., "Payment Methods")]'));

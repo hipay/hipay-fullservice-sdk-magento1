@@ -44,6 +44,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
     .then(function() {
         this.orderReview(paymentType);
     })
+    /* Fill Sofort formular */
     .then(function() {
     	this.echo("Filling payment formular...", "INFO");
     	this.waitForUrl(/go\/select_country/, function success() {

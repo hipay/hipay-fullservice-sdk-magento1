@@ -8,6 +8,7 @@ casper.test.begin('Test Magento With Device Fingerprint', function(test) {
     	authentification.proceed(test);
         method.proceed(test, paymentType, "cc");
     })
+    /* Active device fingerprint */
     .then(function() {
         this.setDeviceFingerprint('1');
     })
@@ -26,6 +27,7 @@ casper.test.begin('Test Magento With Device Fingerprint', function(test) {
     .then(function() {
         this.shippingMethod();
     })
+    /* Check ioBB field during payment formular step */
     .then(function() {
         this.echo("Checking 'ioBB' field inside checkout page...", "INFO");
         this.waitUntilVisible('#checkout-step-payment', function success() {
@@ -49,6 +51,7 @@ casper.test.begin('Test Magento With Device Fingerprint', function(test) {
     .then(function() {
         this.orderResult(paymentType);
     })
+    /* Access to BO TPP */
     .thenOpen(urlBackend, function() {
         orderID = this.getOrderId();
         this.logToBackend();
@@ -76,6 +79,7 @@ casper.test.begin('Test Magento With Device Fingerprint', function(test) {
             test.assertUrlMatch(/manage/, "Manage page exists");
         });
     })
+    /* Check ioBB value from Customer Details order from BO TPP */
     .then(function() {
         this.echo("Opening Customer Details...", "INFO");
         this.waitForSelector('a[href="#customer-details"]', function success() {

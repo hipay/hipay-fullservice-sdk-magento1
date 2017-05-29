@@ -1,5 +1,5 @@
 exports.proceed = function proceed(test, paymentType, method) {
-    /* store and customer selection */
+    /* Store and customer selection */
     casper.then(function() {
         this.echo("Selecting customer in order to create a new order...", "INFO");
         this.click(x('//span[text()="Orders"]'));
@@ -15,7 +15,7 @@ exports.proceed = function proceed(test, paymentType, method) {
             test.assertExists(x('//button/span/span/span[text()="Create New Order"]'), "Create order button exists");
         }, 20000);
     })
-    /* language and product selection */
+    /* Language and product selection */
     .then(function() {
         this.echo("Selecting product for this order", "INFO");
         this.waitForSelector('input#store_2', function success() {
@@ -42,7 +42,7 @@ exports.proceed = function proceed(test, paymentType, method) {
             test.assertExists('input#store_2', "Language input exists");
         }, 20000);
     })
-    /* shipping method selection */
+    /* Shipping method selection */
     .then(function() {
         this.echo("Selecting shipping method...", "INFO");
         this.waitForSelector('#order-shipping-method-summary>a', function success() {
@@ -57,7 +57,7 @@ exports.proceed = function proceed(test, paymentType, method) {
             test.assertExists('#order-shipping-method-summary>a', "Shipping method link exists");
         });
     })
-    /* payment method selection */
+    /* Payment method selection */
     .then(function() {
         this.echo("Selecting payment method...", "INFO");
         this.waitForSelector('#p_method_hipay_' + method, function success() {

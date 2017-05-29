@@ -1,5 +1,5 @@
 exports.proceedMotoSendMail = function proceedMotoSendMail(test, state) {
-    /* selection configuration system */
+    /* Selection configuration system */
     casper.then(function() {
         this.echo("Selecting configuration system...", "INFO");
         this.waitForSelector(x('//span[text()="Configuration"]'), function success() {

@@ -12,6 +12,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' without Electronic Signatur
 	phantom.clearCookies();
 
     casper.start(headlink + "admin/")
+    /* Active SEPA payment method with electronic signature */
     .then(function() {
         authentification.proceed(test);
         method.proceed(test, paymentType, "sdd", ['select[name="groups[hipay_sdd][fields][electronic_signature][value]"]', '1']);
@@ -44,6 +45,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' without Electronic Signatur
     .then(function() {
         this.orderReview(paymentType);
     })
+    /* Fill SEPA payment formular */
     .then(function() {
     	this.echo("Filling payment formular...", "INFO");
     	this.waitForUrl(/payment\/pay\/reference/, function success() {

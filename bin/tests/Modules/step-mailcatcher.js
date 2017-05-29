@@ -1,5 +1,5 @@
 exports.checkMail = function checkMail(test, paymentType) {
-    /* mail checkout and order payment */
+    /* Mail checkout and order payment */
     casper.thenOpen(urlMailCatcher, function() {
         var link =  "";
         this.echo("Checking last caught mail and paying order...", "INFO");
