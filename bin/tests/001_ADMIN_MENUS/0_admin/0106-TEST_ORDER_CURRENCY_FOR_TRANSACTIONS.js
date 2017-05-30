@@ -1,6 +1,6 @@
 var realCurrentCurrency = currentCurrency;
 
-casper.test.begin('Test Magento Using Order Currency For Transactions', function(test) {
+casper.test.begin('Test Magento Using Order Currency For Transactions with ' + realCurrentCurrency["currency"], function(test) {
     phantom.clearCookies();
     var paymentType = "HiPay Enterprise Credit Card",
         allowed = [];

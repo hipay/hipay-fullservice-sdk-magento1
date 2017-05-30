@@ -20,8 +20,16 @@ setTypeCard=""
 backendDefault='n'
 needOrderDefault='n'
 
-BASE_URL="http://localhost:8095/"
-URL_MAILCATCHER="http://localhost:1095/"
+if [ "$1" != "" ]; then
+	BASE_URL=$1
+else
+	BASE_URL="http://localhost:8095/"
+fi
+if [ "$2" != "" ]; then
+	URL_MAILCATCHER=$2
+else
+	URL_MAILCATCHER="http://localhost:1095/"
+fi
 pathPreFile=${header}000*/000[0-1]*.js
 pathDir=${header}0[0-1][0-9]*
 pathFile=${pathDir}/[0-1]*/[0-9][0-9][0-9][0-9]-*.js
