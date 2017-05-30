@@ -49,7 +49,7 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 	/* Execute shell command in order to simulate notification to Magento server */
 	casper.execCommand = function(code, retry) {
 		data = data.replace(/\n/g, '&');
-		child = spawn('/bin/bash', ['bin/generator/generator.sh', data, code, headlink]);
+		child = spawn('/bin/bash', ['bin/generator/generator.sh', data, code, headlink + "index.php/hipay/notify/index"]);
 		try {
 			child.stdout.on('data', function(out) {
 				casper.wait(3000, function() {
@@ -82,6 +82,7 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 			if(output.indexOf("503") != -1)
 				test.fail("Failure on CURL Status Code from CURL command: 503");
 			else if(output == "") {
+				test.comment("Too early to check CURL status code");
 				this.wait(10000, function() {
 					this.checkCurl(httpCode);
 				});
