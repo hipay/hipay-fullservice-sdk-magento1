@@ -25,9 +25,9 @@ test:
     - echo "PASS_BACKEND=$PASS_BACKEND" >> ./bin/conf/stage/hipay.env
     - mkdir $CIRCLE_ARTIFACTS/casper_report
     - mkdir $CIRCLE_ARTIFACTS/screenshots
-    - mkdir $CIRCLE_ARTIFACTS/screenshots/php5.6
-    # - mkdir $CIRCLE_ARTIFACTS/screenshots/php5.4
-    - mkdir $CIRCLE_ARTIFACTS/screenshots/php5.7
+    - mkdir $CIRCLE_ARTIFACTS/screenshots/php5-6
+    # - mkdir $CIRCLE_ARTIFACTS/screenshots/php5-4
+    - mkdir $CIRCLE_ARTIFACTS/screenshots/php7-0
   override:
     - sh bin/docker/generate_dockerfile.sh
     - docker-compose -f docker-compose.yml -f docker-compose.stage.yml build --no-cache
@@ -37,7 +37,7 @@ test:
     - curl --retry 30 --retry-delay 3 -v $URL_MAILCATCHER
     - sh bin/tests/casper_run_circle.sh
     - junit-viewer --results=bin/tests/result.xml --save=bin/tests/report-php5-6.html --minify=false --contracted
-    - if [ -d bin/tests/errors/ ]; then cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots/php5.6; fi
+    - if [ -d bin/tests/errors/ ]; then cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots/php5-6; fi
     # - docker-compose stop
     # - docker-compose rm -fv
     # - docker-compose -f docker-compose.yml -f docker-compose.stage-php5-4.yml build --no-cache
@@ -46,7 +46,7 @@ test:
     # - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
     # - sh bin/tests/casper_run_circle.sh
     # - junit-viewer --results=bin/tests/result.xml --save=bin/tests/report-php5-4.html --minify=false --contracted
-    # - if [ -d bin/tests/errors/ ]; then cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots/php5.4; fi
+    # - if [ -d bin/tests/errors/ ]; then cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots/php5-4; fi
     - docker-compose stop
     - docker-compose rm -fv
     - docker-compose -f docker-compose.yml -f docker-compose.stage-php7-0.yml build --no-cache
@@ -55,11 +55,11 @@ test:
     - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
     - sh bin/tests/casper_run_circle.sh
     - junit-viewer --results=bin/tests/result.xml --save=bin/tests/report-php5-7.html --minify=false --contracted
-    - if [ -d bin/tests/errors/ ]; then cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots/php5.7; fi
+    - if [ -d bin/tests/errors/ ]; then cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots/php7-0; fi
   post:
     - cp bin/tests/report-php5-6.html $CIRCLE_ARTIFACTS/casper_report/
     # - cp bin/tests/report-php5-4.html $CIRCLE_ARTIFACTS/casper_report/
-    - cp bin/tests/report-php5-7.html $CIRCLE_ARTIFACTS/casper_report/
+    - cp bin/tests/report-php7-0.html $CIRCLE_ARTIFACTS/casper_report/
 deployment:
   feature:
     branch: /feature*/

@@ -5,6 +5,7 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 	var	data = "",
 		hash = "",
 		output = "",
+		notif117 = true,
 		orderID = casper.getOrderId(); // Get order ID from previous order or from command line parameter
 		
 		// orderID = "28997145000067";
@@ -13,8 +14,17 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 	casper.openingNotif = function(status) {
 		if(status != "116")
 			this.echo("Opening Notification details with status " + status + "...", "INFO");
-		this.click(x('//tr/td/span[text()="' + status + '"]/parent::td/following-sibling::td[@class="cell-right"]/a'));
-		test.info("Done");
+		this.waitForSelector(x('//tr/td/span[text()="' + status + '"]/parent::td/following-sibling::td[@class="cell-right"]/a'), function success() {
+			this.click(x('//tr/td/span[text()="' + status + '"]/parent::td/following-sibling::td[@class="cell-right"]/a'));
+			test.info("Done");
+		}, function fail() {
+			if(status == "117") {
+				notif117 = false;
+				this.echo("Notification 117 not exists", "WARNING");
+			}
+			else
+				test.assertExists(x('//tr/td/span[text()="' + status + '"]/parent::td/following-sibling::td[@class="cell-right"]/a'), "Notification " + status + " exists");
+		});
 	};
 	/* Get data request and hash code from the details */
 	casper.gettingData = function(status) {
@@ -71,6 +81,11 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 		} catch(e) {
 			if(output.indexOf("503") != -1)
 				test.fail("Failure on CURL Status Code from CURL command: 503");
+			else if(output == "") {
+				this.wait(10000, function() {
+					this.checkCurl(httpCode);
+				});
+			}
 			else
 				test.fail("Failure on CURL Status Code from CURL command: " + output.trim());
 		}
@@ -154,15 +169,20 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 	.then(function() {
 		this.openingNotif("117");
 	})
-	/* Idem Notification with code 116 */
+	/* If Notification with code 117 doesn't exists, do not check this notification */
 	.then(function() {
-		this.gettingData("117");
-	})
-	.then(function() {
-		this.execCommand(hash);
-	})
-	.then(function() {
-		this.checkCurl("200");
+		if(notif117) {
+			/* Idem Notification with code 116 */
+			this.then(function() {
+				this.gettingData("117");
+			});
+			this.then(function() {
+				this.execCommand(hash);
+			});
+			this.then(function() {
+				this.checkCurl("200");
+			});
+		}
 	})
 	/* Idem Notification with code 117 */
 	.then(function() {
