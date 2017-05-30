@@ -194,4 +194,4 @@ casper.test.begin('Test Magento Using Order Currency For Transactions', function
 });
 
 /* Test it again with another currency */
-casper.testOtherCurrency('013_ADMIN_MENUS/0_admin/1306-TEST_ORDER_CURRENCY_FOR_TRANSACTIONS.js');
+casper.testOtherCurrency('001_ADMIN_MENUS/0_admin/0106-TEST_ORDER_CURRENCY_FOR_TRANSACTIONS.js');

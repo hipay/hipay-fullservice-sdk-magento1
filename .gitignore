@@ -15,4 +15,5 @@ data
 bin/conf/development/hipay.env
 bin/tests/result.xml
 bin/tests/errors/*
+bin/tests/exportVariables.sh
 docker-compose.stage-*.yml
