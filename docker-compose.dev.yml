@@ -6,6 +6,8 @@ web:
     - "8095:8095"
   env_file:
     - ./bin/conf/development/hipay.env
+    - ./bin/conf/development/mage.env.sample
+    - ./bin/conf/development/mysql.env.sample
   volumes:
     - ./src/app/code/community/Allopass:/var/www/htdocs/app/code/community/Allopass
     - ./src/app/design/frontend/base/default/template/hipay:/var/www/htdocs/app/design/frontend/base/default/template/hipay
@@ -15,7 +17,7 @@ web:
     - ./log:/var/www/htdocs/var/log
 mysql:
   env_file:
-    - ./bin/conf/development/hipay.env
+    - ./bin/conf/development/mysql.env.sample
   volumes:
     - ./data/mysql:/var/lib/mysql
 
