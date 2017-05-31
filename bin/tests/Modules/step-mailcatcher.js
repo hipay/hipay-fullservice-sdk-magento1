@@ -1,5 +1,5 @@
 exports.checkMail = function checkMail(test, paymentType) {
-    /* mail checkout and order payment */
+    /* Mail checkout and order payment */
     casper.thenOpen(urlMailCatcher, function() {
         var link =  "";
         this.echo("Checking last caught mail and paying order...", "INFO");
@@ -24,7 +24,7 @@ exports.checkMail = function checkMail(test, paymentType) {
                                 test.assertExists('.checkout-onepage-success', "The order has been successfully placed with method " + paymentType + " !");
                             }, function fail() {
                                 test.assertUrlMatch(/checkout\/onepage\/success/, "Checkout result page exists");
-                            }, 10000);
+                            }, 20000);
                         });
                     }, function fail() {
                         test.assertUrlMatch(/payment\/web\/pay/, "Hosted payment page exists");
@@ -33,6 +33,6 @@ exports.checkMail = function checkMail(test, paymentType) {
             });
         }, function fail() {
             test.assertExists('nav#messages tbody tr:first-child', "Caught mails list exists and is not empty");
-        });
+        }, 10000);
     });
 };

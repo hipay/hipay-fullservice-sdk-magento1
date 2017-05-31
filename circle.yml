@@ -21,8 +21,10 @@ test:
     - echo "HIPAY_TOKENJS_PUBLICKEY_TEST=$HIPAY_TOKENJS_PUBLICKEY_TEST" >> ./bin/conf/stage/hipay.env
     - echo "HIPAY_TOKENJS_USERNAME_TEST=$HIPAY_TOKENJS_USERNAME_TEST" >> ./bin/conf/stage/hipay.env
     - echo "HIPAY_SECRET_PASSPHRASE_TEST=$HIPAY_SECRET_PASSPHRASE_TEST" >> ./bin/conf/stage/hipay.env
-    - echo "LOGIN_BACKEND=$LOGIN_BACKEND" >> ./bin/conf/development/test.env.sample
-    - echo "PASS_BACKEND=$PASS_BACKEND" >> ./bin/conf/development/test.env.sample
+    - echo "LOGIN_BACKEND=$LOGIN_BACKEND" >> ./bin/conf/stage/hipay.env
+    - echo "PASS_BACKEND=$PASS_BACKEND" >> ./bin/conf/stage/hipay.env
+    - mkdir $CIRCLE_ARTIFACTS/casper_report
+    - mkdir $CIRCLE_ARTIFACTS/screenshots
   override:
     - sh bin/docker/generate_dockerfile.sh
     - docker-compose -f docker-compose.yml -f docker-compose.stage.yml build --no-cache
@@ -31,30 +33,32 @@ test:
     - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
     - curl --retry 30 --retry-delay 3 -v $URL_MAILCATCHER
     - sh bin/tests/casper_run_circle.sh
-    - junit-viewer --results=bin/tests/resultVisa.xml --save=bin/tests/reportVisa1.html --minify=false --contracted
-#    - docker-compose stop
-#    - docker-compose rm -fv
-#    - docker-compose -f docker-compose.yml -f docker-compose.stage-php5-4.yml build --no-cache
-#    - docker-compose -f docker-compose.yml -f docker-compose.stage-php5-4.yml up -d
-#    - sleep 60
-#    - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
-#    - sh bin/tests/casper_run_circle.sh
-#    - junit-viewer --results=bin/tests/resultVisa.xml --save=bin/tests/reportVisa2.html --minify=false --contracted
-#    - docker-compose stop
-#    - docker-compose rm -fv
-#    - docker-compose -f docker-compose.yml -f docker-compose.stage-php7-0.yml build --no-cache
-#    - docker-compose -f docker-compose.yml -f docker-compose.stage-php7-0.yml up -d
-#    - sleep 60
-#    - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
-#    - sh bin/tests/casper_run_circle.sh
+    - junit-viewer --results=bin/tests/result.xml --save=bin/tests/report-php5-6.html --minify=false --contracted
+    - if [ -d bin/tests/errors/ ]; then mkdir $CIRCLE_ARTIFACTS/screenshots/php5-6; cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots/php5-6; rm bin/tests/errors/*; fi
+    # - docker-compose stop
+    # - docker-compose rm -fv
+    # - docker-compose -f docker-compose.yml -f docker-compose.stage-php5-4.yml build --no-cache
+    # - docker-compose -f docker-compose.yml -f docker-compose.stage-php5-4.yml up -d
+    # - sleep 60
+    # - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
+    # - sh bin/tests/casper_run_circle.sh
+    # - junit-viewer --results=bin/tests/result.xml --save=bin/tests/report-php5-4.html --minify=false --contracted
+    # - if [ -d bin/tests/errors/ ]; then mkdir $CIRCLE_ARTIFACTS/screenshots/php5-4; cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots/php5-4; rm bin/tests/errors/*; fi
+    - docker-compose stop
+    - docker-compose rm -fv
+    - docker-compose -f docker-compose.yml -f docker-compose.stage-php7-0.yml build --no-cache
+    - docker-compose -f docker-compose.yml -f docker-compose.stage-php7-0.yml up -d
+    - sleep 60
+    - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
+    - sh bin/tests/casper_run_circle.sh
+    - junit-viewer --results=bin/tests/result.xml --save=bin/tests/report-php7-0.html --minify=false --contracted
+    - if [ -d bin/tests/errors/ ]; then mkdir $CIRCLE_ARTIFACTS/screenshots/php7-0; cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots/php7-0; fi
   post:
-    - mkdir $CIRCLE_ARTIFACTS/casper_report
-    - mkdir $CIRCLE_ARTIFACTS/screenshots
-    - cp bin/tests/reportVisa1.html $CIRCLE_ARTIFACTS/casper_report/
-    - cp bin/tests/reportVisa2.html $CIRCLE_ARTIFACTS/casper_report/
-    - cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots/
+    - cp bin/tests/report-php5-6.html $CIRCLE_ARTIFACTS/casper_report/
+    # - cp bin/tests/report-php5-4.html $CIRCLE_ARTIFACTS/casper_report/
+    - cp bin/tests/report-php7-0.html $CIRCLE_ARTIFACTS/casper_report/
 deployment:
   feature:
     branch: /feature*/
     commands:
-      - sh ./bin/deployment/deploy_staging.sh
+      - sh bin/deployment/deploy_project.sh

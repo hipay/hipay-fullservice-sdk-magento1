@@ -11,7 +11,4 @@ fi
 
 header="bin/tests/"
 
-# voir pour mettre des options en paramètres de la commande casperjs afin de lancer des scénarios de test précisément sur une action
-
-casperjs test ${header}000*/*.js ${header}00[123]*/*/*.js --url=$BASE_URL/ --type-cc=VISA --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --xunit=${header}resultVisa.xml \
-&& casperjs test ${header}000*/*.js ${header}001*/*/*.js --url=$BASE_URL/ --type-cc=MasterCard --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND
+casperjs test ${header}000*/000[0-1]*.js ${header}0[0-1][0-9]*/[0-1]*/[0-9][0-9][0-9][0-9]-*.js --url=$BASE_URL/ --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --xunit=${header}result.xml --ignore-ssl-errors=true --ssl-protocol=any

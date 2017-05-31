@@ -23,6 +23,14 @@ $_typeNationalIdentification = $this->getTypeNationalIdentification();
  </ul>
  <br />
 <?php endif; ?>
+<?php if (Mage::getStoreConfig('hipay/hipay_api/fingerprint',Mage::app()->getStore())) : ?>
+	<script type="text/javascript">
+	 	$('ioBB_fingerprint').value = $('ioBB').value;
+	</script>
+ <li>
+	<input type="hidden" id="ioBB_fingerprint" name="payment[device_fingerprint]" value="" />
+ </li>
+ <?php endif;?>
 <?php if(!empty($_typeNationalIdentification)) : ?>
 	<?php if($_typeNationalIdentification == 'cpf') : ?>
 		<script type="text/javascript">
@@ -60,16 +68,9 @@ $_typeNationalIdentification = $this->getTypeNationalIdentification();
 			</li>
 		</ul>
 	<?php endif ?>
-<?php elseif($_code != "hipay_sdd" ) : ?>
+  <?php endif ?>
+<?php if($_code != "hipay_sdd" && empty($_typeNationalIdentification)) : ?>
 <ul class="form-list" id="card_payment_form_<?php echo $_code ?>" >
-<?php if (Mage::getStoreConfig('hipay/hipay_api/fingerprint',Mage::app()->getStore())) : ?>
-	<script type="text/javascript">
-	 	$('ioBB_fingerprint').value = $('ioBB').value;
-	</script>
- <li>
-	<input type="hidden" id="ioBB_fingerprint" name="payment[device_fingerprint]" value="" />
- </li>
- <?php endif;?>
  <li>
     <?php if(count($this->getCcAvailableTypes()) == 1) :?>
         	<label for="<?php echo $_code ?>_cc_type" ><?php echo $this->__('Credit Card Type') ?>: 
