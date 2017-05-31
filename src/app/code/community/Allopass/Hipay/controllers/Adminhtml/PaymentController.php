@@ -7,18 +7,6 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
      */
     protected $_order = null;
 
-
-    /**
-     *
-     * @return Allopass_Hipay_Model_Method_Abstract $methodInstance
-     */
-    protected function _getMethodInstance()
-    {
-        $modelName = Mage::getStoreConfig('payment/'.$this->getCheckout()->getMethod()."/model");
-        return Mage::getSingleton($modelName);
-
-    }
-
     public function reviewCapturePaymentAction()
     {
         /* @var $order Mage_Sales_Model_Order */
@@ -35,9 +23,8 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
         Mage::register('current_order', $order);
 
         try {
-
             $order->getPayment()->accept();
-            $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING,Allopass_Hipay_Model_Method_Cc::STATUS_PENDING_CAPTURE);
+            $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, Allopass_Hipay_Model_Method_Cc::STATUS_PENDING_CAPTURE);
             $message = $this->__('The payment has been accepted.');
             $order->save();
             $this->_getSession()->addSuccess($message);
@@ -73,7 +60,6 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
 
             $message = $this->__('You must reload the page to see new status.');
             $this->_getSession()->addSuccess($message);
-
         } catch (Mage_Core_Exception $e) {
             $this->_getSession()->addError($e->getMessage());
         } catch (Exception $e) {
@@ -90,12 +76,9 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
 
         $methodInstance = $this->_getMethodInstance();
 
-        try
-        {
-            $redirectUrl = $methodInstance->place($payment,$order->getBaseTotalDue());
-        }
-        catch (Exception $e)
-        {
+        try {
+            $redirectUrl = $methodInstance->place($payment, $order->getBaseTotalDue());
+        } catch (Exception $e) {
             Mage::logException($e);
             $this->_getSession()->addError($e->getMessage());
             $this->_redirect('adminhtml/sales_order/index');
@@ -104,7 +87,7 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
 
         // Send Mail to customer with payment information
         $url = $payment ->getAdditionalInformation('redirectUrl');
-        if($url && (strpos($order->getPayment()->getMethod(),'hipay_hosted') !== false)){
+        if ($url && (strpos($order->getPayment()->getMethod(), 'hipay_hosted') !== false)) {
             $receiver = Mage::getModel('customer/customer')->load($payment->getOrder()->getCustomerId());
             Mage::helper('hipay')->sendLinkPaymentEmail($receiver, $payment->getOrder());
         }
@@ -112,24 +95,85 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
         $this->_redirectUrl($redirectUrl);
 
         return $this;
-
     }
 
+    /**
+     *
+     * @return Mage_Sales_Model_Order
+     */
+    protected function getOrder()
+    {
+        if (is_null($this->_order)) {
+            if (($profileIds = $this->getCheckout()->getLastRecurringProfileIds())) {
+                if (is_array($profileIds)) {
+                    foreach ($profileIds as $profileId) {
+                        /* @var $profile Mage_Sales_Model_Recurring_Profile */
+                        $profile = Mage::getModel('sales/recurring_profile')->load($profileId);
+                        /* @var $_helperRecurring Allopass_Hipayrecurring_Helper_Data */
+                        $_helperRecurring = Mage::helper('hipayrecurring');
+
+                        if ($_helperRecurring->isInitialProfileOrder($profile)) {
+                            $this->_order = $_helperRecurring->createOrderFromProfile($profile);
+                        } else {
+                            $orderId = current($profile->getChildOrderIds());
+                            $this->_order = Mage::getModel('sales/order')->load($orderId);
+
+                            $additionalInfo = $profile->getAdditionalInfo();
+
+                            $this->_order->getPayment()->setCcType(isset($additionalInfo['ccType']) ? $additionalInfo['ccType'] : "");
+                            $this->_order->getPayment()->setCcExpMonth(isset($additionalInfo['ccExpMonth']) ? $additionalInfo['ccExpMonth'] : "");
+                            $this->_order->getPayment()->setCcExpYear(isset($additionalInfo['ccExpYear']) ? $additionalInfo['ccExpYear'] : "");
+                            $this->_order->getPayment()->setAdditionalInformation('token', isset($additionalInfo['token']) ? $additionalInfo['token'] : "");
+                            $this->_order->getPayment()->setAdditionalInformation('create_oneclick', isset($additionalInfo['create_oneclick']) ? $additionalInfo['create_oneclick'] : 1);
+                            $this->_order->getPayment()->setAdditionalInformation('use_oneclick', isset($additionalInfo['use_oneclick']) ? $additionalInfo['use_oneclick'] : 0);
+                            $this->_order->getPayment()->setAdditionalInformation('selected_oneclick_card', isset($additionalInfo['selected_oneclick_card']) ? $additionalInfo['selected_oneclick_card'] : 0);
+                        }
+
+
+
+                        return $this->_order; //because only one nominal item in cart is authorized and Hipay not manage many profiles
+                    }
+                }
+
+                Mage::throwException("An error occured. Profile Ids not present!");
+            } else {
+                $this->_order = Mage::getModel('sales/order')->load($this->getCheckout()->getLastOrderId());
+            }
+        }
+
+        return $this->_order;
+    }
+
+    /**
+     *
+     * @return Mage_Checkout_Model_Session
+     */
+    protected function getCheckout()
+    {
+        return Mage::getSingleton('checkout/session');
+    }
+
+    /**
+     *
+     * @return Allopass_Hipay_Model_Method_Abstract $methodInstance
+     */
+    protected function _getMethodInstance()
+    {
+        $modelName = Mage::getStoreConfig('payment/'.$this->getCheckout()->getMethod()."/model");
+        return Mage::getSingleton($modelName);
+    }
 
     public function acceptAction()
     {
-        if(($profileIds = Mage::getSingleton('checkout/session')->getLastRecurringProfileIds()))
-        {
-            if(is_array($profileIds))
-            {
+        if (($profileIds = Mage::getSingleton('checkout/session')->getLastRecurringProfileIds())) {
+            if (is_array($profileIds)) {
                 /* @var $gatewayResponse Allopass_Hipay_Model_Api_Response_Gateway */
-                $gatewayResponse  = Mage::getSingleton('hipay/api_response_gateway',$this->getRequest()->getParams());
+                $gatewayResponse  = Mage::getSingleton('hipay/api_response_gateway', $this->getRequest()->getParams());
                 $collection = Mage::getModel('sales/recurring_profile')->getCollection()
                     ->addFieldToFilter('profile_id', array('in' => $profileIds))
                 ;
                 $profiles = array();
                 foreach ($collection as $profile) {
-
                     $additionalInfo = array();
                     $additionalInfo['ccType'] = $gatewayResponse->getBrand();
                     $additionalInfo['ccExpMonth'] = $gatewayResponse->getCardExpiryMonth() ;
@@ -157,6 +201,17 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
         return $this;
     }
 
+    protected function processResponse()
+    {
+        $order = $this->getOrder();
+        $payment = $order->getPayment();
+
+        /* @var $gatewayResponse Allopass_Hipay_Model_Api_Response_Gateway */
+        $gatewayResponse  = Mage::getSingleton('hipay/api_response_gateway', $this->getRequest()->getParams());
+
+        $this->_getMethodInstance()->processResponseToRedirect($gatewayResponse, $payment, $order->getBaseTotalDue());
+    }
+
     public function pendingAction()
     {
         $this->processResponse();
@@ -173,14 +228,12 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
         return $this;
     }
 
-
     public function exceptionAction()
     {
         //$this->_redirect('checkout/onepage/failure');
         $this->_redirect('adminhtml/sales_order_create/');
         return $this;
     }
-
 
     public function cancelAction()
     {
@@ -190,111 +243,38 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
         return $this;
     }
 
-    protected function processResponse()
-    {
-        $order = $this->getOrder();
-        $payment = $order->getPayment();
-
-        /* @var $gatewayResponse Allopass_Hipay_Model_Api_Response_Gateway */
-        $gatewayResponse  = Mage::getSingleton('hipay/api_response_gateway',$this->getRequest()->getParams());
-
-        $this->_getMethodInstance()->processResponseToRedirect($gatewayResponse, $payment, $order->getBaseTotalDue());
-    }
-
-
-
-    /**
-     *
-     * @return Mage_Sales_Model_Order
-     */
-    protected function getOrder()
-    {
-        if(is_null($this->_order))
-        {
-
-            if(($profileIds = $this->getCheckout()->getLastRecurringProfileIds()))
-            {
-
-                if (is_array($profileIds)) {
-
-                    foreach ($profileIds as $profileId)
-                    {
-                        /* @var $profile Mage_Sales_Model_Recurring_Profile */
-                        $profile = Mage::getModel('sales/recurring_profile')->load($profileId);
-                        /* @var $_helperRecurring Allopass_Hipayrecurring_Helper_Data */
-                        $_helperRecurring = Mage::helper('hipayrecurring');
-
-                        if($_helperRecurring->isInitialProfileOrder($profile))
-                            $this->_order = $_helperRecurring->createOrderFromProfile($profile);
-                        else
-                        {
-                            $orderId = current($profile->getChildOrderIds());
-                            $this->_order = Mage::getModel('sales/order')->load($orderId);
-
-                            $additionalInfo = $profile->getAdditionalInfo();
-
-                            $this->_order->getPayment()->setCcType(isset($additionalInfo['ccType']) ? $additionalInfo['ccType'] : "");
-                            $this->_order->getPayment()->setCcExpMonth(isset($additionalInfo['ccExpMonth']) ? $additionalInfo['ccExpMonth'] : "");
-                            $this->_order->getPayment()->setCcExpYear(isset($additionalInfo['ccExpYear']) ? $additionalInfo['ccExpYear'] : "");
-                            $this->_order->getPayment()->setAdditionalInformation('token',isset($additionalInfo['token']) ? $additionalInfo['token'] : "");
-                            $this->_order->getPayment()->setAdditionalInformation('create_oneclick',isset($additionalInfo['create_oneclick']) ? $additionalInfo['create_oneclick'] : 1);
-                            $this->_order->getPayment()->setAdditionalInformation('use_oneclick',isset($additionalInfo['use_oneclick']) ? $additionalInfo['use_oneclick'] : 0);
-                            $this->_order->getPayment()->setAdditionalInformation('selected_oneclick_card',isset($additionalInfo['selected_oneclick_card']) ? $additionalInfo['selected_oneclick_card'] : 0);
-                        }
-
-
-
-                        return $this->_order; //because only one nominal item in cart is authorized and Hipay not manage many profiles
-                    }
-
-
-                }
-
-                Mage::throwException("An error occured. Profile Ids not present!");
-
-
-
-            }
-            else
-            {
-                $this->_order = Mage::getModel('sales/order')->load($this->getCheckout()->getLastOrderId());
-
-            }
-        }
-
-        return $this->_order;
-    }
-
     /**
      * Add method to calculate amount from recurring profile
      * @param Mage_Sales_Model_Recurring_Profile $profile
      * @return int $amount
      **/
-    public function getAmountFromProfile(Mage_Sales_Model_Recurring_Profile $profile) {
+    public function getAmountFromProfile(Mage_Sales_Model_Recurring_Profile $profile)
+    {
         $amount = $profile->getBillingAmount() + $profile->getTaxAmount() + $profile->getShippingAmount();
 
-        if($this->isInitialProfileOrder($profile))
+        if ($this->isInitialProfileOrder($profile)) {
             $amount += $profile->getInitAmount() ;
+        }
 
         return $amount;
     }
 
     protected function isInitialProfileOrder(Mage_Sales_Model_Recurring_Profile $profile)
     {
-        if(count($profile->getChildOrderIds()) && current($profile->getChildOrderIds()) == "-1")
+        if (count($profile->getChildOrderIds()) && current($profile->getChildOrderIds()) == "-1") {
             return true;
+        }
 
         return false;
     }
 
-
     /**
+     *  Check if user is allowed to use this controller
      *
-     * @return Mage_Checkout_Model_Session
+     * @return boolean
      */
-    protected function getCheckout()
+    protected function _isAllowed()
     {
-        return Mage::getSingleton('checkout/session');
+        return Mage::getSingleton('admin/session')->isAllowed('sales/order');
     }
-
 }

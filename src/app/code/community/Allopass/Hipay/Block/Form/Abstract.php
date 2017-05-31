@@ -161,4 +161,13 @@ abstract class Allopass_Hipay_Block_Form_Abstract extends Mage_Payment_Block_For
         ));
         return parent::_toHtml();
     }
+
+    /**
+    *  Return the type for national identification number to BLOCK
+    *  @return string
+    */
+    public function getTypeNationalIdentification()
+    {
+    	return $this->getMethod()->getTypeNationalIdentification();
+    }
 }

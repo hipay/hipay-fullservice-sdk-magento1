@@ -212,8 +212,8 @@ printf "${COLOR_SUCCESS}    |   PHP VERSION     : $PHP_VERSION                  
 printf "${COLOR_SUCCESS}    |   MAGENTO VERSION : $MAGENTO_VERSION                                 ${NC}\n"
 printf "${COLOR_SUCCESS}    |======================================================================${NC}\n"
 
-################################################################################
-# STARTING APACHE
-################################################################################
-exec apache2-foreground
+if [ -f /var/run/apache2/apache2.pid  ]; then
+    rm -f /var/run/apache2/apache2.pid
+fi
 
+exec apache2-foreground

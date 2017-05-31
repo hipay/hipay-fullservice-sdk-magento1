@@ -517,18 +517,15 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
             }
         }
 
-
-        if (empty($passphrase) || empty($signature)) {
+        if (empty($passphrase) && empty($signature)) {
             return true;
         }
 
         if ($fromNotification) {
             $rawPostData = file_get_contents("php://input");
             if ($signature == sha1($rawPostData . $passphrase)) {
-                ;
+                return true;
             }
-            return true;
-
             return false;
         }
 
@@ -834,7 +831,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 
     /**
      * Send email id payment is in Fraud status
-     * @param Mage_Customer_Model_Customer $receiver
+     * @param Mage_Customer_Model_Customer|Mage_Core_Model_Abstract $receiver
      * @param Mage_Sales_Model_Order $order
      * @param string $message
      * @return Mage_Checkout_Helper_Data
