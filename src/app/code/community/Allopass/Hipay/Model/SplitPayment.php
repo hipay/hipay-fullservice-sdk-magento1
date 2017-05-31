@@ -1,46 +1,46 @@
 <?php
 class Allopass_Hipay_Model_SplitPayment extends Mage_Core_Model_Abstract
 {
-	
+
 	const SPLIT_PAYMENT_STATUS_PENDING = 'pending';
 	const SPLIT_PAYMENT_STATUS_FAILED = 'failed';
 	const SPLIT_PAYMENT_STATUS_COMPLETE = 'complete';
-	
+
 	protected function _construct()
 	{
 		parent::_construct();
 		$this->_init('hipay/splitPayment');
 		$this->setIdFieldName('split_payment_id');
 	}
-	
-	
+
+
 	static function getStatues()
 	{
 		$statues = array(self::SPLIT_PAYMENT_STATUS_PENDING=>Mage::helper('sales')->__('Pending'),
 				self::SPLIT_PAYMENT_STATUS_FAILED=>Mage::helper('sales')->__('Failed'),
 				self::SPLIT_PAYMENT_STATUS_COMPLETE=>Mage::helper('sales')->__('Complete')
 		);
-		
+
 		return $statues;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return boolean|string
 	 */
 	public function pay()
 	{
-		
+
 		if(!$this->canPay())
 			Mage::throwException("This split payment is already paid!");
-		
+
 		if(!$this->getId())
 		{
 			Mage::throwException("Split Payment not found!");
 		}
-		
+
 		try {
-			
+
 			$state = $this->getMethodInstance()->paySplitPayment($this);
 			switch ($state)
 			{
@@ -55,11 +55,11 @@ class Allopass_Hipay_Model_SplitPayment extends Mage_Core_Model_Abstract
 					$this->setStatus(self::SPLIT_PAYMENT_STATUS_FAILED);
 					$this->sendErrorEmail();
 					break;
-						
+
 			}
-		
+
 		} catch (Exception $e) {
-			
+
 			if($e->getMessage() != 'Code: 3010004. Message: This order has already been paid'){
 				$this->setStatus(self::SPLIT_PAYMENT_STATUS_FAILED);
 				$this->setAttempts($this->getAttempts() + 1);
@@ -69,15 +69,15 @@ class Allopass_Hipay_Model_SplitPayment extends Mage_Core_Model_Abstract
 			else{ //Order is already paid, so we set complete status
 				$this->setStatus(self::SPLIT_PAYMENT_STATUS_COMPLETE);
 			}
-			
+
 		}
-		
+
 		$this->setAttempts($this->getAttempts() + 1);
 		$this->save();
 		return $this;
-		
+
 	}
-	
+
 	public function sendErrorEmail()
 	{
 		/* @var $helperCheckout Mage_Checkout_Helper_Data */
@@ -86,7 +86,7 @@ class Allopass_Hipay_Model_SplitPayment extends Mage_Core_Model_Abstract
 		$message = Mage::helper('hipay')->__("Error on request split Payment HIPAY. Split Payment Id: ".$this->getSplitPaymentId());
 		$helperCheckout->sendPaymentFailedEmail($order, $message,'Split Payment Hipay');
 	}
-	
+
 	/**
 	 * @return Allopass_Hipay_Model_Method_Abstract
 	 */
@@ -100,12 +100,12 @@ class Allopass_Hipay_Model_SplitPayment extends Mage_Core_Model_Abstract
 		}
 		return Mage::getSingleton($moduleName . "/method_" . $methodClass );
 	}
-	
+
 	public function canPay()
 	{
 		return $this->getStatus() == self::SPLIT_PAYMENT_STATUS_FAILED || $this->getStatus() == self::SPLIT_PAYMENT_STATUS_PENDING;
 	}
-	
-	
-	
+
+
+
 }
