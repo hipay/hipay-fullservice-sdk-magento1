@@ -44,7 +44,7 @@ elif [ "$1" = 'init' ]; then
         docker-compose rm -fv
         sudo rm -Rf data/ log/ web/
         docker-compose -f docker-compose.yml -f docker-compose.dev.yml build --no-cache
-        docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+        docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
     else
         echo "Put your credentials in auth.env and hipay.env before start update the docker-compose.dev to link this files"
     fi
@@ -72,7 +72,7 @@ elif [ "$1" = "notif" ]; then
         read -p "In order to simulate notification to Magento server, put here an order ID : " order
     done
 
-    casperjs test $pathPreFile ${header}002*/1*/0201-*.js --url=$BASE_URL --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --ignore-ssl-errors=true --ssl-protocol=any --order=$order
+    casperjs test $pathPreFile ${header}002*/1*/0201-*.js --url=$BASE_URL --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --login-backend=$LOGIN_BACKEND  --ignore-ssl-errors=true --ssl-protocol=any --order=$order
 else
     echo "Incorrect argument ! Please check the HiPay's Helper via the following command : 'sh magento.sh' or 'sh magento.sh --help'"
 fi

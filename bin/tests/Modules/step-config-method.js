@@ -40,7 +40,7 @@ exports.proceed = function proceed(test, method, nameField, option) {
                                 test.info(method + " Configuration done");
                             }, function fail() {
                                 test.fail('Failed to apply ' + method + ' Configuration on the system');
-                            }, 15000);
+                            }, 30000);
                         }
                         else
                             test.info(method + " Configuration already done");
@@ -52,9 +52,9 @@ exports.proceed = function proceed(test, method, nameField, option) {
                 });
 			}, function fail() {
                 test.assertExists(x('//span[contains(.,"Payment Methods")]'), "Payment Methods menu exists");
-            }, 20000);
+            }, 30000);
 		}, function fail() {
             test.assertExists(x('//span[text()="Configuration"]'), "Configuration menu exists");
-        }, 20000);
+        }, 30000);
 	});
 };

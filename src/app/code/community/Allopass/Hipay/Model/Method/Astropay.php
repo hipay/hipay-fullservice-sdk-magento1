@@ -1,65 +1,8 @@
 <?php
-class Allopass_Hipay_Model_Method_Astropay extends Allopass_Hipay_Model_Method_Cc
+class Allopass_Hipay_Model_Method_Astropay extends Allopass_Hipay_Model_Method_AbstractOrder
 {	
 	
-	public function getOrderPlaceRedirectUrl()
-	{
-		return Mage::getUrl(str_replace("_", "/", $this->getCode()).'/sendRequest',array('_secure' => true));
-	}	
-	
-	
-	/**
-	 * Assign data to info model instance
-	 *
-	 * @param   mixed $data
-	 * @return  Mage_Payment_Model_Info
-	 */
-	public function assignData($data)
-	{
-		if (!($data instanceof Varien_Object)) {
-			$data = new Varien_Object($data);
-		}
-		$info = $this->getInfoInstance();
-
-		$info->setCcType($this->getConfigData('cctypes'))
-			->setAdditionalInformation('national_identification_number', $data->getNationalIdentificationNumber());
-		
-		$this->assignInfoData($info, $data);
-		
-		return $this;
-	}
-
-	public function initialize($paymentAction, $stateObject)
-	{
-		/* @var $payment Mage_Sales_Model_Order_Payment */
-		$payment = $this->getInfoInstance();
-		$order = $payment->getOrder();
-		$customer = Mage::getModel('customer/customer')->load($order->getCustomerId());
-		
-		
-		if($payment->getAdditionalInformation('use_oneclick') && $customer->getId())
-		{
-			$cardId = $payment->getAdditionalInformation('selected_oneclick_card');
-			$card = Mage::getModel('hipay/card')->load($cardId);
-			if($card->getId() && $card->getCustomerId() == $customer->getId())
-				$token = $card->getCcToken();
-			else 
-				Mage::throwException(Mage::helper('hipay')->__("Error with your card!"));
-			$payment->setAdditionalInformation('token',$token);
-		}
-		
-		return $this;
-		
-	}
-	
-	
-	protected function getCcTypeHipay($ccTypeMagento)
-	{
-		return $ccTypeMagento;
-	}
-	
-
-	/**
+    /**
 	 * Validate payment method information object
 	 *
 	 * @param   Mage_Payment_Model_Info $info

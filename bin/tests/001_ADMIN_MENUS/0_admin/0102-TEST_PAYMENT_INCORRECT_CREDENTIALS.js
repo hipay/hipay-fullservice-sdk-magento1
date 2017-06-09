@@ -1,3 +1,5 @@
+var initialCredential;
+
 casper.test.begin('Test Payment With Incorrect Credentials', function(test) {
 	phantom.clearCookies();
     var paymentType = "HiPay Enterprise Credit Card";
@@ -12,7 +14,9 @@ casper.test.begin('Test Payment With Incorrect Credentials', function(test) {
         configuration.proceedMotoSendMail(test, '0');
     })
     /* Set bad credentials inside HiPay Entreprise formular */
-    .then(function() {
+    .then(function(){
+        initialCredential = this.evaluate(function() { return document.querySelector('input[name="groups[hipay_api][fields][api_username_test][value]"]').value; });
+        test.info("Initial credential for api_user_name was :" + initialCredential);
         this.fillFormHipayEnterprise("blabla");
     })
     .thenOpen(headlink, function() {
@@ -70,7 +74,8 @@ casper.test.begin('Test Payment With Incorrect Credentials', function(test) {
             this.click(x('//span[contains(., "HiPay Enterprise")]'));
             test.info("Done");
             this.waitForSelector(x('//h3[text()="HiPay Enterprise"]'), function success() {
-                this.fillFormHipayEnterprise(correctCredConfigAdmin);
+                test.info("Initial credential for api_user_name was :" + initialCredential);
+                this.fillFormHipayEnterprise(initialCredential);
             }, function fail() {
                 test.assertExists(x('//h3[text()="HiPay Enterprise"]'), "Hipay Enterprise admin page exists");
             }, 10000);

@@ -385,7 +385,7 @@
 		<payment>
 			<hipay_cc>
 				<active>0</active>
-				<title>Credit Card</title>
+				<title>HiPay Enterprise Credit Card</title>
 				<payment_action>authorize_capture</payment_action>
 				<cctypes>VI,MC,AE,SDD</cctypes>
 				<display_card_owner>0</display_card_owner>
@@ -413,7 +413,7 @@
 			</hipay_cc>
 			<hipay_ccxtimes>
 				<active>0</active>
-				<title>Credit Card Split Payment</title>
+				<title>HiPay Enterprise Credit Card Split Payment</title>
 				<payment_action>authorize_capture</payment_action>
 				<cctypes>VI,MC,AE</cctypes>
 				<display_card_owner>0</display_card_owner>
@@ -441,7 +441,7 @@
 			</hipay_ccxtimes>
 			<hipay_hosted>
 				<active>0</active>
-				<title>Credit Card</title>
+				<title>HiPay Enterprise Credit Card</title>
 				<payment_action>authorize_capture</payment_action>
 				<cctypes>american-express,visa,mastercard</cctypes>
 				<order_status_payment_accepted>processing</order_status_payment_accepted>
@@ -474,7 +474,7 @@
 			</hipay_hosted>
 			<hipay_hostedxtimes>
 				<active>0</active>
-				<title>Credit Card Split Payment</title>
+				<title>HiPay Enterprise Credit Card Split Payment</title>
 				<payment_action>authorize_capture</payment_action>
 				<cctypes>american-express,visa,mastercard</cctypes>
 				<order_status_payment_accepted>processing</order_status_payment_accepted>
@@ -507,7 +507,7 @@
 			</hipay_hostedxtimes>
 			<hipay_sofortapi>
 				<active>0</active> <!-- Activé ou non -->
-				<title>HiPay Sofort</title> <!-- Titre par défaut modifiable en admin -->
+				<title>HiPay Enterprise Sofort</title> <!-- Titre par défaut modifiable en admin -->
 				<payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
 				<cctypes>sofort-uberweisung</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
 				<!-- <useccv>1</useccv> --> <!-- permet de rendre obligatoire la saisie du CCV (uniquement en mode API) -->
@@ -535,7 +535,7 @@
 			</hipay_sofortapi>
 			<hipay_ideal>
 				<active>0</active> <!-- Activé ou non -->
-				<title>HiPay iDeal</title> <!-- Titre par défaut modifiable en admin -->
+				<title>HiPay Enterprise iDeal</title> <!-- Titre par défaut modifiable en admin -->
 				<payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
 				<cctypes>ideal</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
 				<!-- <useccv>1</useccv> --> <!-- permet de rendre obligatoire la saisie du CCV (uniquement en mode API) -->
@@ -595,7 +595,7 @@
 			</hipay_ing>
 			<hipay_dexia>
 				<active>0</active> <!-- Activé ou non -->
-				<title>HiPay Belfius / Dexia Direct Net</title> <!-- Titre par défaut modifiable en admin -->
+				<title>HiPay Enterprise  Belfius / Dexia Direct Net</title> <!-- Titre par défaut modifiable en admin -->
 				<payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
 				<cctypes>dexia-directnet</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
 				<!-- <useccv>1</useccv> --> <!-- permet de rendre obligatoire la saisie du CCV (uniquement en mode API) -->
@@ -683,7 +683,7 @@
 			<!-- 			</hipay_kbc> -->
 			<hipay_giropay>
 				<active>0</active> <!-- Activé ou non -->
-				<title>HiPay Giropay</title> <!-- Titre par défaut modifiable en admin -->
+				<title>HiPay Enterprise  Giropay</title> <!-- Titre par défaut modifiable en admin -->
 				<payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
 				<cctypes>giropay</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
 				<!-- <useccv>1</useccv> --> <!-- permet de rendre obligatoire la saisie du CCV (uniquement en mode API) -->
@@ -713,7 +713,7 @@
 			</hipay_giropay>
 			<hipay_przelewy24api>
 				<active>0</active> <!-- Activé ou non -->
-				<title>HiPay Przelewy24</title> <!-- Titre par défaut modifiable en admin -->
+				<title>HiPay Enterprise Przelewy24</title> <!-- Titre par défaut modifiable en admin -->
 				<payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
 				<cctypes>przelewy24</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
 				<!-- <useccv>1</useccv> --> <!-- permet de rendre obligatoire la saisie du CCV (uniquement en mode API) -->
@@ -743,7 +743,7 @@
 			</hipay_przelewy24api>
 			<hipay_sisalapi>
 				<active>0</active> <!-- Activé ou non -->
-				<title>HiPay Sisal</title> <!-- Titre par défaut modifiable en admin -->
+				<title>HiPay Enterprise Sisal</title> <!-- Titre par défaut modifiable en admin -->
 				<payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
 				<cctypes>sisal</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
 				<!-- <useccv>1</useccv> --> <!-- permet de rendre obligatoire la saisie du CCV (uniquement en mode API) -->
@@ -771,7 +771,7 @@
 			</hipay_sisalapi>
 			<hipay_qiwi>
 				<active>0</active> <!-- Activé ou non -->
-				<title>HiPay Visa Qiwi Wallet</title> <!-- Titre par défaut modifiable en admin -->
+				<title>HiPay Enterprise Visa Qiwi Wallet</title> <!-- Titre par défaut modifiable en admin -->
 				<payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
 				<cctypes>qiwi-wallet</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
 				<!-- <useccv>1</useccv> --> <!-- permet de rendre obligatoire la saisie du CCV (uniquement en mode API) -->
@@ -801,7 +801,7 @@
 			</hipay_qiwi>
 			<hipay_webmoneyapi>
 				<active>0</active> <!-- Activé ou non -->
-				<title>HiPay WebMoney Transfer</title> <!-- Titre par défaut modifiable en admin -->
+				<title>HiPay Enterprise WebMoney Transfer</title> <!-- Titre par défaut modifiable en admin -->
 				<payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
 				<cctypes>webmoney-transfer</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
 				<!-- <useccv>1</useccv> --> <!-- permet de rendre obligatoire la saisie du CCV (uniquement en mode API) -->
@@ -831,7 +831,7 @@
 			</hipay_webmoneyapi>
 			<hipay_yandexapi>
 				<active>0</active> <!-- Activé ou non -->
-				<title>HiPay Yandex.Money</title> <!-- Titre par défaut modifiable en admin -->
+				<title>HiPay Enterprise Yandex.Money</title> <!-- Titre par défaut modifiable en admin -->
 				<payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
 				<cctypes>yandex</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
 				<!-- <useccv>1</useccv> --> <!-- permet de rendre obligatoire la saisie du CCV (uniquement en mode API) -->
@@ -861,7 +861,7 @@
 			</hipay_yandexapi>
 			<hipay_paypalapi>
 				<active>0</active> <!-- Activé ou non -->
-				<title>HiPay PayPal</title> <!-- Titre par défaut modifiable en admin -->
+				<title>HiPay Enterprise PayPal</title> <!-- Titre par défaut modifiable en admin -->
 				<payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
 				<cctypes>paypal</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
 				<!-- <useccv>1</useccv> --> <!-- permet de rendre obligatoire la saisie du CCV (uniquement en mode API) -->
@@ -889,7 +889,7 @@
 			</hipay_paypalapi>
 			<hipay_sdd>
 				<active>0</active>
-				<title>HiPay SEPA Direct Debit</title>
+				<title>HiPay Enterprise SEPA Direct Debit</title>
 				<payment_action>authorize_capture</payment_action>
 				<cctypes>SDD</cctypes>
 				<order_status_payment_accepted>processing</order_status_payment_accepted>
@@ -916,7 +916,7 @@
 			</hipay_sdd>
             <hipay_postfinancecardapi>
 				<active>0</active> <!-- Activé ou non -->
-				<title>HiPay PostFinance Card</title> <!-- Titre par défaut modifiable en admin -->
+				<title>HiPay Enterprise PostFinance Card</title> <!-- Titre par défaut modifiable en admin -->
 				<payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
 				<cctypes>postfinance-card</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
 				<!-- <useccv>1</useccv> --> <!-- permet de rendre obligatoire la saisie du CCV (uniquement en mode API) -->
@@ -944,7 +944,7 @@
 			</hipay_postfinancecardapi>
 			<hipay_postfinanceefinanceapi>
 				<active>0</active> <!-- Activé ou non -->
-				<title>HiPay PostFinance E-Finance</title> <!-- Titre par défaut modifiable en admin -->
+				<title>HiPay Enterprise PostFinance E-Finance</title> <!-- Titre par défaut modifiable en admin -->
 				<payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
 				<cctypes>postfinance-efinance</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
 				<!-- <useccv>1</useccv> --> <!-- permet de rendre obligatoire la saisie du CCV (uniquement en mode API) -->
@@ -972,7 +972,7 @@
 			</hipay_postfinanceefinanceapi>
 			<hipay_klarna>
 				<active>0</active>
-				<title>Klarna invoice</title>
+				<title>HiPay Enterprise Klarna invoice</title>
 				<payment_action>authorize_capture</payment_action>
 				<cctypes>klarnainvoice</cctypes>
 				<order_status_payment_accepted>processing</order_status_payment_accepted>
@@ -1003,7 +1003,7 @@
 			</hipay_klarna>
 			<hipay_boleto>
 				<active>0</active>
-				<title>Boleto bancario</title>
+				<title>HiPay Enterprise Boleto bancario</title>
 				<payment_action>authorize_capture</payment_action>
 				<cctypes>boleto-bancario</cctypes>
 				<order_status_payment_accepted>processing</order_status_payment_accepted>
@@ -1038,7 +1038,7 @@
 			</hipay_boleto>
 			<hipay_itau>
 				<active>0</active>
-				<title>Itau</title>
+				<title>HiPay Enterprise Itau</title>
 				<payment_action>authorize_capture</payment_action>
 				<cctypes>itau</cctypes>
 				<order_status_payment_accepted>processing</order_status_payment_accepted>
@@ -1073,7 +1073,7 @@
 			</hipay_itau>
 			<hipay_bradesco>
 				<active>0</active>
-				<title>Bradesco</title>
+				<title>HiPay Enterprise Bradesco</title>
 				<payment_action>authorize_capture</payment_action>
 				<cctypes>bradesco</cctypes>
 				<order_status_payment_accepted>processing</order_status_payment_accepted>
@@ -1108,7 +1108,7 @@
 			</hipay_bradesco>
 			<hipay_banco>
 				<active>0</active>
-				<title>Banco do brazil</title>
+				<title>HiPay Enterprise Banco do brazil</title>
 				<payment_action>authorize_capture</payment_action>
 				<cctypes>banco-do-brasil</cctypes>
 				<order_status_payment_accepted>processing</order_status_payment_accepted>
@@ -1143,7 +1143,7 @@
 			</hipay_banco>
 			<hipay_santander>
 				<active>0</active>
-				<title>Santander HomeBanking</title>
+				<title>HiPay Enterprise Santander HomeBanking</title>
 				<payment_action>authorize_capture</payment_action>
 				<cctypes>santander-home-banking</cctypes>
 				<order_status_payment_accepted>processing</order_status_payment_accepted>
@@ -1178,7 +1178,7 @@
 			</hipay_santander>
 			<hipay_aura>
 				<active>0</active>
-				<title>Aura</title>
+				<title>HiPay Enterprise Aura</title>
 				<payment_action>authorize_capture</payment_action>
 				<cctypes>aura</cctypes>
 				<order_status_payment_accepted>processing</order_status_payment_accepted>
@@ -1213,7 +1213,7 @@
 			</hipay_aura>
 			<hipay_caixa>
 				<active>0</active>
-				<title>Caixa</title>
+				<title>HiPay Enterprise Caixa</title>
 				<payment_action>authorize_capture</payment_action>
 				<cctypes>caixa</cctypes>
 				<order_status_payment_accepted>processing</order_status_payment_accepted>
@@ -1280,7 +1280,7 @@
 			</hipay_discover>-->
 			<hipay_oxxo>
 				<active>0</active>
-				<title>Oxxo</title>
+				<title>HiPay Enterprise Oxxo</title>
 				<payment_action>authorize_capture</payment_action>
 				<cctypes>oxxo</cctypes>
 				<order_status_payment_accepted>processing</order_status_payment_accepted>
@@ -1315,7 +1315,7 @@
 			</hipay_oxxo>
 			<hipay_bbva>
 				<active>0</active>
-				<title>BBVA Bancomer</title>
+				<title>HiPay Enterprise BBVA Bancomer</title>
 				<payment_action>authorize_capture</payment_action>
 				<cctypes>bbva-bancomer</cctypes>
 				<order_status_payment_accepted>processing</order_status_payment_accepted>
@@ -1350,7 +1350,7 @@
 			</hipay_bbva>
 			<hipay_banamex>
 				<active>0</active>
-				<title>Banamex</title>
+				<title>HiPay Enterprise Banamex</title>
 				<payment_action>authorize_capture</payment_action>
 				<cctypes>banamex</cctypes>
 				<order_status_payment_accepted>processing</order_status_payment_accepted>
@@ -1385,7 +1385,7 @@
 			</hipay_banamex>
 			<hipay_santandercash>
 				<active>0</active>
-				<title>Santader cash</title>
+				<title>HiPay Enterprise Santader cash</title>
 				<payment_action>authorize_capture</payment_action>
 				<cctypes>santader-cash</cctypes>
 				<order_status_payment_accepted>processing</order_status_payment_accepted>
@@ -1418,6 +1418,76 @@
 				<specificcountry>MX</specificcountry>
 				<currency>MXN</currency>
 			</hipay_santandercash>
+			<hipay_facilipay3x>
+				<active>0</active>
+				<title>HiPay Enterprise Oney Facilipay 3X</title>
+				<payment_action>authorize_capture</payment_action>
+				<cctypes>3xcb</cctypes>
+				<order_status_payment_accepted>processing</order_status_payment_accepted>
+				<order_status_payment_refused>canceled</order_status_payment_refused>
+				<order_status_payment_canceled>canceled</order_status_payment_canceled>
+				<hipay_status_validate_order>118</hipay_status_validate_order>
+				<pending_redirect_page>hipay/checkout/pending</pending_redirect_page>
+				<display_selector>1</display_selector>
+				<template>basic</template>
+				<allow_use_oneclick>0</allow_use_oneclick>
+				<invoice_create>1</invoice_create>
+				<re_add_to_cart>0</re_add_to_cart>
+				<cancel_pending_order>1</cancel_pending_order>
+				<display_iframe>0</display_iframe>
+				<iframe_width>485px</iframe_width>
+				<iframe_height>450px</iframe_height>
+				<iframe_style>margin: 10px 0; border: 1px solid #BEBCB7;</iframe_style>
+				<iframe_wrapper_style>text-align: center; border-bottom: 1px solid #BEBCB7; border-left: 1px solid #BEBCB7; border-right: 1px solid #BEBCB7;</iframe_wrapper_style>
+				<is_test_mode>0</is_test_mode>
+				<debug>0</debug>
+				<model>hipay/method_facilipay3x</model>
+				<accept_url>hipay/facilipay3x/accept</accept_url>
+				<pending_url>hipay/facilipay3x/pending</pending_url>
+				<decline_url>hipay/facilipay3x/decline</decline_url>
+				<exception_url>hipay/facilipay3x/exception</exception_url>
+				<cancel_url>hipay/facilipay3x/cancel</cancel_url>
+				<use_3d_secure>1</use_3d_secure>
+				<send_fraud_payment_email>0</send_fraud_payment_email>
+				<allowspecific>1</allowspecific>
+				<specificcountry>FR</specificcountry>
+				<currency>EUR</currency>
+			</hipay_facilipay3x>
+			<hipay_facilipay4x>
+				<active>0</active>
+				<title>HiPay Enterprise Oney Facilipay 4X</title>
+				<payment_action>authorize_capture</payment_action>
+				<cctypes>4xcb</cctypes>
+				<order_status_payment_accepted>processing</order_status_payment_accepted>
+				<order_status_payment_refused>canceled</order_status_payment_refused>
+				<order_status_payment_canceled>canceled</order_status_payment_canceled>
+				<hipay_status_validate_order>118</hipay_status_validate_order>
+				<pending_redirect_page>hipay/checkout/pending</pending_redirect_page>
+				<display_selector>1</display_selector>
+				<template>basic</template>
+				<allow_use_oneclick>0</allow_use_oneclick>
+				<invoice_create>1</invoice_create>
+				<re_add_to_cart>0</re_add_to_cart>
+				<cancel_pending_order>1</cancel_pending_order>
+				<display_iframe>0</display_iframe>
+				<iframe_width>485px</iframe_width>
+				<iframe_height>450px</iframe_height>
+				<iframe_style>margin: 10px 0; border: 1px solid #BEBCB7;</iframe_style>
+				<iframe_wrapper_style>text-align: center; border-bottom: 1px solid #BEBCB7; border-left: 1px solid #BEBCB7; border-right: 1px solid #BEBCB7;</iframe_wrapper_style>
+				<is_test_mode>0</is_test_mode>
+				<debug>0</debug>
+				<model>hipay/method_facilipay4x</model>
+				<accept_url>hipay/facilipay4x/accept</accept_url>
+				<pending_url>hipay/facilipay4x/pending</pending_url>
+				<decline_url>hipay/facilipay4x/decline</decline_url>
+				<exception_url>hipay/facilipay4x/exception</exception_url>
+				<cancel_url>hipay/facilipay4x/cancel</cancel_url>
+				<use_3d_secure>1</use_3d_secure>
+				<send_fraud_payment_email>0</send_fraud_payment_email>
+				<allowspecific>1</allowspecific>
+				<specificcountry>FR</specificcountry>
+				<currency>EUR</currency>
+			</hipay_facilipay4x>
 		</payment>
 	</default>
 	<crontab>

@@ -37,7 +37,7 @@ exports.proceed = function proceed(test, paymentType, method) {
                 });
             }, function fail() {
                 test.assertExists(x('//span[text()="Add Products"]'), "Add products button exists");
-            }, 10000);
+            }, 15000);
         }, function fail() {
             test.assertExists('input#store_2', "Language input exists");
         }, 20000);

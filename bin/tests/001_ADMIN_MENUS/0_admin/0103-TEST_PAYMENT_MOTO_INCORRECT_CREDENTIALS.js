@@ -13,6 +13,8 @@ casper.test.begin('Test MOTO Payment With Incorrect Credentials', function(test)
     })
     /* Set bad credentials inside HiPay Entreprise formular and create order via admin panel */
     .then(function() {
+        initialCredential = this.evaluate(function() { return document.querySelector('input[name="groups[hipay_api_moto][fields][api_username_test][value]"]').value; });
+        test.info("Initial credential for api_user_name was :" + initialCredential);
         this.fillFormHipayEnterprise("blabla", true);
         checkout.proceed(test, paymentType, "hosted");
     })
@@ -44,7 +46,7 @@ casper.test.begin('Test MOTO Payment With Incorrect Credentials', function(test)
             this.click(x('//span[contains(., "HiPay Enterprise")]'));
             test.info("Done");
             this.waitForSelector(x('//h3[text()="HiPay Enterprise"]'), function success() {
-                this.fillFormHipayEnterprise(correctCredConfigAdmin, true);
+                this.fillFormHipayEnterprise(initialCredential, true);
             }, function fail() {
                 test.assertExists(x('//h3[text()="HiPay Enterprise"]'), "Hipay Enterprise admin page exists");
             }, 10000);
