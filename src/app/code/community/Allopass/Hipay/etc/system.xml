@@ -266,7 +266,7 @@
                     </fields>
                 </hipay_api_moto>
                 <hipay_basket>
-                    <label>Customer's cart items configuration</label>
+                    <label>Basket configuration</label>
                     <frontend_type>text</frontend_type>
                     <comment></comment>
                     <sort_order>12</sort_order>
@@ -275,9 +275,9 @@
                     <show_in_store>1</show_in_store>
                     <fields>
                         <activate_basket translate="label comment">
-                            <label>Send cart items</label>
+                            <label>Activate basket</label>
                             <frontend_type>select</frontend_type>
-                            <comment>If yes, the customer's cart items are sent to HiPay</comment>
+                            <comment>Activate the basket sending to HIPAY</comment>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>110</sort_order>
                             <show_in_default>1</show_in_default>
@@ -304,80 +304,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </load_product_ean>
-                        <separator translate="label,comment">
-                            <label>CATEGORY MAPPING</label>
-                            <comment></comment>
-                            <frontend_type>label</frontend_type>
-                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
-                            <sort_order>131</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </separator>
-                        <notice_mapping_mapping_category translate="label" module="hipay">
-                            <frontend_model>hipay/adminhtml_system_config_form_field_Notice</frontend_model>
-                            <sort_order>140</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </notice_mapping_mapping_category>
-                        <mapping_category translate="comment">
-                            <frontend_model>hipay/adminhtml_field_mappingCategory</frontend_model>
-                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
-                            <sort_order>141</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </mapping_category>
-                        <separator_shipping translate="label,comment">
-                            <label>SHIPPING METHOD MAPPING</label>
-                            <comment></comment>
-                            <frontend_type>label</frontend_type>
-                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
-                            <sort_order>142</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </separator_shipping>
-                        <informations_shipping translate="label,comment">
-                            <tooltip><![CDATA[This mapping is necessary to indicate a match between your delivery methods and the delivery methods defined at HiPay.
-<p>
-For each customer order, depending on the chosen configuration, this information is sent as a supplement to the customer's basket.
-</p>
-For each mapping you have to fill out the following information:
-<p>
-<ul>
-<li>"Preparation delay": Estimated day time for order preparation</li>
-<li>"Delivery delay"   : Estimated day time for delivery</li>
-</ul>
-</p>
-From this information, an estimated (estimated) delivery day is calculated and sent with the transaction.
-<p>
-<p>
-<b>This information is required for Oney payment methods (Facily pay 3X, Facily pay 4X)</b></p>]]></tooltip>
-                            <label></label>
-                            <frontend_type>label</frontend_type>
-                            <frontend_model>hipay/adminhtml_system_config_form_field_Information</frontend_model>
-                            <sort_order>143</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </informations_shipping>
-                        <notice_mapping_shipping_method translate="label" module="hipay">
-                            <frontend_model>hipay/adminhtml_system_config_form_field_Notice</frontend_model>
-                            <sort_order>143</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </notice_mapping_shipping_method>
-                        <mapping_shipping_method translate="comment">
-                            <frontend_model>hipay/adminhtml_field_mappingShippingMethod</frontend_model>
-                            <backend_model>hipay/field_mappingShippingMethod</backend_model>
-                            <sort_order>150</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </mapping_shipping_method>
                     </fields>
                 </hipay_basket>
                 <fraud_payment translate="label">
@@ -385,6 +311,7 @@ From this information, an estimated (estimated) delivery day is calculated and s
                     <comment>This email is sended to customer, if his payment is in fraud state</comment>
                     <frontend_type>text</frontend_type>
                     <sort_order>20</sort_order>
+
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
@@ -5733,6 +5660,13 @@ From this information, an estimated (estimated) delivery day is calculated and s
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
+                        <notice translate="label" module="hipay">
+                            <frontend_model>hipay/adminhtml_system_config_form_field_Notice</frontend_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </notice>
                         <active translate="label">
                             <label>Enabled</label>
                             <frontend_type>select</frontend_type>
@@ -9362,8 +9296,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </title>
-                        <payment_product_fees translate="label">
+                        <payment_product_fees translate="label comment">
                             <label>Facily Pay fees</label>
+                            <comment>Thank you for referring to your contract oney</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_product_facilipay3x</source_model>
                             <sort_order>21</sort_order>
@@ -9435,93 +9370,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </payment_action>
-                        <css_url translate="label coment">
-                            <label>Css Url</label>
-                            <comment>Important, HTTPS protocol is required</comment>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>30</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </css_url>
-                        <template translate="label">
-                            <label>Page payment template</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>hipay/source_template</source_model>
-                            <sort_order>35</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </template>
-                        <display_iframe translate="label">
-                            <label>Display hosted page in Iframe</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>36</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </display_iframe>
-                        <iframe_width translate="label">
-                            <label>iFrame Width</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>37</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </iframe_width>
-                        <iframe_height translate="label">
-                            <label>iFrame Height</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>38</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </iframe_height>
-                        <iframe_style translate="label">
-                            <label>iFrame Style</label>
-                            <frontend_type>text</frontend_type>show_in_website
-                            <sort_order>39</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </iframe_style>
-                        <iframe_wrapper_style translate="label">
-                            <label>Wrapper iFrame Style</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>39</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </iframe_wrapper_style>
-                        <display_selector translate="label">
-                            <label>Display card selector</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>40</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </display_selector>
-                        <use_3d_secure translate="label">
-                            <label>Use 3D Secure</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>hipay/source_3ds</source_model>
-                            <sort_order>60</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </use_3d_secure>
-                        <config_3ds_rules translate="label comment">
-                            <label>Rules 3D Secure</label>
-                            <comment>Configure Rules to activate 3D Secure</comment>
-                            <frontend_model>hipay/adminhtml_system_config_form_field_3dsRule</frontend_model>
-                            <backend_model>hipay/rule_config</backend_model>
-                            <sort_order>61</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </config_3ds_rules>
                         <send_fraud_payment_email translate="label">
                             <label>Send fraud payment email</label>
                             <frontend_type>select</frontend_type>
@@ -9531,15 +9379,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </send_fraud_payment_email>
-                        <allow_use_oneclick translate="label">
-                            <label>Use Oneclick</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>70</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </allow_use_oneclick>
                         <filter_oneclick translate="label comment">
                             <label>Rules Oneclick</label>
                             <comment>Configure Rules to activate oneclick</comment>
@@ -9691,8 +9530,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </title>
-                        <payment_product_fees translate="label">
+                        <payment_product_fees translate="label comment">
                             <label>Facily Pay fees</label>
+                            <comment>Thank you for referring to your contract oney</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_product_facilipay4x</source_model>
                             <sort_order>21</sort_order>
@@ -9764,93 +9604,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </payment_action>
-                        <css_url translate="label coment">
-                            <label>Css Url</label>
-                            <comment>Important, HTTPS protocol is required</comment>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>30</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </css_url>
-                        <template translate="label">
-                            <label>Page payment template</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>hipay/source_template</source_model>
-                            <sort_order>35</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </template>
-                        <display_iframe translate="label">
-                            <label>Display hosted page in Iframe</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>36</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </display_iframe>
-                        <iframe_width translate="label">
-                            <label>iFrame Width</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>37</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </iframe_width>
-                        <iframe_height translate="label">
-                            <label>iFrame Height</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>38</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </iframe_height>
-                        <iframe_style translate="label">
-                            <label>iFrame Style</label>
-                            <frontend_type>text</frontend_type>show_in_website
-                            <sort_order>39</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </iframe_style>
-                        <iframe_wrapper_style translate="label">
-                            <label>Wrapper iFrame Style</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>39</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </iframe_wrapper_style>
-                        <display_selector translate="label">
-                            <label>Display card selector</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>40</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </display_selector>
-                        <use_3d_secure translate="label">
-                            <label>Use 3D Secure</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>hipay/source_3ds</source_model>
-                            <sort_order>60</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </use_3d_secure>
-                        <config_3ds_rules translate="label comment">
-                            <label>Rules 3D Secure</label>
-                            <comment>Configure Rules to activate 3D Secure</comment>
-                            <frontend_model>hipay/adminhtml_system_config_form_field_3dsRule</frontend_model>
-                            <backend_model>hipay/rule_config</backend_model>
-                            <sort_order>61</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </config_3ds_rules>
                         <send_fraud_payment_email translate="label">
                             <label>Send fraud payment email</label>
                             <frontend_type>select</frontend_type>
@@ -9869,16 +9622,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </allow_use_oneclick>
-                        <filter_oneclick translate="label comment">
-                            <label>Rules Oneclick</label>
-                            <comment>Configure Rules to activate oneclick</comment>
-                            <frontend_model>hipay/adminhtml_system_config_form_field_3dsRule</frontend_model>
-                            <backend_model>hipay/rule_config</backend_model>
-                            <sort_order>80</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </filter_oneclick>
                         <re_add_to_cart translate="label comment">
                             <label>Add product to cart</label>
                             <comment>Fill cart when payment canceled or refused</comment>
