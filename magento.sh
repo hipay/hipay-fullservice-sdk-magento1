@@ -72,7 +72,7 @@ elif [ "$1" = "notif" ]; then
         read -p "In order to simulate notification to Magento server, put here an order ID : " order
     done
 
-    casperjs test $pathPreFile ${header}002*/1*/0201-*.js --url=$BASE_URL --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --ignore-ssl-errors=true --ssl-protocol=any --order=$order
+    casperjs test $pathPreFile ${header}002*/1*/0201-*.js --url=$BASE_URL --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --login-backend=$LOGIN_BACKEND  --ignore-ssl-errors=true --ssl-protocol=any --order=$order
 else
     echo "Incorrect argument ! Please check the HiPay's Helper via the following command : 'sh magento.sh' or 'sh magento.sh --help'"
 fi

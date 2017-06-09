@@ -1,5 +1,5 @@
 <?php
-class Allopass_Hipay_BoletoController extends Allopass_Hipay_Controller_Payment
+class Allopass_Hipay_DiscoverController extends Allopass_Hipay_Controller_Payment
 {
 	protected function _getMethodInstance()
 	{

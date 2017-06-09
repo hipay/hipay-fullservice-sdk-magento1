@@ -76,7 +76,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
     }
 
     /**
-     *  Return config MOTO ( HIPAY_MOT)
+     *  Return config MOTO ( HIPAY_MOTO)
      *
      * @param    string $key Var path key
      * @param    int $storeId Store View Id
@@ -85,6 +85,18 @@ class Allopass_Hipay_Model_Config extends Varien_Object
     public function getConfigDataMoto($key, $storeId = null)
     {
         return $this->getInternalConfig('hipay_api_moto', $key, $storeId = null);
+    }
+
+    /**
+     *  Return config BASKET
+     *
+     * @param    string $key Path key
+     * @param    int $storeId Store View Id
+     * @return   mixed
+     */
+    public function getConfigDataBasket($key, $storeId = null)
+    {
+        return $this->getInternalConfig('hipay_basket', $key, $storeId = null);
     }
 
     /**

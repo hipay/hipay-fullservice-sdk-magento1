@@ -12,6 +12,7 @@ web:
     - ./src/app/code/community/Allopass:/var/www/htdocs/app/code/community/Allopass
     - ./src/app/design/frontend/base/default/template/hipay:/var/www/htdocs/app/design/frontend/base/default/template/hipay
     - ./src/app/design/adminhtml/default/default/template/hipay:/var/www/htdocs/app/design/adminhtml/default/default/template/hipay
+    - ./src/skin/adminhtml/base/default/hipay/css:/var/www/htdocs/skin/adminhtml/base/default/hipay/css
     - ./bin/tests:/tmp/tests
     - ./web:/var/www/htdocs
     - ./log:/var/www/htdocs/var/log

@@ -3,16 +3,10 @@
 <?php $notices = $_element->getNoticesHipay(); ?>
 
 <?php if (!empty($notices)){ ?>
-<div class="notice-hipay" style="background:#efefef;padding: 10px;border: 1px solid #d8d8d8;">
-    <h1 style="color:red;">Warning</h1>
+<div class="notice-hipay">
     <?php foreach ($notices as $notice) { ?>
-        <span class="warning" style="color:red;"><?php echo $notice; ?></span>
+        <span class="warning"><?php echo $notice; ?></span>
     <?php } ?>
-    <div style="color:red"  >
-        <?php echo  Mage::helper("adminhtml")->__('Please check the configuration') .
-            '  <a href="' . Mage::helper("adminhtml")->getUrl("adminhtml/system_config/edit/section/hipay") . '"' .'>'.
-            Mage::helper("adminhtml")->__('here') .'</a>'; ?>
-    </div>
 </div>
 <?php } ?>
 
