@@ -1428,17 +1428,9 @@
 				<order_status_payment_canceled>canceled</order_status_payment_canceled>
 				<hipay_status_validate_order>118</hipay_status_validate_order>
 				<pending_redirect_page>hipay/checkout/pending</pending_redirect_page>
-				<display_selector>1</display_selector>
-				<template>basic</template>
-				<allow_use_oneclick>0</allow_use_oneclick>
 				<invoice_create>1</invoice_create>
 				<re_add_to_cart>0</re_add_to_cart>
 				<cancel_pending_order>1</cancel_pending_order>
-				<display_iframe>0</display_iframe>
-				<iframe_width>485px</iframe_width>
-				<iframe_height>450px</iframe_height>
-				<iframe_style>margin: 10px 0; border: 1px solid #BEBCB7;</iframe_style>
-				<iframe_wrapper_style>text-align: center; border-bottom: 1px solid #BEBCB7; border-left: 1px solid #BEBCB7; border-right: 1px solid #BEBCB7;</iframe_wrapper_style>
 				<is_test_mode>0</is_test_mode>
 				<debug>0</debug>
 				<model>hipay/method_facilipay3x</model>
@@ -1447,11 +1439,11 @@
 				<decline_url>hipay/facilipay3x/decline</decline_url>
 				<exception_url>hipay/facilipay3x/exception</exception_url>
 				<cancel_url>hipay/facilipay3x/cancel</cancel_url>
-				<use_3d_secure>1</use_3d_secure>
 				<send_fraud_payment_email>0</send_fraud_payment_email>
 				<allowspecific>1</allowspecific>
 				<specificcountry>FR</specificcountry>
 				<currency>EUR</currency>
+				<min_order_total>100</min_order_total>
 			</hipay_facilipay3x>
 			<hipay_facilipay4x>
 				<active>0</active>
@@ -1463,17 +1455,9 @@
 				<order_status_payment_canceled>canceled</order_status_payment_canceled>
 				<hipay_status_validate_order>118</hipay_status_validate_order>
 				<pending_redirect_page>hipay/checkout/pending</pending_redirect_page>
-				<display_selector>1</display_selector>
-				<template>basic</template>
-				<allow_use_oneclick>0</allow_use_oneclick>
 				<invoice_create>1</invoice_create>
 				<re_add_to_cart>0</re_add_to_cart>
 				<cancel_pending_order>1</cancel_pending_order>
-				<display_iframe>0</display_iframe>
-				<iframe_width>485px</iframe_width>
-				<iframe_height>450px</iframe_height>
-				<iframe_style>margin: 10px 0; border: 1px solid #BEBCB7;</iframe_style>
-				<iframe_wrapper_style>text-align: center; border-bottom: 1px solid #BEBCB7; border-left: 1px solid #BEBCB7; border-right: 1px solid #BEBCB7;</iframe_wrapper_style>
 				<is_test_mode>0</is_test_mode>
 				<debug>0</debug>
 				<model>hipay/method_facilipay4x</model>
@@ -1482,11 +1466,11 @@
 				<decline_url>hipay/facilipay4x/decline</decline_url>
 				<exception_url>hipay/facilipay4x/exception</exception_url>
 				<cancel_url>hipay/facilipay4x/cancel</cancel_url>
-				<use_3d_secure>1</use_3d_secure>
 				<send_fraud_payment_email>0</send_fraud_payment_email>
 				<allowspecific>1</allowspecific>
 				<specificcountry>FR</specificcountry>
 				<currency>EUR</currency>
+				<min_order_total>100</min_order_total>
 			</hipay_facilipay4x>
 		</payment>
 	</default>

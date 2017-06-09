@@ -281,12 +281,27 @@ EOT;
     }
 
     /**
-     *  Return HiPay's delivery method
+     *  Return HiPay's delivery method Full json
+     *
+     * @return array
+     */
+    public static function getFullItemsDelivery()
+    {
+        return json_decode(self::$_JSON_DELIVERY, true);
+    }
+
+    /**
+     *  Return HiPay's delivery method for listing
      *
      * @return array
      */
     public static function getItemsDelivery()
     {
-        return json_decode(self::$_JSON_DELIVERY, true);
+        $jsonArr = json_decode(self::$_JSON_DELIVERY, true);
+        $collection = array();
+        foreach ($jsonArr as $item) {
+            $collection[$item['code']] = $item['mode'] . '-' . $item['shipping'];
+        }
+        return $collection;
     }
 }

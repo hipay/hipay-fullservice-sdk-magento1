@@ -1333,7 +1333,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      */
     function calculateDeliveryMethod($mapping){
         if (is_array($mapping)) {
-            $itemsDelivery = Mage::helper('hipay/collection')->getItemsDelivery();
+            $itemsDelivery = Mage::helper('hipay/collection')->getFullItemsDelivery();
             if ($itemsDelivery && is_array($itemsDelivery) &&  !empty($mapping['hipay_delivery_method'])) {
                 return json_encode(array('mode' => $itemsDelivery[$mapping['hipay_delivery_method']]['mode'],
                     'shipping' => $itemsDelivery[$mapping['hipay_delivery_method']]['shipping']));
