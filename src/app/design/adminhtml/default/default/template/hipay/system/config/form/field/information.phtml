@@ -1,0 +1,13 @@
+<?php $_element = $this->getElement() ?>
+<?php $_htmlId = $this->getHtmlId() ? $this->getHtmlId() : '_' . uniqid(); ?>
+<?php $informations = $_element->getInformationsHipay(); ?>
+
+<?php if (!empty($informations)){ ?>
+    <div class="information-hipay" style="padding: 10px;">
+        <div class="detail-information">
+        <?php echo $informations ?>
+        </div>
+    </div>
+<?php } ?>
+
+

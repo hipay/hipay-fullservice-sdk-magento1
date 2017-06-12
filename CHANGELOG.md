@@ -1,3 +1,8 @@
+# Version 1.7.0
+New - Oney Facily Pay support
+New - Mapping yours categories with HiPay
+New - Mapping yours shipping methods with HiPay and determin delivery date
+
 # Version 1.6.2
 Fix - production url tokenJS
 

@@ -29,12 +29,13 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     # Install magento
     install-magento
 
-
     chown -R www-data:www-data /var/www/htdocs
     chmod -R a+rw /var/www/htdocs
     rm -f  /var/www/htdocs/install.php
 
-     # override files for hipay after installation of magento #
+    ################################################################################
+    # INSTALLING HIPAY'S FILES
+    ################################################################################
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     printf "\n${COLOR_SUCCESS}              COPY HIPAY FILES           ${NC}\n"
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
@@ -60,19 +61,23 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
                                INNER JOIN eav_entity_type ON eav_entity_type.entity_type_id = eav_entity_store.entity_type_id
                                SET eav_entity_store.increment_prefix='$PREFIX_STORE1'
                                WHERE eav_entity_type.entity_type_code='order' and eav_entity_store.store_id = 1 ;"
+    echo " Prefix STORE 1 for order id : $PREFIX_STORE1"
 
     n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT"  db:query "UPDATE eav_entity_store
                                INNER JOIN eav_entity_type ON eav_entity_type.entity_type_id = eav_entity_store.entity_type_id
                                SET eav_entity_store.increment_prefix='$PREFIX_STORE2'
                                WHERE eav_entity_type.entity_type_code='order' and eav_entity_store.store_id = 2 ;"
+    echo " Prefix STORE 2 for order id : $PREFIX_STORE2"
 
     n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT"  db:query "UPDATE eav_entity_store
                                INNER JOIN eav_entity_type ON eav_entity_type.entity_type_id = eav_entity_store.entity_type_id
                                SET eav_entity_store.increment_prefix='$PREFIX_STORE3'
                                WHERE eav_entity_type.entity_type_code='order' and eav_entity_store.store_id = 3 ;"
+    echo " Prefix STORE 2 for order id : $PREFIX_STORE3"
 
-    echo " Prefix for order id : $PREFIX_STORE1"
-
+    ################################################################################
+    # Managing credentials
+    ################################################################################
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     printf "\n${COLOR_SUCCESS}          SET HIPAY CREDENTIALS          ${NC}\n"
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
@@ -95,6 +100,9 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     echo "  API_TOKEN_JS_PASSWORD : $HIPAY_TOKENJS_PUBLICKEY_TEST"
     echo "  API_SECRET_PASSPHRASE : $HIPAY_API_USER_TEST\n"
 
+    ################################################################################
+    # ACTIVATE PAYMENT METHODS
+    ###############################################################################
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     printf "\n${COLOR_SUCCESS}         ACTIVATE PAYMENT METHODS        ${NC}\n"
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
@@ -109,7 +117,9 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
         printf "${COLOR_SUCCESS} Method $code is activated with test mode ${NC}\n"
     done
 
-    # Configuration per environment
+    ################################################################################
+    # CONFIGURATION PER ENVIRONMENT
+    ################################################################################
     if [ "$ENVIRONMENT" = "$ENV_DEVELOPMENT" ];then
 
         printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
@@ -143,6 +153,9 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
         cp -f /tmp/$ENVIRONMENT/php/php.ini /usr/local/etc/php/php.ini
     fi
 
+    ################################################################################
+    # SEPCIFIC PORT CONFIGURATION
+    ################################################################################
      if [ "$PORT_WEB" != "80" ] && [ "$ENVIRONMENT" != "production" ];then
          sed -i -e "s/80/$PORT_WEB/" /etc/apache2/sites-available/000-default.conf
 
@@ -153,23 +166,39 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
          fi
      fi
 
-    # SUPPORT PHP 7
+    ################################################################################
+    # CHANGE MAGENTO'S SOURCE FOR PHP7 SUPPORT
+    ################################################################################
     if [ "$PHP_VERSION" = "7.0" ];then
         sed -i -e "555s/\$callback\[0\])->\$callback\[1\]();/\$callback\[0\])->\{\$callback\[1\]\}();/" /var/www/htdocs/app/code/core/Mage/Core/Model/Layout.php
     fi
 
+    ################################################################################
+    # CRON CONFIGURATION
+    ################################################################################
+    printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+    printf "\n${COLOR_SUCCESS}            CRON CONGIGURATION           ${NC}\n"
+    printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+    chmod u+x $MAGENTO_ROOT/cron.sh
+    crontab -l | { cat; echo "*/5 * * * * su www-data -s /bin/bash -c 'sh "$MAGENTO_ROOT"cron.sh' >> /var/log/cron.log"; } | crontab -
 else
-     printf "\n${COLOR_SUCCESS}  => MAGENTO IS ALREADY INSTALLED IN THE CONTAINER ${NC}\n"
+    printf "\n${COLOR_SUCCESS}  => MAGENTO IS ALREADY INSTALLED IN THE CONTAINER ${NC}\n"
 fi
 
 chown -R www-data:www-data /var/www/htdocs
 
-export APACHE_RUN_USER=www-data
-export APACHE_RUN_GROUP=www-data
-export APACHE_PID_FILE=/var/run/apache2/apache2.pid
-export APACHE_RUN_DIR=/var/run/apache2
-export APACHE_LOCK_DIR=/var/lock/apache2
-export APACHE_LOG_DIR=/var/log/apache2
+################################################################################
+# IF CONTAINER IS KILLED, REMOVE PID
+################################################################################
+if [ -f /var/run/apache2/apache2.pid  ]; then
+    rm -f /var/run/apache2/apache2.pid
+fi
+
+################################################################################
+# RUN SERVICE FOR CRON JOB
+################################################################################
+service rsyslog start
+service cron start
 
 printf "${COLOR_SUCCESS}    |======================================================================${NC}\n"
 printf "${COLOR_SUCCESS}    |                                                                      ${NC}\n"
@@ -183,5 +212,8 @@ printf "${COLOR_SUCCESS}    |   PHP VERSION     : $PHP_VERSION                  
 printf "${COLOR_SUCCESS}    |   MAGENTO VERSION : $MAGENTO_VERSION                                 ${NC}\n"
 printf "${COLOR_SUCCESS}    |======================================================================${NC}\n"
 
-exec apache2 -DFOREGROUND
+if [ -f /var/run/apache2/apache2.pid  ]; then
+    rm -f /var/run/apache2/apache2.pid
+fi
 
+exec apache2-foreground

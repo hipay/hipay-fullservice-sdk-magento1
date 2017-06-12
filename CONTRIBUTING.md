@@ -52,7 +52,7 @@ The web container installs and preconfigures a magento 1.9 with the Hipay paymen
     
  -  You are ready and you can now launch the container with the command: 
 
-        sudo docker-compose -f docker-compose.yml -f docker-compose.dev up -d
+        sudo docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
  
 When all containers are started you will be able to access magento via the url defined in MAGENTO_URL.
 

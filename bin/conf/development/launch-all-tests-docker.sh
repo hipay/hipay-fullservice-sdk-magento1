@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 cd /tmp/tests
-sh launch-all-tests.sh
+bash casper_run.sh
