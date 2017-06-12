@@ -9,8 +9,8 @@ var fs = require('fs'),
 	typeCC = casper.cli.get('type-cc'),
 	loginBackend = casper.cli.get('login-backend'),
 	passBackend = casper.cli.get('pass-backend'),
-	paypalLogin = "ctorres@hipay.com",
-	paypalPass = "provider123",
+	loginPaypal = casper.cli.get('login-paypal'),
+	passPaypal = casper.cli.get('pass-paypal'),
 	correctCredConfigAdmin = "94658446.stage-secure-gateway.hipay-tpp.com",
 	countryPaypal = 'US',
 	order = casper.cli.get('order'),
@@ -59,6 +59,11 @@ casper.test.begin('Parameters', function(test) {
 		test.info("Backend credentials set");
 	else
 		test.comment("No Backend credentials");
+
+	if(loginPaypal != "" && passPaypal != "")
+		test.info("PayPal credentials set");
+	else
+		test.comment("No PayPal credentials");
 
 	casper.echo('Paramètres chargés !', 'INFO');
 	test.done();
