@@ -214,10 +214,10 @@ casper.test.begin('Functions', function(test) {
         		test.assertHttpStatus(200, "Correct HTTP Status Code 200");
             	test.assertExists('.hipay-checkout-pending', "The order has been successfully pended with method " + paymentType + " !");
             	this.setOrderId(true);
-        	}, function fail() {
+	        }, function fail() {
             	test.assertUrlMatch(/hipay\/checkout\/pending/, "Checkout result page exists");
-        	});
-        }, 30000);
+    	    }, 50000);
+        }, 50000);
 	};
     /* Test file again with another card type */
     casper.testOtherTypeCC = function(file) {
@@ -261,7 +261,7 @@ casper.test.begin('Functions', function(test) {
             test.info("HiPay Enterprise credentials configuration done");
         }, function fail() {
             test.fail('Failed to apply HiPay Enterprise credentials configuration on the system');
-        },10000);
+        },20000);
     };
     /* Configure Device Fingerprint options via formular */
     casper.setDeviceFingerprint = function(state) {

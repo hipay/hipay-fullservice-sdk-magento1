@@ -179,8 +179,7 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
     	$gatewayParams =  $this->getGatewayParams($payment, $amount,$token); 
     	
     	$gatewayParams['operation'] =$this->getOperation();
-   
-    	$paymentProduct = null; 	
+
     	if($payment->getAdditionalInformation('use_oneclick'))
     	{
     		$cardId = $payment->getAdditionalInformation('selected_oneclick_card');
@@ -192,9 +191,10 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
     			Mage::throwException(Mage::helper('hipay')->__("Error with your card!"));
     		
     	}
-    	else
-    		$paymentProduct = $this->getCcTypeHipay($payment->getCcType());
-    	
+    	else{
+            $paymentProduct = $this->getSpecifiedPaymentProduct($payment);
+        }
+
     	$gatewayParams['payment_product'] = $paymentProduct ;
     	$this->_debug($gatewayParams);
     	
@@ -208,8 +208,32 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
   		return $redirectUrl;
     	
 	}
-	
 
+    /**
+     *  Some payments method need product code with fees or no fees
+     *
+     * @return string|bool
+     */
+    private function getPaymentProductFees()
+    {
+        $paymentFees = $this->getConfigData('payment_product_fees');
+        if (!empty($paymentFees)) {
+                return $paymentFees;
+        }
+        return false;
+    }
+
+    /**
+     *  Return payment product
+     *
+     *  If Payment requires specified option ( With Fees or without Fees return it otherwhise normal payment product)
+     *
+     * @return string
+     */
+    private function getSpecifiedPaymentProduct($payment)
+    {
+        return ($this->getPaymentProductFees()) ? $this->getPaymentProductFees() : $this->getCcTypeHipay($payment->getCcType());
+    }
 	
 	/**
 	 * Validate payment method information object

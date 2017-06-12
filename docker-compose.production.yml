@@ -5,13 +5,15 @@ web:
   ports:
       - "{PORT_WEB}:80"
   env_file:
-    - ./bin/conf/production/hipay.env
+    - ./bin/conf/production/hipay.env.sample
+    - ./bin/conf/production/mage.env.sample
+    - ./bin/conf/production/mysql.env.sample
 mysql:
   container_name: {CONTAINER_NAME_MYSQL}
   image: mysql:5.6.23
   ports:
     - "{PORT_MYSQL}:3306"
   env_file:
-     - ./bin/conf/production/hipay.env
+     - ./bin/conf/production/mysql.env.sample
 smtp:
   container_name: {CONTAINER_NAME_SMTP}

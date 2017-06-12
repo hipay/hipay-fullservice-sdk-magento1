@@ -1,11 +1,14 @@
 <?xml version="1.0"?>
 <layout version="0.1.0">
 
+
+
 <adminhtml_system_config_edit>
  	<reference name="head">
         <action method="setCanLoadExtJs"><flag>1</flag></action>
        <!--  <action method="setCanLoadRulesJs"><flag>1</flag></action> -->
         <action method="addItem"><type>skin_js</type><name>hipay/js/rules.js</name></action>
+		<action method="addCss"><stylesheet>hipay/css/hipay.css</stylesheet></action>
     </reference>
 </adminhtml_system_config_edit>
 

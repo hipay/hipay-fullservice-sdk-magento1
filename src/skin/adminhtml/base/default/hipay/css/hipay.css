@@ -1,0 +1,50 @@
+@import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+
+.warning-mapping {
+    color: #D8000C;
+    font-weight: 600;
+}
+
+.warning-mapping:before {
+    font-family:FontAwesome;
+    content:'\f071';
+    color: #D8000C;
+    font-weight: 600;
+}
+.notice-hipay {
+    padding: 8px 30px;
+    border: 0;
+    margin: 10px 1px;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: #f1f1f1;
+}
+
+.notice-hipay .nb-mapping-missing {
+    color: #D8000C;
+    font-weight: 600;
+    margin: 20px;
+}
+
+.notice-hipay .nb-mapping-missing:before {
+    content:'-';
+}
+
+.notice-hipay:before {
+    font-family:FontAwesome;
+    content:'\f071';
+    font-size:5em;
+    font-style:normal;
+    font-weight:400;
+    speak:none;
+    display:inline-block;
+    text-decoration:inherit;
+    width:1em;
+    margin-right:.2em;
+    text-align:center;
+    font-variant:normal;
+    text-transform:none;
+    line-height:1em;
+    margin-left:.2em;
+    color: #D8000C;
+}

@@ -1017,7 +1017,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
         $gatewayParams = array('operation' => 'refund', 'amount' => $amount);
 
-        if (Mage::getStoreConfig('hipay/hipay_basket/activate_basket', Mage::app()->getStore())) {
+        if (Mage::helper('hipay')->isSendCartItemsRequired($payment->getCcType())) {
             $gatewayParams['basket'] = Mage::helper('hipay')->getCartInformation($payment->getOrder(),
                 Allopass_Hipay_Helper_Data::STATE_REFUND, $payment);
         }
@@ -1028,11 +1028,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
 
         $this->_debug($gatewayParams);
-
         $gatewayResponse = $request->gatewayRequest($action, $gatewayParams, $payment->getOrder()->getStoreId());
-
         $this->_debug($gatewayResponse->debug());
-
 
         switch ($gatewayResponse->getStatus()) {
             case "124":
@@ -1213,9 +1210,18 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         // Add device fingerprint for the transaction request (Token of device)
         $params['device_fingerprint'] = $payment->getAdditionalInformation('device_fingerprint');
 
-        if (Mage::getStoreConfig('hipay/hipay_basket/activate_basket', Mage::app()->getStore())) {
+        if (Mage::helper('hipay')->isSendCartItemsRequired($payment->getCcType())) {
             $params['basket'] = Mage::helper('hipay')->getCartInformation($payment->getOrder(),
                 Allopass_Hipay_Helper_Data::STATE_AUTHORIZATION);
+        }
+
+        // Check if delivery method is required for the payment method
+        if (Mage::helper('hipay')->isDeliveryMethodAndCartItemsRequired($payment->getCcType())) {
+            if (!empty($payment->getOrder()->getShippingMethod()) && !$payment->getOrder()->getIsVirtual()) {
+                Mage::helper('hipay')->processDeliveryInformation($payment->getOrder()->getShippingMethod(), Mage::app()->getStore(),$this, $params);
+            } else{
+                //TODO
+            }
         }
 
         // Add Request resource (Informations module and cms)
@@ -1397,7 +1403,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
         $gatewayParams = array('operation' => 'capture', 'amount' => $amount);
 
-        if (Mage::getStoreConfig('hipay/hipay_basket/activate_basket', Mage::app()->getStore())) {
+        if (Mage::helper('hipay')->isSendCartItemsRequired($payment->getCcType())) {
             $gatewayParams['basket'] = Mage::helper('hipay')->getCartInformation($payment->getOrder(),
                 Allopass_Hipay_Helper_Data::STATE_CAPTURE);
         }
@@ -1670,7 +1676,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
      *
      * @param mixed $debugData
      */
-    protected function _debug($debugData)
+    public function _debug($debugData)
     {
         if ($this->getDebugFlag()) {
             Mage::getModel('hipay/log_adapter', 'payment_' . $this->getCode() . '.log')

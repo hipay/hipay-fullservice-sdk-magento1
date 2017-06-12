@@ -5,7 +5,7 @@ ENV PHP_VERSION=5.6
 MAINTAINER HIPAY Fullservice <support.tpp@hipay.com>
 
 # INSTALL PHP EXTENSION
-RUN requirements="libpng12-dev libxml2-dev libmcrypt-dev libmcrypt4 libcurl3-dev libfreetype6 libjpeg62-turbo libpng12-dev libmysqlclient15-dev libfreetype6-dev libjpeg62-turbo-dev mysql-client bzip2 ssmtp npm libfontconfig libicu52 libsqlite3-0 vim" \
+RUN requirements="libpng12-dev libxml2-dev libmcrypt-dev libmcrypt4 libcurl3-dev libfreetype6 libjpeg62-turbo libpng12-dev libmysqlclient15-dev libfreetype6-dev libjpeg62-turbo-dev mysql-client bzip2 ssmtp npm libfontconfig libicu52 libsqlite3-0 vim rsyslog cron" \
     && apt-get update && apt-get install -y $requirements && rm -rf /var/lib/apt/lists/* \
     && echo "sendmail_path = /usr/sbin/ssmtp -t" > /usr/local/etc/php/conf.d/sendmail.ini \
     && echo "mailhub=smtp:1025\n UseTLS=NO\n FromLineOverride=YES" > /etc/ssmtp/ssmtp.conf \
