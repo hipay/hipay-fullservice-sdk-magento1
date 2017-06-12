@@ -1218,7 +1218,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         // Check if delivery method is required for the payment method
         if (Mage::helper('hipay')->isDeliveryMethodAndCartItemsRequired($payment->getCcType())) {
             if (!empty($payment->getOrder()->getShippingMethod()) && !$payment->getOrder()->getIsVirtual()) {
-                Mage::helper('hipay')->processDeliveryInformation($payment->getOrder()->getShippingMethod(), Mage::app()->getStore(), $params);
+                Mage::helper('hipay')->processDeliveryInformation($payment->getOrder()->getShippingMethod(), Mage::app()->getStore(),$this, $params);
             } else{
                 //TODO
             }
@@ -1676,7 +1676,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
      *
      * @param mixed $debugData
      */
-    protected function _debug($debugData)
+    public function _debug($debugData)
     {
         if ($this->getDebugFlag()) {
             Mage::getModel('hipay/log_adapter', 'payment_' . $this->getCode() . '.log')

@@ -281,16 +281,6 @@ EOT;
     }
 
     /**
-     *  Return HiPay's delivery method
-     *
-     * @return array
-     */
-    public static function getItemsDelivery()
-    {
-        return json_decode(self::$_JSON_DELIVERY, true);
-    }
-
-    /**
      *  Return HiPay's delivery method Full json
      *
      * @return array

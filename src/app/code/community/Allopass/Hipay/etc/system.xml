@@ -266,7 +266,7 @@
                     </fields>
                 </hipay_api_moto>
                 <hipay_basket>
-                    <label>Basket configuration</label>
+                    <label>Customer's cart items configuration</label>
                     <frontend_type>text</frontend_type>
                     <comment></comment>
                     <sort_order>12</sort_order>
@@ -275,9 +275,9 @@
                     <show_in_store>1</show_in_store>
                     <fields>
                         <activate_basket translate="label comment">
-                            <label>Activate basket</label>
+                            <label>Send cart items</label>
                             <frontend_type>select</frontend_type>
-                            <comment>Activate the basket sending to HIPAY</comment>
+                            <comment>If yes, the customer's cart items are sent to HiPay</comment>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>110</sort_order>
                             <show_in_default>1</show_in_default>
@@ -304,6 +304,80 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </load_product_ean>
+                        <separator translate="label,comment">
+                            <label>CATEGORY MAPPING</label>
+                            <comment></comment>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>131</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </separator>
+                        <notice_mapping_mapping_category translate="label" module="hipay">
+                            <frontend_model>hipay/adminhtml_system_config_form_field_Notice</frontend_model>
+                            <sort_order>140</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </notice_mapping_mapping_category>
+                        <mapping_category translate="comment">
+                            <frontend_model>hipay/adminhtml_field_mappingCategory</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <sort_order>141</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </mapping_category>
+                        <separator_shipping translate="label,comment">
+                            <label>SHIPPING METHOD MAPPING</label>
+                            <comment></comment>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>142</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </separator_shipping>
+                        <informations_shipping translate="label,comment">
+                            <tooltip><![CDATA[This mapping is necessary to indicate a match between your delivery methods and the delivery methods defined at HiPay.
+<p>
+For each customer order, depending on the chosen configuration, this information is sent as a supplement to the customer's basket.
+</p>
+For each mapping you have to fill out the following information:
+<p>
+<ul>
+<li>"Preparation delay": Estimated day time for order preparation</li>
+<li>"Delivery delay"   : Estimated day time for delivery</li>
+</ul>
+</p>
+From this information, an estimated (estimated) delivery day is calculated and sent with the transaction.
+<p>
+<p>
+<b>This information is required for Oney payment methods (Facily pay 3X, Facily pay 4X)</b></p>]]></tooltip>
+                            <label></label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>hipay/adminhtml_system_config_form_field_Information</frontend_model>
+                            <sort_order>143</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </informations_shipping>
+                        <notice_mapping_shipping_method translate="label" module="hipay">
+                            <frontend_model>hipay/adminhtml_system_config_form_field_Notice</frontend_model>
+                            <sort_order>143</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </notice_mapping_shipping_method>
+                        <mapping_shipping_method translate="comment">
+                            <frontend_model>hipay/adminhtml_field_mappingShippingMethod</frontend_model>
+                            <backend_model>hipay/field_mappingShippingMethod</backend_model>
+                            <sort_order>150</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </mapping_shipping_method>
                     </fields>
                 </hipay_basket>
                 <fraud_payment translate="label">
@@ -4782,7 +4856,7 @@
                       </fields> 
                 </hipay_postfinancecardapi>
                 <hipay_boleto translate="label" module="hipay">
-                    <label>Boleto</label>
+                    <label>HiPay Enterprise Boleto</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>240</sort_order>
                     <show_in_default>1</show_in_default>
@@ -5116,7 +5190,7 @@
                     </fields>
                 </hipay_boleto>
                 <hipay_itau translate="label" module="hipay">
-                    <label>Itau</label>
+                    <label>HiPay Enterprise Itau</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>241</sort_order>
                     <show_in_default>1</show_in_default>
@@ -5919,7 +5993,7 @@
                     </fields>
                 </hipay_klarna>
                 <hipay_bradesco translate="label" module="hipay">
-                    <label>Bradesco</label>
+                    <label>HiPay Enterprise Bradesco</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>242</sort_order>
                     <show_in_default>1</show_in_default>
@@ -6253,7 +6327,7 @@
                     </fields>
                 </hipay_bradesco>
                 <hipay_banco translate="label" module="hipay">
-                    <label>Banco do brasil</label>
+                    <label>HiPay Enterprise Banco do brasil</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>243</sort_order>
                     <show_in_default>1</show_in_default>
@@ -6587,7 +6661,7 @@
                     </fields>
                 </hipay_banco>
                 <hipay_santander translate="label" module="hipay">
-                    <label>Santander HomeBanking</label>
+                    <label>HiPay Enterprise Santander HomeBanking</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>244</sort_order>
                     <show_in_default>1</show_in_default>
@@ -6921,7 +6995,7 @@
                     </fields>
                 </hipay_santander>
                 <hipay_aura translate="label" module="hipay">
-                    <label>Aura</label>
+                    <label>HiPay Enterprise Aura</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>245</sort_order>
                     <show_in_default>1</show_in_default>
@@ -7255,7 +7329,7 @@
                     </fields>
                 </hipay_aura>
                 <hipay_caixa translate="label" module="hipay">
-                    <label>Caixa</label>
+                    <label>HiPay Enterprise Caixa</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>246</sort_order>
                     <show_in_default>1</show_in_default>
@@ -7922,7 +7996,7 @@
                       </fields>
              	</hipay_discover>  -->
                 <hipay_oxxo translate="label" module="hipay">
-                    <label>Oxxo</label>
+                    <label>HiPay Enterprise Oxxo</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>248</sort_order>
                     <show_in_default>1</show_in_default>
@@ -8256,7 +8330,7 @@
                     </fields>
                 </hipay_oxxo>
                 <hipay_bbva translate="label" module="hipay">
-                    <label>BBVA Bancomer</label>
+                    <label>HiPay Enterprise BBVA Bancomer</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>249</sort_order>
                     <show_in_default>1</show_in_default>
@@ -8590,7 +8664,7 @@
                     </fields>
                 </hipay_bbva>
                 <hipay_banamex translate="label" module="hipay">
-                    <label>Banamex</label>
+                    <label>HiPay Enterprise Banamex</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>250</sort_order>
                     <show_in_default>1</show_in_default>
@@ -8924,7 +8998,7 @@
                     </fields>
                 </hipay_banamex>
                 <hipay_santadercash translate="label" module="hipay">
-                    <label>Santader Cash</label>
+                    <label>HiPay Enterprise Santader Cash</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>251</sort_order>
                     <show_in_default>1</show_in_default>
@@ -9258,7 +9332,7 @@
                     </fields>
                 </hipay_santadercash>
                 <hipay_facilipay3x translate="label" module="hipay">
-                    <label>Oney Facily pay 3X</label>
+                    <label>HiPay Enterprise Oney Facily pay 3X</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>260</sort_order>
                     <show_in_default>1</show_in_default>
@@ -9492,7 +9566,7 @@
                     </fields>
                 </hipay_facilipay3x>
                 <hipay_facilipay4x translate="label" module="hipay">
-                    <label>Oney Facily pay 4X</label>
+                    <label>HiPay Enterprise Oney Facily pay 4X</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>270</sort_order>
                     <show_in_default>1</show_in_default>
