@@ -23,6 +23,8 @@ test:
     - sed -i -e "s/{HIPAY_SECRET_PASSPHRASE_TEST\}/$HIPAY_SECRET_PASSPHRASE_TEST/" ./bin/conf/stage/hipay.env.sample
     - sed -i -e "s/{LOGIN_BACKEND\}/$LOGIN_BACKEND/" ./bin/conf/stage/test.env.sample
     - sed -i -e "s/{PASS_BACKEND\}/$PASS_BACKEND/" ./bin/conf/stage/test.env.sample
+    - sed -i -e "s/{LOGIN_PAYPAL\}/$LOGIN_PAYPAL/" ./bin/conf/stage/test.env.sample
+    - sed -i -e "s/{PASS_PAYPAL\}/$PASS_PAYPAL/" ./bin/conf/stage/test.env.sample
     - mkdir $CIRCLE_ARTIFACTS/casper_report
     - mkdir $CIRCLE_ARTIFACTS/screenshots
   override:
