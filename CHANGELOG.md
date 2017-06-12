@@ -1,7 +1,7 @@
 # Version 1.7.0
 New - Oney Facily Pay support
-New - Mapping your categories with HiPay
-New - Mapping your Shipping methods with HiPay and determin delivery date
+New - Mapping yours categories with HiPay
+New - Mapping yours shipping methods with HiPay and determin delivery date
 
 # Version 1.6.1
 Fix - [SECURITY] Check notification signature if passphrase is not empty
