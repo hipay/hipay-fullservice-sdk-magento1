@@ -61,4 +61,4 @@ deployment:
   feature:
     branch: /feature*/
     commands:
-      - sh bin/deployment/deploy_project.sh
+      - sh ./bin/deployment/deploy_staging.sh

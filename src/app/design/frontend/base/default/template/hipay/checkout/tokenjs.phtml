@@ -39,7 +39,7 @@ if($this->hasPublicCredentials()):
 			 
 			  var config = <?php echo $this->getConfigJson() ?>;	
 			  
-			  if(config.methods[method].is_test_mode){  
+			  if(config.methods[method].is_test_mode==1){  
 			  	HiPay.setTarget('stage'); // default is production/live
 			  	config.api_tokenjs_username = config.api_tokenjs_username_test;
 			  	config.api_tokenjs_publickey = config.api_tokenjs_publickey_test;

@@ -1,3 +1,11 @@
+# Version 1.7.0
+New - Oney Facily Pay support
+New - Mapping yours categories with HiPay
+New - Mapping yours shipping methods with HiPay and determin delivery date
+
+# Version 1.6.2
+Fix - production url tokenJS
+
 # Version 1.6.1
 Fix - [SECURITY] Check notification signature if passphrase is not empty
 Fix - X-forward-for without proxy
