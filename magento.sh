@@ -13,8 +13,8 @@ pathPreFile=${header}000*/*.js
 pathDir=${header}001*
 
 setBackendCredentials() {
-    printf "\n"
     if [ "$LOGIN_BACKEND" = "" ] || [ "$PASS_BACKEND" = "" ]; then
+        printf "\n"
         while [ "$LOGIN_BACKEND" = "" ]; do
             read -p "LOGIN_BACKEND variable is empty. Insert your BO TPP login here : " login
             LOGIN_BACKEND=$login
@@ -22,6 +22,19 @@ setBackendCredentials() {
         while [ "$PASS_BACKEND" = "" ]; do
             read -p "PASS_BACKEND variable is empty. Insert your BO TPP password here : " pass
             PASS_BACKEND=$pass
+        done
+    fi
+}
+setPaypalCredentials() {
+    printf "\n"
+    if [ "$LOGIN_PAYPAL" = "" ] || [ "$PASS_PAYPAL" = "" ]; then
+        while [ "$LOGIN_PAYPAL" = "" ]; do
+            read -p "LOGIN_PAYPAL variable is empty. Insert your PayPal login here : " login
+            LOGIN_PAYPAL=$login
+        done
+        while [ "$PASS_PAYPAL" = "" ]; do
+            read -p "PASS_PAYPAL variable is empty. Insert your PayPal password here : " pass
+            PASS_PAYPAL=$pass
         done
         printf "\n"
     fi
@@ -44,7 +57,7 @@ elif [ "$1" = 'init' ]; then
         docker-compose rm -fv
         sudo rm -Rf data/ log/ web/
         docker-compose -f docker-compose.yml -f docker-compose.dev.yml build --no-cache
-        docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+        docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
     else
         echo "Put your credentials in auth.env and hipay.env before start update the docker-compose.dev to link this files"
     fi
@@ -54,6 +67,7 @@ elif [ "$1" = 'logs' ]; then
     docker-compose logs -f
 elif [ "$1" = 'test' ]; then
     setBackendCredentials
+    setPaypalCredentials
 
     if [ "$(ls -A ~/.local/share/Ofi\ Labs/PhantomJS/)" ]; then
         rm -rf ~/.local/share/Ofi\ Labs/PhantomJS/*
@@ -62,7 +76,7 @@ elif [ "$1" = 'test' ]; then
         printf "Pas de cache à effacer !\n\n"
     fi
 
-    casperjs test $pathPreFile ${pathDir}/[0-1]*/[0-9][0-9][0-9][0-9]-*.js --url=$BASE_URL --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --xunit=${header}result.xml --ignore-ssl-errors=true --ssl-protocol=any
+    casperjs test $pathPreFile ${pathDir}/[0-1]*/[0-9][0-9][0-9][0-9]-*.js --url=$BASE_URL --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --login-paypal=$LOGIN_PAYPAL --pass-paypal=$PASS_PAYPAL --xunit=${header}result.xml --ignore-ssl-errors=true --ssl-protocol=any
 elif [ "$1" = "test-engine" ]; then
     bash bin/tests/casper_debug.sh $BASE_URL $URL_MAILCATCHER
 elif [ "$1" = "notif" ]; then
@@ -72,7 +86,7 @@ elif [ "$1" = "notif" ]; then
         read -p "In order to simulate notification to Magento server, put here an order ID : " order
     done
 
-    casperjs test $pathPreFile ${header}002*/1*/0201-*.js --url=$BASE_URL --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --login-backend=$LOGIN_BACKEND  --ignore-ssl-errors=true --ssl-protocol=any --order=$order
+    casperjs test $pathPreFile ${header}002*/1*/0201-*.js --url=$BASE_URL --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --ignore-ssl-errors=true --ssl-protocol=any --order=$order
 else
     echo "Incorrect argument ! Please check the HiPay's Helper via the following command : 'sh magento.sh' or 'sh magento.sh --help'"
 fi

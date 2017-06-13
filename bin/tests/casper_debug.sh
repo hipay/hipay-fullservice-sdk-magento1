@@ -18,6 +18,7 @@ partieDefault='1'
 cardTypeDefault='VISA'
 setTypeCard=""
 backendDefault='n'
+paypalDefault='n'
 needOrderDefault='n'
 
 if [ "$1" != "" ]; then
@@ -36,17 +37,31 @@ pathFile=${pathDir}/[0-1]*/[0-9][0-9][0-9][0-9]-*.js
 pathTest=${pathDir}/[0-1]*/TEST-*.js
 
 setBackendCredentials() {
-	if [ "$LOGIN_BACKEND" = "" ] || [ "$PASS_BACKEND" = "" ]; then
-		printf "\n"
-	    while [ "$LOGIN_BACKEND" = "" ]; do
-	        read -p "LOGIN_BACKEND variable is empty. Insert your BO TPP login here : " login
-	        LOGIN_BACKEND=$login
-	    done
-	    while [ "$PASS_BACKEND" = "" ]; do
-	        read -p "PASS_BACKEND variable is empty. Insert your BO TPP password here : " pass
-	        PASS_BACKEND=$pass
-	    done
-	fi
+    if [ "$LOGIN_BACKEND" = "" ] || [ "$PASS_BACKEND" = "" ]; then
+        printf "\n"
+        while [ "$LOGIN_BACKEND" = "" ]; do
+            read -p "LOGIN_BACKEND variable is empty. Insert your BO TPP login here : " login
+            LOGIN_BACKEND=$login
+        done
+        while [ "$PASS_BACKEND" = "" ]; do
+            read -p "PASS_BACKEND variable is empty. Insert your BO TPP password here : " pass
+            PASS_BACKEND=$pass
+        done
+    fi
+}
+setPaypalCredentials() {
+    printf "\n"
+    if [ "$LOGIN_PAYPAL" = "" ] || [ "$PASS_PAYPAL" = "" ]; then
+        while [ "$LOGIN_PAYPAL" = "" ]; do
+            read -p "LOGIN_PAYPAL variable is empty. Insert your PayPal login here : " login
+            LOGIN_PAYPAL=$login
+        done
+        while [ "$PASS_PAYPAL" = "" ]; do
+            read -p "PASS_PAYPAL variable is empty. Insert your PayPal password here : " pass
+            PASS_PAYPAL=$pass
+        done
+        printf "\n"
+    fi
 }
 affectTypeCC() {
 	case $1 in
@@ -83,9 +98,12 @@ frontendTests() {
 	if [[ "$folder" == *"001"* ]] || [[ "$folder" == *"002"* ]]; then
 		setBackendCredentials
 	fi
+	if [[ "$folder" == *"013"* ]]; then
+		setPaypalCredentials
+	fi
 	affectTypeCC $1
 	if [ "$setTypeCard" != "0" ]; then
-		casperjs test $pathPreFile $header$2/$3*/[0-9][0-9][0-9][0-9]-*.js --url=$BASE_URL --type-cc=$setTypeCard --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --ignore-ssl-errors=true --ssl-protocol=any
+		casperjs test $pathPreFile $header$2/$3*/[0-9][0-9][0-9][0-9]-*.js --url=$BASE_URL --type-cc=$setTypeCard --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --login-paypal=$LOGIN_PAYPAL --pass-paypal=$PASS_PAYPAL --ignore-ssl-errors=true --ssl-protocol=any
 	else
 		invalidCommand
 	fi
@@ -153,10 +171,10 @@ case $menu in
 
 		if [ "$failfast" = "y" ]; then
 			printf "${yellow}Exécution des tests CasperJS avec fail-fast${noColor}\n\n"
-			casperjs test $pathPreFile $pathFile --url=$BASE_URL --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --fail-fast --xunit=${header}result.xml --ignore-ssl-errors=true --ssl-protocol=any
+			casperjs test $pathPreFile $pathFile --url=$BASE_URL --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --login-paypal=$LOGIN_PAYPAL --pass-paypal=$PASS_PAYPAL --fail-fast --xunit=${header}result.xml --ignore-ssl-errors=true --ssl-protocol=any
 		else
 			printf "${yellow}Exécution des tests CasperJS sans fail-fast${noColor}\n\n"
-			casperjs test $pathPreFile $pathFile --url=$BASE_URL --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --xunit=${header}result.xml --ignore-ssl-errors=true --ssl-protocol=any
+			casperjs test $pathPreFile $pathFile --url=$BASE_URL --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --login-paypal=$LOGIN_PAYPAL --pass-paypal=$PASS_PAYPAL --xunit=${header}result.xml --ignore-ssl-errors=true --ssl-protocol=any
 		fi;;
 	2)
 		for d in $pathDir; do
@@ -298,6 +316,10 @@ case $menu in
 							setBackendCredentials
 						fi
 
+						if [[ "$file" == *"1"*"/1300"* ]];then
+							setPaypalCredentials
+						fi
+
 						if [[ "$file" == *"1"*"/0201"* ]]; then
 							printf "\n"
 							while [ "$order" = "" ]; do
@@ -306,7 +328,7 @@ case $menu in
 						fi
 
 						if [ "$setTypeCard" != "0" ]; then
-							casperjs test $pathPreFile $header$file --url=$BASE_URL --type-cc=$setTypeCard --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --ignore-ssl-errors=true --ssl-protocol=any --order=$order
+							casperjs test $pathPreFile $header$file --url=$BASE_URL --type-cc=$setTypeCard --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --login-paypal=$LOGIN_PAYPAL --pass-paypal=$PASS_PAYPAL --ignore-ssl-errors=true --ssl-protocol=any --order=$order
 						else
 							invalidCommand
 						fi
@@ -407,6 +429,10 @@ case $menu in
 									setBackendCredentials
 								fi
 
+								if [[ "${file[@]}" == *"1"*"/1300"* ]]; then
+									setPaypalCredentials
+								fi
+
 								if [[ "${file[@]}" == *"1"*"/0201"* ]]; then
 									printf "\n"
 									while [ "$order" = "" ]; do
@@ -415,7 +441,7 @@ case $menu in
 								fi
 
 								if [ "$setTypeCard" != "0" ]; then
-									casperjs test $pathPreFile ${file[@]} --url=$BASE_URL --type-cc=$setTypeCard --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --ignore-ssl-errors=true --ssl-protocol=any --order=$order
+									casperjs test $pathPreFile ${file[@]} --url=$BASE_URL --type-cc=$setTypeCard --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --login-paypal=$LOGIN_PAYPAL --pass-paypal=$PASS_PAYPAL --ignore-ssl-errors=true --ssl-protocol=any --order=$order
 								else
 									invalidCommand
 								fi
@@ -481,8 +507,16 @@ case $menu in
 					read -p "Récupérer les identifiants de connexion au BO TPP pour le test (y/n) Default: [$(printf $yellow)${backendDefault}$(printf $noColor)] : " backend
 					backend=${backend:-backendDefault}
 
+					printf "\n"
+					read -p "Récupérer les identifiants de connexion à votre compte PayPal pour le test (y/n) Default: [$(printf $yellow)${paypalDefault}$(printf $noColor)] : " paypal
+					paypal=${paypal:-paypalDefault}
+
 					if [ "$backend" = "y" ]; then
 						setBackendCredentials
+					fi
+
+					if [ "$paypal" = "y" ]; then
+						setPaypalCredentials
 					fi
 
 					printf "\n"
@@ -503,7 +537,7 @@ case $menu in
 					cacheClear $cache
 
 					while [ "$relance" = "y" ]; do
-						casperjs test $pathPreFile $header$file --url=$BASE_URL --type-cc=$setTypeCard --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --ignore-ssl-errors=true --ssl-protocol=any --order=$order --verbose=true --log-level=debug
+						casperjs test $pathPreFile $header$file --url=$BASE_URL --type-cc=$setTypeCard --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --login-paypal=$LOGIN_PAYPAL --pass-paypal=$PASS_PAYPAL --ignore-ssl-errors=true --ssl-protocol=any --order=$order --verbose=true --log-level=debug
 
 						relanceDefault='y'
 						printf "\n"

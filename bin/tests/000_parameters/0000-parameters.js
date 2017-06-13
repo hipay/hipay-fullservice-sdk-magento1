@@ -9,8 +9,8 @@ var fs = require('fs'),
 	typeCC = casper.cli.get('type-cc'),
 	loginBackend = casper.cli.get('login-backend'),
 	passBackend = casper.cli.get('pass-backend'),
-	paypalLogin = "ctorres@hipay.com",
-	paypalPass = "provider123",
+	loginPaypal = casper.cli.get('login-paypal'),
+	passPaypal = casper.cli.get('pass-paypal'),
 	countryPaypal = 'US',
 	order = casper.cli.get('order'),
 	orderID = 0,
@@ -49,7 +49,7 @@ casper.test.begin('Parameters', function(test) {
 	casper.userAgent('Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36');
 	casper.options.viewportSize = {width: defaultViewPortSizes["width"], height: defaultViewPortSizes["height"]};
 
-    casper.options.waitTimeout = 10000;
+	casper.options.waitTimeout = 10000;
 
 	/* Set default card type if it's not defined */
 	if(typeof typeCC == "undefined")
@@ -60,6 +60,11 @@ casper.test.begin('Parameters', function(test) {
 		test.info("Backend credentials set");
 	else
 		test.comment("No Backend credentials");
+
+	if(loginPaypal != "" && passPaypal != "")
+		test.info("PayPal credentials set");
+	else
+		test.comment("No PayPal credentials");
 
 	casper.echo('Paramètres chargés !', 'INFO');
 	test.done();
