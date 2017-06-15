@@ -27,7 +27,7 @@ class Allopass_Hipay_Block_Adminhtml_Field_MappingShippingMethod extends Mage_Ad
         $mappingSaved = $this->getElement()->getValue();
 
         // Add All Magento categories in Array Rows
-        if (!array_key_exists($mappingSaved[key($mappingSaved)], 'magento_code')) {
+        if (!$mappingSaved && !array_key_exists($mappingSaved[key($mappingSaved)], 'magento_code')) {
             if (!empty($shippingMethod) && is_array($shippingMethod)) {
                 foreach ($shippingMethod as $code => $label) {
                     $mapping = $this->_getHipayDeliveryMapping($code);
