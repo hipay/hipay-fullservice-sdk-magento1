@@ -1054,9 +1054,10 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 	 * @param Mage_Sales_Model_Order_Payment $payment
 	 * @param float $amount
 	 * @param string|null $token
+     * @param string $split_number
 	 * @return multitype:
 	 */
-	public function getGatewayParams($payment,$amount,$token=null)
+	public function getGatewayParams($payment,$amount,$token=null,$split_number = null)
 	{
         $params = array();
         $params['orderid'] = $payment->getOrder()->getIncrementId();
