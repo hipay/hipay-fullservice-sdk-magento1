@@ -129,12 +129,16 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         if (!$useOrderCurrency) {
             $item['unit_price'] = round($order->getBaseShippingAmount(), 3);
             $item['total_amount'] = round($order->getBaseShippingAmount(), 3);
-            $item['tax_rate'] = round($order->getBaseShippingTaxAmount() / $order->getBaseShippingAmount() * 100,
-                2);
+            if( $order->getBaseShippingAmount() > 0 ) {
+                $item['tax_rate'] = round($order->getBaseShippingTaxAmount() / $order->getBaseShippingAmount() * 100,
+                    2);
+            }
         } else {
             $item['unit_price'] = round($order->getShippingAmount(), 3);
             $item['total_amount'] = round($order->getShippingAmount(), 3);
-            $item['tax_rate'] = round($order->getShippingTaxAmount() / $order->getShippingAmount() * 100, 2);
+            if( $order->getShippingAmount() > 0 ) {
+                $item['tax_rate'] = round($order->getShippingTaxAmount() / $order->getShippingAmount() * 100, 2);
+            }
         }
 
         if ($action == Allopass_Hipay_Helper_Data::STATE_CAPTURE || $action == Allopass_Hipay_Helper_Data::STATE_REFUND) {
@@ -259,7 +263,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
             if (is_array($categoryIds) && !empty($categoryIds)) {
                 if (isset($categoryIds[0]) && $categoryIds[0]) {
                     $mapping = $this->getMappingCategory($categoryIds[0],Mage::app()->getStore());
-                    if ($mapping){
+                    if (is_array($mapping) && array_key_exists('hipay_category',$mapping)){
                         $item['product_category'] = (int) $mapping['hipay_category'];
                     }
                 }
