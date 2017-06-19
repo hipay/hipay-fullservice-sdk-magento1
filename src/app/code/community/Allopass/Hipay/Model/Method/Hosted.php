@@ -136,9 +136,10 @@ class Allopass_Hipay_Model_Method_Hosted extends Allopass_Hipay_Model_Method_Abs
      *  Update or not default params
      *
      * @param $gatewayParams
+     * @param $payment
      * @return mixed
      */
-    public function getSpecificsParams($gatewayParams)
+    public function getSpecificsParams($gatewayParams, $payment)
     {
         return $gatewayParams;
     }

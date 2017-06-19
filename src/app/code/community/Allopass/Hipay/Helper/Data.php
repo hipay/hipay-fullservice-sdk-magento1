@@ -1382,6 +1382,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function checkMappingShippingMethod ()
     {
+        $store = Mage::getSingleton('adminhtml/config_data')->getStore();
         $mappings = unserialize($this->getConfig()->getConfigDataBasket('mapping_shipping_method',$store));
         $magentoShippingMethod = $this->getMagentoShippingMethods();
         $nbMappingMissing = count($magentoShippingMethod);
@@ -1404,6 +1405,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function checkMappingCategoryMethod ()
     {
+        $store = Mage::getSingleton('adminhtml/config_data')->getStore();
         $mappings = unserialize($this->getConfig()->getConfigDataBasket('mapping_category',$store));
         $magentoCategory = $this->getMagentoCategories();
         $nbMappingMissing = count($magentoCategory);
