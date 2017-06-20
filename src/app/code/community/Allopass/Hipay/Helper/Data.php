@@ -129,12 +129,16 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         if (!$useOrderCurrency) {
             $item['unit_price'] = round($order->getBaseShippingAmount(), 3);
             $item['total_amount'] = round($order->getBaseShippingAmount(), 3);
-            $item['tax_rate'] = round($order->getBaseShippingTaxAmount() / $order->getBaseShippingAmount() * 100,
-                2);
+            if( $order->getBaseShippingAmount() > 0 ) {
+                $item['tax_rate'] = round($order->getBaseShippingTaxAmount() / $order->getBaseShippingAmount() * 100,
+                    2);
+            }
         } else {
             $item['unit_price'] = round($order->getShippingAmount(), 3);
             $item['total_amount'] = round($order->getShippingAmount(), 3);
-            $item['tax_rate'] = round($order->getShippingTaxAmount() / $order->getShippingAmount() * 100, 2);
+            if( $order->getShippingAmount() > 0 ) {
+                $item['tax_rate'] = round($order->getShippingTaxAmount() / $order->getShippingAmount() * 100, 2);
+            }
         }
 
         if ($action == Allopass_Hipay_Helper_Data::STATE_CAPTURE || $action == Allopass_Hipay_Helper_Data::STATE_REFUND) {
@@ -258,8 +262,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
             $categoryIds = $product->getCategoryIds();
             if (is_array($categoryIds) && !empty($categoryIds)) {
                 if (isset($categoryIds[0]) && $categoryIds[0]) {
-                    $mapping = $this->getMappingCategory($categoryIds[0],Mage::app()->getStore());
-                    if ($mapping){
+                    $mapping = $this->getMappingCategory($categoryIds[0],Mage::app()->getStore()->getId());
+                    if (is_array($mapping) && array_key_exists('hipay_category',$mapping)){
                         $item['product_category'] = (int) $mapping['hipay_category'];
                     }
                 }
@@ -1245,16 +1249,16 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      *  Return the mapping if exists for one category
      *
      * @param $idCategory
-     * @param $store
+     * @param $storeId int
      * @return string
      */
-    public function getMappingCategory($idCategory, $store = null)
+    public function getMappingCategory($idCategory, $storeId = null)
     {
-        $mappingCategories = unserialize($this->getConfig()->getConfigDataBasket('mapping_category',$store));
+        $mappingCategories = unserialize($this->getConfig()->getConfigDataBasket('mapping_category',$storeId));
         if (is_array($mappingCategories) && !empty($mappingCategories)) {
             foreach ($mappingCategories as $key => $mapping) {
                 if ($mapping['magento_category'] == $idCategory) {
-                    return $mapping['hipay_category'];
+                    return $mapping;
                 }
             }
             $category = Mage::getModel('catalog/category')->load($idCategory);
@@ -1271,12 +1275,12 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      *  Return the mapping if exist for one category
      *
      * @param $delivery_method Code
-     * @param $store
+     * @param $storeId int
      * @return string
      */
-    public function getMappingShipping($codeShippingMethod, $store = null)
+    public function getMappingShipping($codeShippingMethod, $storeId = null)
     {
-        $mappingDeliveryMethod = unserialize($this->getConfig()->getConfigDataBasket('mapping_shipping_method',$store));
+        $mappingDeliveryMethod = unserialize($this->getConfig()->getConfigDataBasket('mapping_shipping_method',$storeId));
         if (is_array($mappingDeliveryMethod) && !empty($mappingDeliveryMethod)) {
             foreach ($mappingDeliveryMethod as $key => $mapping) {
                 if ($mapping['magento_shipping_method'] == $codeShippingMethod) {
@@ -1327,7 +1331,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function processDeliveryInformation($codeShippingMethod, $store, $method, &$params)
     {
-        $mapping = $this->getMappingShipping($codeShippingMethod,$store);
+        $mapping = $this->getMappingShipping($codeShippingMethod,$store->getId());
         $params['delivery_method'] = $this->calculateDeliveryMethod($mapping);
 
         if (empty($params['delivery_method'])) {
@@ -1382,6 +1386,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function checkMappingShippingMethod ()
     {
+        $store = Mage::getSingleton('adminhtml/config_data')->getStore();
         $mappings = unserialize($this->getConfig()->getConfigDataBasket('mapping_shipping_method',$store));
         $magentoShippingMethod = $this->getMagentoShippingMethods();
         $nbMappingMissing = count($magentoShippingMethod);
@@ -1404,6 +1409,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function checkMappingCategoryMethod ()
     {
+        $store = Mage::getSingleton('adminhtml/config_data')->getStore();
         $mappings = unserialize($this->getConfig()->getConfigDataBasket('mapping_category',$store));
         $magentoCategory = $this->getMagentoCategories();
         $nbMappingMissing = count($magentoCategory);

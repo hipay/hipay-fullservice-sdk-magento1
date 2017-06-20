@@ -1,7 +1,7 @@
 <config>
 	<modules>
 		<Allopass_Hipay>
-			<version>1.7.0</version>
+			<version>1.7.1</version>
 		</Allopass_Hipay>
 	</modules>
 	<global>
@@ -441,7 +441,7 @@
 			</hipay_ccxtimes>
 			<hipay_hosted>
 				<active>0</active>
-				<title>HiPay Enterprise Credit Card</title>
+				<title>HiPay Enterprise Credit Card Hosted</title>
 				<payment_action>authorize_capture</payment_action>
 				<cctypes>american-express,visa,mastercard</cctypes>
 				<order_status_payment_accepted>processing</order_status_payment_accepted>

@@ -106,7 +106,9 @@ class Allopass_Hipay_Model_Method_Hosted extends Allopass_Hipay_Model_Method_Abs
             $this->_debug($gatewayResponse->debug());
 
             // MOTO Redirection
-            if ($gatewayParams['eci'] == '1' && $this->sendMailToCustomer() && strpos($order->getPayment()->getMethod(),'hipay_hosted') !== false){
+            if (array_key_exists('eci',$gatewayParams)
+                && $gatewayParams['eci'] == '1'
+                && $this->sendMailToCustomer() && strpos($order->getPayment()->getMethod(),'hipay_hosted') !== false){
                 $payment->setAdditionalInformation('redirectUrl', $gatewayResponse->getForwardUrl());
 
                 return $gatewayParams['moto_url_redirect'];
@@ -136,9 +138,10 @@ class Allopass_Hipay_Model_Method_Hosted extends Allopass_Hipay_Model_Method_Abs
      *  Update or not default params
      *
      * @param $gatewayParams
+     * @param $payment
      * @return mixed
      */
-    public function getSpecificsParams($gatewayParams)
+    public function getSpecificsParams($gatewayParams, $payment)
     {
         return $gatewayParams;
     }

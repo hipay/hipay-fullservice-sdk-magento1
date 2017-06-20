@@ -1,5 +1,10 @@
+# Version 1.7.1
+
+Fix : PHP Notices with Oney Facily Pay support
+
 # Version 1.7.0
 New - Oney Facily Pay support
+New - Astropay support
 New - Mapping yours categories with HiPay
 New - Mapping yours shipping methods with HiPay and determin delivery date
 

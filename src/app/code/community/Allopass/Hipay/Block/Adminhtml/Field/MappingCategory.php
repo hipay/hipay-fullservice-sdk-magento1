@@ -27,7 +27,7 @@ class Allopass_Hipay_Block_Adminhtml_Field_MappingCategory extends Mage_Adminhtm
         $mappingSaved = $this->getElement()->getValue();
 
         // Add All Magento categories in Array Rows
-        if (!array_key_exists($mappingSaved[key($mappingSaved)], 'magento_code')) {
+        if (!$mappingSaved || !array_key_exists('magento_code', $mappingSaved[key($mappingSaved)])) {
             if (!empty($categories) && is_array($categories)) {
                 foreach ($categories as $code => $label) {
                     $mapping = $this->_getHipayCategoryMapping($code);
@@ -113,10 +113,15 @@ class Allopass_Hipay_Block_Adminhtml_Field_MappingCategory extends Mage_Adminhtm
     {
         $mappingSaved = $this->getElement()->getValue();
         $id_hipay_category = null;
-        foreach ($mappingSaved as $mapping) {
-            if ($mapping['magento_category'] == $codeMagentoCategory) {
-                $id_hipay_category = $mapping['hipay_category'];
-                break;
+        if (is_array($mappingSaved)) {
+            foreach ($mappingSaved as $mapping) {
+                if (is_array($mapping)
+                    && array_key_exists('magento_category', $mapping)
+                    && $mapping['magento_category'] == $codeMagentoCategory
+                ) {
+                    $id_hipay_category = $mapping['hipay_category'];
+                    break;
+                }
             }
         }
         return $id_hipay_category;

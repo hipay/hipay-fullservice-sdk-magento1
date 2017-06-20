@@ -54,8 +54,8 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC + ' and ' +
             this.wait(5000, function() {
                 this.withFrame('injectedUl', function() {
                     this.fillSelectors('form[name="login"]', {
-                        'input[name="login_email"]': paypalLogin,
-                        'input[name="login_password"]': paypalPass
+                        'input[name="login_email"]': loginPaypal,
+                        'input[name="login_password"]': passPaypal
                     }, true);
                     test.info("Credentials inserted");
                 });

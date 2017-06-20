@@ -96,7 +96,12 @@ class Allopass_Hipay_Model_Config extends Varien_Object
      */
     public function getConfigDataBasket($key, $storeId = null)
     {
-        return $this->getInternalConfig('hipay_basket', $key, $storeId = null);
+        $basket = $this->getInternalConfig('hipay_basket', $key, $storeId);
+        if (!$basket && !is_null($storeId)) {
+            $basket = $this->getInternalConfig('hipay_basket', $key, null);
+        }
+
+        return $basket;
     }
 
     /**
@@ -104,7 +109,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
      *
      * @param    string $key Var path key
      * @param    int $storeId Store View Id
-     * @return      mixed
+     * @return   mixed
      */
     public function getConfigFlag($key, $storeId = null)
     {
