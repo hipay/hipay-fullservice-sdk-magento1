@@ -54,6 +54,6 @@ RUN curl -O  https://raw.githubusercontent.com/netz98/n98-magerun/master/n98-mag
     rm ./n98-magerun.phar && \
     apt-get purge -y --auto-remove
 
-VOLUME /var/www/htdocs
+WORKDIR /var/www/htdocs
 
 ENTRYPOINT ["/tmp/entrypoint.sh"]
