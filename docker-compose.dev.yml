@@ -17,6 +17,8 @@ web:
     - ./web:/var/www/htdocs
     - ./log:/var/www/htdocs/var/log
 mysql:
+  ports:
+    - "3307:3306"
   env_file:
     - ./bin/conf/development/mysql.env.sample
   volumes:
