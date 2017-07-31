@@ -59,10 +59,10 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 			$payment->setAmount($amount);			
 			$token = null;			
 	    	$gatewayParams = $this->getGatewayParams($payment, $amount,$token);
-	    	
+
+            $gatewayParams['authentication_indicator'] = 1;
 	    	if(is_null($token))
 	    	{
-	    			
 		    	$gatewayParams['payment_product'] = $this->getCcTypeHipay($payment->getCcType()); ;
 		    	$gatewayParams['operation'] = $this->getOperation();
 		    	
@@ -106,9 +106,11 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 	    	$gatewayParams['issuer_bank_id'] 	= $payment->getAdditionalInformation('cc_code_bic');
 	    	$gatewayParams['bank_name']	 		= $payment->getAdditionalInformation('cc_bank_name');
 	    	$gatewayParams['authentication_indicator'] = 0;
+
 	    	$this->_debug($gatewayParams);
 	    	$gatewayResponse = $request->gatewayRequest(Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_ORDER,$gatewayParams,$payment->getOrder()->getStoreId());
-	    	$this->_debug($gatewayResponse->debug());	    	
+	    	$this->_debug($gatewayResponse->debug());
+
 	  		$redirectUrl =  $this->processResponseToRedirect($gatewayResponse, $payment, $amount);
 	  		
 	  		return $redirectUrl;
