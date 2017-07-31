@@ -1098,7 +1098,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $params['cid'] = $payment->getOrder()->getCustomerId();//CUSTOMER ID
 
         // Astropay needs National identification number
-        if (!empty($payment->getAdditionalInformation('national_identification_number'))){
+        if ($payment->getAdditionalInformation('national_identification_number')){
             $params['national_identification_number']  = $payment->getAdditionalInformation('national_identification_number');
         }
 
