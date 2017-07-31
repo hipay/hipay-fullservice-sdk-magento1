@@ -1,5 +1,9 @@
 # Version 1.7.1
 
+Fix : Authentication indicator for SEPA
+
+# Version 1.7.1
+
 Fix : PHP Notices with Oney Facily Pay support
 
 # Version 1.7.0
