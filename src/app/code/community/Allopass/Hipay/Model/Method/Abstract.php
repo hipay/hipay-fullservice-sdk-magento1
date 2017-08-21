@@ -1273,7 +1273,9 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $params['streetaddress'] = $order->getBillingAddress()->getStreet1();
         $params['streetaddress2'] = $order->getBillingAddress()->getStreet2();
         $params['city'] = $order->getBillingAddress()->getCity();
-        //$params['state'] = $order->getBillingAddress(); //TODO checck if country is US or Canada
+
+        $params['state'] = $order->getBillingAddress()->getRegionCode() ? $order->getBillingAddress()->getRegionCode() : $order->getBillingAddress()->getCity();
+
         $zipcode = explode('-', $order->getBillingAddress()->getPostcode());
         $params['zipcode'] = $zipcode[0];
         //$params['zipcode'] = $order->getBillingAddress()->getPostcode();
@@ -1301,7 +1303,9 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $params['shipto_streetaddress'] = $shippingAddress->getStreet1();
         $params['shipto_streetaddress2'] = $shippingAddress->getStreet2();
         $params['shipto_city'] = $shippingAddress->getCity();
-        //$params['shipto_state'] = $shippingAddress; //TODO check if country is US or Canada
+
+        $params['shipto_state'] = $shippingAddress->getRegionCode() ? $shippingAddress->getRegionCode() :  $shippingAddress->getCity();
+
         $params['shipto_zipcode'] = $shippingAddress->getPostcode();
         $params['shipto_country'] = $shippingAddress->getCountry();
         $params['shipto_msisdn'] = $shippingAddress->getTelephone();
