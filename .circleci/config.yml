@@ -3,6 +3,8 @@ jobs:
   build:
     docker:
       - image: circleci/php:5.6.30-apache
+    steps:
+      - checkout
   test:
     docker:
       - image: circleci/php:5.6.30-apache
