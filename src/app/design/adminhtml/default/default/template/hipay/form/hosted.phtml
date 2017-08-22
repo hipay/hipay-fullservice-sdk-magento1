@@ -29,13 +29,13 @@ $_cards = $this->getCards();
 	<?php if (!$this->getCustomerHasCard()) :?>
 			<div class="input-box">
 				<input id="<?php echo $_code ?>_create_alias_oneclick"  value="create_oneclick"  type="checkbox" name="payment[<?php echo $_code ?>_oneclick]" />
-				<label style="float: none;" for="<?php echo $_code ?>_create_alias_oneclick"><?php echo $this->__('Record your card data for a next buy.') ?></label>
+				<label style="float: none;" for="<?php echo $_code ?>_create_alias_oneclick"><?php echo $this->__('Save your card data for a next buy.') ?></label>
 			</div>
 		<?php else :?>
 			
 			<div class="input-box">
 				<input id="<?php echo $_code ?>_use_alias_oneclick" value="use_oneclick" checked="checked" type="radio" name="payment[<?php echo $_code ?>_oneclick]"  checked/>
-				<label style="float: none;" for="<?php echo $_code ?>_use_alias_oneclick"><?php echo $this->__('Use my recorded card') ?></label>
+				<label style="float: none;" for="<?php echo $_code ?>_use_alias_oneclick"><?php echo $this->__('Use my saved card') ?></label>
 			</div>
 
 			<div class="input-box info-card">
@@ -48,12 +48,12 @@ $_cards = $this->getCards();
 			
 			<div class="input-box">
 				<input id="<?php echo $_code ?>_create_alias_oneclick"  type="radio" name="payment[<?php echo $_code ?>_oneclick]" value="create_oneclick"/>
-				<label style="float: none;" for="<?php echo $_code ?>_create_alias_oneclick"><?php echo $this->__('Record new card data') ?></label>
+				<label style="float: none;" for="<?php echo $_code ?>_create_alias_oneclick"><?php echo $this->__('Save new card data') ?></label>
 			</div>
 
 			<div class="input-box">
 				<input id="<?php echo $_code ?>_not_oneclick"  type="radio" name="payment[<?php echo $_code ?>_oneclick]" value="not_oneclick"  />
-				<label style="float: none;" for="<?php echo $_code ?>_not_oneclick"><?php echo $this->__('Not use record card data') ?></label>
+				<label style="float: none;" for="<?php echo $_code ?>_not_oneclick"><?php echo $this->__('Do not use saved card data') ?></label>
 			</div>
 
 		<?php endif;?>
