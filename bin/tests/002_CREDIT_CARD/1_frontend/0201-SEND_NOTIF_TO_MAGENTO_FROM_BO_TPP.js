@@ -164,7 +164,8 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 			});
 		}, function fail() {
 			test.assertExists('a[href="#payment-notification"]', "Notifications tab exists");
-		});
+		},
+		25000);
 	})
 	/* Get data from Notification with code 116 */
 	.then(function() {
