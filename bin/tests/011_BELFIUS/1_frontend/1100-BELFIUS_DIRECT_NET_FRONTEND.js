@@ -47,22 +47,17 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
     /* Fill Belfius formular */
     .then(function() {
         this.echo("Filling payment formular...", "INFO");
-        this.waitForUrl(/payment\/web\/pay/, function success() {
-            this.click('button#submit-button');
-            this.waitForUrl(/secure\.ogone/, function success() {
-                this.click('input#submit1');
-                this.waitForUrl(/netbanking_ACS/, function success() {
-                    this.click('input#btn_Accept');
-                    test.info("Done");
-                }, function fail() {
-                    test.assertUrlMatch(/netbanking_ACS/, "Payment Ogone second page exists");
-                });
+        this.waitForUrl(/secure\.ogone/, function success() {
+            this.click('input#submit1');
+            this.waitForUrl(/netbanking_ACS/, function success() {
+                this.click('input#btn_Accept');
+                test.info("Done");
             }, function fail() {
-                test.assertUrlMatch(/orderstandard/, "Payment Ogone page exists");
+                test.assertUrlMatch(/netbanking_ACS/, "Payment Ogone second page exists");
             });
         }, function fail() {
-            test.assertUrlMatch(/payment\/web\/pay/, "Payment page exists");
-        }, 15000);
+            test.assertUrlMatch(/orderstandard/, "Payment Ogone page exists");
+        }, 15000 );
     })
     .then(function() {
         this.orderResult(paymentType);
