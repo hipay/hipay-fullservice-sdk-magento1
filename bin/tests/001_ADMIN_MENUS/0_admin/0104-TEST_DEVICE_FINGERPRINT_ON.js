@@ -65,7 +65,8 @@ casper.test.begin('Test Magento With Device Fingerprint', function(test) {
             test.info("Done");
         }, function fail() {
             test.assertUrlMatch(/maccount/, "Dashboard page with account ID exists");
-        });
+        },
+        25000);
     })
     .then(function() {
         this.echo("Finding order # " + orderID + " in order list...", "INFO");

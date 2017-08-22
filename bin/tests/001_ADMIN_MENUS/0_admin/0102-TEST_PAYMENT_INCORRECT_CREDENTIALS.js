@@ -47,6 +47,8 @@ casper.test.begin('Test Payment With Incorrect Credentials', function(test) {
             this.click("div#payment-buttons-container>button");
             test.info("Done");
         }, function fail() {
+            test.info("Initial credential for api_user_name was :" + initialCredential);
+            this.fillFormHipayEnterprise(initialCredential);
             test.assertVisible("#checkout-step-payment", "'Payment Information' formular exists");
         }, 10000);
     })
@@ -60,6 +62,8 @@ casper.test.begin('Test Payment With Incorrect Credentials', function(test) {
             test.assertHttpStatus(200, "Correct HTTP Status Code 200");
             test.assertExists('li.error-msg', "Correct response from Magento server !");
         }, function fail() {
+            test.info("Initial credential for api_user_name was :" + initialCredential);
+            this.fillFormHipayEnterprise(initialCredential);
             test.assertUrlMatch(/checkout\/cart/, "Checkout page exists");
         }, 15000);
     })

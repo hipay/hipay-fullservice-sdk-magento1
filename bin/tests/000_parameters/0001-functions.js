@@ -137,7 +137,7 @@ casper.test.begin('Functions', function(test) {
 	        test.info("Done");
 	    }, function fail() {
 	        test.assertVisible("form#co-shipping-method-form", "'Shipping Method' formular exists");
-	    }, 25000);
+	    }, 35000);
 	};
 	/* Place order */
 	casper.orderReview = function(paymentType) {
@@ -170,6 +170,7 @@ casper.test.begin('Functions', function(test) {
         this.echo("Selecting sub-account...", "INFO");
         this.waitForUrl(/dashboard/, function success() {
             if(this.exists('div#s2id_dropdown-merchant-input>a')) {
+                this.echo('URL match 1');
                 this.thenClick('div#s2id_dropdown-merchant-input>a', function() {
                     this.sendKeys('input[placeholder="Account name or API credential"]', name);
                     this.wait(1000, function() {    
@@ -177,11 +178,21 @@ casper.test.begin('Functions', function(test) {
                     });
                 });
             }
-            else
-                this.click(x('//td[contains(., "HIPAY_RE7_OGONE_DEV")]/preceding-sibling::td[@class="account-number"]/a'));
+            else {
+                this.echo("Selecting account "  + name + " with old backend ", "INFO");
+                if(this.exists(x('//td[contains(., "HIPAY_RE7_' + name + ']/preceding-sibling::td[@class="account-number"]/a'))) {
+                    this.echo("Account is listed, try to select it ", "INFO");
+
+                    this.evaluate(function() {
+                        __utils__.getElementByXPath('//td[contains(., "HIPAY_RE7_' + name + ']/preceding-sibling::td[@class="account-number"]/a').click();
+                    });
+                }
+            }
+
         }, function fail() {
             test.assertUrlMatch(/dashboard/, "dashboard page exists");
-        });
+        },
+        25000);
     };
 	/* Get order ID, if it exists, after purchase, and set it in variable */
 	casper.setOrderId = function(pending) {
