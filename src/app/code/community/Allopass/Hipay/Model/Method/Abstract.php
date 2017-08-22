@@ -1196,7 +1196,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
         // Check if delivery method is required for the payment method
         if (Mage::helper('hipay')->isDeliveryMethodAndCartItemsRequired($payment->getCcType())) {
-            if (!empty($payment->getOrder()->getShippingMethod()) && !$payment->getOrder()->getIsVirtual()) {
+            if ($payment->getOrder()->getShippingMethod() && !$payment->getOrder()->getIsVirtual()) {
                 Mage::helper('hipay')->processDeliveryInformation($payment->getOrder()->getShippingMethod(), Mage::app()->getStore(),$this, $params);
             } else{
                 //TODO
@@ -1613,7 +1613,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
      */
     public function canUseForCurrency($currencyCode)
     {
-        if (empty( $this->getConfigData('currency')) || $currencyCode == $this->getConfigData('currency')
+        if (!$this->getConfigData('currency') || $currencyCode == $this->getConfigData('currency')
             || in_array($currencyCode, $this->getConfigData('currency'))) {
             return true;
         }
