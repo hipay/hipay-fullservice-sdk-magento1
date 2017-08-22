@@ -180,15 +180,18 @@ casper.test.begin('Functions', function(test) {
             }
             else {
                 this.echo("Selecting account "  + name + " with old backend ", "INFO");
-                if(this.exists(x('//td[contains(., "HIPAY_RE7_' + name + ']/preceding-sibling::td[@class="account-number"]/a'))) {
-                    this.echo("Account is listed, try to select it ", "INFO");
-
-                    this.evaluate(function() {
-                        __utils__.getElementByXPath('//td[contains(., "HIPAY_RE7_' + name + ']/preceding-sibling::td[@class="account-number"]/a').click();
+                if(this.exists(x('//td[contains(., "HIPAY_RE7_' + name + '")]/preceding-sibling::td[@class="account-number"]/a'))) {
+                    this.thenClick('div#fs-account-navigation>div>a', function() {
+                        this.thenClick(x('//li/a[text()="Test"]'), function() {
+                            this.thenClick(x('//td[contains(., "HIPAY_RE7")]/i'), function() {
+                                this.click(x('//td[contains(., "HIPAY_RE7_' + name + '")]/preceding-sibling::td[@class="account-number"]/a'));
+                            });
+                        });
                     });
+                } else {
+                    this.echo('Account is not listed "HIPAY_RE7_' + name + '"', "ERROR");
                 }
             }
-
         }, function fail() {
             test.assertUrlMatch(/dashboard/, "dashboard page exists");
         },
