@@ -167,9 +167,9 @@ casper.test.begin('Functions', function(test) {
     };
     /* Select account for test from BO TPP */
     casper.selectAccountBackend = function(name) {
-        this.echo("Selecting sub-account...", "INFO");
         this.waitForUrl(/dashboard/, function success() {
             if(this.exists('div#s2id_dropdown-merchant-input>a')) {
+                this.echo("Selecting sub-account...", "INFO");
                 this.echo('URL match 1');
                 this.thenClick('div#s2id_dropdown-merchant-input>a', function() {
                     this.sendKeys('input[placeholder="Account name or API credential"]', name);
