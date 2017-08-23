@@ -103,7 +103,7 @@ jobs:
       - store_artifacts:
           path: bin/tests/errors
           prefix: screenshots
-       - store_artifacts:
+      - store_artifacts:
            path: bin/tests/reports
            prefix: test
       - deploy:
