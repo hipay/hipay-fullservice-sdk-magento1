@@ -1,154 +1,66 @@
-version: 2
-jobs:
-  build:
-    working_directory: ~/magento1
-    docker:
-      - image: docker:17-05.0-ce-git
-    environment:
-      TZ: "/usr/share/zoneinfo/Europe/paris"
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run:
-          name: Install Docker-Compose
-          command: |
-            apk add --no-cache \
-              py-pip=9.0.0-r1
-            pip install \
-              docker-compose==1.12.0 \
-              awscli==1.11.76
-          name: Install PhantomJS
-          command: |
-            wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2
-            sudo tar xvjf phantomjs-2.1.1-linux-x86_64.tar.bz2
-            sudo mv phantomjs-2.1.1-linux-x86_64 ~/bin
-            sudo chmod a+x ~/bin/phantomjs-2.1.1-linux-x86_64
-            sudo ln -s --force ~/bin/phantomjs-2.1.1-linux-x86_64/bin/phantomjs \
-              /usr/local/bin/phantomjs
-          name: Install CasperJS & JUnit
-          command: |
-            npm install -g casperjs@1.1.3
-            npm install -g junit-viewer
-      - run:
-        name: Edit config files
-        command: |
-          sed -i -e "s/{HIPAY_API_USER_TEST\}/$HIPAY_API_USER_TEST/" \
-            ./bin/conf/stage/hipay.env.sample
-          sed -i -e "s/{HIPAY_API_PASSWORD_TEST\}/$HIPAY_API_PASSWORD_TEST/" \
-            ./bin/conf/stage/hipay.env.sample
-          sed -i -e "s/{HIPAY_TOKENJS_PUBLICKEY_TEST\}/$HIPAY_TOKENJS_PUBLICKEY_TEST/" \
-            ./bin/conf/stage/hipay.env.sample
-          sed -i -e "s/{HIPAY_TOKENJS_USERNAME_TEST\}/$HIPAY_TOKENJS_USERNAME_TEST/" \
-            ./bin/conf/stage/hipay.env.sample
-          sed -i -e "s/{HIPAY_SECRET_PASSPHRASE_TEST\}/$HIPAY_SECRET_PASSPHRASE_TEST/" \
-            ./bin/conf/stage/hipay.env.sample
-          sed -i -e "s/{LOGIN_BACKEND\}/$LOGIN_BACKEND/" \
-            ./bin/conf/stage/test.env.sample
-          sed -i -e "s/{PASS_BACKEND\}/$PASS_BACKEND/" \
-            ./bin/conf/stage/test.env.sample
-          sed -i -e "s/{LOGIN_PAYPAL\}/$LOGIN_PAYPAL/" \
-            ./bin/conf/stage/test.env.sample
-          sed -i -e "s/{PASS_PAYPAL\}/$PASS_PAYPAL/" \
-            ./bin/conf/stage/test.env.sample
-        name: Create report & screenshots directories
-        command: |
-          mkdir $CIRCLE_ARTIFACTS/casper_report
-          mkdir $CIRCLE_ARTIFACTS/screenshots
-      - run:
-        name: Generate Dockerfiles
-        command: |
-          sh bin/docker/generate_dockerfile.sh
-      - restore_cache:
-          keys:
-            - v1-{{ .Branch }}
-          paths:
-            - /caches/php5-6.tar
-            - /caches/php7-0.tar
-      - run:
-          name: Load Docker image layer cache
-          command: |
-            set +o pipefail
-            docker load -i /caches/php5-6.tar | true
-      - run:    
-          name: Build application Docker image
-          command: |
-            docker-compose -f docker-compose.yml -f docker-compose.stage.yml \
-              build --cache-from=php5-6 -t php5-6 .
-      - run:
-          name: Save Docker image layer cache
-          command: |
-            mkdir -p /caches
-            docker save -o /caches/php5-6.tar php5-6
-      - save_cache:
-          key: v1-{{ .Branch }}-{{ epoch }}
-          paths:
-            - /caches/php5-6.tar
-      - run:
-          name: Up PHP-5.6 container
-          command: |
-            docker-compose -f docker-compose.yml -f docker-compose.stage.yml up -d
-            sleep 60
-            curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
-            curl --retry 30 --retry-delay 3 -v $URL_MAILCATCHER
-      - run:
-        name: Run tests
-        command: |
-          sh bin/tests/casper_run_circle.sh
-          junit-viewer --results=bin/tests/result.xml \
-            --save=bin/tests/report-php5-6.html --minify=false --contracted
-          if [ -d bin/tests/errors/ ]; then
-            mkdir $CIRCLE_ARTIFACTS/screenshots/php5-6
-            cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots/php5-6
-            rm -rf bin/tests/errors/
-          fi
-      - run:
-        name: Stop PHP-5.6 container
-        command: |
-          docker-compose stop
-          docker-compose rm -fv
-      - run:
-          name: Load Docker image layer cache
-          command: |
-            set +o pipefail
-            docker load -i /caches/php7-0.tar | true
-      - run:    
-          name: Build application Docker image
-          command: |
-            docker-compose -f docker-compose.yml -f docker-compose.stage-php7-0.yml \
-              build --cache-from=php7-0 -t php7-0 .
-      - run:
-          name: Save Docker image layer cache
-          command: |
-            mkdir -p /caches
-            docker save -o /caches/php7-0.tar php7-0
-      - save_cache:
-          key: v1-{{ .Branch }}-{{ epoch }}
-          paths:
-            - /caches/php7-0.tar
-      - run:
-          name: Up PHP-7.0 container
-          command: |
-            docker-compose -f docker-compose.yml -f docker-compose.stage-php7-0.yml up -d
-            sleep 60
-            curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
-      - run:
-        name: Run tests
-        command: |
-          sh bin/tests/casper_run_circle.sh
-          junit-viewer --results=bin/tests/result.xml \
-            --save=bin/tests/report-php7-0.html --minify=false --contracted
-          if [ -d bin/tests/errors/ ]; then
-            mkdir $CIRCLE_ARTIFACTS/screenshots/php7-0
-            cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots/php7-0
-          fi
-      - run:
-        name: Get reports as artefacts
-        command: |
-          cp bin/tests/report-php5-6.html $CIRCLE_ARTIFACTS/casper_report/
-          cp bin/tests/report-php7-0.html $CIRCLE_ARTIFACTS/casper_report/
-      - deploy:
-        name: Push module
-        command: |
-          if [ "${CIRCLE_BRANCH}" == "develop" ]; then
-            sh ./bin/deployment/deploy_staging.sh
-          fi
+machine:
+  timezone:
+    Europe/Paris
+  services:
+    - docker
+  hosts:
+    local-magento.hipay.com: 127.0.0.1
+  php:
+    version: 5.6.17
+test:
+  pre:
+    - wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2
+    - sudo tar xvjf phantomjs-2.1.1-linux-x86_64.tar.bz2
+    - sudo mv phantomjs-2.1.1-linux-x86_64 /home/ubuntu/bin/
+    - sudo chmod a+x /home/ubuntu/bin/phantomjs-2.1.1-linux-x86_64
+    - sudo ln -s --force /home/ubuntu/bin/phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/bin/phantomjs
+    - npm install -g casperjs@1.1.3
+    - npm install -g junit-viewer
+    - sed -i -e "s/{HIPAY_API_USER_TEST\}/$HIPAY_API_USER_TEST/" ./bin/conf/stage/hipay.env.sample
+    - sed -i -e "s/{HIPAY_API_PASSWORD_TEST\}/$HIPAY_API_PASSWORD_TEST/" ./bin/conf/stage/hipay.env.sample
+    - sed -i -e "s/{HIPAY_TOKENJS_PUBLICKEY_TEST\}/$HIPAY_TOKENJS_PUBLICKEY_TEST/" ./bin/conf/stage/hipay.env.sample
+    - sed -i -e "s/{HIPAY_TOKENJS_USERNAME_TEST\}/$HIPAY_TOKENJS_USERNAME_TEST/" ./bin/conf/stage/hipay.env.sample
+    - sed -i -e "s/{HIPAY_SECRET_PASSPHRASE_TEST\}/$HIPAY_SECRET_PASSPHRASE_TEST/" ./bin/conf/stage/hipay.env.sample
+    - sed -i -e "s/{LOGIN_BACKEND\}/$LOGIN_BACKEND/" ./bin/conf/stage/test.env.sample
+    - sed -i -e "s/{PASS_BACKEND\}/$PASS_BACKEND/" ./bin/conf/stage/test.env.sample
+    - sed -i -e "s/{LOGIN_PAYPAL\}/$LOGIN_PAYPAL/" ./bin/conf/stage/test.env.sample
+    - sed -i -e "s/{PASS_PAYPAL\}/$PASS_PAYPAL/" ./bin/conf/stage/test.env.sample
+    - mkdir $CIRCLE_ARTIFACTS/casper_report
+    - mkdir $CIRCLE_ARTIFACTS/screenshots
+  override:
+    - sh bin/docker/generate_dockerfile.sh
+    - docker-compose -f docker-compose.yml -f docker-compose.stage.yml build --no-cache
+    - docker-compose -f docker-compose.yml -f docker-compose.stage.yml up -d
+    - sleep 60
+    - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
+    - curl --retry 30 --retry-delay 3 -v $URL_MAILCATCHER
+    - sh bin/tests/casper_run_circle.sh
+    - junit-viewer --results=bin/tests/result.xml --save=bin/tests/report-php5-6.html --minify=false --contracted
+    - if [ -d bin/tests/errors/ ]; then mkdir $CIRCLE_ARTIFACTS/screenshots/php5-6; cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots/php5-6; rm -rf bin/tests/errors/; fi
+    # - docker-compose stop
+    # - docker-compose rm -fv
+    # - docker-compose -f docker-compose.yml -f docker-compose.stage-php5-4.yml build --no-cache
+    # - docker-compose -f docker-compose.yml -f docker-compose.stage-php5-4.yml up -d
+    # - sleep 60
+    # - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
+    # - sh bin/tests/casper_run_circle.sh
+    # - junit-viewer --results=bin/tests/result.xml --save=bin/tests/report-php5-4.html --minify=false --contracted
+    # - if [ -d bin/tests/errors/ ]; then mkdir $CIRCLE_ARTIFACTS/screenshots/php5-4; cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots/php5-4; rm -rf bin/tests/errors/; fi
+    - docker-compose stop
+    - docker-compose rm -fv
+    - docker-compose -f docker-compose.yml -f docker-compose.stage-php7-0.yml build --no-cache
+    - docker-compose -f docker-compose.yml -f docker-compose.stage-php7-0.yml up -d
+    - sleep 60
+    - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
+    - sh bin/tests/casper_run_circle.sh
+    - junit-viewer --results=bin/tests/result.xml --save=bin/tests/report-php7-0.html --minify=false --contracted
+    - if [ -d bin/tests/errors/ ]; then mkdir $CIRCLE_ARTIFACTS/screenshots/php7-0; cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots/php7-0; fi
+  post:
+    - cp bin/tests/report-php5-6.html $CIRCLE_ARTIFACTS/casper_report/
+    # - cp bin/tests/report-php5-4.html $CIRCLE_ARTIFACTS/casper_report/
+    - cp bin/tests/report-php7-0.html $CIRCLE_ARTIFACTS/casper_report/
+deployment:
+  feature:
+    branch: /feature*/
+    commands:
+      - sh ./bin/deployment/deploy_staging.sh
