@@ -4,6 +4,7 @@ Fix : State is now required by Paypal API
 Fix : Authentication indicator (3DS) with rules
 Fix : Php 5.4 errors
 Fix : Changing terms in some translations
+Fix : Remove Sepa SSD from CC-TYPES
 
 # Version 1.7.2
 
