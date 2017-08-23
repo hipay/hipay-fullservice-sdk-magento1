@@ -1,3 +1,10 @@
+# Version 1.7.3
+
+Fix : State is now required by Paypal API
+Fix : Authentication indicator (3DS) with rules
+Fix : Php 5.4 errors
+Fix : Changing terms in some translations
+
 # Version 1.7.2
 
 Fix : Authentication indicator for SEPA
