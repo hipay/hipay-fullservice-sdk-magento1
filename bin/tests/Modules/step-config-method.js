@@ -7,7 +7,11 @@ exports.proceed = function proceed(test, method, nameField, option) {
 			this.waitForSelector(x('//span[contains(.,"Payment Methods")]'), function success() {
 				this.click(x('//span[contains(.,"Payment Methods")]'));
 				this.waitForSelector(x('//a[text()="' + method + '"]'), function success() {
-					this.click(x('//a[text()="' + method + '"]'));
+                    linkBlock = this.getElementAttribute('#payment_hipay_' + nameField + '-head', 'class');
+                    if (linkBlock == "") {
+                        test.info("Collapse bloc is closed. Try to expand it.");
+				        this.click(x('//a[text()="' + method + '"]'));
+                    }
                     this.waitUntilVisible('select[name="groups[hipay_' + nameField + '][fields][active][value]"]', function success() {
                         var enable = 'select[name="groups[hipay_' + nameField +  '][fields][active][value]"]',
                             debug = 'select[name="groups[hipay_' + nameField +  '][fields][debug][value]"]',
@@ -46,7 +50,8 @@ exports.proceed = function proceed(test, method, nameField, option) {
                             test.info(method + " Configuration already done");
                     }, function fail() {
                         test.assertVisible('select[name="groups[hipay_' + nameField + '][fields][active][value]"]', "'Enabled' select exists");
-                    });
+                    },
+                    30000);
 				}, function fail() {
                     test.assertExists(x('//a[text()="' + method + '"]'), method + " payment method exists");
                 });

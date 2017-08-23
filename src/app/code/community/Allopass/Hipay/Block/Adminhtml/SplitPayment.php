@@ -5,7 +5,7 @@ class Allopass_Hipay_Block_Adminhtml_SplitPayment extends Mage_Adminhtml_Block_W
 	{
 		$this->_controller = 'adminhtml_splitPayment';
 		$this->_blockGroup = 'hipay';
-		$this->_headerText = $this->__('Hipay Split Payments');
+		$this->_headerText = $this->__('HiPay Split Payments');
 	
 		parent::__construct();
 		

@@ -7,11 +7,11 @@ casper.test.begin('Test Magento Admin Menus', function(test) {
     })
     /* Check HiPay Split Payments menu */
     .then(function() {
-    	this.echo("Checking Hipay Split Payments menu...", "INFO");
+    	this.echo("Checking HiPay Split Payments menu...", "INFO");
     	this.waitForUrl(/admin\/dashboard/, function success() {
 	    	this.click(x('//span[text()="Split payments"]'));
 	    	this.waitForUrl(/admin\/splitPayment/, function success() {
-	    		test.assertTextExists('Hipay Split Payments', "Hipay Split Payments menu activated !");
+	    		test.assertTextExists('HiPay Split Payments', "HiPay Split Payments menu activated !");
 	    	}, function fail() {
 	    		test.assertUrlMatch(/admin\/splitPayment/, "Split Payments admin page exists");
 	    	}, 10000);

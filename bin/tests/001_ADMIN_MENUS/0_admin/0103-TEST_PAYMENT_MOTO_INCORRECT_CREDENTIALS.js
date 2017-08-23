@@ -25,6 +25,7 @@ casper.test.begin('Test MOTO Payment With Incorrect Credentials', function(test)
             this.click(x('//span[text()="Submit Order"]'));
             test.info("Done");
         }, function fail() {
+            this.fillFormHipayEnterprise(initialCredential, true);
             test.assertExists(x('//span[text()="Submit Order"]'), "Submit order button exists");
         });
     })
@@ -35,6 +36,7 @@ casper.test.begin('Test MOTO Payment With Incorrect Credentials', function(test)
             test.assertHttpStatus(200, "Correct HTTP Status Code 200");
             test.assertExists('li.error-msg', "Correct response from Magento server !");
         }, function fail() {
+            this.fillFormHipayEnterprise(initialCredential, true);
             test.assertUrlMatch(/admin\/sales_order\/index/, "Orders admin page exists");
         }, 10000);
     })

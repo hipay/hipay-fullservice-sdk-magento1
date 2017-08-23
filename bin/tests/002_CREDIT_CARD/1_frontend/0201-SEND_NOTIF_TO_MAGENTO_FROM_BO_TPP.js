@@ -6,6 +6,7 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 		hash = "",
 		output = "",
 		notif117 = true,
+		reload = false,
 		orderID = casper.getOrderId(); // Get order ID from previous order or from command line parameter
 		
 		// orderID = "28997145000067";
@@ -22,8 +23,19 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 				notif117 = false;
 				this.echo("Notification 117 not exists", "WARNING");
 			}
-			else
-				test.assertExists(x('//tr/td/span[text()="' + status + '"]/parent::td/following-sibling::td[@class="cell-right"]/a'), "Notification " + status + " exists");
+			else {
+				if(!reload) {
+					this.echo("Waiting for notifications...", "WARNING")
+					this.wait(5000, function() {
+						reload = true;
+						this.reload();
+						test.info("Done");
+						this.openingNotif(status);
+					});
+				}
+				else
+					test.assertExists(x('//tr/td/span[text()="' + status + '"]/parent::td/following-sibling::td[@class="cell-right"]/a'), "Notification " + status + " exists");
+			}
 		});
 	};
 	/* Get data request and hash code from the details */
@@ -152,7 +164,8 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 			});
 		}, function fail() {
 			test.assertExists('a[href="#payment-notification"]', "Notifications tab exists");
-		});
+		},
+		25000);
 	})
 	/* Get data from Notification with code 116 */
 	.then(function() {
