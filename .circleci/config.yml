@@ -72,9 +72,9 @@ jobs:
       - run:
           name: Launch TEST PHP 5.6
           command: |
-            docker-compose -f docker-compose.yml -f docker-compose.stage.yml build --no-cache
+            docker-compose -f docker-compose.yml -f docker-compose.stage.yml build
             docker-compose -f docker-compose.yml -f docker-compose.stage.yml up -d
-            sleep 60
+            sleep 120
             curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
             curl --retry 30 --retry-delay 3 -v $URL_MAILCATCHER
             sh bin/tests/casper_run_circle.sh
@@ -85,15 +85,13 @@ jobs:
          command: |
            docker-compose stop
            docker-compose rm -fv
-           docker-compose -f docker-compose.yml -f docker-compose.stage-php7-0.yml build --no-cache
+           docker-compose -f docker-compose.yml -f docker-compose.stage-php7-0.yml build
            docker-compose -f docker-compose.yml -f docker-compose.stage-php7-0.yml up -d
-           sleep 60
+           sleep 120
            curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
            sh bin/tests/casper_run_circle.sh
            junit-viewer --results=bin/tests/result.xml --save=bin/tests/report-php7-0.html --minify=false --contracted
            if [ -d bin/tests/errors/ ]; then mkdir $CIRCLE_ARTIFACTS/screenshots/php7-0; cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots/php7-0; fi
-           cp bin/tests/report-php5-6.html $CIRCLE_ARTIFACTS/casper_report/
-           cp bin/tests/report-php7-0.html $CIRCLE_ARTIFACTS/casper_report/
       - run:
           name: Package Extension
           command: |
@@ -102,6 +100,9 @@ jobs:
       - store_artifacts:
           path: /dist/*.tgz
           prefix: package
+      - store_artifacts:
+          path: bin/tests/
+          prefix: test
       - deploy:
           name: Deploy module
           filters:
