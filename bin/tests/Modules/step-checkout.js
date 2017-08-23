@@ -19,8 +19,12 @@ exports.proceed = function proceed(test, paymentType, method) {
     .then(function() {
         this.echo("Selecting product for this order", "INFO");
         this.waitForSelector('input#store_2', function success() {
-            this.click('input#store_2');
-            test.info("Language selected");
+
+            this.evaluate(function() {
+                document.querySelector('input#store_2').click();
+                test.info("Select store");
+            });
+
             this.waitForSelector(x('//span[text()="Add Products"]'), function success() {
                 this.click(x('//span[text()="Add Products"]'));
                 this.waitForSelector('#sales_order_create_search_grid_table tbody tr:first-child td:first-child', function success() {
@@ -37,7 +41,7 @@ exports.proceed = function proceed(test, paymentType, method) {
                 });
             }, function fail() {
                 test.assertExists(x('//span[text()="Add Products"]'), "Add products button exists");
-            }, 15000);
+            }, 25000);
         }, function fail() {
             test.assertExists('input#store_2', "Language input exists");
         }, 20000);
@@ -52,7 +56,7 @@ exports.proceed = function proceed(test, paymentType, method) {
                 test.info("Shipping method selected");
             }, function fail() {
                 test.assertExists('input#s_method_flatrate_flatrate', "Flat Rate shipping method exists");
-            }, 20000);
+            }, 30000);
         }, function fail() {
             test.assertExists('#order-shipping-method-summary>a', "Shipping method link exists");
         });

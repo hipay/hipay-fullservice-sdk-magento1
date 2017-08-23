@@ -66,7 +66,7 @@ class Allopass_Hipay_Block_Adminhtml_Field_MappingCategory extends Mage_Adminhtm
         $this->addColumn(
             'hipay_category',
             array(
-                'label' => Mage::helper('hipay')->__('Hipay category'),
+                'label' => Mage::helper('hipay')->__('HiPay category'),
                 'renderer' => $this->_getListOptionsRenderer()
             )
         );
