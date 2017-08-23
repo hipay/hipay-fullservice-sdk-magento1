@@ -122,12 +122,6 @@
 						<name>Carte Bancaire</name>
 						<order>0</order>
 					</CB>
-					<SDD>
-						<code>SDD</code>
-						<code_hipay>sdd</code_hipay>
-						<name>SEPA Direct Debit</name>
-						<order>70</order>
-					</SDD>
 				</types>
 			</cc>
 			<hosted>

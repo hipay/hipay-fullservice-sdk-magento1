@@ -10,7 +10,7 @@ BASE_URL="http://localhost:8095/"
 URL_MAILCATCHER="http://localhost:1095/"
 header="bin/tests/"
 pathPreFile=${header}000*/*.js
-pathDir=${header}001*
+pathDir=${header}0*
 
 setBackendCredentials() {
     if [ "$LOGIN_BACKEND" = "" ] || [ "$PASS_BACKEND" = "" ]; then
@@ -31,10 +31,14 @@ setPaypalCredentials() {
         while [ "$LOGIN_PAYPAL" = "" ]; do
             read -p "LOGIN_PAYPAL variable is empty. Insert your PayPal login here : " login
             LOGIN_PAYPAL=$login
+            export LOGIN_PAYPAL=$login
+            echo  "Please execute export LOGIN_PAYPAL=$login to avoid the question the next time"
         done
         while [ "$PASS_PAYPAL" = "" ]; do
             read -p "PASS_PAYPAL variable is empty. Insert your PayPal password here : " pass
             PASS_PAYPAL=$pass
+            export PASS_PAYPAL=$pass
+            echo  "Please execute export PASS_PAYPAL=$pass to avoid the question the next time"
         done
         printf "\n"
     fi
@@ -86,7 +90,8 @@ elif [ "$1" = "notif" ]; then
         read -p "In order to simulate notification to Magento server, put here an order ID : " order
     done
 
-    casperjs test $pathPreFile ${header}002*/1*/0201-*.js --url=$BASE_URL --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --ignore-ssl-errors=true --ssl-protocol=any --order=$order
+    casperjs test $pathPreFile ${pathDir}/[0-1]*/[0-9][0-9][0-9][0-9]-*.js --url=$BASE_URL --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --login-paypal=$LOGIN_PAYPAL --pass-paypal=$PASS_PAYPAL --xunit=${header}result.xml --ignore-ssl-errors=true --ssl-protocol=any
+
 else
     echo "Incorrect argument ! Please check the HiPay's Helper via the following command : 'sh magento.sh' or 'sh magento.sh --help'"
 fi

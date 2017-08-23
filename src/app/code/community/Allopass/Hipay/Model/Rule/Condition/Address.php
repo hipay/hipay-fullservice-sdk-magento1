@@ -172,12 +172,12 @@ class Allopass_Hipay_Model_Rule_Condition_Address extends Mage_Rule_Model_Condit
         $toValidate = new Varien_Object();
 
         if ($useOrderCurrency) {
-            $toValidate->setSubtotal($address->getSubtotal());
-            $toValidate->setGrandTotal($address->getGrandTotal());
+            $toValidate->setSubtotal($quote->getSubtotal());
+            $toValidate->setGrandTotal($quote->getGrandTotal());
             $toValidate->setCurrencyCode($quote->getCurrencyCode());
         } else {
-            $toValidate->setBaseSubtotal($address->getBaseSubtotal());
-            $toValidate->setBaseGrandTotal($address->getBaseGrandTotal());
+            $toValidate->setBaseSubtotal($quote->getBaseSubtotal());
+            $toValidate->setBaseGrandTotal($quote->getBaseGrandTotal());
             $toValidate->setBaseCurrencyCode($quote->getBaseCurrencyCode());
         }
         $toValidate->setBillingPostcode($address->getPostcode());
@@ -190,11 +190,9 @@ class Allopass_Hipay_Model_Rule_Condition_Address extends Mage_Rule_Model_Condit
         }
 
         $toValidate->setWeight($address->getWeight());
-        $toValidate->setWeight($address->getWeight());
         $toValidate->setShippingMethod($address->getShippingMethod());
 
         $toValidate->setTotalQty($quote->getItemsQty());
-
         $toValidate->setCreatedAt($this->_getFormatCreatedAt($object));
 
         return parent::validate($toValidate);

@@ -1127,28 +1127,6 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
             $params['cardtoken'] = $token;
         }
 
-        // TPPMAG1-2 - JPN
-        //$params['authentication_indicator'] = 0;
-        //switch ((int)$this->getConfigData('use_3d_secure')) {
-        //	case 1:
-        //		$params['authentication_indicator'] = 1;
-        //		break;
-        //	case 2:
-        //	case 3:
-        //		/* @var $rule Allopass_Hipay_Model_Rule */
-        //		$rule = Mage::getModel('hipay/rule')->load($this->getConfigData('config_3ds_rules'));
-        //		if($rule->getId() && $rule->validate($payment->getOrder()) )
-        //		{
-        //			$params['authentication_indicator'] = 1;
-        //			if((int)$this->getConfigData('use_3d_secure') == 3)//case for force 3ds if rules are validated
-        //				$params['authentication_indicator'] = 2;
-        //
-        //		}
-        //		break;
-        //	case 4:
-        //		$params['authentication_indicator'] = 2;
-        //		break;
-        //}
         $params['authentication_indicator'] = Mage::helper('hipay')->is3dSecure($this->getConfigData('use_3d_secure'),
             $this->getConfigData('config_3ds_rules'), $payment);
 
@@ -1218,7 +1196,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
         // Check if delivery method is required for the payment method
         if (Mage::helper('hipay')->isDeliveryMethodAndCartItemsRequired($payment->getCcType())) {
-            if (!empty($payment->getOrder()->getShippingMethod()) && !$payment->getOrder()->getIsVirtual()) {
+            if ($payment->getOrder()->getShippingMethod() && !$payment->getOrder()->getIsVirtual()) {
                 Mage::helper('hipay')->processDeliveryInformation($payment->getOrder()->getShippingMethod(), Mage::app()->getStore(),$this, $params);
             } else{
                 //TODO
@@ -1273,7 +1251,9 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $params['streetaddress'] = $order->getBillingAddress()->getStreet1();
         $params['streetaddress2'] = $order->getBillingAddress()->getStreet2();
         $params['city'] = $order->getBillingAddress()->getCity();
-        //$params['state'] = $order->getBillingAddress(); //TODO checck if country is US or Canada
+
+        $params['state'] = $order->getBillingAddress()->getRegionCode() ? $order->getBillingAddress()->getRegionCode() : $order->getBillingAddress()->getCity();
+
         $zipcode = explode('-', $order->getBillingAddress()->getPostcode());
         $params['zipcode'] = $zipcode[0];
         //$params['zipcode'] = $order->getBillingAddress()->getPostcode();
@@ -1301,7 +1281,9 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $params['shipto_streetaddress'] = $shippingAddress->getStreet1();
         $params['shipto_streetaddress2'] = $shippingAddress->getStreet2();
         $params['shipto_city'] = $shippingAddress->getCity();
-        //$params['shipto_state'] = $shippingAddress; //TODO check if country is US or Canada
+
+        $params['shipto_state'] = $shippingAddress->getRegionCode() ? $shippingAddress->getRegionCode() :  $shippingAddress->getCity();
+
         $params['shipto_zipcode'] = $shippingAddress->getPostcode();
         $params['shipto_country'] = $shippingAddress->getCountry();
         $params['shipto_msisdn'] = $shippingAddress->getTelephone();
@@ -1631,7 +1613,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
      */
     public function canUseForCurrency($currencyCode)
     {
-        if (empty( $this->getConfigData('currency')) || $currencyCode == $this->getConfigData('currency')
+        if (!$this->getConfigData('currency') || $currencyCode == $this->getConfigData('currency')
             || in_array($currencyCode, $this->getConfigData('currency'))) {
             return true;
         }
