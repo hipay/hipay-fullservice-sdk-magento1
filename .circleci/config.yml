@@ -64,7 +64,7 @@ jobs:
             sed -i -e "s/{PASS_PAYPAL\}/$PASS_PAYPAL/" ./bin/conf/stage/test.env.sample
       - run: echo 127.0.0.1 local-magento.hipay.com | tee -a /etc/hosts
       - run:
-          name: Build and Generate DockerFileS
+          name: Build and Generate DockerFiles
           command: |
             mkdir $CIRCLE_ARTIFACTS/casper_report
             mkdir $CIRCLE_ARTIFACTS/screenshots
@@ -73,7 +73,7 @@ jobs:
           name: Launch TEST PHP 5.6
           command: |
             docker-compose -f docker-compose.yml -f docker-compose.stage.yml build
-            docker-compose -f docker-compose.yml -f docker-compose.stage.yml up -d
+            docker-compose -f docker-compose.yml -f docker-compose.stage.yml up
             sleep 120
             curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
             curl --retry 30 --retry-delay 3 -v $URL_MAILCATCHER
@@ -101,7 +101,7 @@ jobs:
           path: /dist/*.tgz
           prefix: package
       - store_artifacts:
-          path: bin/tests/
+          path: bin/tests/errors
           prefix: test
       - deploy:
           name: Deploy module
