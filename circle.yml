@@ -36,12 +36,10 @@ test:
     - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
     - curl --retry 30 --retry-delay 3 -v $URL_MAILCATCHER
     - sh bin/tests/casper_run_circle.sh
-    - junit-viewer --results=bin/tests/result.xml --save=bin/tests/report.html --minify=false --contracted
-    - if [ -d bin/tests/errors/ ]; then mkdir $CIRCLE_ARTIFACTS/screenshots/; cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots/; rm -rf bin/tests/errors/; fi
+    - case $CIRCLE_NODE_INDEX in 0) sh ./bin/docker/report-test.sh ;; 1) sh ./bin/docker/report-test.sh php7-0 ;; esac:
+           parallel: true
   post:
-    - cp bin/tests/report-php5-6.html $CIRCLE_ARTIFACTS/casper_report/
-    # - cp bin/tests/report-php5-4.html $CIRCLE_ARTIFACTS/casper_report/
-    - cp bin/tests/report-php7-0.html $CIRCLE_ARTIFACTS/casper_report/
+    - cp bin/tests/report*.html $CIRCLE_ARTIFACTS/casper_report/
 deployment:
   feature:
     branch: /feature*/
