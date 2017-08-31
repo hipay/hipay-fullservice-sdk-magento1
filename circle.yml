@@ -7,7 +7,7 @@ machine:
     local-magento.hipay.com: 127.0.0.1
   php:
     version: 5.6.17
-test:
+dependencies:
   pre:
     - wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2
     - sudo tar xvjf phantomjs-2.1.1-linux-x86_64.tar.bz2
@@ -28,6 +28,7 @@ test:
     - mkdir $CIRCLE_ARTIFACTS/casper_report
     - mkdir $CIRCLE_ARTIFACTS/screenshots
     - sh bin/docker/generate_dockerfile.sh
+test:
   override:
     - case $CIRCLE_NODE_INDEX in 0) sh ./bin/docker/test-php5.6.sh ;; 1) sh ./bin/docker/test-php7.sh ;; esac:
           parallel: true
