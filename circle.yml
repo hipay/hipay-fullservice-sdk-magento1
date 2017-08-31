@@ -31,7 +31,13 @@ dependencies:
 test:
   override:
     - case $CIRCLE_NODE_INDEX in 0) sh ./bin/docker/launch-circle.sh ;; 1) sh ./bin/docker/launch-circle.sh php7-0 ;; esac:
-          parallel: true
+        parallel: true
+    - sleep 60
+    - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
+    - curl --retry 30 --retry-delay 3 -v $URL_MAILCATCHER
+    - sh bin/tests/casper_run_circle.sh
+    - junit-viewer --results=bin/tests/result.xml --save=bin/tests/report.html --minify=false --contracted
+    - if [ -d bin/tests/errors/ ]; then mkdir $CIRCLE_ARTIFACTS/screenshots/; cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots/; rm -rf bin/tests/errors/; fi
   post:
     - cp bin/tests/report-php5-6.html $CIRCLE_ARTIFACTS/casper_report/
     # - cp bin/tests/report-php5-4.html $CIRCLE_ARTIFACTS/casper_report/
