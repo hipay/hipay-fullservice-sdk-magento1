@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+echo "Run PHP 5.6"
 docker-compose -f docker-compose.yml -f docker-compose.stage.yml build --no-cache
 docker-compose -f docker-compose.yml -f docker-compose.stage.yml up -d
 sleep 60

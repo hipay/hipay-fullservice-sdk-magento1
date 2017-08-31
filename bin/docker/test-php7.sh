@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+echo "Run PHP 7"
 docker-compose stop
 docker-compose rm -fv
 docker-compose -f docker-compose.yml -f docker-compose.stage-php7-0.yml build --no-cache

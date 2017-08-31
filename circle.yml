@@ -29,7 +29,7 @@ test:
     - mkdir $CIRCLE_ARTIFACTS/screenshots
     - sh bin/docker/generate_dockerfile.sh
   override:
-    - case $CIRCLE_NODE_INDEX in 0) sh ./bin/deployment/test-php5.6.sh ;; 1) sh ./bin/deployment/test-php7.sh ;; esac:
+    - case $CIRCLE_NODE_INDEX in 0) sh ./bin/docker/test-php5.6.sh ;; 1) sh ./bin/docker/test-php7.sh ;; esac:
           parallel: true
   post:
     - cp bin/tests/report-php5-6.html $CIRCLE_ARTIFACTS/casper_report/
