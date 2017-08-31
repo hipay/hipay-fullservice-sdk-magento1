@@ -5,7 +5,8 @@ if [ "$1" = '' ]; then
 else
   PHP_VERSION=-$1
 fi
-
+ls
+echo "docker-compose.stage$PHP_VERSION.yml"
 docker-compose -f docker-compose.yml -f docker-compose.stage$PHP_VERSION.yml build --no-cache
 docker-compose -f docker-compose.yml -f docker-compose.stage$PHP_VERSION.yml up -d
 sleep 60
