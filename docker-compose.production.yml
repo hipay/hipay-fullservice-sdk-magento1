@@ -17,3 +17,5 @@ mysql:
      - ./bin/conf/production/mysql.env.sample
 smtp:
   container_name: {CONTAINER_NAME_SMTP}
+    ports:
+        - "{PORT_SMTP}:1080"
