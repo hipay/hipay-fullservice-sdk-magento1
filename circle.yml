@@ -7,7 +7,7 @@ machine:
     local-magento.hipay.com: 127.0.0.1
   php:
     version: 5.6.17
-test:
+dependencies:
   pre:
     - wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2
     - sudo tar xvjf phantomjs-2.1.1-linux-x86_64.tar.bz2
@@ -27,40 +27,21 @@ test:
     - sed -i -e "s/{PASS_PAYPAL\}/$PASS_PAYPAL/" ./bin/conf/stage/test.env.sample
     - mkdir $CIRCLE_ARTIFACTS/casper_report
     - mkdir $CIRCLE_ARTIFACTS/screenshots
-  override:
     - sh bin/docker/generate_dockerfile.sh
-    - docker-compose -f docker-compose.yml -f docker-compose.stage.yml build --no-cache
-    - docker-compose -f docker-compose.yml -f docker-compose.stage.yml up -d
+test:
+  override:
+    - case $CIRCLE_NODE_INDEX in 0) sh ./bin/docker/launch-circle.sh ;; 1) sh ./bin/docker/launch-circle.sh php7-0 ;; esac:
+        parallel: true
     - sleep 60
     - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
     - curl --retry 30 --retry-delay 3 -v $URL_MAILCATCHER
     - sh bin/tests/casper_run_circle.sh
-    - junit-viewer --results=bin/tests/result.xml --save=bin/tests/report-php5-6.html --minify=false --contracted
-    - if [ -d bin/tests/errors/ ]; then mkdir $CIRCLE_ARTIFACTS/screenshots/php5-6; cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots/php5-6; rm -rf bin/tests/errors/; fi
-    # - docker-compose stop
-    # - docker-compose rm -fv
-    # - docker-compose -f docker-compose.yml -f docker-compose.stage-php5-4.yml build --no-cache
-    # - docker-compose -f docker-compose.yml -f docker-compose.stage-php5-4.yml up -d
-    # - sleep 60
-    # - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
-    # - sh bin/tests/casper_run_circle.sh
-    # - junit-viewer --results=bin/tests/result.xml --save=bin/tests/report-php5-4.html --minify=false --contracted
-    # - if [ -d bin/tests/errors/ ]; then mkdir $CIRCLE_ARTIFACTS/screenshots/php5-4; cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots/php5-4; rm -rf bin/tests/errors/; fi
-    - docker-compose stop
-    - docker-compose rm -fv
-    - docker-compose -f docker-compose.yml -f docker-compose.stage-php7-0.yml build --no-cache
-    - docker-compose -f docker-compose.yml -f docker-compose.stage-php7-0.yml up -d
-    - sleep 60
-    - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
-    - sh bin/tests/casper_run_circle.sh
-    - junit-viewer --results=bin/tests/result.xml --save=bin/tests/report-php7-0.html --minify=false --contracted
-    - if [ -d bin/tests/errors/ ]; then mkdir $CIRCLE_ARTIFACTS/screenshots/php7-0; cp bin/tests/errors/* $CIRCLE_ARTIFACTS/screenshots/php7-0; fi
+    - case $CIRCLE_NODE_INDEX in 0) sh ./bin/docker/report-test.sh ;; 1) sh ./bin/docker/report-test.sh php7-0 ;; esac:
+           parallel: true
   post:
-    - cp bin/tests/report-php5-6.html $CIRCLE_ARTIFACTS/casper_report/
-    # - cp bin/tests/report-php5-4.html $CIRCLE_ARTIFACTS/casper_report/
-    - cp bin/tests/report-php7-0.html $CIRCLE_ARTIFACTS/casper_report/
+    - cp bin/tests/report*.html $CIRCLE_ARTIFACTS/casper_report/
 deployment:
   feature:
     branch: /feature*/
     commands:
-      - sh ./bin/deployment/deploy_staging.sh
+      - sh ./bin/deployment/deploy_project.sh
