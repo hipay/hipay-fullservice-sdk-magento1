@@ -6,7 +6,7 @@ machine:
   hosts:
     local-magento.hipay.com: 127.0.0.1
   php:
-    version: 5.6.17
+    version: 7.1.8
 test:
   override:
     - sleep 1
@@ -15,8 +15,7 @@ deployment:
     branch: /.*?/
     tag: /.*?/
     commands:
-      - mkdir ./bin/dist
-      - cp ./composer.json.dist composer.json
+      - cp ./composer.json.dist ./composer.json
       - sh ./bin/deployment/packaging.sh
       - mkdir $CIRCLE_ARTIFACTS/package
       - cp ./bin/dist/*.tgz $CIRCLE_ARTIFACTS/package
