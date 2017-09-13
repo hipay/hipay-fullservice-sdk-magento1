@@ -7,6 +7,9 @@ machine:
     local-magento.hipay.com: 127.0.0.1
   php:
     version: 5.6.17
+dependencies:
+  pre:
+    - sudo apt-get install sshpass
 test:
   override:
     - sleep 1
@@ -15,6 +18,7 @@ deployment:
     branch: /.*?/
     tag: /.*?/
     commands:
+
       - rm -Rf ./vendor && cp ./composer.json.dist ./composer.json && composer install &&  sh ./bin/deployment/packaging.sh
       - mkdir $CIRCLE_ARTIFACTS/package
       - cp ./dist/*.tgz $CIRCLE_ARTIFACTS/package
