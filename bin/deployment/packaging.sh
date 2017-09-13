@@ -2,7 +2,7 @@
 if [ $? -eq 0 ]; then
 	echo "Composer installed !"
 else
-	composer install
+	#composer install
 	if [ $? -eq 0 ]; then
 		echo "Composer installed !"
 	else
