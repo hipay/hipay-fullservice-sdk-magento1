@@ -10,8 +10,6 @@ machine:
 test:
   override:
     - sleep 60
-  post:
-    - cp bin/tests/report*.html $CIRCLE_ARTIFACTS/casper_report/
 deployment:
   prod:
     branch: /.*?/
