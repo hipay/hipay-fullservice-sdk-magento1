@@ -7,7 +7,7 @@ echo "Create Artifact project for project $CIRCLE_PROJECT_REPONAME and branch $C
 sshpass -p $PASS_DEPLOY ssh root@docker-knock-auth.hipay.org -p $port mkdir /deploy/project/artifactory/$CIRCLE_PROJECT_REPONAME/$BRANCH
 
 echo "Transfert Artifact project for project $CIRCLE_PROJECT_REPONAME and branch $CIRCLE_BRANCH"
-sshpass -p $PASS_DEPLOY scp -P $port ./dist/*.tgz root@docker-knock-auth.hipay.org:/deploy/project/artifactory/$CIRCLE_PROJECT_REPONAME/$BRANCH -p $port
+sshpass -p $PASS_DEPLOY scp -P $port ./dist/*.tgz root@docker-knock-auth.hipay.org:/deploy/project/artifactory/$CIRCLE_PROJECT_REPONAME/$BRANCH
 
 echo "Deploy project for project $CIRCLE_PROJECT_REPONAME and branch $CIRCLE_BRANCH"
 sshpass -p $PASS_DEPLOY ssh root@docker-knock-auth.hipay.org -p $port  "export DOCKER_API_VERSION=1.23 && docker exec " \
