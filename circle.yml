@@ -17,5 +17,5 @@ deployment:
     commands:
       - rm -Rf ./vendor && cp ./composer.json.dist ./composer.json && composer install &&  sh ./bin/deployment/packaging.sh
       - mkdir $CIRCLE_ARTIFACTS/package
-      - cp ./bin/dist/*.tgz $CIRCLE_ARTIFACTS/package
+      - cp ./bin/*.tgz $CIRCLE_ARTIFACTS/package
       - sh ./bin/deployment/deploy_project.sh
