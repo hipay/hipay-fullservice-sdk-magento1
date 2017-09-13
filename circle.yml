@@ -18,7 +18,6 @@ deployment:
     branch: /.*?/
     tag: /.*?/
     commands:
-
       - rm -Rf ./vendor && cp ./composer.json.dist ./composer.json && composer install &&  sh ./bin/deployment/packaging.sh
       - mkdir $CIRCLE_ARTIFACTS/package
       - cp ./dist/*.tgz $CIRCLE_ARTIFACTS/package
