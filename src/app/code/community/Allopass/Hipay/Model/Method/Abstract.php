@@ -1166,10 +1166,6 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $params = $this->getCustomerParams($payment, $params);
         $params = $this->getShippingParams($payment, $params);
 
-        //add url to order in BO Magento
-        $params['cdata1'] = Mage::getUrl('adminhtml/sales_order/view',
-            array('_secure' => true, 'order_id' => $payment->getOrder()->getId()));
-
         $customDataHipay = Mage::helper('hipay')->getCustomData($payment, $amount, $this, $split_number);
 
         // Add custom data for transaction request
