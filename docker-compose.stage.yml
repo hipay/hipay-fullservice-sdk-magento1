@@ -15,4 +15,4 @@ mysql:
 smtp:
   container_name: smtp-mg-latest.hipay-pos-platform.com
   ports:
-     - "1095:1080"
+     - "1095:80"
