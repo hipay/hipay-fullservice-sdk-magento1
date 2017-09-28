@@ -1,7 +1,7 @@
 <config>
 	<modules>
 		<Allopass_Hipay>
-			<version>1.7.3</version>
+			<version>1.7.4</version>
 		</Allopass_Hipay>
 	</modules>
 	<global>
@@ -450,6 +450,7 @@
 				<re_add_to_cart>0</re_add_to_cart>
 				<cancel_pending_order>1</cancel_pending_order>
 				<delay_cancel_pending_order>0.5</delay_cancel_pending_order>
+				<time_limit_to_pay>0.5</time_limit_to_pay>
 				<display_iframe>0</display_iframe>
 				<iframe_width>485px</iframe_width>
 				<iframe_height>450px</iframe_height>
@@ -483,6 +484,7 @@
 				<re_add_to_cart>0</re_add_to_cart>
 				<cancel_pending_order>1</cancel_pending_order>
 				<delay_cancel_pending_order>0.5</delay_cancel_pending_order>
+				<time_limit_to_pay>0.5</time_limit_to_pay>
 				<display_iframe>0</display_iframe>
 				<iframe_width>485px</iframe_width>
 				<iframe_height>450px</iframe_height>

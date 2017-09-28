@@ -1077,6 +1077,10 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         $customData['payment_code'] = $method->getCode();
         $customData['display_iframe'] = $method->getConfigData('display_iframe');
 
+        //add url to order in BO Magento
+        $customData['url'] = Mage::getUrl('adminhtml/sales_order/view',
+            array('_secure' => true, 'order_id' => $payment->getOrder()->getId()));
+
         // Payment type
         if ($split_number) {
             $customData['payment_type'] = 'Split ' . $split_number;
@@ -1424,5 +1428,16 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
             $nbMappingMissing = count($magentoCategory) - $nbMapping;
         }
         return $nbMappingMissing;
+    }
+
+    /**
+     * Convert Hours in second
+     *
+     * @param $time float in Hours
+     * @return int in second
+     */
+    public function convertHoursToSecond($time)
+    {
+        return intval($time * 3600);
     }
 }
