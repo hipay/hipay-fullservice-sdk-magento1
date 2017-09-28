@@ -93,6 +93,9 @@ class Allopass_Hipay_Model_Method_Hosted extends Allopass_Hipay_Model_Method_Abs
 
 
             $gatewayParams['payment_product_category_list'] = "credit-card";
+            $gatewayParams['time_limit_to_pay'] =  Mage::helper('hipay')->convertHoursToSecond(
+                $this->getConfigData('time_limit_to_pay')
+            );
 
             if(Mage::getStoreConfig('general/store_information/name') != "")
                 $gatewayParams['merchant_display_name'] = Mage::getStoreConfig('general/store_information/name');

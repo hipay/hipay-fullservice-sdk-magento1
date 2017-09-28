@@ -1429,4 +1429,15 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         }
         return $nbMappingMissing;
     }
+
+    /**
+     * Convert Hours in second
+     *
+     * @param $time float in Hours
+     * @return int in second
+     */
+    public function convertHoursToSecond($time)
+    {
+        return intval($time * 3600);
+    }
 }
