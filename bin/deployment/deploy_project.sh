@@ -6,8 +6,6 @@ if [ $CIRCLE_TAG != "" ];then
     GITHUB_BRANCH=$CIRCLE_TAG
 fi
 
-BRANCH=${GITHUB_BRANCH////-}
-
 echo "Create Artifact project for project $CIRCLE_PROJECT_REPONAME and branch $GITHUB_BRANCH to /deploy/project/artifactory/$CIRCLE_PROJECT_REPONAME/$BRANCH"
 sshpass -p $PASS_DEPLOY ssh root@docker-knock-auth.hipay.org -p $port mkdir /deploy/project/artifactory/$CIRCLE_PROJECT_REPONAME/$CIRCLE_BUILD_NUM
 
