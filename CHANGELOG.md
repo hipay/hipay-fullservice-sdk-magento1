@@ -1,3 +1,7 @@
+# Version 1.7.5
+
+- Magento Markeplace compliance with MEQP1
+
 # Version 1.7.4
 
 - [5b2ca58](https://github.com/hipay/hipay-fullservice-sdk-magento1/commit/5b2ca588158fe36796baa670186bf0ecd2d97185) Add notes for package (@legithubdeaymeric)
