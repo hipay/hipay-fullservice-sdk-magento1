@@ -50,7 +50,7 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 	{
 		// check if Electronic Signature
 		$codeElectronicSignature = $this->getConfigData('electronic_signature');
-		if($codeElectronicSignature > 0 )
+		if($codeElectronicSignature > 0)
 		{
 			// if Electronic signature, action hosted			
 			$order = $payment->getOrder();
@@ -131,7 +131,7 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 		$paymentInfo = $this->getInfoInstance();
 		// check if Electronic signature
 		$codeElectronicSignature = $this->getConfigData('electronic_signature');
-		if($codeElectronicSignature == 0 )
+		if($codeElectronicSignature == 0)
 		{
 			
 			$iban = new Zend_Validate_Iban();

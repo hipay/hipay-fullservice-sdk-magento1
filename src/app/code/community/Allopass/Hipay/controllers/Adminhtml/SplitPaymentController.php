@@ -160,4 +160,10 @@ class Allopass_Hipay_Adminhtml_SplitPaymentController extends Mage_Adminhtml_Con
 		$this->_redirect('*/*/');
 	}
 
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')
+            ->isAllowed('system/config');
+    }
+
 }

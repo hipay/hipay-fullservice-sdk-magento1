@@ -40,7 +40,7 @@ class Allopass_Hipay_Model_Rule_Condition_Product_Combine extends Mage_Rule_Mode
     }
 	
 	public function getTypeElement()
-    {
+ {
         return $this->getForm()->addField($this->getPrefix() . '__' . $this->getId() .'_'. $this->getPaymentMethodCode() . '__type', 'hidden', array(
             //'name'    => 'rule_' . $this->getPaymentMethodCode() . '[' . $this->getPrefix() . '][' . $this->getId().'_'. $this->getPaymentMethodCode() . '][type]',
             'name'    => 'rule_' . $this->getPaymentMethodCode() . '[' . $this->getPrefix() . '][' . $this->getId() . '][type]',
@@ -51,7 +51,7 @@ class Allopass_Hipay_Model_Rule_Condition_Product_Combine extends Mage_Rule_Mode
     }
 
 	public function getAttributeElement()
-    {
+ {
         if (is_null($this->getAttribute())) {
             foreach ($this->getAttributeOption() as $k => $v) {
                 $this->setAttribute($k);
@@ -98,7 +98,7 @@ class Allopass_Hipay_Model_Rule_Condition_Product_Combine extends Mage_Rule_Mode
     }
 	
 	 public function getValueElement()
-    {
+  {
         $elementParams = array(
             //'name'               => 'rule_'.$this->getPaymentMethodCode().'['.$this->getPrefix().']['.$this->getId().'_'. $this->getPaymentMethodCode().'][value]',
             'name'               => 'rule_'.$this->getPaymentMethodCode().'['.$this->getPrefix().']['.$this->getId().'][value]',
@@ -120,7 +120,7 @@ class Allopass_Hipay_Model_Rule_Condition_Product_Combine extends Mage_Rule_Mode
     }
 
 	public function getNewChildElement()
-    {
+ {
         return $this->getForm()->addField($this->getPrefix().'__'.$this->getId().'_'. $this->getPaymentMethodCode().'__new_child', 'select', array(
             //'name'=>'rule_'.$this->getPaymentMethodCode().'['.$this->getPrefix().']['.$this->getId().'_'. $this->getPaymentMethodCode().'][new_child]',
             'name'=>'rule_'.$this->getPaymentMethodCode().'['.$this->getPrefix().']['.$this->getId().'][new_child]',
@@ -130,7 +130,7 @@ class Allopass_Hipay_Model_Rule_Condition_Product_Combine extends Mage_Rule_Mode
     }
 	
 	public function getAggregatorElement()
-    {
+ {
         if (is_null($this->getAggregator())) {
             foreach ($this->getAggregatorOption() as $k=>$v) {
                 $this->setAggregator($k);
@@ -148,7 +148,7 @@ class Allopass_Hipay_Model_Rule_Condition_Product_Combine extends Mage_Rule_Mode
     }
 	
 	public function asHtmlRecursive()
-    {
+ {
         $html = $this->asHtml().'<ul id="'.$this->getPrefix().'__'.$this->getId().'_'. $this->getPaymentMethodCode().'__children" class="rule-param-children">';
         foreach ($this->getConditions() as $cond) {
         	$cond->setPaymentMethodCode($this->getPaymentMethodCode());

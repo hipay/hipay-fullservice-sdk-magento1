@@ -59,13 +59,13 @@ class Allopass_Hipay_Adminhtml_Sales_Order_CreateController extends Mage_Adminht
         } catch (Mage_Payment_Model_Info_Exception $e) {
             $this->_getOrderCreateModel()->saveQuote();
             $message = $e->getMessage();
-            if( !empty($message) ) {
+            if( !empty($message)) {
                 $this->_getSession()->addError($message);
             }
             $this->_redirect('*/*/');
         } catch (Mage_Core_Exception $e){
             $message = $e->getMessage();
-            if( !empty($message) ) {
+            if( !empty($message)) {
                 $this->_getSession()->addError($message);
             }
             $this->_redirect('*/*/');

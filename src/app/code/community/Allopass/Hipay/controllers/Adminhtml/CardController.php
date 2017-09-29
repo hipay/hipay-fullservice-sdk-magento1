@@ -146,5 +146,11 @@ class Allopass_Hipay_Adminhtml_CardController extends Mage_Adminhtml_Controller_
 		}
 		$this->_redirect('adminhtml/customer/index');
 	}
+
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')
+            ->isAllowed('system/config');
+    }
 	
 }

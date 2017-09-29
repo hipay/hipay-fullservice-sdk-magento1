@@ -8,7 +8,7 @@
 class Allopass_Hipay_Model_Source_CcType extends Varien_Object
 {
  	public function toOptionArray()
-    {
+  {
       
         $options = array();
 

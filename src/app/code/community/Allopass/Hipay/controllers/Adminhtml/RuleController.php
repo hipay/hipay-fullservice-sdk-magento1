@@ -31,8 +31,13 @@ class Allopass_Hipay_Adminhtml_RuleController extends Mage_Adminhtml_Controller_
         $this->getResponse()->setBody($html);
     }
 
-
-
-
+    /**
+     * @return mixed
+     */
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')
+            ->isAllowed('system/config');
+    }
 
 }

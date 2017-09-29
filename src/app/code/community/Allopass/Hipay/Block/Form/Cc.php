@@ -111,7 +111,7 @@ class Allopass_Hipay_Block_Form_Cc extends Allopass_Hipay_Block_Form_Abstract
     * @return array
     */
      public function getSsStartYears()
-    {
+     {
         $years = array();
         $first = date("Y");
 
