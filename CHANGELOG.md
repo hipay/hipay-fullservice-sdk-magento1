@@ -1,3 +1,7 @@
+# Version 1.7.5
+
+- Magento Markeplace compliance with MEQP1
+
 # Version 1.7.4
 
 - [5b2ca58](https://github.com/hipay/hipay-fullservice-sdk-magento1/commit/5b2ca588158fe36796baa670186bf0ecd2d97185) Add notes for package (@legithubdeaymeric)
@@ -7,7 +11,6 @@
 - [#117](https://github.com/hipay/hipay-fullservice-sdk-magento1/pull/117) Add support for deployment (#117) (@legithubdeaymeric)
 - [d08ee83](https://github.com/hipay/hipay-fullservice-sdk-magento1/commit/d08ee834e63ff45fe68354b4d148fbec1bc76a68) Add build circle in context (@legithubdeaymeric)
 - [fad0b7e](https://github.com/hipay/hipay-fullservice-sdk-magento1/commit/fad0b7eef2cf265aebdf5321c8203996145952d3) Install SSH PASS for deploying (@legithubdeaymeric)
-
 
 # Version 1.7.3
 

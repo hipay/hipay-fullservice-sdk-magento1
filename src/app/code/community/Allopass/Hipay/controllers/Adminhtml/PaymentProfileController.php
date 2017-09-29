@@ -150,4 +150,10 @@ class Allopass_Hipay_Adminhtml_PaymentProfileController extends Mage_Adminhtml_C
 		$this->_redirect('*/*/');
 	}
 
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')
+            ->isAllowed('system/config');
+    }
+
 }
