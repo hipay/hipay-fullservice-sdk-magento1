@@ -25,7 +25,7 @@
 
 var VarienRulesForm = new Class.create();
 VarienRulesForm.prototype = {
-    initialize : function(parent, newChildUrl){
+    initialize : function (parent, newChildUrl) {
         this.parent = $(parent);
         this.newChildUrl  = newChildUrl;
         this.shownElement = null;
@@ -39,7 +39,7 @@ VarienRulesForm.prototype = {
         }
     },
 
-    setReadonly: function (readonly){
+    setReadonly: function (readonly) {
         this.readOnly = readonly;
         var elems = this.parent.getElementsByClassName('rule-param-remove');
         for (var i=0; i<elems.length; i++) {
@@ -124,7 +124,7 @@ VarienRulesForm.prototype = {
         new Ajax.Request(chooser.getAttribute('url'), {
             evalScripts: true,
             parameters: {'form_key': FORM_KEY, 'selected[]':this.chooserSelectedItems.keys() },
-            onSuccess: function(transport) {
+            onSuccess: function (transport) {
                 if (this._processSuccess(transport)) {
                     $(chooser).update(transport.responseText);
                     this.showChooserLoaded(chooser, transport);
@@ -134,7 +134,7 @@ VarienRulesForm.prototype = {
         });
     },
 
-    showChooserLoaded: function(chooser, transport) {
+    showChooserLoaded: function (chooser, transport) {
         chooser.style.display = 'block';
     },
 
@@ -285,7 +285,7 @@ VarienRulesForm.prototype = {
         var children_inputs = Selector.findChildElements(children_ul, $A(['input.hidden']));
         var nb = children_inputs.length;
         if (children_inputs.length) {
-            children_inputs.each(function(el){
+            children_inputs.each(function (el) {
                 if (el.id.match(/__type$/)) {
                 	var idReplace = el.id.replace(/^.*__.*?([0-9]+)_.*__.*$/, '$1');// modified form clean payment method name
                     i = 1 * idReplace;
@@ -305,7 +305,7 @@ VarienRulesForm.prototype = {
             evalScripts: true,
             parameters: {form_key: FORM_KEY, type:new_type.replace('/','-'), id:new_id },
             onComplete: this.onAddNewChildComplete.bind(this, new_elem),
-            onSuccess: function(transport) {
+            onSuccess: function (transport) {
                 if(this._processSuccess(transport)) {
                     $(new_elem).update(transport.responseText);
                 }
@@ -314,7 +314,7 @@ VarienRulesForm.prototype = {
         });
     },
 
-    _processSuccess : function(transport) {
+    _processSuccess : function (transport) {
         if (transport.responseText.isJSON()) {
             var response = transport.responseText.evalJSON()
             if (response.error) {
@@ -328,7 +328,7 @@ VarienRulesForm.prototype = {
         return true;
     },
 
-    _processFailure : function(transport) {
+    _processFailure : function (transport) {
         location.href = BASE_URL;
     },
 

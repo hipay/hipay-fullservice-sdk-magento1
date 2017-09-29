@@ -83,7 +83,7 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
 		$amount = 0;
 		if((int)$response->getRefundedAmount() == 0 && (int)$response->getCapturedAmount() == 0)
 			$amount = $response->getAuthorizedAmount();
-		elseif((int)$response->getRefundedAmount() == 0 && (int)$response->getCapturedAmount() > 0 )
+		elseif((int)$response->getRefundedAmount() == 0 && (int)$response->getCapturedAmount() > 0)
 			$amount = $response->getCapturedAmount();
 		else 
 			$amount = $response->getRefundedAmount();

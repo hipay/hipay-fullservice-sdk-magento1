@@ -552,7 +552,7 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
 		$info = $this->getInfoInstance();
         $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction', Mage::app()->getStore());
 
-        if ($useOrderCurrency ){
+        if ($useOrderCurrency){
             if ($this->_isPlaceOrder()) {
                 return $info->getOrder()->getOrderCurrencyCode();
             } else {

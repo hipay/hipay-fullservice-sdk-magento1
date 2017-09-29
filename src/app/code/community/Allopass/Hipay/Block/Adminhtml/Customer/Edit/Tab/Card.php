@@ -137,7 +137,7 @@ class Allopass_Hipay_Block_Adminhtml_Customer_Edit_Tab_Card extends
 	}
 	
 	public function canShowTab()
-    {
+ {
         if (Mage::registry('current_customer')->getId()) {
             return true;
         }
