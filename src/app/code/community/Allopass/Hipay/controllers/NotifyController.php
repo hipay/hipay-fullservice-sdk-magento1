@@ -45,7 +45,7 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
 		$order = Mage::getModel('sales/order')->loadByIncrementId($orderArr['id']);
 		
 		if(!$order->getId() && (strpos($orderArr['id'], 'recurring') === false && strpos($orderArr['id'], 'split') === false))
-			die("Order not found in notification");
+            Mage::app()->getResponse()->setBody("Order not found in notification");
 		
 		$isSplitPayment = false;	
 			
@@ -60,12 +60,12 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
 				$profile = Mage::getModel('sales/recurring_profile')->load($profileId);
 				if(!$profile->getId())
 				{
-					die(Mage::helper('hipay')->__("Profile for ID: %d doesn't exists (Recurring).",$profileId));	
+                    Mage::app()->getResponse()->setBody(Mage::helper('hipay')->__("Profile for ID: %d doesn't exists (Recurring).",$profileId));
 				}
 					
 			}
-			else 
-				die(Mage::helper('hipay')->__("Order Id not present (Recurring)."));
+			else
+                Mage::app()->getResponse()->setBody(Mage::helper('hipay')->__("Order Id not present (Recurring)."));
 				
 		}
 		elseif (strpos($orderArr['id'], 'split') !== false)
