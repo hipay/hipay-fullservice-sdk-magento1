@@ -580,7 +580,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
                                             2) == $gatewayResponse->getCapturedAmount())
                                 ) {
                                     $invoice->pay();
-                                    $logs['Pay invoice'] = $invoice->invoice->getIncrementId() . ' ' . $invoice->getBaseGrandTotal();
+                                    $logs['Pay invoice'] = $invoice->getIncrementId() . ' ' . $invoice->getBaseGrandTotal();
                                     Mage::getModel('core/resource_transaction')
                                         ->addObject($invoice)->addObject($invoice->getOrder())
                                         ->save();
