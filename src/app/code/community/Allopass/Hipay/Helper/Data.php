@@ -129,14 +129,14 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         if (!$useOrderCurrency) {
             $item['unit_price'] = round($order->getBaseShippingAmount(), 3);
             $item['total_amount'] = round($order->getBaseShippingAmount(), 3);
-            if( $order->getBaseShippingAmount() > 0 ) {
+            if( $order->getBaseShippingAmount() > 0) {
                 $item['tax_rate'] = round($order->getBaseShippingTaxAmount() / $order->getBaseShippingAmount() * 100,
                     2);
             }
         } else {
             $item['unit_price'] = round($order->getShippingAmount(), 3);
             $item['total_amount'] = round($order->getShippingAmount(), 3);
-            if( $order->getShippingAmount() > 0 ) {
+            if( $order->getShippingAmount() > 0) {
                 $item['tax_rate'] = round($order->getShippingTaxAmount() / $order->getShippingAmount() * 100, 2);
             }
         }
@@ -1266,7 +1266,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
                 }
             }
             $category = Mage::getModel('catalog/category')->load($idCategory);
-            foreach ($mappingCategories as $key => $mapping ) {
+            foreach ($mappingCategories as $key => $mapping) {
                 if (in_array($mapping['hipay_category'],$category->getParentIds())) {
                     return $mapping;
                 }
@@ -1369,7 +1369,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function isDeliveryMethodAndCartItemsRequired($product_code)
     {
-        return in_array($product_code, ['3xcb', '3xcb-no-fees', '4xcb-no-fees', '4xcb']);
+        return in_array($product_code, array('3xcb', '3xcb-no-fees', '4xcb-no-fees', '4xcb'));
     }
 
     /**
@@ -1380,7 +1380,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function isCartItemsRequired($product_code)
     {
-        return in_array($product_code, ['klarnainvoice','3xcb', '3xcb-no-fees', '4xcb-no-fees', '4xcb']);
+        return in_array($product_code, array('klarnainvoice','3xcb', '3xcb-no-fees', '4xcb-no-fees', '4xcb'));
     }
 
     /**
@@ -1388,15 +1388,15 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      *
      *  @return int
      */
-    public function checkMappingShippingMethod ()
+    public function checkMappingShippingMethod()
     {
         $store = Mage::getSingleton('adminhtml/config_data')->getStore();
         $mappings = unserialize($this->getConfig()->getConfigDataBasket('mapping_shipping_method',$store));
         $magentoShippingMethod = $this->getMagentoShippingMethods();
         $nbMappingMissing = count($magentoShippingMethod);
-        if (is_array($magentoShippingMethod) && is_array($mappings) ){
+        if (is_array($magentoShippingMethod) && is_array($mappings)){
             $nbMapping = 0;
-            foreach ($mappings as $mapping ) {
+            foreach ($mappings as $mapping) {
                 if (!empty($mapping['hipay_delivery_method'])){
                     $nbMapping++;
                 }
@@ -1411,7 +1411,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @return int
      */
-    public function checkMappingCategoryMethod ()
+    public function checkMappingCategoryMethod()
     {
         $store = Mage::getSingleton('adminhtml/config_data')->getStore();
         $mappings = unserialize($this->getConfig()->getConfigDataBasket('mapping_category',$store));
@@ -1420,7 +1420,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 
         if (is_array($magentoCategory) && is_array($mappings)){
             $nbMapping = 0;
-            foreach ($mappings as $mapping ) {
+            foreach ($mappings as $mapping) {
                 if (!empty($mapping['hipay_category'])){
                     $nbMapping++;
                 }

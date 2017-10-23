@@ -8,7 +8,7 @@
 class Allopass_Hipay_Model_Source_Pendingredirect
 {
  	public function toOptionArray()
-    {
+  {
         
         return array(
         		array('value' => 'hipay/checkout/pending', 'label' => Mage::helper('hipay')->__('Pending page')),

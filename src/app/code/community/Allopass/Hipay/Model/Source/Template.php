@@ -8,7 +8,7 @@
 class Allopass_Hipay_Model_Source_Template
 {	
 	public function toOptionArray()
-    {
+ {
       
         $options = array();
 

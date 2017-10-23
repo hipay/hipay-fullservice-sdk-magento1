@@ -46,7 +46,7 @@ class Allopass_Hipay_Model_Rule_Condition_Product extends Mage_CatalogRule_Model
     }
     
  	public function getTypeElement()
-    {
+  {
         return $this->getForm()->addField($this->getPrefix() . '__' . $this->getId() .'_'. $this->getPaymentMethodCode() . '__type', 'hidden', array(
             //'name'    => 'rule_' . $this->getPaymentMethodCode() . '[' . $this->getPrefix() . '][' . $this->getId().'_'. $this->getPaymentMethodCode() . '][type]',
             'name'    => 'rule_' . $this->getPaymentMethodCode() . '[' . $this->getPrefix() . '][' . $this->getId() . '][type]',
@@ -57,7 +57,7 @@ class Allopass_Hipay_Model_Rule_Condition_Product extends Mage_CatalogRule_Model
     }
 
 	public function getAttributeElement()
-    {
+ {
         if (is_null($this->getAttribute())) {
             foreach ($this->getAttributeOption() as $k => $v) {
                 $this->setAttribute($k);
@@ -104,7 +104,7 @@ class Allopass_Hipay_Model_Rule_Condition_Product extends Mage_CatalogRule_Model
     }
 	
 	 public function getValueElement()
-    {
+  {
         $elementParams = array(
             //'name'               => 'rule_'.$this->getPaymentMethodCode().'['.$this->getPrefix().']['.$this->getId().'_'. $this->getPaymentMethodCode().'][value]',
             'name'               => 'rule_'.$this->getPaymentMethodCode().'['.$this->getPrefix().']['.$this->getId().'][value]',
