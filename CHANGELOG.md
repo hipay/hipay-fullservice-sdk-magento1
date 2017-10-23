@@ -1,3 +1,7 @@
+# Version 1.7.6
+
+- Fix wrong merge for manual capture
+
 # Version 1.7.5
 
 - Magento Markeplace compliance with MEQP1
