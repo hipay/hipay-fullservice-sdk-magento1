@@ -654,7 +654,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
                                     $message = Mage::helper("hipay")->__('Refund accepted by Hipay.');
 
-                                    $order-> $order->addStatusHistoryComment($message,$status);
+                                    $order->addStatusHistoryComment($message,$status);
 
                                     Mage::getModel('core/resource_transaction')
                                         ->addObject($creditmemo)->addObject($creditmemo->getOrder())
