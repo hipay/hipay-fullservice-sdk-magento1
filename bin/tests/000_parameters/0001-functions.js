@@ -163,7 +163,7 @@ casper.test.begin('Functions', function(test) {
                 this.echo("WARNING: No Backend credentials available !", "WARNING");
         }, function fail() {
             test.assertUrlMatch(/login/, "Login page exists");
-        });
+        },10000);
     };
     /* Select account for test from BO TPP */
     casper.selectAccountBackend = function(name) {

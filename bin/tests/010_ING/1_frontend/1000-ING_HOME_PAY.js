@@ -54,10 +54,10 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
                 test.info("Done");
             }, function fail() {
                 test.assertUrlMatch(/secure\.ogone/, "Payment Ogone page exists");
-            });
+            },30000);
         }, function fail() {
             test.assertUrlMatch(/payment\/web\/pay/, "Payment page exists");
-        }, 15000);
+        }, 35000);
     })
     .then(function() {
         this.orderResult(paymentType);
