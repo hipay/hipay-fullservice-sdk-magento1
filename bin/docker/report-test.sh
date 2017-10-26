@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [ "$1" = '' ]; then
+if [ "$1" = 'php5.6' ]; then
   PHP_VERSION=''
 else
   PHP_VERSION=-$1
