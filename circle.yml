@@ -31,13 +31,13 @@ dependencies:
     - sh bin/docker/generate_dockerfile.sh
 test:
   override:
-    - case $CIRCLE_NODE_INDEX in 0) sh ./bin/docker/init-environment.sh ;; 1) sh ./bin/docker/init-environment.sh php7-0 ;;  2) sh ./bin/docker/init-environment.sh php5-6 1.8.0.0 1.6_1.8 ;; esac:
+    - case $CIRCLE_NODE_INDEX in 0) sh ./bin/docker/init-environment.sh php5.6 ;; 1) sh ./bin/docker/init-environment.sh php7-0 ;;  2) sh ./bin/docker/init-environment.sh php5-6 1.8.0.0 1.6_1.8 ;; esac:
         parallel: true
     - sleep 60
     - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
     - curl --retry 30 --retry-delay 3 -v $URL_MAILCATCHER
     - sh bin/tests/casper_run_circle.sh
-    - case $CIRCLE_NODE_INDEX in 0) sh ./bin/docker/report-test.sh ;; 1) sh ./bin/docker/report-test.sh php7-0 ;; 2) sh ./bin/docker/report-test.sh ;; esac:
+    - case $CIRCLE_NODE_INDEX in 0) sh ./bin/docker/report-test.sh php5.6 ;; 1) sh ./bin/docker/report-test.sh php7-0 ;; 2) sh ./bin/docker/report-test.sh php5.6 ;; esac:
            parallel: true
   post:
     - cp bin/tests/report*.html $CIRCLE_ARTIFACTS/casper_report/
