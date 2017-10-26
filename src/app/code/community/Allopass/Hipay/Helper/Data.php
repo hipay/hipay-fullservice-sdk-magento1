@@ -537,8 +537,6 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
             }
         }
 
-        return true;
-
         if (empty($passphrase) && empty($signature)) {
             return true;
         }
