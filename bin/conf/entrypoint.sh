@@ -14,7 +14,7 @@ printf "\n${COLOR_SUCCESS}       CHECK MAGENTO INSTALLATION        ${NC}\n"
 printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
  if [ ! -f /var/www/htdocs/index.php ]; then
 
-    printf "\n${COLOR_SUCCESS}  => MAGENTO IS NOT YET INSTALLED : INSTALLATION IS BEGINNING ${NC}\n"
+    printf "\n${COLOR_SUCCESS} MAGENTO IS NOT YET INSTALLED : INSTALLATION IS BEGINNING ${NC}\n"
 
     # Download MAGENTO from repository
     cd /tmp && curl -s https://codeload.github.com/OpenMage/magento-mirror/tar.gz/$MAGENTO_VERSION -o $MAGENTO_VERSION.tar.gz && tar xf $MAGENTO_VERSION.tar.gz && cp -rf magento-mirror-$MAGENTO_VERSION/* magento-mirror-$MAGENTO_VERSION/.htaccess /var/www/htdocs
@@ -22,7 +22,8 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     sleep 10
 
     # Install demo
-    install-sampledata
+    echo "Install Magento sample data version $SAMPLE_DATA_VERSION"
+    install-sampledata-$SAMPLE_DATA_VERSION
 
     sleep 10
 
@@ -210,6 +211,7 @@ printf "${COLOR_SUCCESS}    |   URL MAIL CATCHER: $MAGENTO_URL:1095/            
 printf "${COLOR_SUCCESS}    |                                                                      ${NC}\n"
 printf "${COLOR_SUCCESS}    |   PHP VERSION     : $PHP_VERSION                                     ${NC}\n"
 printf "${COLOR_SUCCESS}    |   MAGENTO VERSION : $MAGENTO_VERSION                                 ${NC}\n"
+printf "${COLOR_SUCCESS}    |   SAMPLE_DATA_VERSION: $SAMPLE_DATA_VERSION                          ${NC}\n"
 printf "${COLOR_SUCCESS}    |======================================================================${NC}\n"
 
 if [ -f /var/run/apache2/apache2.pid  ]; then

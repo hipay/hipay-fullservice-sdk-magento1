@@ -42,47 +42,107 @@ casper.test.begin('Functions', function(test) {
             'input[name="payment[hipay_cc_cc_cid]"]': '500'
         }, false);
     };
+
+    /* Choose payment method in checkout */
+    casper.choosingPaymentMethod = function(method) {
+        this.echo("Choosing payment method with" + method, "INFO");
+        this.waitUntilVisible('#checkout-step-payment', function success() {
+            if (this.visible('p[class="bugs"]')) {
+                this.click('input#p_' + method);
+            } else {
+                this.click('#dt_' + method +'>input[name="payment[method]"]');
+            }
+            this.click("div#payment-buttons-container>button");
+            test.info("Done");
+        }, function fail() {
+            test.assertVisible("#checkout-step-payment", "'Payment Information' formular exists");
+        }, 10000);
+    }
+
 	/* Choose first item at home page */
 	casper.selectItemAndOptions = function() {
         this.echo("Selecting item and its options...", "INFO");
-        this.waitForSelector('div.widget-products>ul>li:first-of-type>a>img', function success() {
-            this.click('div.widget-products>ul>li:first-of-type>a>img');
-        }, function fail() {
-            var altImg = this.getElementAttribute('div.widget-products>ul>li:first-of-type>a>img', 'alt');
-            test.assertExists('div.widget-products>ul>li:first-of-type>a>img', "'" + altImg + "' image exists");
-        });
-        this.waitForSelector(x('//ul[@id="configurable_swatch_size"]/li[not(contains(@class, "not-available"))]'), function success() {
-            this.click(x('//ul[@id="configurable_swatch_size"]/li[not(contains(@class, "not-available"))][position()=1]/a/span'));
-        }, function fail() {
-            test.assertExists(x('//ul[@id="configurable_swatch_size"]/li[not(contains(@class, "not-available"))]'), "Size button exists");
-        });
-        this.waitForSelector(x('//ul[@id="configurable_swatch_color"]/li[not(contains(@class, "not-available"))]'), function success() {
-            this.click(x('//ul[@id="configurable_swatch_color"]/li[not(contains(@class, "not-available"))][position()=1]/a/span'));
+        if (this.visible('p[class="bugs"]')) {
+            test.info("Magento v1.8");
+            /* Magento version < 1.9 */
+            this.waitForSelector('div.best-selling table td:first-child a img', function success() {
+                this.click('div.best-selling table td:first-child a img');
+            }, function fail() {
+                test.assertExists('div.best-selling table td:first-child a img', "First product best selling missing");
+            });
             test.info("Done");
-        }, function fail() {
-            test.assertExists(x('//ul[@id="configurable_swatch_color"]/li[not(contains(@class, "not-available"))]'), "Color button exists");
-        });
+        } else {
+            test.info("Magento v1.9");
+            this.waitForSelector('div.widget-products>ul>li:first-of-type>a>img', function success() {
+                this.click('div.widget-products>ul>li:first-of-type>a>img');
+            }, function fail() {
+                var altImg = this.getElementAttribute('div.widget-products>ul>li:first-of-type>a>img', 'alt');
+                test.assertExists('div.widget-products>ul>li:first-of-type>a>img', "'" + altImg + "' image exists");
+            });
+
+            this.waitForSelector(x('//ul[@id="configurable_swatch_size"]/li[not(contains(@class, "not-available"))]'), function success() {
+                this.click(x('//ul[@id="configurable_swatch_size"]/li[not(contains(@class, "not-available"))][position()=1]/a/span'));
+            }, function fail() {
+                test.assertExists(x('//ul[@id="configurable_swatch_size"]/li[not(contains(@class, "not-available"))]'), "Size button exists");
+            });
+
+            this.waitForSelector(x('//ul[@id="configurable_swatch_color"]/li[not(contains(@class, "not-available"))]'), function success() {
+                this.click(x('//ul[@id="configurable_swatch_color"]/li[not(contains(@class, "not-available"))][position()=1]/a/span'));
+                test.info("Done");
+            }, function fail() {
+                test.assertExists(x('//ul[@id="configurable_swatch_color"]/li[not(contains(@class, "not-available"))]'), "Color button exists");
+            });
+        }
 	};
 	/* Add item and go to checkout */
 	casper.addItemGoCheckout = function() {
         this.echo("Adding this item then, accessing to the checkout...", "INFO");
-        this.waitForSelector("form#product_addtocart_form .add-to-cart-buttons button", function success() {
-            this.click("form#product_addtocart_form .add-to-cart-buttons button");
-            test.info('Item added to cart');
-        }, function fail() {
-        	test.assertNotExists('.validation-advice', "Warning message not present on submitting formular");
-            test.assertExists("form#product_addtocart_form .add-to-cart-buttons button", "Submit button exists");
-        });
-        this.waitForSelector(".cart-totals .checkout-types .btn-checkout", function success() {
-            this.click(".cart-totals .checkout-types .btn-checkout");
-            test.info('Proceed to checkout');
-        }, function fail() {
-            test.assertExists(".cart-totals .checkout-types .btn-checkout", "Checkout button exists");
-        }, 7500);
+        if (this.visible('p[class="bugs"]')) {
+            test.info("Magento v1.8");
+            this.waitForSelector("form#product_addtocart_form .add-to-cart button", function success() {
+                this.click("form#product_addtocart_form .add-to-cart button");
+                test.info('Item added to cart');
+            }, function fail() {
+                test.assertNotExists('.validation-advice', "Warning message not present on submitting formular");
+                test.assertExists("form#product_addtocart_form .add-to-cart-buttons button", "Submit button exists");
+            });
+
+            this.waitForSelector(".checkout-types button.btn-checkout", function success() {
+                this.click(".checkout-types button.btn-checkout");
+                test.info('Proceed to checkout');
+            }, function fail() {
+                test.assertExists(".checkout-types button.btn-checkout", "Checkout button exists");
+            }, 7500);
+
+        } else {
+            test.info("Magento v1.9");
+            this.waitForSelector("form#product_addtocart_form .add-to-cart-buttons button", function success() {
+                this.click("form#product_addtocart_form .add-to-cart-buttons button");
+                test.info('Item added to cart');
+            }, function fail() {
+                test.assertNotExists('.validation-advice', "Warning message not present on submitting formular");
+                test.assertExists("form#product_addtocart_form .add-to-cart-buttons button", "Submit button exists");
+            });
+            this.waitForSelector(".cart-totals .checkout-types .btn-checkout", function success() {
+                this.click(".cart-totals .checkout-types .btn-checkout");
+                test.info('Proceed to checkout');
+            }, function fail() {
+                test.assertExists(".cart-totals .checkout-types .btn-checkout", "Checkout button exists");
+            }, 7500);
+        }
+
 	};
 	/* Checkout as guest */
 	casper.checkoutMethod = function() {
         this.echo("Choosing checkout method...", "INFO");
+        if (this.visible('p[class="bugs"]')) {
+            this.waitForSelector('div#checkout-step-login input[value="guest"]', function success() {
+                this.click('div#checkout-step-login input[value="guest"]');
+                test.info("Done");
+            },function fail() {
+                test.assertExists('div#checkout-step-login input[value="guest"]', "'Checkout as guest' button exists");
+            }, 10000);
+        }
         this.waitForSelector("button#onepage-guest-register-button", function success() {
             this.click("button#onepage-guest-register-button");
             test.info("Done");
