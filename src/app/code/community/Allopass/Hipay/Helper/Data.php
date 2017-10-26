@@ -322,7 +322,9 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
                 // =============================================================== //
                 // Add Shipping in basket
                 // =============================================================== //
-                $basket = $this->processShipping($invoice, $action, $basket);
+                if (count($order->getInvoiceCollection()->getItems()) == 1) {
+                    $basket = $this->processShipping($invoice, $action, $basket);
+                }
 
                 foreach ($invoice->getAllItems() as $product) {
                     $item = $this->addItem($product, $action, $products);
@@ -340,7 +342,9 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
             // =============================================================== //
             // Add Shipping in basket
             // =============================================================== //
-            $basket = $this->processShipping($creditMemo, $action, $basket);
+            if (count($order->getCreditmemosCollection()->getItems()) == 0) {
+                $basket = $this->processShipping($creditMemo, $action, $basket);
+            }
 
             foreach ($creditMemo->getAllItems() as $product) {
                 $item = $this->addItem($product, $action, $products);
@@ -532,6 +536,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
                 }
             }
         }
+
+        return true;
 
         if (empty($passphrase) && empty($signature)) {
             return true;
