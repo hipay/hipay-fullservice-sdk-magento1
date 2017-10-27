@@ -29,8 +29,8 @@ if [ "$3" != '' ]; then
     sed -i -e "s/{SAMPLE_DATA_VERSION\}/$SAMPLE_DATA_VERSION/" docker-compose.stage-magento18.yml
     sed -i -e "s/{MAGENTO_VERSION\}/$MAGENTO_VERSION/" docker-compose.stage-magento18.yml
 
-    docker-compose -f docker-compose.yml -f docker-compose.stage$PHP_VERSION.yml build --no-cache
-    docker-compose -f docker-compose.yml -f docker-compose.stage$PHP_VERSION.yml up -d
+    docker-compose -f docker-compose.yml -f docker-compose.stage-magento18.yml build --no-cache
+    docker-compose -f docker-compose.yml -f docker-compose.stage-magento18.yml up -d
 else
   echo "Build and start Magnto latest and PHP : $PHP_VERSION "
   docker-compose -f docker-compose.yml -f docker-compose.stage$PHP_VERSION.yml build --no-cache
