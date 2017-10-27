@@ -36,7 +36,13 @@ casper.test.begin('Test Checkout ' + paymentType + ' with Electronic Signature',
     .then(function() {
     	this.echo("Choosing payment method and filling 'Payment Information' formular...", "INFO");
     	this.waitUntilVisible('#checkout-step-payment', function success() {
-    		this.click('#dt_method_hipay_sdd>input[name="payment[method]"]');
+            method="method_hipay_sdd";
+            if (this.visible('p[class="bugs"]')) {
+                this.click('input#p_' + method);
+            } else {
+                this.click('#dt_' + method +'>input[name="payment[method]"]');
+            }
+
             this.fillSelectors('form#co-payment-form', {
                 'select[name="payment[cc_gender]"]': "M",
                 'input[name="payment[cc_firstname]"]': "TEST",

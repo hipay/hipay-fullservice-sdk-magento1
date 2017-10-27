@@ -34,7 +34,12 @@ casper.test.begin('Test Magento With Device Fingerprint', function(test) {
             ioBB = this.getElementAttribute('input#ioBB_fingerprint', 'value');
             test.assert(this.exists('input#ioBB_fingerprint') && ioBB != "", "'ioBB' field is present and not empty !");
             this.echo("Choosing payment method and filling 'Payment Information' formular with " + typeCC + "...", "INFO");
-            this.click('#dt_method_hipay_cc>input[name="payment[method]"]');
+            method="method_hipay_cc";
+            if (this.visible('p[class="bugs"]')) {
+                this.click('input#p_' + method);
+            } else {
+                this.click('#dt_' + method +'>input[name="payment[method]"]');
+            }
             if(typeCC == 'VISA')
                 this.fillFormPaymentHipayCC('VI', cardsNumber[0]);
             else if(typeCC == 'CB' || typeCC == "MasterCard")
