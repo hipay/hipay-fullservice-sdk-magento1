@@ -67,10 +67,10 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
                     })
                 }, function fail() {
                     test.assertExists('input[name="weiterButton"]', "Payment Giropay review page exists");
-                });
+                }, 25000);
             }, function fail() {
                 test.assertUrlMatch(/customer-integration\.giropay/, "Payment Giropay login page exists");
-            });
+            },25000);
         }, function fail() {
             test.assertUrlMatch(/payment\/web\/pay/, "Payment page exists");
         }, 10000);
