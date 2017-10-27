@@ -4,6 +4,9 @@ web:
   dockerfile: ./bin/docker/php5-6/Dockerfile
   ports:
       - "80:80"
+  environment:
+    - SAMPLE_DATA_VERSION={SAMPLE_DATA_VERSION}
+    - MAGENTO_VERSION={MAGENTO_VERSION}
   env_file:
     - ./bin/conf/stage/hipay.env.sample
     - ./bin/conf/stage/mage.env.sample
