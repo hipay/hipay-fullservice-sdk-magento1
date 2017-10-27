@@ -12,6 +12,9 @@ else
   PHP_VERSION=-$1
 fi
 
+sed -i -e "s/{SAMPLE_DATA_VERSION\}/$SAMPLE_DATA_VERSION/" docker-compose.stage$PHP_VERSION.yml
+sed -i -e "s/{MAGENTO_VERSION\}/$MAGENTO_VERSION/" docker-compose.stage$PHP_VERSION.yml
+
 ################################
 ### MAGENTO VERSION
 ################################
@@ -21,10 +24,14 @@ fi
 
 if [ "$3" != '' ]; then
   SAMPLE_DATA_VERSION=$3
+
+  sed -i -e "s/{SAMPLE_DATA_VERSION\}/$SAMPLE_DATA_VERSION/" docker-compose.stage-magento18.yml
+  sed -i -e "s/{MAGENTO_VERSION\}/$MAGENTO_VERSION/" docker-compose.stage-magento18.yml
+else
+  docker-compose -f docker-compose.yml -f docker-compose.stage$PHP_VERSION.yml build --no-cache
+  docker-compose -f docker-compose.yml -f docker-compose.stage$PHP_VERSION.yml up -d
 fi
 
-sed -i -e "s/{SAMPLE_DATA_VERSION\}/$SAMPLE_DATA_VERSION/" docker-compose.stage$PHP_VERSION.yml
-sed -i -e "s/{MAGENTO_VERSION\}/$MAGENTO_VERSION/" docker-compose.stage$PHP_VERSION.yml
 
-docker-compose -f docker-compose.yml -f docker-compose.stage$PHP_VERSION.yml build --no-cache
-docker-compose -f docker-compose.yml -f docker-compose.stage$PHP_VERSION.yml up -d
+
+
