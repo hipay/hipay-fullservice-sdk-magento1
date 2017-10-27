@@ -3,6 +3,10 @@ casper.test.begin('Test Magento With Device Fingerprint', function(test) {
     var paymentType = "HiPay Enterprise Credit Card",
         ioBB = "";
 
+    if (this.visible('p[class="bugs"]')) {
+        test.done();
+    }
+
     casper.start(headlink + "admin/")
     .then(function() {
     	authentification.proceed(test);

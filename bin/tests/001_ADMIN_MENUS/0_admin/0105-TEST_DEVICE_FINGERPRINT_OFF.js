@@ -2,6 +2,10 @@ casper.test.begin('Test Magento Without Device Fingerprint', function(test) {
 	phantom.clearCookies();
     var ioBB = "";
 
+    if (this.visible('p[class="bugs"]')) {
+        test.done();
+    }
+
     casper.start(headlink + "admin/")
     .then(function() {
     	authentification.proceed(test);
