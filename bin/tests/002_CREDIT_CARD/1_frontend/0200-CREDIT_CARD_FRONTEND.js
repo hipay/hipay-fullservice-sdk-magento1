@@ -39,11 +39,11 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + realTypeCC, functi
     .then(function() {
         this.echo("Choosing payment method and filling 'Payment Information' formular with " + realTypeCC + "...", "INFO");
         this.waitUntilVisible('#checkout-step-payment', function success() {
-            method="method_hipay_cc";
+            method_hipay="method_hipay_cc";
             if (this.visible('p[class="bugs"]')) {
-                this.click('input#p_' + method);
+                this.click('input#p_' + method_hipay);
             } else {
-                this.click('#dt_' + method +'>input[name="payment[method]"]');
+                this.click('#dt_' + method_hipay +'>input[name="payment[method]"]');
             }
 
             if(realTypeCC == 'VISA')
