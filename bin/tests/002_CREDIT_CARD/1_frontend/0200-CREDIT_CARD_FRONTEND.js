@@ -21,8 +21,12 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + realTypeCC, functi
         }
     })
     .thenOpen(headlink, function() {
-        this.selectItemAndOptions();
-    })
+        this.waitUntilVisible('div.footer', function success() {
+            this.selectItemAndOptions();
+        }, function fail() {
+            test.assertVisible("div.footer", "'Footer' exists");
+        }, 10000);
+    },15000)
     .then(function() {
         this.addItemGoCheckout();
     })

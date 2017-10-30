@@ -18,7 +18,11 @@ casper.test.begin('Test Checkout ' + paymentType + ' without Electronic Signatur
         method.proceed(test, paymentType, "sdd", ['select[name="groups[hipay_sdd][fields][electronic_signature][value]"]', '1']);
     })
     .thenOpen(headlink, function() {
-        this.selectItemAndOptions();
+		this.waitUntilVisible('div.footer', function success() {
+			this.selectItemAndOptions();
+		}, function fail() {
+			test.assertVisible("div.footer", "'Footer' exists");
+		}, 10000);
     })
     .then(function() {
         this.addItemGoCheckout();

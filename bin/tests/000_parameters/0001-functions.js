@@ -62,7 +62,7 @@ casper.test.begin('Functions', function(test) {
 	/* Choose first item at home page */
 	casper.selectItemAndOptions = function() {
         this.echo("Selecting item and its options...", "INFO");
-        if (this.visible('p[class="bugs"]')) {
+        if (this.exists('p[class="bugs"]') || this.exists('div.best-selling table td:first-child a img')) {
             test.info("Magento v1.8");
             /* Magento version < 1.9 */
             this.waitForSelector('div.best-selling table td:first-child a img', function success() {
