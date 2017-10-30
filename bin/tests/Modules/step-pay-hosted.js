@@ -19,15 +19,13 @@ exports.proceed = function proceed(test, iframe) {
                 });
             }
             else {
-                this.withFrame(0, function() {
-                    this.fillSelectors('form#form-payment', {
-                        'input[name="cardNumber"]': cardsNumber[0],
-                        'input[name="cardHolder"]': holder,
-                        'select[name="cardExpiryMonth"]': month,
-                        'select[name="cardExpiryYear"]': year,
-                        'input[name="cardSecurityCode"]': code
-                    }, false);
-                });
+                this.fillSelectors('form#form-payment', {
+                    'input[name="cardNumber"]': cardsNumber[0],
+                    'input[name="cardHolder"]': holder,
+                    'select[name="cardExpiryMonth"]': month,
+                    'select[name="cardExpiryYear"]': year,
+                    'input[name="cardSecurityCode"]': code
+                }, false);
             }
             this.thenClick('#submit-button', function() {
                 test.info("Done");
