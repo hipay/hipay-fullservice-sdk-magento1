@@ -1271,7 +1271,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
             }
             $category = Mage::getModel('catalog/category')->load($idCategory);
             foreach ($mappingCategories as $key => $mapping) {
-                if (in_array($mapping['hipay_category'],$category->getParentIds())) {
+                if (in_array($mapping['magento_category'],$category->getParentIds())) {
                     return $mapping;
                 }
             }
