@@ -21,8 +21,12 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + realTypeCC, functi
         }
     })
     .thenOpen(headlink, function() {
-        this.selectItemAndOptions();
-    })
+        this.waitUntilVisible('div.footer', function success() {
+            this.selectItemAndOptions();
+        }, function fail() {
+            test.assertVisible("div.footer", "'Footer' exists");
+        }, 10000);
+    },15000)
     .then(function() {
         this.addItemGoCheckout();
     })
@@ -39,7 +43,13 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + realTypeCC, functi
     .then(function() {
         this.echo("Choosing payment method and filling 'Payment Information' formular with " + realTypeCC + "...", "INFO");
         this.waitUntilVisible('#checkout-step-payment', function success() {
-            this.click('#dt_method_hipay_cc>input[name="payment[method]"]');
+            method_hipay="method_hipay_cc";
+            if (this.visible('p[class="bugs"]')) {
+                this.click('input#p_' + method_hipay);
+            } else {
+                this.click('#dt_' + method_hipay +'>input[name="payment[method]"]');
+            }
+
             if(realTypeCC == 'VISA')
                 this.fillFormPaymentHipayCC('VI', cardsNumber[0]);
             else if(realTypeCC == 'CB' || realTypeCC == "MasterCard")

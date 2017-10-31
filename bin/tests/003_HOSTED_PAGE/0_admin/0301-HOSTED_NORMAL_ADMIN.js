@@ -10,13 +10,22 @@ var paymentType = "HiPay Enterprise Hosted Page";
 casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(test) {
     phantom.clearCookies();
 
-    casper.start(headlink + 'admin')
+    casper.start(headlink)
     .then(function() {
+        this.waitUntilVisible('div.footer', function success() {
+            if (this.exists('p[class="bugs"]')) {
+                test.done();
+            }
+        }, function fail() {
+            test.assertVisible("div.footer", "'Footer' exists");
+        }, 10000);
+    })
+    .thenOpen(headlink + 'admin', function() {
         authentification.proceed(test);
         configuration.proceedMotoSendMail(test, '0');
         method.proceed(test, paymentType, "hosted");
         checkout.proceed(test, paymentType, "hosted");
-    })
+    },15000)
     .then(function() {
         this.echo("Submitting order...", "INFO");
         this.waitForSelector(x('//span[text()="Submit Order"]'), function success() {

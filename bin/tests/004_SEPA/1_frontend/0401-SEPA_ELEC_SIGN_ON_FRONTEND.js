@@ -18,7 +18,11 @@ casper.test.begin('Test Checkout ' + paymentType + ' with Electronic Signature',
         method.proceed(test, paymentType, "sdd", ['select[name="groups[hipay_sdd][fields][electronic_signature][value]"]', '0']);
     })
     .thenOpen(headlink, function() {
-        this.selectItemAndOptions();
+        this.waitUntilVisible('div.footer', function success() {
+            this.selectItemAndOptions();
+        }, function fail() {
+            test.assertVisible("div.footer", "'Footer' exists");
+        }, 10000);
     })
     .then(function() {
         this.addItemGoCheckout();
@@ -36,7 +40,13 @@ casper.test.begin('Test Checkout ' + paymentType + ' with Electronic Signature',
     .then(function() {
     	this.echo("Choosing payment method and filling 'Payment Information' formular...", "INFO");
     	this.waitUntilVisible('#checkout-step-payment', function success() {
-    		this.click('#dt_method_hipay_sdd>input[name="payment[method]"]');
+            method_hipay="method_hipay_sdd";
+            if (this.visible('p[class="bugs"]')) {
+                this.click('input#p_' + method_hipay);
+            } else {
+                this.click('#dt_' + method_hipay +'>input[name="payment[method]"]');
+            }
+
             this.fillSelectors('form#co-payment-form', {
                 'select[name="payment[cc_gender]"]': "M",
                 'input[name="payment[cc_firstname]"]': "TEST",

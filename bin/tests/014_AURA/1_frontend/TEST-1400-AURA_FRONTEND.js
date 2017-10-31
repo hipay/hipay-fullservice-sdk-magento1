@@ -67,7 +67,13 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
     .then(function() {
     	this.echo("Choosing payment method and filling 'Payment Information' formular with " + typeCC + "...", "INFO");
     	this.waitUntilVisible('#checkout-step-payment', function success() {
-    		this.click('#dt_method_hipay_aura>input[name="payment[method]"]');
+            method_hipay="method_hipay_aura";
+            if (this.visible('p[class="bugs"]')) {
+                this.click('input#p_' + method_hipay);
+            } else {
+                this.click('#dt_' + method_hipay +'>input[name="payment[method]"]');
+            }
+
             this.fillSelectors("form#co-payment-form", {
                 'input[name="payment[national_identification_number]"]': generatedCPF
             }, false);

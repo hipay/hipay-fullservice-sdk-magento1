@@ -17,7 +17,11 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
         method.proceed(test, paymentType, "giropay");
     })
     .thenOpen(headlink, function() {
-        this.selectItemAndOptions();
+        this.waitUntilVisible('div.footer', function success() {
+            this.selectItemAndOptions();
+        }, function fail() {
+            test.assertVisible("div.footer", "'Footer' exists");
+        }, 10000);
     })
     .then(function() {
         this.addItemGoCheckout();
@@ -61,16 +65,16 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
                             test.info("Done");
                         }, function fail() {
                             test.assertExists('input[name="back2MerchantButton"]', "Payment Giropay recap page exists");
-                        });
+                        }, 25000);
                     }, function fail() {
                         test.assertExists('input[name="BezahlButton"]', "Payment Giropay TAN page exists");
                     })
                 }, function fail() {
                     test.assertExists('input[name="weiterButton"]', "Payment Giropay review page exists");
-                });
+                }, 25000);
             }, function fail() {
                 test.assertUrlMatch(/customer-integration\.giropay/, "Payment Giropay login page exists");
-            });
+            },25000);
         }, function fail() {
             test.assertUrlMatch(/payment\/web\/pay/, "Payment page exists");
         }, 10000);

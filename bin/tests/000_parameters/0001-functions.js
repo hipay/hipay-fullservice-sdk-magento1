@@ -44,13 +44,13 @@ casper.test.begin('Functions', function(test) {
     };
 
     /* Choose payment method in checkout */
-    casper.choosingPaymentMethod = function(method) {
-        this.echo("Choosing payment method with" + method, "INFO");
+    casper.choosingPaymentMethod = function(method_hipay) {
+        this.echo("Choosing payment method with" + method_hipay, "INFO");
         this.waitUntilVisible('#checkout-step-payment', function success() {
             if (this.visible('p[class="bugs"]')) {
-                this.click('input#p_' + method);
+                this.click('input#p_' + method_hipay);
             } else {
-                this.click('#dt_' + method +'>input[name="payment[method]"]');
+                this.click('#dt_' + method_hipay +'>input[name="payment[method]"]');
             }
             this.click("div#payment-buttons-container>button");
             test.info("Done");
@@ -62,7 +62,7 @@ casper.test.begin('Functions', function(test) {
 	/* Choose first item at home page */
 	casper.selectItemAndOptions = function() {
         this.echo("Selecting item and its options...", "INFO");
-        if (this.visible('p[class="bugs"]')) {
+        if (this.exists('p[class="bugs"]') || this.exists('div.best-selling table td:first-child a img')) {
             test.info("Magento v1.8");
             /* Magento version < 1.9 */
             this.waitForSelector('div.best-selling table td:first-child a img', function success() {

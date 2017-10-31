@@ -1,10 +1,14 @@
 casper.test.begin('Test Magento Without Device Fingerprint', function(test) {
 	phantom.clearCookies();
     var ioBB = "";
-
-    casper.start(headlink + "admin/")
+    casper.start(headlink)
     .then(function() {
-    	authentification.proceed(test);
+        if (this.visible('p[class="bugs"]')) {
+            test.done();
+        }
+    })
+    .thenOpen(headlink + "admin/", function () {
+        authentification.proceed(test);
     })
     /* Disactive device fingerprint */
     .then(function() {

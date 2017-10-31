@@ -17,7 +17,11 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
         method.proceed(test, paymentType, "ing");
     })
     .thenOpen(headlink, function() {
-        this.selectItemAndOptions();
+        this.waitUntilVisible('div.footer', function success() {
+            this.selectItemAndOptions();
+        }, function fail() {
+            test.assertVisible("div.footer", "'Footer' exists");
+        }, 10000);
     })
     .then(function() {
         this.addItemGoCheckout();
