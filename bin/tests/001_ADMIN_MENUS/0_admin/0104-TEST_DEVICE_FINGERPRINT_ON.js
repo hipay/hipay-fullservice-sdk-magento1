@@ -87,7 +87,8 @@ casper.test.begin('Test Magento With Device Fingerprint', function(test) {
             this.thenClick('a[href="#customer-details"]', function() {
                 this.wait(1000, function() {
                     var BOioBB = this.fetchText(x('//td[text()="Device Fingerprint"]/following-sibling::td/span')).split('.')[0];
-                    test.assert(BOioBB != "" && ioBB.indexOf(BOioBB) != -1, "'ioBB' is correctly present into transaction details of BackOffice TPP !");
+                    test.assert(BOioBB != ""  && BOioBB != "N/A" && ioBB.indexOf(BOioBB) != -1,
+                        "'ioBB' is correctly present into transaction details of BackOffice TPP with value :" + BOioBB);
                 });
             });
         }, function fail() {

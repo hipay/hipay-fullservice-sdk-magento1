@@ -4,6 +4,9 @@
 		<Allopass_Hipay>
 			<active>true</active>
 			<codePool>community</codePool>
+			<depends>
+				<Mage_Sales />
+			</depends>
 		</Allopass_Hipay>
 	</modules>
 </config>

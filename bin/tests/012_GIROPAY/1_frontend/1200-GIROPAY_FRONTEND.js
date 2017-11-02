@@ -32,14 +32,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
         this.shippingMethod();
     })
     .then(function() {
-    	this.echo("Choosing payment method...", "INFO");
-    	this.waitUntilVisible('#checkout-step-payment', function success() {
-    		this.click('#dt_method_hipay_giropay>input[name="payment[method]"]');
-    		this.click("div#payment-buttons-container>button");
-    		test.info("Done");
-		}, function fail() {
-        	test.assertVisible("#checkout-step-payment", "'Payment Information' formular exists");
-        }, 10000);
+        this.choosingPaymentMethod('method_hipay_giropay');
     })
     .then(function() {
         this.orderReview(paymentType);
