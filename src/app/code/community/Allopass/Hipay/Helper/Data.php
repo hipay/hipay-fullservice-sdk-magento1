@@ -204,9 +204,9 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         $taxPercent = $product->getData('tax_percent');
 
         if (!$useOrderCurrency) {
-            $total_amount = $product->getBaseRowTotal() + $product->getBaseTaxAmount() + $product->getBaseHiddenTaxAmount() + Mage::helper('weee')->getRowWeeeAmountAfterDiscount($product) - $product->getBaseDiscountAmount();
+            $total_amount = $product->getBaseRowTotal() + $product->getBaseTaxAmount() + $product->getBaseHiddenTaxAmount() + $product->getBaseWeeeTaxAppliedRowAmount() - $product->getBaseDiscountAmount();
         } else {
-            $total_amount = $product->getRowTotal() + $product->getTaxAmount() + $product->getHiddenTaxAmount() + Mage::helper('weee')->getRowWeeeAmountAfterDiscount($product) - $product->getDiscountAmount();
+            $total_amount = $product->getRowTotal() + $product->getTaxAmount() + $product->getHiddenTaxAmount() + $product->getBaseWeeeTaxAppliedRowAmount() - $product->getDiscountAmount();
         }
         // Add information in basket only if the product is simple
         if ($item['quantity'] > 0 && $total_amount > 0) {
@@ -322,7 +322,9 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
                 // =============================================================== //
                 // Add Shipping in basket
                 // =============================================================== //
-                $basket = $this->processShipping($invoice, $action, $basket);
+                if (count($order->getInvoiceCollection()->getItems()) == 1) {
+                    $basket = $this->processShipping($invoice, $action, $basket);
+                }
 
                 foreach ($invoice->getAllItems() as $product) {
                     $item = $this->addItem($product, $action, $products);
@@ -340,7 +342,9 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
             // =============================================================== //
             // Add Shipping in basket
             // =============================================================== //
-            $basket = $this->processShipping($creditMemo, $action, $basket);
+            if (count($order->getCreditmemosCollection()->getItems()) == 0) {
+                $basket = $this->processShipping($creditMemo, $action, $basket);
+            }
 
             foreach ($creditMemo->getAllItems() as $product) {
                 $item = $this->addItem($product, $action, $products);
@@ -1267,7 +1271,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
             }
             $category = Mage::getModel('catalog/category')->load($idCategory);
             foreach ($mappingCategories as $key => $mapping) {
-                if (in_array($mapping['hipay_category'],$category->getParentIds())) {
+                if (in_array($mapping['magento_category'],$category->getParentIds())) {
                     return $mapping;
                 }
             }

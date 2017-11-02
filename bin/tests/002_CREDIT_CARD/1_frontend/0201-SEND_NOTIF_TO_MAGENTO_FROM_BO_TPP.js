@@ -122,11 +122,21 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 	};
 
 	/* Open URL to BackOffice HiPay TPP */
-	casper.start(urlBackend)
-	/* Log on the BackOffice */
+	casper.start(headlink)
 	.then(function() {
-		this.logToBackend();
+		this.waitUntilVisible('div.footer', function success() {
+			if (this.exists('p[class="bugs"]')) {
+				test.done();
+				this.echo("Test skipped MAGENTO 1.8", "INFO");
+			}
+		}, function fail() {
+			test.assertVisible("div.footer", "'Footer' exists");
+		}, 10000);
 	})
+	.thenOpen(urlBackend, function() {
+			this.logToBackend();
+	})
+	/* Log on the BackOffice */
 	/* Select sub-account related to Magento1 Server */
 	.then(function() {
 		this.selectAccountBackend("OGONE_DEV");
