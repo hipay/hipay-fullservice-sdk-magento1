@@ -1214,13 +1214,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
     protected function getCustomerParams($payment, $params = array())
     {
         $order = $payment->getOrder();
-        $overrideParams = $payment->getCcType() == 'bnpp-3xcb' || $payment->getCcType() == 'bnpp-4xcb';
         $params['email'] = $order->getCustomerEmail();
         $params['phone'] = $order->getBillingAddress()->getTelephone();
-
-        if ($overrideParams) {
-            $params['phone'] =  preg_replace('/^(\+33)|(33)/','', $params['phone']);
-        }
 
         if (($dob = $order->getCustomerDob()) != "") {
             $dob = new Zend_Date($dob);
@@ -1240,12 +1235,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
             $gender = strtoupper(substr($gender, 0, 1));
         }
 
-
         if ($gender != "M" && $gender != "F") {
             $gender = "U";
-            if ($overrideParams) {
-                $gender = "M";
-            }
         }
 
 
