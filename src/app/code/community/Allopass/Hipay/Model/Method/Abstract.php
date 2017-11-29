@@ -1219,7 +1219,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $params['phone'] = $order->getBillingAddress()->getTelephone();
 
         if ($overrideParams) {
-            $params['phone'] =  preg_replace('/^(\+33)|(33)/','', $params['phone']);
+            $params['phone'] =  preg_replace('/^(\+33)|(33)/','0', $params['phone']);
         }
 
         if (($dob = $order->getCustomerDob()) != "") {
