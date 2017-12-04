@@ -1,3 +1,7 @@
+# Version 1.7.8
+
+ - New payment method support : Bnp Personal Finance 3X and 4X
+
 # Version 1.7.7
 
  - Fix fatal error for magento 1.8 ( getRowWeeeAmountAfterDiscount )
