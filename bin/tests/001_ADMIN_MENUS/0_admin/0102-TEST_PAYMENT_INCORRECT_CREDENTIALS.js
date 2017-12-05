@@ -38,7 +38,12 @@ casper.test.begin('Test Payment With Incorrect Credentials', function(test) {
     .then(function() {
         this.echo("Choosing payment method and filling 'Payment Information' formular with " + typeCC + "...", "INFO");
         this.waitUntilVisible('#checkout-step-payment', function success() {
-            this.click('#dt_method_hipay_cc>input[name="payment[method]"]');
+            method_hipay="method_hipay_cc";
+            if (this.visible('p[class="bugs"]')) {
+                this.click('input#p_' + method_hipay);
+            } else {
+                this.click('#dt_' + method_hipay +'>input[name="payment[method]"]');
+            }
             if(typeCC == 'VISA')
                 this.fillFormPaymentHipayCC('VI', cardsNumber[0]);
             else if(typeCC == 'CB' || typeCC == "MasterCard")

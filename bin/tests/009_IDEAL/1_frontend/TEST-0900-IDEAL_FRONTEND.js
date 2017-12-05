@@ -34,7 +34,13 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
     .then(function() {
     	this.echo("Choosing payment method...", "INFO");
     	this.waitUntilVisible('#checkout-step-payment', function success() {
-    		this.click('#dt_method_hipay_ideal>input[name="payment[method]"]');
+            method_hipay="method_hipay_ideal";
+            if (this.visible('p[class="bugs"]')) {
+                this.click('input#p_' + method_hipay);
+            } else {
+                this.click('#dt_' + method_hipay +'>input[name="payment[method]"]');
+            }
+
     		this.click("div#payment-buttons-container>button");
     		test.info("Done");
 		}, function fail() {

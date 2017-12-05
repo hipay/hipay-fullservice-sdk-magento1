@@ -17,7 +17,11 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
         method.proceed(test, paymentType, "giropay");
     })
     .thenOpen(headlink, function() {
-        this.selectItemAndOptions();
+        this.waitUntilVisible('div.footer', function success() {
+            this.selectItemAndOptions();
+        }, function fail() {
+            test.assertVisible("div.footer", "'Footer' exists");
+        }, 10000);
     })
     .then(function() {
         this.addItemGoCheckout();
@@ -32,14 +36,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
         this.shippingMethod();
     })
     .then(function() {
-    	this.echo("Choosing payment method...", "INFO");
-    	this.waitUntilVisible('#checkout-step-payment', function success() {
-    		this.click('#dt_method_hipay_giropay>input[name="payment[method]"]');
-    		this.click("div#payment-buttons-container>button");
-    		test.info("Done");
-		}, function fail() {
-        	test.assertVisible("#checkout-step-payment", "'Payment Information' formular exists");
-        }, 10000);
+        this.choosingPaymentMethod('method_hipay_giropay');
     })
     .then(function() {
         this.orderReview(paymentType);
@@ -68,16 +65,16 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
                             test.info("Done");
                         }, function fail() {
                             test.assertExists('input[name="back2MerchantButton"]', "Payment Giropay recap page exists");
-                        });
+                        }, 25000);
                     }, function fail() {
                         test.assertExists('input[name="BezahlButton"]', "Payment Giropay TAN page exists");
                     })
                 }, function fail() {
                     test.assertExists('input[name="weiterButton"]', "Payment Giropay review page exists");
-                });
+                }, 25000);
             }, function fail() {
                 test.assertUrlMatch(/customer-integration\.giropay/, "Payment Giropay login page exists");
-            });
+            },25000);
         }, function fail() {
             test.assertUrlMatch(/payment\/web\/pay/, "Payment page exists");
         }, 10000);

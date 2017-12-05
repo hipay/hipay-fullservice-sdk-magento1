@@ -1,3 +1,16 @@
+# Version 1.7.8
+
+ - New payment method support : Bnp Personal Finance 3X and 4X
+
+# Version 1.7.7
+
+ - Fix fatal error for magento 1.8 ( getRowWeeeAmountAfterDiscount )
+ - Fix partial capture with basket ( Shipping method duplicate ) 
+ - Rework functionals tests for magento 1.8 
+ - Fix env init for deployment
+ - Correct double $order (#124)
+ - Ensures that all setup scripts can also be executed together with the…
+
 # Version 1.7.6
 
 - Fix wrong merge for manual capture

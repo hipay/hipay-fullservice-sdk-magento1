@@ -20,6 +20,7 @@ sed -i -e "s/PHP_VERSION=5.6/PHP_VERSION=5.3/" bin/docker/php5-3/Dockerfile
 cp -f docker-compose.stage.yml docker-compose.stage-php5-4.yml
 cp -f docker-compose.stage.yml docker-compose.stage-php7-0.yml
 cp -f docker-compose.stage.yml docker-compose.stage-php5-3.yml
+cp -f docker-compose.stage.yml docker-compose.stage-magento18.yml
 
 sed -i -e "s/php5-6/php5-4/" docker-compose.stage-php5-4.yml
 sed -i -e "s/php5-6/php7-0/" docker-compose.stage-php7-0.yml

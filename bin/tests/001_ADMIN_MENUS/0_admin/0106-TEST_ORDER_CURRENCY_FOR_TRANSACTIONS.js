@@ -7,27 +7,40 @@ casper.test.begin('Test Magento Using Order Currency For Transactions with ' + r
 
     /* Choose current currency from Magento1 homepage */
     casper.setCurrency = function(currency, symbol) {
-        this.echo("Changing current currency...", "INFO");
-        this.waitForSelector('select#select-currency', function success() {
-            var current = this.evaluate(function() { return document.querySelector('select#select-currency').value; });
-            if(current.indexOf(currency) == -1) {
-                var ind = this.evaluate(function(cur) { return __utils__.getElementByXPath('//select[@id="select-currency"]/option[contains(., "' + cur + '")]').index; }, currency);
-                this.evaluate(function(index) {
-                    var sel = document.querySelector('select#select-currency');
-                    sel.selectedIndex = index;
-                    sel.onchange();
-                }, ind);
-                this.waitForText(symbol, function success() {
-                    test.info("'" + currency + "' currency done");
-                }, function fail() {
-                    test.assertTextExists(symbol, "Current currency is not " + currency);
-                }, 10000);
+        this.waitUntilVisible('div.footer', function success() {
+            if (this.exists('p[class="bugs"]')) {
+                test.done();
+                this.echo("Test ignored MAGENTO 1.8", "INFO");
             }
-            else
-                test.info("'" + currency + "' currency already done");
+
+            this.echo("Changing current currency...", "INFO");
+            this.waitForSelector('select#select-currency', function success() {
+                var current = this.evaluate(function () {
+                    return document.querySelector('select#select-currency').value;
+                });
+                if (current.indexOf(currency) == -1) {
+                    var ind = this.evaluate(function (cur) {
+                        return __utils__.getElementByXPath('//select[@id="select-currency"]/option[contains(., "' + cur + '")]').index;
+                    }, currency);
+                    this.evaluate(function (index) {
+                        var sel = document.querySelector('select#select-currency');
+                        sel.selectedIndex = index;
+                        sel.onchange();
+                    }, ind);
+                    this.waitForText(symbol, function success() {
+                        test.info("'" + currency + "' currency done");
+                    }, function fail() {
+                        test.assertTextExists(symbol, "Current currency is not " + currency);
+                    }, 10000);
+                }
+                else
+                    test.info("'" + currency + "' currency already done");
+            }, function fail() {
+                test.assertExists('select#select-currency', "'Currency' select field exists");
+            }, 10000);
         }, function fail() {
-            test.assertExists('select#select-currency', "'Currency' select field exists");
-        }, 10000);    
+            test.assertVisible("div.footer", "'Footer' exists");
+        }, 10000);
     };
     /* Set order currency option via formular */
     casper.setUseOrderCurrency = function(state) {
@@ -61,7 +74,14 @@ casper.test.begin('Test Magento Using Order Currency For Transactions with ' + r
     };
 
     /* Get all currencies from variable */
-    casper.start(headlink + "admin/", function() {
+    casper.start(headlink , function() {
+        if (this.exists('p[class="bugs"]')) {
+            test.done();
+            this.echo("Test ignored MAGENTO 1.8", "INFO");
+        }
+    })
+    .thenOpen(headlink + "admin/", function () {
+        authentification.proceed(test);
         this.each(allowedCurrencies, function(self, allowedCurrency) {
             allowed.push(allowedCurrency["currency"]);
         });
@@ -121,7 +141,13 @@ casper.test.begin('Test Magento Using Order Currency For Transactions with ' + r
     .then(function() {
         this.echo("Choosing payment method and filling 'Payment Information' formular with " + typeCC + "...", "INFO");
         this.waitUntilVisible('#checkout-step-payment', function success() {
-            this.click('#dt_method_hipay_cc>input[name="payment[method]"]');
+            method_hipay="method_hipay_cc";
+            if (this.visible('p[class="bugs"]')) {
+                this.click('input#p_' + method_hipay);
+            } else {
+                this.click('#dt_' + method_hipay +'>input[name="payment[method]"]');
+            }
+
             if(typeCC == 'VISA')
                 this.fillFormPaymentHipayCC('VI', cardsNumber[0]);
             else if(typeCC == 'CB' || typeCC == "MasterCard")

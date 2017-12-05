@@ -18,7 +18,11 @@ casper.test.begin('Test Checkout ' + paymentType + ' with Iframe', function(test
         method.proceed(test, paymentType, "hosted", ['select[name="groups[hipay_hosted][fields][display_iframe][value]"]', '1']);
     })
     .thenOpen(headlink, function() {
-    	this.selectItemAndOptions();
+        this.waitUntilVisible('div.footer', function success() {
+            this.selectItemAndOptions();
+        }, function fail() {
+            test.assertVisible("div.footer", "'Footer' exists");
+        }, 10000);
     })
     .then(function() {
         this.addItemGoCheckout();
@@ -35,7 +39,12 @@ casper.test.begin('Test Checkout ' + paymentType + ' with Iframe', function(test
     .then(function() {
     	this.echo("Choosing payment method...", "INFO");
     	this.waitUntilVisible('#checkout-step-payment', function success() {
-    		this.click('#dt_method_hipay_hosted>input[name="payment[method]"]');
+            method_hipay="method_hipay_hosted";
+            if (this.visible('p[class="bugs"]')) {
+                this.click('input#p_' + method_hipay);
+            } else {
+                this.click('#dt_' + method_hipay +'>input[name="payment[method]"]');
+            }
     		this.click("div#payment-buttons-container>button");
     		test.info("Done");
 		}, function fail() {
@@ -47,7 +56,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' with Iframe', function(test
     })
     /* Fill payment formular inside iframe */
     .then(function() {
-    	this.wait(10000, function() {
+    	this.wait(5000, function() {
 			this.withFrame(0, function() {
 				pay.proceed(test, true);
 			});

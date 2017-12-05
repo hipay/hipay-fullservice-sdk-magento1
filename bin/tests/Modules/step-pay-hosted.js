@@ -6,7 +6,7 @@ exports.proceed = function proceed(test, iframe) {
             month = "12",
             year = "2020",
             code = "500";
-        this.wait(5000, function() {
+        this.wait(10000, function() {
             if(this.exists('iframe#tokenizerFrame')) {
                 this.withFrame(0, function() {
                     this.fillSelectors('form#tokenizerForm', {
