@@ -72,11 +72,12 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
     public function sendRequestAction()
     {
         $order = $this->getOrder();
-        $payment = $order->getPayment();
-
-        $methodInstance = $this->_getMethodInstance();
 
         try {
+            // If Order and Payment are null, please verify the sticky sessions
+            $payment = $order->getPayment();
+            $methodInstance = $this->_getMethodInstance();
+
             $redirectUrl = $methodInstance->place($payment, $order->getBaseTotalDue());
         } catch (Exception $e) {
             Mage::logException($e);
