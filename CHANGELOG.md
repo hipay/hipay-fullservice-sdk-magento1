@@ -1,3 +1,8 @@
+# Version 1.7.9
+
+ - Rework stripos during curl call
+ - Payment can be false and no order in response  (@gcann-tbd)
+ 
 # Version 1.7.8
 
  - New payment method support : Bnp Personal Finance 3X and 4X

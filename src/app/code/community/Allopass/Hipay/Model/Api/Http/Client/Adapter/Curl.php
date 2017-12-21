@@ -400,7 +400,7 @@ class Allopass_Hipay_Model_Api_Http_Client_Adapter_Curl implements Zend_Http_Cli
         }
 
         // cURL automatically decodes chunked-messages, this means we have to disallow the Zend_Http_Response to do it again
-        if (stripos($this->_response, "Transfer-Encoding: chunked\r\n") === true) {
+        if (stripos($this->_response, "Transfer-Encoding: chunked\r\n") !== false) {
             $this->_response = str_ireplace("Transfer-Encoding: chunked\r\n", '', $this->_response);
         }
 

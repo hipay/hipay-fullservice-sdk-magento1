@@ -171,7 +171,7 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
                 $session->setLastSuccessQuoteId($this->getOrder()->getIncrementId());
                 $session->setLastQuoteId($this->getOrder()->getId());
             }
-        }else{
+        }else if ($payment){
             $order = $payment->getOrder();
         }
 
