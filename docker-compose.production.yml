@@ -1,4 +1,5 @@
 web:
+  restart: always
   container_name: {CONTAINER_NAME_WEB}
   build: .
   dockerfile: ./bin/docker/php5-6/Dockerfile
@@ -15,6 +16,7 @@ web:
     - "com.hipay.github={label}"
     - "com.hipay.circleci={circleci}"
 mysql:
+  restart: always
   container_name: {CONTAINER_NAME_MYSQL}
   image: mysql:5.6.23
   ports:
@@ -25,6 +27,7 @@ mysql:
     - "com.hipay.github={label}"
     - "com.hipay.circleci={circleci}"
 smtp:
+  restart: always
   container_name: {CONTAINER_NAME_SMTP}
   ports:
      - "{PORT_SMTP}:80"
