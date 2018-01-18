@@ -70,8 +70,8 @@ elif [ "$1" = 'restart' ]; then
 elif [ "$1" = 'logs' ]; then
     docker-compose logs -f
 elif [ "$1" = 'test' ]; then
-    setBackendCredentials
-    setPaypalCredentials
+    #setBackendCredentials
+    #setPaypalCredentials
 
     if [ "$(ls -A ~/.local/share/Ofi\ Labs/PhantomJS/)" ]; then
         rm -rf ~/.local/share/Ofi\ Labs/PhantomJS/*
@@ -80,7 +80,10 @@ elif [ "$1" = 'test' ]; then
         printf "Pas de cache à effacer !\n\n"
     fi
 
-    casperjs test $pathPreFile ${pathDir}/[0-1]*/0200-*.js --url=$BASE_URL --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --login-paypal=$LOGIN_PAYPAL --pass-paypal=$PASS_PAYPAL --xunit=${header}result.xml --ignore-ssl-errors=true --ssl-protocol=any
+    LOGIN_BACKEND=aberthelot@hipay.com
+    PASS_BACKEND=Rastafarai50
+
+    casperjs test $pathPreFile ${pathDir}/[0-1]*/[0-9][0-9][0-9][0-9]-*.js --url=$BASE_URL --url-mailcatcher=$URL_MAILCATCHER --login-backend=$LOGIN_BACKEND --pass-backend=$PASS_BACKEND --login-paypal=$LOGIN_PAYPAL --pass-paypal=$PASS_PAYPAL --xunit=${header}result.xml --ignore-ssl-errors=true --ssl-protocol=any
 elif [ "$1" = "test-engine" ]; then
     bash bin/tests/casper_debug.sh $BASE_URL $URL_MAILCATCHER
 elif [ "$1" = "notif" ]; then
