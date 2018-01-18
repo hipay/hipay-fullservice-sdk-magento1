@@ -117,7 +117,8 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 			if(String(e).indexOf('operation') != -1)
 				test.fail("Failure on status operation: '" + operation + "'");
 			else
-				test.fail("Failure: Notification " + status + " not exists");
+				if(status != 117)
+					test.fail("Failure: Notification " + status + " not exists");
 		}
 	};
 

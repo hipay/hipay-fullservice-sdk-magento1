@@ -72,7 +72,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' without Electronic Signatur
     		this.thenClick('input[name="bankaccountselection"]', function() {
     			this.fillSelectors('#registrationform', {
     				'input[name="iban"]': ibanNumber[0],
-    				'input[name="bic"]': bicNumber[0]
+    				'input[name="bic"]': bicNumber[1]
     			}, false);
 	    		this.click('body');
     			this.waitUntilVisible('div.ajaxsuccess', function success() {
