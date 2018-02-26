@@ -19,6 +19,16 @@ class Allopass_Hipay_Block_Adminhtml_System_Config_Form_Field_Notice extends Mag
     }
 
     /**
+     * @param Varien_Data_Form_Element_Abstract $element
+     * @return string
+     */
+    public function render(Varien_Data_Form_Element_Abstract $element)
+    {
+        $element->unsScope()->unsCanUseWebsiteValue()->unsCanUseDefaultValue();
+        return parent::render($element);
+    }
+
+    /**
      * Custom field
      *
      * @param Varien_Data_Form_Element_Abstract $element
@@ -47,6 +57,11 @@ class Allopass_Hipay_Block_Adminhtml_System_Config_Form_Field_Notice extends Mag
                 $notices[] = $commonWarning . '<div class="nb-mapping-missing">
                 ' . $nbMappingMissing . ' '. Mage::helper('hipay')->__('mappings categories are actually missing.') . '</div>';
             }
+        }
+
+        // Notice for Hashing
+        if (preg_match('/hashing/', $element->getId())){
+            $notices[] =  Mage::helper('hipay')->__('If the hash configuration is different than the one set in your Hipay back office, then the notifications will not work. Check that both values match.');
         }
 
         $element->setNoticesHipay($notices);

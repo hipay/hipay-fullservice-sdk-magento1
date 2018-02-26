@@ -15,7 +15,7 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
 		parent::preDispatch();
 
 		if (!$this->_validateSignature()) {
-			$this->getResponse()->setBody("NOK. Wrong Signature!");
+			$this->getResponse()->setBody("NOK. Wrong Signature! Please check passphrase or hashing configuration.");
             $this->getResponse()->setHttpResponseCode(403);
 			$this->setFlag('', 'no-dispatch', true);
 		}		
@@ -28,7 +28,7 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
 		
 		/* @var $response Allopass_Hipay_Model_Api_Response_Notification */
 		$response  = Mage::getSingleton('hipay/api_response_notification',$this->getRequest()->getParams());
-		
+
 		$signature = $this->getRequest()->getServer('HTTP_X_ALLOPASS_SIGNATURE');
 		return $_helper->checkSignature($signature,true,$response);
 	}

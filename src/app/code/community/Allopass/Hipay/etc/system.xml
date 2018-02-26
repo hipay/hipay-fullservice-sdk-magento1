@@ -19,8 +19,18 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
+                        <separator_prod>
+                            <label>Production configuration</label>
+                            <comment></comment>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </separator_prod>
                         <api_username translate="label">
-                            <label>Api username (production account)</label>
+                            <label>Api username</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
@@ -28,7 +38,7 @@
                             <show_in_store>1</show_in_store>
                         </api_username>
                         <api_password translate="label">
-                            <label>Api password (production account)</label>
+                            <label>Api password</label>
                             <frontend_type>obscure</frontend_type>
                             <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
                             <sort_order>20</sort_order>
@@ -37,7 +47,7 @@
                             <show_in_store>1</show_in_store>
                         </api_password>
                         <api_tokenjs_username translate="label">
-                            <label>Api TokenJS Username (production account)</label>
+                            <label>Api TokenJS Username</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>22</sort_order>
                             <show_in_default>1</show_in_default>
@@ -45,7 +55,7 @@
                             <show_in_store>1</show_in_store>
                         </api_tokenjs_username>
                         <api_tokenjs_publickey translate="label">
-                            <label>Api TokenJS Password/Public Key (production account)</label>
+                            <label>Api TokenJS Password/Public Key </label>
                             <frontend_type>text</frontend_type>
                             <sort_order>23</sort_order>
                             <show_in_default>1</show_in_default>
@@ -53,7 +63,7 @@
                             <show_in_store>1</show_in_store>
                         </api_tokenjs_publickey>
                         <secret_passphrase translate="label comment">
-                            <label>Secret passphrase (production account)</label>
+                            <label>Secret passphrase</label>
                             <comment>The same as for HiPay Enterprise production account</comment>
                             <frontend_type>obscure</frontend_type>
                             <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
@@ -62,8 +72,18 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </secret_passphrase>
+                        <separator_test>
+                            <label>Stage configuration</label>
+                            <comment></comment>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>26</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </separator_test>
                         <api_username_test translate="label">
-                            <label>Api username (test account)</label>
+                            <label>Api username</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
@@ -71,7 +91,7 @@
                             <show_in_store>1</show_in_store>
                         </api_username_test>
                         <api_password_test translate="label">
-                            <label>Api password (test account)</label>
+                            <label>Api password</label>
                             <frontend_type>obscure</frontend_type>
                             <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
                             <sort_order>40</sort_order>
@@ -80,7 +100,7 @@
                             <show_in_store>1</show_in_store>
                         </api_password_test>
                         <api_tokenjs_username_test translate="label">
-                            <label>Api TokenJS Username (test account)</label>
+                            <label>Api TokenJS Username</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>45</sort_order>
                             <show_in_default>1</show_in_default>
@@ -88,7 +108,7 @@
                             <show_in_store>1</show_in_store>
                         </api_tokenjs_username_test>
                         <api_tokenjs_publickey_test translate="label">
-                            <label>Api TokenJS Password/Public Key (test account)</label>
+                            <label>Api TokenJS Password/Public Key</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>46</sort_order>
                             <show_in_default>1</show_in_default>
@@ -96,7 +116,7 @@
                             <show_in_store>1</show_in_store>
                         </api_tokenjs_publickey_test>
                         <secret_passphrase_test translate="label comment">
-                            <label>Secret passphrase (test account)</label>
+                            <label>Secret passphrase</label>
                             <comment>The same as for HiPay Enterprise test account</comment>
                             <frontend_type>obscure</frontend_type>
                             <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
@@ -105,11 +125,58 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </secret_passphrase_test>
+                        <separator_notification translate="label,comment">
+                            <label>HiPay Notification</label>
+                            <comment></comment>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </separator_notification>
+                        <notice_hashing translate="label" module="hipay">
+                            <frontend_model>hipay/adminhtml_system_config_form_field_Notice</frontend_model>
+                            <sort_order>61</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </notice_hashing>
+                        <hashing_algorithm translate="label comment">
+                            <label>Hashing Algorithm</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>hipay/source_hashingAlgorithm</source_model>
+                            <frontend_model>hipay/adminhtml_system_config_form_field_ListDisabled</frontend_model>
+                            <sort_order>62</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <disabled>true</disabled>
+                        </hashing_algorithm>
+                        <init_hashing translate="label,comment">
+                            <label_button>Synchronize Hashing</label_button>
+                            <comment>Retrieve the hashing configuration for notifications configured in your account.</comment>
+                            <frontend_model>hipay/adminhtml_field_hashingButtonInit</frontend_model>
+                            <sort_order>63</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </init_hashing>
+                        <separator_proxy translate="label,comment">
+                            <label>Proxy settings</label>
+                            <comment></comment>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>51</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </separator_proxy>
                         <proxy_host translate="label comment">
                             <label>Host proxy</label>
                             <comment>Leave blank if no proxy</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>60</sort_order>
+                            <sort_order>75</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -118,7 +185,7 @@
                             <label>Port proxy</label>
                             <comment>Leave blank if no proxy</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>70</sort_order>
+                            <sort_order>80</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -127,7 +194,7 @@
                             <label>User proxy</label>
                             <comment>Leave blank if no proxy</comment>
                             <frontend_type>text</frontend_type>
-                            <sort_order>80</sort_order>
+                            <sort_order>100</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -137,17 +204,27 @@
                             <comment>Leave blank if no proxy</comment>
                             <frontend_type>obscure</frontend_type>
                             <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
-                            <sort_order>90</sort_order>
+                            <sort_order>105</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </proxy_pass>
+                        <separator_other translate="label,comment">
+                            <label>Other configuration</label>
+                            <comment></comment>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </separator_other>
                         <currency_transaction translate="label comment">
                             <label>Use order currency for transaction</label>
                             <comment>Only if payment method is in "Sale" mode.</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>100</sort_order>
+                            <sort_order>112</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -156,7 +233,7 @@
                             <label>Device fingerprint</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>110</sort_order>
+                            <sort_order>113</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -182,8 +259,18 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
+                        <separator_prod>
+                            <label>Production configuration</label>
+                            <comment></comment>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </separator_prod>
                         <api_username translate="label">
-                            <label>Api username (production account)</label>
+                            <label>Api username</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
@@ -191,7 +278,7 @@
                             <show_in_store>1</show_in_store>
                         </api_username>
                         <api_password translate="label">
-                            <label>Api password (production account)</label>
+                            <label>Api password</label>
                             <frontend_type>obscure</frontend_type>
                             <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
                             <sort_order>20</sort_order>
@@ -200,7 +287,7 @@
                             <show_in_store>1</show_in_store>
                         </api_password>
                         <secret_passphrase translate="label comment">
-                            <label>Secret passphrase (production account)</label>
+                            <label>Secret passphrase</label>
                             <comment>The same as for HiPay Enterprise production account</comment>
                             <frontend_type>obscure</frontend_type>
                             <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
@@ -209,8 +296,18 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </secret_passphrase>
+                        <separator_test>
+                            <label>Test configuration</label>
+                            <comment></comment>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>29</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </separator_test>
                         <api_username_test translate="label">
-                            <label>Api username (test account)</label>
+                            <label>Api username</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
@@ -218,7 +315,7 @@
                             <show_in_store>1</show_in_store>
                         </api_username_test>
                         <api_password_test translate="label">
-                            <label>Api password (test account)</label>
+                            <label>Api password</label>
                             <frontend_type>obscure</frontend_type>
                             <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
                             <sort_order>40</sort_order>
@@ -227,15 +324,25 @@
                             <show_in_store>1</show_in_store>
                         </api_password_test>
                         <secret_passphrase_test translate="label comment">
-                            <label>Secret passphrase (test account)</label>
+                            <label>Secret passphrase</label>
                             <comment>The same as for HiPay Enterprise test account</comment>
                             <frontend_type>obscure</frontend_type>
                             <backend_model>adminhtml/system_config_backend_encrypted</backend_model>
-                            <sort_order>50</sort_order>
+                            <sort_order>49</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </secret_passphrase_test>
+                        <separator_other translate="label,comment">
+                            <label>Other configuration</label>
+                            <comment></comment>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </separator_other>
                         <moto_send_email translate="label">
                             <label>Send an email to customer to pay</label>
                             <frontend_type>select</frontend_type>

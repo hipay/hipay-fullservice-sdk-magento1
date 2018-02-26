@@ -46,6 +46,19 @@ class Allopass_Hipay_Model_Config extends Varien_Object
     }
 
     /**
+     *  Set config data
+     *
+     * @param    string $key Var path key
+     * @param    int $storeId Store View Id
+     * @param    int $scope Scope
+     * @return   Mage_Core_Store_Config
+     */
+    public function setConfigData($key, $value, $storeId = null, $scope = 'default')
+    {
+        return Mage::getConfig()->saveConfig('hipay/hipay_api/' . $key, $value, $scope, $storeId);
+    }
+
+    /**
      *  Internal to get config and cache it
      *
      * @param    string $key context key
@@ -102,6 +115,22 @@ class Allopass_Hipay_Model_Config extends Varien_Object
         }
 
         return $basket;
+    }
+
+    /**
+     *  Return config for hashing algorithm
+     *
+     * @param    int $storeId Store View Id
+     * @return   mixed
+     */
+    public function getConfigHashing($storeId = null)
+    {
+        $config = $this->getInternalConfig('hipay_api','hashing_algorithm', $storeId);
+        if (!$config && !is_null($storeId)) {
+            $config = $this->getInternalConfig('hipay_api','hashing_algorithm', null);
+        }
+
+        return $config;
     }
 
     /**

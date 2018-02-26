@@ -7,13 +7,18 @@ class Allopass_Hipay_Model_Api_Request
     
     const VAULT_ACTION_LOOKUP = '';
     
-    const GATEWAY_ACTION_ORDER = 'order';
+    const GATEWAY_ACTION_ORDER = 'v1/order';
     
-    const GATEWAY_ACTION_MAINTENANCE = 'maintenance/transaction/';
+    const GATEWAY_ACTION_MAINTENANCE = 'v1/maintenance/transaction/';
     
-    const GATEWAY_ACTION_HOSTED = "hpayment";
+    const GATEWAY_ACTION_HOSTED = "v1/hpayment";
 
-    
+    const GATEWAY_SECURITY_SETTINGS= "v2/security-settings";
+
+    const TYPE_RESPONSE_GATEWAY = "hipay/api_response_gateway";
+
+    const TYPE_RESPONSE_GOMMON = "hipay/api_response_common";
+
     /**
      *
      * @var Zend_Http_Client
@@ -33,10 +38,6 @@ class Allopass_Hipay_Model_Api_Request
     
     protected function getMethodInstance()
     {
-        if (!$this->_methodInstance instanceof Mage_Payment_Model_Method_Abstract) {
-            Mage::throwException("Method instance must be setted or must be type of Mage_Payment_Model_Method_Abstract");
-        }
-    
         return $this->_methodInstance;
     }
 
@@ -65,7 +66,7 @@ class Allopass_Hipay_Model_Api_Request
     {
         $this->_useMotoCredentials = false;
 
-        if ($this->getMethodInstance()->isAdmin()) {
+        if ($this->getMethodInstance() && $this->getMethodInstance()->isAdmin()) {
             if ($this->isTestMode()) {
                 if ($this->getConfig()->getApiUsernameTestMoto($storeId)) {
                     $this->_useMotoCredentials = true;
@@ -79,7 +80,7 @@ class Allopass_Hipay_Model_Api_Request
             }
         }
 
-        if ($this->isTestMode()) {
+        if ($this->isTestMode($storeId)) {
             return $this->getConfig()->getApiUsernameTest($storeId);
         } else {
             return $this->getConfig()->getApiUsername($storeId);
@@ -92,7 +93,7 @@ class Allopass_Hipay_Model_Api_Request
      */
     protected function getApiPassword($storeId=null)
     {
-        if ($this->getMethodInstance()->isAdmin()) {
+        if ($this->getMethodInstance() && $this->getMethodInstance()->isAdmin()) {
             if ($this->isTestMode()) {
                 if ($this->getConfig()->getApiPasswordTestMoto($storeId)) {
                     return $this->getConfig()->getApiPasswordTestMoto($storeId);
@@ -104,15 +105,21 @@ class Allopass_Hipay_Model_Api_Request
             }
         }
 
-        if ($this->isTestMode()) {
+        if ($this->isTestMode($storeId)) {
             return $this->getConfig()->getApiPasswordTest($storeId);
         } else {
             return $this->getConfig()->getApiPassword($storeId);
         }
     }
-    
-    protected function isTestMode()
+
+    protected function isTestMode($storeId=null)
     {
+        // Method is null for calling from admin
+        if ($this->getMethodInstance() == null) {
+            // Take priority of the test credential if informed
+            return (empty($this->getConfig()->getApiPasswordTest($storeId))) ? false : true ;
+        }
+
         return (bool)$this->getMethodInstance()->getConfigData('is_test_mode');
     }
     
@@ -196,7 +203,7 @@ class Allopass_Hipay_Model_Api_Request
 			$this->getClient()->setParameterGet($params);
 	
 		$this->getClient()->setUri($uri);
-	
+
 		/* @var $response Zend_Http_Response */
 		$response = $this->getClient()->request($method);
 
@@ -226,7 +233,7 @@ class Allopass_Hipay_Model_Api_Request
 	
 	public function getMethodHttp($action)
 	{
-		if($action == self::VAULT_ACTION_LOOKUP)
+		if($action == self::VAULT_ACTION_LOOKUP || $action == self::GATEWAY_SECURITY_SETTINGS )
 			return Zend_Http_Client::GET;
 	
 		return Zend_Http_Client::POST;
@@ -280,37 +287,34 @@ class Allopass_Hipay_Model_Api_Request
 	 * @param int $storeId
 	 * @return Allopass_Hipay_Model_Response_Abstract
 	 */
-	public function gatewayRequest($action,$params,$storeId=null)
+	public function gatewayRequest($action,$params,$storeId=null,$typeResponse = self::TYPE_RESPONSE_GATEWAY)
 	{
 		$this->setStoreId($storeId);
 		$uri = $this->getGatewayApiEndpoint($storeId) . $action;
 	
 		/* @var $response Allopass_Hipay_Model_Api_Response_Gateway */
-		$response  = Mage::getModel('hipay/api_response_gateway',$this->_request($uri,$params,$this->getMethodHttp($action),$storeId));
-		//Mage::log($response, null, 'log-hipay-gatewayRequest.log', true);
+        $response = $this->_request($uri,$params,$this->getMethodHttp($action),$storeId);
+
+        switch ($typeResponse) {
+            case self::TYPE_RESPONSE_GATEWAY:
+                return Mage::getModel('hipay/api_response_gateway',$response);
+            case self::TYPE_RESPONSE_GOMMON:
+                return $response;
+        }
 
 		return $response;
 	}
 
+    /**
+     *  Test if test or production credentials are filled
+     *
+     *  @param int $storeId
+     *  @return bool
+     */
+    public function existsCredentials($storeId = null) {
+        return ($this->getConfig()->getApiPassword($storeId) || $this->getConfig()->getApiPasswordTest($storeId));
+    }
 
-	/**
-	 *
-	 * @param string $action
-	 * @param array $params
-	 * @param int $storeId
-	 * @return Allopass_Hipay_Model_Response_Abstract
-	 */
-	public function gatewayRequestMaintenance($action,$params,$storeId=null)
-	{
-		$this->setStoreId($storeId);
-		$uri = $this->getGatewayApiEndpoint($storeId) . $action;
-	
-		/* @var $response Allopass_Hipay_Model_Api_Response_Gateway */
-		$response  = $this->_request($uri,$params,$this->getMethodHttp($action),$storeId,false);
-
-		return $response;
-	}
-	
 	public function setStoreId($storeId)
 	{
 		$this->_storeId = $storeId;

@@ -266,4 +266,13 @@ class Allopass_Hipay_Model_Observer
             }
         }
     }
+
+    /**
+     * Autoload Hipay SDK Third party
+     */
+    public function autoloadLibrary()
+    {
+        require_once(Mage::getBaseDir('lib') . DS . 'Hipay' . DS . 'hipay-fullservice-sdk-php' . DS . 'autoload.php');
+        return this;
+    }
 }
