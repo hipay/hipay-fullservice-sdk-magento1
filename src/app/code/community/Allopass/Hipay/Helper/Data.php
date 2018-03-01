@@ -555,6 +555,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
                 if ($request->existsCredentials($storeId)) {
                     $retry = Mage::helper('hipay')->synchronizeSecuritySettings($request, $storeId, $scope);
                     if ($retry) {
+                        $hashAlgorithm = $this->getConfig()->getConfigHashing();
                         Mage::helper('hipay')->debugInternalProcessHipay('Configuration is updated, try again valid signature');
                         $isValidSignature = HiPay\Fullservice\Helper\Signature::isValidHttpSignature($passphrase, $hashAlgorithm);
                     }
@@ -1474,10 +1475,10 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         if (isset($gatewayResponse["hashing_algorithm"]) && !empty($gatewayResponse["hashing_algorithm"])) {
             if ($config->getConfigHashing($storeId) != $gatewayResponse["hashing_algorithm"]) {
                 $config->setConfigData('hashing_algorithm', $gatewayResponse["hashing_algorithm"], $storeId, $scope);
-                $message = $this->__('The hash configuration has been updated with') . $gatewayResponse["hashing_algorithm"];
+                $message = $this->__('The hash configuration has been updated with ') . $gatewayResponse["hashing_algorithm"];
                 $updating = true;
             } else {
-                $message = $this->__('The hash configuration was already updated with') . $gatewayResponse["hashing_algorithm"];
+                $message = $this->__('The hash configuration was already updated with ') . $gatewayResponse["hashing_algorithm"];
             }
         } else {
             if ($session) {

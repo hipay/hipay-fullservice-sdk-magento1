@@ -17,7 +17,7 @@ class Allopass_Hipay_Model_Api_Request
 
     const TYPE_RESPONSE_GATEWAY = "hipay/api_response_gateway";
 
-    const TYPE_RESPONSE_GOMMON = "hipay/api_response_common";
+    const TYPE_RESPONSE_COMMON = "hipay/api_response_common";
 
     /**
      *
@@ -298,7 +298,7 @@ class Allopass_Hipay_Model_Api_Request
         switch ($typeResponse) {
             case self::TYPE_RESPONSE_GATEWAY:
                 return Mage::getModel('hipay/api_response_gateway',$response);
-            case self::TYPE_RESPONSE_GOMMON:
+            case self::TYPE_RESPONSE_COMMON:
                 return $response;
         }
 

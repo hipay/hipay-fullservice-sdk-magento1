@@ -5,12 +5,13 @@
  *  To launch test, please pass two arguments URL (BASE URL)  and TYPE_CC ( CB,VI,MC )
  *
  /**********************************************************************************************/
-var paymentType = "HiPay Enterprise Hosted Page";
+var paymentType = "HiPay Enterprise Hosted Page",
+    currentBrandCC = typeCC;
 
 casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(test) {
     phantom.clearCookies();
 
-    casper.start(headlink)
+    casper.start(baseURL)
     .then(function() {
         this.waitUntilVisible('div.footer', function success() {
             if (this.exists('p[class="bugs"]')) {
@@ -20,12 +21,15 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
             test.assertVisible("div.footer", "'Footer' exists");
         }, 10000);
     })
-    .thenOpen(headlink + 'admin', function() {
-        authentification.proceed(test);
+    .thenOpen(baseURL + 'admin', function() {
+        this.logToBackend();
         configuration.proceedMotoSendMail(test, '0');
         method.proceed(test, paymentType, "hosted");
-        checkout.proceed(test, paymentType, "hosted");
+
     },15000)
+    .then(function() {
+        checkout.proceed(test, paymentType, "hosted");
+    })
     .then(function() {
         this.echo("Submitting order...", "INFO");
         this.waitForSelector(x('//span[text()="Submit Order"]'), function success() {
@@ -50,7 +54,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
             });
         }, function fail() {
             test.assertUrlMatch(/payment\/web\/pay/, "Hosted payment page exists");
-        });
+        },10000);
     })
     .run(function() {
         test.done();

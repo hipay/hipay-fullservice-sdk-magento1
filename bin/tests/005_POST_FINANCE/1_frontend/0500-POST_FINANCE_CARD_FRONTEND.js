@@ -11,12 +11,12 @@ var paymentType = "HiPay Fullservice PostFinance Card";
 casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(test) {
     phantom.clearCookies();
 
-    casper.start(headlink + "admin/")
+    casper.start(baseURL + "admin/")
     .then(function() {
-        authentification.proceed(test);
+        this.logToBackend();
         method.proceed(test, paymentType, "postfinancecardapi");
     })
-    .thenOpen(headlink, function() {
+    .thenOpen(baseURL, function() {
         this.waitUntilVisible('div.footer', function success() {
             this.selectItemAndOptions();
         }, function fail() {
@@ -43,13 +43,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
     })
     /* Fill Post Finance formular */
     .then(function() {
-    	this.echo("Filling payment method...", "INFO");
-    	this.waitForUrl(/secure\.ogone/, function success() {
-    		this.click('input#btn_Accept');
-    		test.info("Done");
-    	}, function fail() {
-    		test.assertUrlMatch(/secure\.ogone/, "Payment page exists");
-    	}, 10000);
+        this.fillPaymentFormularByPaymentProduct("postfinance-card");
     })
     .then(function() {
         this.orderResult(paymentType);

@@ -1,28 +1,23 @@
 /**********************************************************************************************
  *
- *                       VALIDATION TEST METHOD : SEPA DIRECT DEBIT
+ *                       VALIDATION TEST METHOD : SOFOR ÜBERWEISUNG
  *
  *  To launch test, please pass two arguments URL (BASE URL)  and TYPE_CC ( CB,VI,MC )
  *
 /**********************************************************************************************/
 
-var paymentType = "HiPay Enterprise SEPA Direct Debit";
+var paymentType = "HiPay Enterprise Sofort Überweisung";
 
-casper.test.begin('Test Checkout ' + paymentType + ' without Electronic Signature', function(test) {
-	phantom.clearCookies();
+casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(test) {
+    phantom.clearCookies();
 
     casper.start(baseURL + "admin/")
-    /* Active SEPA payment method with electronic signature */
     .then(function() {
         this.logToBackend();
-        method.proceed(test, paymentType, "sdd", ['select[name="groups[hipay_sdd][fields][electronic_signature][value]"]', '1']);
+        method.proceed(test, paymentType, "sofortapi");
     })
     .thenOpen(baseURL, function() {
-		this.waitUntilVisible('div.footer', function success() {
-			this.selectItemAndOptions();
-		}, function fail() {
-			test.assertVisible("div.footer", "'Footer' exists");
-		}, 10000);
+        this.selectItemAndOptions();
     })
     .then(function() {
         this.addItemGoCheckout();
@@ -37,17 +32,16 @@ casper.test.begin('Test Checkout ' + paymentType + ' without Electronic Signatur
         this.shippingMethod();
     })
     .then(function() {
-        this.choosingPaymentMethod('method_hipay_sdd');
+        this.choosingPaymentMethod('method_hipay_sofortapi');
     })
     .then(function() {
         this.orderReview(paymentType);
     })
-    /* Fill SEPA payment formular */
+    /* Fill Sofort formular */
     .then(function() {
-		this.fillPaymentFormularByPaymentProduct("sdd");
+        this.fillPaymentFormularByPaymentProduct("sofort-uberweisung");
     })
     .then(function() {
-        test.info("Done");
         this.orderResult(paymentType);
     })
     .run(function() {

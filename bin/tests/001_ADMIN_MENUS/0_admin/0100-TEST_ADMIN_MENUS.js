@@ -1,9 +1,9 @@
 casper.test.begin('Test Magento Admin Menus', function(test) {
 	phantom.clearCookies();
 
-    casper.start(headlink + "admin/")
+    casper.start(baseURL + "admin/")
     .then(function() {
-    	authentification.proceed(test);
+    	this.logToBackend();
     })
     /* Check HiPay Split Payments menu */
     .then(function() {

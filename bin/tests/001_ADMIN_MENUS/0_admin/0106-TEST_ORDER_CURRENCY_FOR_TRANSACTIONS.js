@@ -1,4 +1,5 @@
-var realCurrentCurrency = currentCurrency;
+var realCurrentCurrency = currentCurrency,
+    currentBrandCC = typeCC;
 
 casper.test.begin('Test Magento Using Order Currency For Transactions with ' + realCurrentCurrency["currency"], function(test) {
     phantom.clearCookies();
@@ -74,21 +75,22 @@ casper.test.begin('Test Magento Using Order Currency For Transactions with ' + r
     };
 
     /* Get all currencies from variable */
-    casper.start(headlink , function() {
+    casper.start(baseURL , function() {
         if (this.exists('p[class="bugs"]')) {
             test.done();
             this.echo("Test ignored MAGENTO 1.8", "INFO");
         }
     })
-    .thenOpen(headlink + "admin/", function () {
-        authentification.proceed(test);
+    .thenOpen(baseURL + "admin/", function () {
+        this.logToBackend();
         this.each(allowedCurrencies, function(self, allowedCurrency) {
             allowed.push(allowedCurrency["currency"]);
         });
     })
     .then(function() {
         if(realCurrentCurrency["currency"] == "EUR") {
-        	authentification.proceed(test);
+        	this.logToBackend();
+            currentBrandCC = typeCC;
             method.proceed(test, paymentType, "cc");
             /* Active order currency option */
             this.then(function() {
@@ -119,7 +121,7 @@ casper.test.begin('Test Magento Using Order Currency For Transactions with ' + r
         }
     })
     /* Go to Magento1 homepage and choose current currency */
-    .thenOpen(headlink, function() {
+    .thenOpen(baseURL, function() {
         this.setCurrency(realCurrentCurrency["currency"], realCurrentCurrency["symbol"]);
     })
     .then(function() {
@@ -139,25 +141,7 @@ casper.test.begin('Test Magento Using Order Currency For Transactions with ' + r
     })
     /* Fill HiPay CC fomular */
     .then(function() {
-        this.echo("Choosing payment method and filling 'Payment Information' formular with " + typeCC + "...", "INFO");
-        this.waitUntilVisible('#checkout-step-payment', function success() {
-            method_hipay="method_hipay_cc";
-            if (this.visible('p[class="bugs"]')) {
-                this.click('input#p_' + method_hipay);
-            } else {
-                this.click('#dt_' + method_hipay +'>input[name="payment[method]"]');
-            }
-
-            if(typeCC == 'VISA')
-                this.fillFormPaymentHipayCC('VI', cardsNumber[0]);
-            else if(typeCC == 'CB' || typeCC == "MasterCard")
-                this.fillFormPaymentHipayCC('MC', cardsNumber[1]);
-
-            this.click("div#payment-buttons-container>button");
-            test.info("Done");
-        }, function fail() {
-            test.assertVisible("#checkout-step-payment", "'Payment Information' formular exists");
-        }, 10000);
+        this.fillStepPayment();
     })
     .then(function() {
         this.orderReview(paymentType);
@@ -168,7 +152,7 @@ casper.test.begin('Test Magento Using Order Currency For Transactions with ' + r
     /* Access to BO TPP */
     .thenOpen(urlBackend, function() {
         orderID = this.getOrderId();
-        this.logToBackend();
+        this.logToHipayBackend(loginBackend,passBackend);
     })
     .then(function() {
         this.selectAccountBackend("OGONE_DEV");
@@ -206,8 +190,8 @@ casper.test.begin('Test Magento Using Order Currency For Transactions with ' + r
     .then(function() {
         var lengthCurrencies = allowedCurrencies.length -1;
         if(realCurrentCurrency == allowedCurrencies[lengthCurrencies]) {
-            this.thenOpen(headlink + "admin/", function() {
-                authentification.proceed(test);
+            this.thenOpen(baseURL + "admin/", function() {
+                this.logToBackend();
             });
             this.then(function() {
                 this.setUseOrderCurrency('0');
