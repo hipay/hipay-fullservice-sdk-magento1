@@ -10,7 +10,7 @@
  * @license http://www.apache.org/licenses/LICENSE-2.0 Apache 2.0 License
  *
  */
-class HashingCode
+abstract class HashingCode
 {
     /**
      * Hashing SHA-1
@@ -27,4 +27,5 @@ class HashingCode
      * Hashing SHA-512
      */
     const SHA512 = 'SHA512';
+
 }

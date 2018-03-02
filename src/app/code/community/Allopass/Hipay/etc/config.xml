@@ -368,10 +368,17 @@
 				<api_password backend_model="adminhtml/system_config_backend_encrypted"/>
 				<api_password_test backend_model="adminhtml/system_config_backend_encrypted"/>
 				<secret_passphrase backend_model="adminhtml/system_config_backend_encrypted"/>
+				<secret_passphrase_test backend_model="adminhtml/system_config_backend_encrypted"/>
 				<identity>general</identity>
 				<template>hipay_link_payment_moto_template</template>
 				<moto_send_email>0</moto_send_email>
 			</hipay_api_moto>
+			<hipay_hash_algorithm>
+				<production>SHA-1</production>
+				<test>SHA-1</test>
+				<production_moto>SHA-1</production_moto>
+				<test_moto>SHA-1</test_moto>
+			</hipay_hash_algorithm>
 			<hipay_basket>
 				<activate_basket>0</activate_basket>
 			</hipay_basket>

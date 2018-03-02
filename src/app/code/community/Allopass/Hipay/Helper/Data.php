@@ -1,4 +1,5 @@
 <?php
+require_once(dirname(__FILE__) . '/Enum/ScopeConfig.php');
 
 class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 {
@@ -28,7 +29,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     const STATE_CAPTURE = '2';
     const EPSYLON = 0.00001;
 
-    const DEFAULT_CATEGORY_CODE = 1 ;
+    const DEFAULT_CATEGORY_CODE = 1;
 
     const LOG_INTERNAL_HIPAY = 'hipay_general_debug';
 
@@ -129,14 +130,14 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         if (!$useOrderCurrency) {
             $item['unit_price'] = round($order->getBaseShippingAmount(), 3);
             $item['total_amount'] = round($order->getBaseShippingAmount(), 3);
-            if( $order->getBaseShippingAmount() > 0) {
+            if ($order->getBaseShippingAmount() > 0) {
                 $item['tax_rate'] = round($order->getBaseShippingTaxAmount() / $order->getBaseShippingAmount() * 100,
                     2);
             }
         } else {
             $item['unit_price'] = round($order->getShippingAmount(), 3);
             $item['total_amount'] = round($order->getShippingAmount(), 3);
-            if( $order->getShippingAmount() > 0) {
+            if ($order->getShippingAmount() > 0) {
                 $item['tax_rate'] = round($order->getShippingTaxAmount() / $order->getShippingAmount() * 100, 2);
             }
         }
@@ -262,9 +263,9 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
             $categoryIds = $product->getCategoryIds();
             if (is_array($categoryIds) && !empty($categoryIds)) {
                 if (isset($categoryIds[0]) && $categoryIds[0]) {
-                    $mapping = $this->getMappingCategory($categoryIds[0],Mage::app()->getStore()->getId());
-                    if (is_array($mapping) && array_key_exists('hipay_category',$mapping)){
-                        $item['product_category'] = (int) $mapping['hipay_category'];
+                    $mapping = $this->getMappingCategory($categoryIds[0], Mage::app()->getStore()->getId());
+                    if (is_array($mapping) && array_key_exists('hipay_category', $mapping)) {
+                        $item['product_category'] = (int)$mapping['hipay_category'];
                     }
                 }
             }
@@ -287,7 +288,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         $order,
         $action = Allopass_Hipay_Helper_Data::STATE_AUTHORIZATION,
         $payment = null
-    ) {
+    )
+    {
         $basket = array();
         $products = $order->getAllVisibleItems();
 
@@ -367,7 +369,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         $profile,
         $amount,
         $taxAmount = 0
-    ) {
+    )
+    {
         $paymentsSplit = array();
 
         if (is_int($profile)) {
@@ -445,7 +448,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         $profile,
         $customerId,
         $cardToken
-    ) {
+    )
+    {
         $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction', Mage::app()->getStore());
 
         if ($useOrderCurrency) {
@@ -508,7 +512,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function splitPaymentsExists(
         $orderId
-    ) {
+    )
+    {
         $collection = Mage::getModel('hipay/splitPayment')->getCollection()->addFieldToFilter('order_id', $orderId);
         if ($collection->count()) {
             return true;
@@ -520,19 +525,19 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     public function checkSignature(
         $signature,
         $fromNotification = false,
-        $response = null
-    ) {
-        $passphrase = $this->getConfig()->getSecretPassphrase();
-        if (!is_null($response)) {
-            $orderArr = $response->getOrder();
-
-            /* @var $order Mage_Sales_Model_Order */
-            $order = Mage::getModel('sales/order')->loadByIncrementId($orderArr['id']);
-
+        $order = null,
+        $isMoto = false
+    )
+    {
+        $storeId = $order->getStore()->getId();
+        $environment = $isMoto ? ScopeConfig::PRODUCTION_MOTO : ScopeConfig::PRODUCTION;
+        $passphrase = $isMoto ? $this->getConfig()->getSecretPassphraseMoto($storeId) : $this->getConfig()->getSecretPassphrase($storeId);
+        if (!is_null($order)) {
             if ($order->getId()) {
                 $method = $order->getPayment()->getMethodInstance();
                 if ($method->getConfigData('is_test_mode')) {
-                    $passphrase = $this->getConfig()->getSecretPassphraseTest();
+                    $passphrase = $isMoto ? $this->getConfig()->getSecretPassphraseTestMoto($storeId) : $this->getConfig()->getSecretPassphraseTest($storeId);
+                    $environment = $isMoto ? ScopeConfig::TEST_MOTO : ScopeConfig::TEST;
                 }
             }
         }
@@ -541,27 +546,27 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
             return true;
         }
 
-        $hashAlgorithm = $this->getConfig()->getConfigHashing();
+        $hashAlgorithm = $this->getConfig()->getConfigHashing($environment, $storeId);
         $isValidSignature = HiPay\Fullservice\Helper\Signature::isValidHttpSignature($passphrase, $hashAlgorithm);
 
         // Fallback hashing configuration
-        if (!$isValidSignature) {
-            Mage::helper('hipay')->debugInternalProcessHipay('Signature is not valid, try to sync new hashing configuration');
+        if (!$isValidSignature && !HiPay\Fullservice\Helper\Signature::isSameHashAlgorithm($passphrase, $hashAlgorithm)) {
+            Mage::helper('hipay')->debug('Signature is not valid, try to sync new hashing configuration for ' . $environment .
+                ' and store ID ' . $storeId);
             $request = Mage::getModel('hipay/api_request');
-            $storeId = Mage_Core_Model_App::ADMIN_STORE_ID;
-            $scope = "default";
-
+            $scope = "stores";
             try {
+                $request->setEnvironment($environment);
                 if ($request->existsCredentials($storeId)) {
                     $retry = Mage::helper('hipay')->synchronizeSecuritySettings($request, $storeId, $scope);
                     if ($retry) {
-                        $hashAlgorithm = $this->getConfig()->getConfigHashing();
-                        Mage::helper('hipay')->debugInternalProcessHipay('Configuration is updated, try again valid signature');
+                        $hashAlgorithm = $this->getConfig()->getConfigHashing($environment, $storeId);
+                        Mage::helper('hipay')->debug('Configuration is updated, try again valid signature');
                         $isValidSignature = HiPay\Fullservice\Helper\Signature::isValidHttpSignature($passphrase, $hashAlgorithm);
                     }
                 }
             } catch (Exception $e) {
-                Mage::helper('hipay')->debugInternalProcessHipay('Error with retry hashing configuration . ' . $e->getMessage());
+                Mage::helper('hipay')->debug('Error with retry hashing configuration . ' . $e->getMessage());
             }
         }
 
@@ -585,7 +590,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function checkIfCcExpDateIsValid(
         $customer
-    ) {
+    )
+    {
         if (is_int($customer)) {
             $customer = Mage::getModel('customer/customer')->load($customer);
         }
@@ -617,7 +623,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     public function checkIfCcIsExpired(
         $expMonth,
         $expYear
-    ) {
+    )
+    {
         $today = new Zend_Date(Mage::app()->getLocale()->storeTimeStamp());
 
         $currentYear = (int)$today->getYear()->toString("YY");
@@ -644,7 +651,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         $customer,
         $response,
         $isRecurring = false
-    ) {
+    )
+    {
         $paymentMethod = $response->getPaymentMethod();
         $paymentProduct = $response->getPaymentProduct();
         $token = isset($paymentMethod['token']) ? $paymentMethod['token'] : $response->getData('cardtoken');
@@ -677,7 +685,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     protected function _cardTokenExist(
         $ccToken,
         $customer_id = 0
-    ) {
+    )
+    {
         $cards = Mage::getResourceModel('hipay/card_collection')
             ->addFieldToSelect('card_id')
             ->addFieldToFilter('cc_token', $ccToken);
@@ -693,7 +702,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         $customerId,
         $response,
         $isRecurring = false
-    ) {
+    )
+    {
         $paymentMethod = $response->getPaymentMethod();
         $paymentProduct = $response->getPaymentProduct();
         $token = isset($paymentMethod['token']) ? $paymentMethod['token'] : $response->getData('cardtoken');
@@ -730,7 +740,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function reAddToCart(
         $incrementId
-    ) {
+    )
+    {
         $cart = Mage::getSingleton('checkout/cart');
         $order = Mage::getModel('sales/order')->loadByIncrementId($incrementId);
 
@@ -774,7 +785,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         $amount = false,
         $exception = false,
         $additionalMessage = false
-    ) {
+    )
+    {
         return $this->getExtendedTransactionMessage(
             $payment, $requestType, $lastTransactionId, $amount, $exception, $additionalMessage
         );
@@ -798,7 +810,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         $amount = false,
         $exception = false,
         $additionalMessage = false
-    ) {
+    )
+    {
         $operation = 'Operation: ' . $requestType;// $this->_getOperation($requestType);
 
         if (!$operation) {
@@ -845,7 +858,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     protected function _formatPrice(
         $payment,
         $amount
-    ) {
+    )
+    {
         return $payment->getOrder()->getBaseCurrency()->formatTxt($amount);
     }
 
@@ -862,7 +876,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         $order,
         $message,
         $email_key = 'fraud_payment'
-    ) {
+    )
+    {
         $translate = Mage::getSingleton('core/translate');
         /* @var $translate Mage_Core_Model_Translate */
         $translate->setTranslateInline(false);
@@ -943,7 +958,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     protected function _getEmails(
         $configPath,
         $storeId
-    ) {
+    )
+    {
         $data = Mage::getStoreConfig($configPath, $storeId);
         if (!empty($data)) {
             return explode(',', $data);
@@ -963,7 +979,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     public function getCcTypeHipay(
         $ccTypeMagento,
         $exceptionIfNotFound = false
-    ) {
+    )
+    {
         $ccTypes = Mage::getSingleton('hipay/config')->getCcTypesHipay();
 
         if (isset($ccTypes[$ccTypeMagento])) {
@@ -984,7 +1001,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         $use3dSecure,
         $config3dsRules,
         $payment = false
-    ) {
+    )
+    {
         $params = 0;
         if ($use3dSecure > 0 && !$payment) {
             $params = 1;
@@ -1066,7 +1084,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         $amount,
         $method,
         $split_number = null
-    ) {
+    )
+    {
         $customData = array();
 
         // Shipping description
@@ -1112,7 +1131,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     public function sendLinkPaymentEmail(
         $receiver,
         $order
-    ) {
+    )
+    {
         $email_key = 'hipay_api_moto';
         $translate = Mage::getSingleton('core/translate');
         /* @var $translate Mage_Core_Model_Translate */
@@ -1182,7 +1202,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @param $debugData
      */
-    public function debugInternalProcessHipay($debugData) {
+    public function debug($debugData)
+    {
         if ($this->getConfig()->isGeneralDebugEnabled()) {
             Mage::getModel('hipay/log_adapter', self::LOG_INTERNAL_HIPAY . '.log')->log($debugData);
         }
@@ -1263,7 +1284,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getMappingCategory($idCategory, $storeId = null)
     {
-        $mappingCategories = unserialize($this->getConfig()->getConfigDataBasket('mapping_category',$storeId));
+        $mappingCategories = unserialize($this->getConfig()->getConfigDataBasket('mapping_category', $storeId));
         if (is_array($mappingCategories) && !empty($mappingCategories)) {
             foreach ($mappingCategories as $key => $mapping) {
                 if ($mapping['magento_category'] == $idCategory) {
@@ -1272,7 +1293,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
             }
             $category = Mage::getModel('catalog/category')->load($idCategory);
             foreach ($mappingCategories as $key => $mapping) {
-                if (in_array($mapping['magento_category'],$category->getParentIds())) {
+                if (in_array($mapping['magento_category'], $category->getParentIds())) {
                     return $mapping;
                 }
             }
@@ -1289,7 +1310,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getMappingShipping($codeShippingMethod, $storeId = null)
     {
-        $mappingDeliveryMethod = unserialize($this->getConfig()->getConfigDataBasket('mapping_shipping_method',$storeId));
+        $mappingDeliveryMethod = unserialize($this->getConfig()->getConfigDataBasket('mapping_shipping_method', $storeId));
         if (is_array($mappingDeliveryMethod) && !empty($mappingDeliveryMethod)) {
             foreach ($mappingDeliveryMethod as $key => $mapping) {
                 if ($mapping['magento_shipping_method'] == $codeShippingMethod) {
@@ -1305,8 +1326,9 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @return date format YYYY-MM-DD
      */
-    function calculateEstimatedDate($mapping){
-        if (is_array($mapping)){
+    function calculateEstimatedDate($mapping)
+    {
+        if (is_array($mapping)) {
             $today = new \Datetime();
             $daysDelay = $mapping['delay_preparation'] + $mapping['delay_delivery'];
             $interval = new \DateInterval ("P{$daysDelay}D");
@@ -1322,10 +1344,11 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      * @param $mapping array Result of mapping
      * @return null|string JSON
      */
-    function calculateDeliveryMethod($mapping){
+    function calculateDeliveryMethod($mapping)
+    {
         if (is_array($mapping)) {
             $itemsDelivery = Mage::helper('hipay/collection')->getFullItemsDelivery();
-            if ($itemsDelivery && is_array($itemsDelivery) &&  !empty($mapping['hipay_delivery_method'])) {
+            if ($itemsDelivery && is_array($itemsDelivery) && !empty($mapping['hipay_delivery_method'])) {
                 return json_encode(array('mode' => $itemsDelivery[$mapping['hipay_delivery_method']]['mode'],
                     'shipping' => $itemsDelivery[$mapping['hipay_delivery_method']]['shipping']));
             }
@@ -1340,12 +1363,12 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function processDeliveryInformation($codeShippingMethod, $store, $method, &$params)
     {
-        $mapping = $this->getMappingShipping($codeShippingMethod,$store->getId());
+        $mapping = $this->getMappingShipping($codeShippingMethod, $store->getId());
         $params['delivery_method'] = $this->calculateDeliveryMethod($mapping);
 
         if (empty($params['delivery_method'])) {
-            Mage::helper('hipay')->debugInternalProcessHipay('### Method processDeliveryInformation');
-            Mage::helper('hipay')->debugInternalProcessHipay('### WARNING : Mapping for ' . $codeShippingMethod . ' is missing.');
+            Mage::helper('hipay')->debug('### Method processDeliveryInformation');
+            Mage::helper('hipay')->debug('### WARNING : Mapping for ' . $codeShippingMethod . ' is missing.');
         }
 
         $params['delivery_date'] = $this->calculateEstimatedDate($mapping);
@@ -1360,7 +1383,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     public function isSendCartItemsRequired($product_code)
     {
         if ($this->isCartItemsRequired($product_code) ||
-            (Mage::getStoreConfigFlag('hipay/hipay_basket/activate_basket', Mage::app()->getStore()))){
+            (Mage::getStoreConfigFlag('hipay/hipay_basket/activate_basket', Mage::app()->getStore()))
+        ) {
             return true;
         }
         return false;
@@ -1385,24 +1409,24 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function isCartItemsRequired($product_code)
     {
-        return in_array($product_code, array('klarnainvoice','3xcb', '3xcb-no-fees', '4xcb-no-fees', '4xcb'));
+        return in_array($product_code, array('klarnainvoice', '3xcb', '3xcb-no-fees', '4xcb-no-fees', '4xcb'));
     }
 
     /**
      *  Check if all mapping Shipping are done
      *
-     *  @return int
+     * @return int
      */
     public function checkMappingShippingMethod()
     {
         $store = Mage::getSingleton('adminhtml/config_data')->getStore();
-        $mappings = unserialize($this->getConfig()->getConfigDataBasket('mapping_shipping_method',$store));
+        $mappings = unserialize($this->getConfig()->getConfigDataBasket('mapping_shipping_method', $store));
         $magentoShippingMethod = $this->getMagentoShippingMethods();
         $nbMappingMissing = count($magentoShippingMethod);
-        if (is_array($magentoShippingMethod) && is_array($mappings)){
+        if (is_array($magentoShippingMethod) && is_array($mappings)) {
             $nbMapping = 0;
             foreach ($mappings as $mapping) {
-                if (!empty($mapping['hipay_delivery_method'])){
+                if (!empty($mapping['hipay_delivery_method'])) {
                     $nbMapping++;
                 }
             }
@@ -1419,14 +1443,14 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     public function checkMappingCategoryMethod()
     {
         $store = Mage::getSingleton('adminhtml/config_data')->getStore();
-        $mappings = unserialize($this->getConfig()->getConfigDataBasket('mapping_category',$store));
+        $mappings = unserialize($this->getConfig()->getConfigDataBasket('mapping_category', $store));
         $magentoCategory = $this->getMagentoCategories();
         $nbMappingMissing = count($magentoCategory);
 
-        if (is_array($magentoCategory) && is_array($mappings)){
+        if (is_array($magentoCategory) && is_array($mappings)) {
             $nbMapping = 0;
             foreach ($mappings as $mapping) {
-                if (!empty($mapping['hipay_category'])){
+                if (!empty($mapping['hipay_category'])) {
                     $nbMapping++;
                 }
             }
@@ -1454,31 +1478,37 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      * @param int $storeId
      * @param string $scope
      * @param $session
+     *
      * @return bool
      */
-    public function synchronizeSecuritySettings($request, $storeId, $scope, $session) {
+    public function synchronizeSecuritySettings($request, $storeId, $scope, $session)
+    {
         $gatewayResponse = $request->gatewayRequest(Allopass_Hipay_Model_Api_Request::GATEWAY_SECURITY_SETTINGS, null, $storeId);
 
-        Mage::helper('hipay')->debugInternalProcessHipay($gatewayResponse->debug());
-        $this->updateHashingConfiguration($gatewayResponse, $storeId, $scope, $session);
+        Mage::helper('hipay')->debug($gatewayResponse->debug());
+        return $this->updateHashingConfiguration($gatewayResponse, $storeId, $scope, $request, $session);
     }
 
     /**
      *  Update hashing configuration from response from gateway
      *
      * @param $gatewayResponse
+     * @return boolean
      */
-    private function updateHashingConfiguration($gatewayResponse, $storeId, $scope, $session = null)
+    private function updateHashingConfiguration($gatewayResponse, $storeId, $scope, $request, $session = null)
     {
-        $updating=false;
+        $updating = false;
+        $environment = $request->getEnvironment();
         $config = Mage::getSingleton('hipay/config');
         if (isset($gatewayResponse["hashing_algorithm"]) && !empty($gatewayResponse["hashing_algorithm"])) {
-            if ($config->getConfigHashing($storeId) != $gatewayResponse["hashing_algorithm"]) {
-                $config->setConfigData('hashing_algorithm', $gatewayResponse["hashing_algorithm"], $storeId, $scope);
-                $message = $this->__('The hash configuration has been updated with ') . $gatewayResponse["hashing_algorithm"];
+            $hashingAlgorithm = $gatewayResponse["hashing_algorithm"];
+            if ($config->getConfigHashing($environment, $storeId) != $hashingAlgorithm) {
+                $config->setConfigDataHashing($environment, $hashingAlgorithm, $storeId, $scope);
+                $message = $this->__('The hash configuration for "' . ScopeConfig::getLabelFromEnvironment($environment) . '" has been updated with ') . $hashingAlgorithm;
                 $updating = true;
+                Mage::app()->getStore()->resetConfig();
             } else {
-                $message = $this->__('The hash configuration was already updated with ') . $gatewayResponse["hashing_algorithm"];
+                $message = $this->__('The hash configuration for "' . ScopeConfig::getLabelFromEnvironment($environment) . '"" was already updated with ') . $hashingAlgorithm;
             }
         } else {
             if ($session) {
@@ -1490,6 +1520,6 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
             $session->addSuccess($message);
         }
 
-       return $updating;
+        return $updating;
     }
 }

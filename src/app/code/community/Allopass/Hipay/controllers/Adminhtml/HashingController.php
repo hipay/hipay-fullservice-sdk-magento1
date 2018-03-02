@@ -1,5 +1,6 @@
 <?php
 
+require_once(dirname(__FILE__) . '/../../Helper/Enum/ScopeConfig.php');
 
 class Allopass_Hipay_Adminhtml_HashingController extends Mage_Adminhtml_Controller_Action
 {
@@ -15,6 +16,18 @@ class Allopass_Hipay_Adminhtml_HashingController extends Mage_Adminhtml_Controll
     protected $website;
 
     /**
+     *  Platforms for configuration
+     *
+     * @var array
+     */
+    protected $platforms =  array(
+        ScopeConfig::PRODUCTION,
+        ScopeConfig::TEST,
+        ScopeConfig::PRODUCTION_MOTO,
+        ScopeConfig::TEST_MOTO
+    );
+
+    /**
      *  Get hashing configuration from Hipay Back Office and store it in Magento configuration
      *
      */
@@ -24,14 +37,24 @@ class Allopass_Hipay_Adminhtml_HashingController extends Mage_Adminhtml_Controll
         $storeId = $this->_getConfigScopeStoreId();
         $scope = $storeId ? 'stores' : "default";
         $session = $this->_getSession();
+        $atLeastCredential=false;
+
         try {
-            if ($request->existsCredentials($storeId)) {
-                Mage::helper('hipay')->synchronizeSecuritySettings($request, $storeId, $scope, $session);
-            } else {
-                $this->_getSession()->addError($this->__('You must enter credentials to synchronize your configuration.'));
+            foreach ($this->platforms as $platform) {
+                $request->setEnvironment($platform);
+                if ($request->existsCredentials($storeId)) {
+                    $atLeastCredential = true;
+                    Mage::helper('hipay')->debug("Call Gateway for synchronize Security Settings for {$platform}");
+                    Mage::helper('hipay')->synchronizeSecuritySettings($request, $storeId, $scope, $session);
+                }
             }
+         if (!$atLeastCredential) {
+             $this->_getSession()->addError($this->__('You must enter credentials to synchronize your configuration.'));
+         }
+
         } catch (Exception $e) {
-            $this->_getSession()->addError($this->__('An error has occured : ' . $e->getMessage()));
+            Mage::logException($e);
+            $this->_getSession()->addError($this->__('An error has occured for environment : "'.  ScopeConfig::getLabelFromEnvironment($platform) . '"" Message :' . $e->getMessage()));
         }
 
         $this->setRedirect();

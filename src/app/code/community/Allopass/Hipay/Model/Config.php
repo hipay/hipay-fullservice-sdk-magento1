@@ -123,14 +123,30 @@ class Allopass_Hipay_Model_Config extends Varien_Object
      * @param    int $storeId Store View Id
      * @return   mixed
      */
-    public function getConfigHashing($storeId = null)
+    public function getConfigHashing($environment, $storeId = null)
     {
-        $config = $this->getInternalConfig('hipay_api','hashing_algorithm', $storeId);
+        $path = 'hipay/hipay_hash_algorithm/' . $environment;
+        $config = Mage::getStoreConfig($path , $storeId);
         if (!$config && !is_null($storeId)) {
-            $config = $this->getInternalConfig('hipay_api','hashing_algorithm', null);
+            $config =  Mage::getStoreConfig($path);
         }
 
         return $config;
+    }
+
+    /**
+     * Set config data for specific config
+     *
+     * @param $environment
+     * @param $value
+     * @param int  $storeId
+     * @param string $scope
+     * @return Mage_Core_Store_Config
+     */
+    public function setConfigDataHashing($environment,$value, $storeId = null, $scope = 'default')
+    {
+        $path = 'hipay/hipay_hash_algorithm/' . $environment;
+        return Mage::getConfig()->saveConfig($path, $value, $scope, $storeId);
     }
 
     /**
@@ -156,6 +172,22 @@ class Allopass_Hipay_Model_Config extends Varien_Object
 
     public function getSecretPassphraseTest($storeId = null)
     {
+        return $this->getConfigData(self::SECRET_PASSPHRASE_TEST, $storeId);
+    }
+
+    public function getSecretPassphraseMoto($storeId = null)
+    {
+        if ($this->getConfigDataMoto(self::SECRET_PASSPHRASE, $storeId)) {
+            return  $this->getConfigDataMoto(self::SECRET_PASSPHRASE, $storeId);
+        }
+        return $this->getConfigData(self::SECRET_PASSPHRASE, $storeId);
+    }
+
+    public function getSecretPassphraseTestMoto($storeId = null)
+    {
+        if ($this->getConfigDataMoto(self::SECRET_PASSPHRASE_TEST, $storeId)) {
+            return  $this->getConfigDataMoto(self::SECRET_PASSPHRASE_TEST, $storeId);
+        }
         return $this->getConfigData(self::SECRET_PASSPHRASE_TEST, $storeId);
     }
 

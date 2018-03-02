@@ -38,11 +38,11 @@ class Allopass_Hipay_Model_Observer
           /* @var $order Mage_Sales_Model_Order */
 
             if (count($collection) > 1) {
-                Mage::helper('hipay')->debugInternalProcessHipay('##########################################');
-                Mage::helper('hipay')->debugInternalProcessHipay('# Start process "cancelOrdersInPending"');
-                Mage::helper('hipay')->debugInternalProcessHipay(count($collection) . ' orders to cancel ');
-                Mage::helper('hipay')->debugInternalProcessHipay('# Method : ' . $key);
-                Mage::helper('hipay')->debugInternalProcessHipay('# Created at : ' . $date->subMinute($delayMinutes)->toString('Y-MM-dd HH:mm:ss'));
+                Mage::helper('hipay')->debug('##########################################');
+                Mage::helper('hipay')->debug('# Start process "cancelOrdersInPending"');
+                Mage::helper('hipay')->debug(count($collection) . ' orders to cancel ');
+                Mage::helper('hipay')->debug('# Method : ' . $key);
+                Mage::helper('hipay')->debug('# Created at : ' . $date->subMinute($delayMinutes)->toString('Y-MM-dd HH:mm:ss'));
             }
 
             foreach ($collection as $order) {
@@ -55,19 +55,19 @@ class Allopass_Hipay_Model_Observer
                                     $delayMinutes));
 
                         $order->save();
-                        Mage::helper('hipay')->debugInternalProcessHipay('# Order is canceled :' . $order->getIncrementId() );
+                        Mage::helper('hipay')->debug('# Order is canceled :' . $order->getIncrementId() );
                     } catch (Exception $e) {
-                        Mage::helper('hipay')->debugInternalProcessHipay('# Error in cancel process for order :' . $order->getIncrementId() .' ' .$e->getMessage() );
+                        Mage::helper('hipay')->debug('# Error in cancel process for order :' . $order->getIncrementId() .' ' .$e->getMessage() );
                         Mage::logException($e);
                     }
                 }else{
-                    Mage::helper('hipay')->debugInternalProcessHipay('# Order is not cancelable for order : ' . $order->getIncrementId());
+                    Mage::helper('hipay')->debug('# Order is not cancelable for order : ' . $order->getIncrementId());
                 }
             }
 
             if (count($collection) > 1) {
-                Mage::helper('hipay')->debugInternalProcessHipay('# End process "cancelOrdersInPending"');
-                Mage::helper('hipay')->debugInternalProcessHipay('##########################################');
+                Mage::helper('hipay')->debug('# End process "cancelOrdersInPending"');
+                Mage::helper('hipay')->debug('##########################################');
             }
         }
 
@@ -124,11 +124,11 @@ class Allopass_Hipay_Model_Observer
         foreach ($splitPayments as $splitPayment) {
             $splitInfo =  $splitPayment->getSplitNumber() . ' for order ' . $splitPayment->getOrderId() . ' with amount ' . $splitPayment->getAmountToPay();
             try {
-                Mage::helper('hipay')->debugInternalProcessHipay('# Pay ' . $splitInfo );
+                Mage::helper('hipay')->debug('# Pay ' . $splitInfo );
                 $splitPayment->pay();
-                Mage::helper('hipay')->debugInternalProcessHipay('# Pay Success ' . $splitInfo );
+                Mage::helper('hipay')->debug('# Pay Success ' . $splitInfo );
             } catch (Exception $e) {
-                Mage::helper('hipay')->debugInternalProcessHipay('# Pay Error with ' .  $splitInfo . ' : ' . $e->getMessage());
+                Mage::helper('hipay')->debug('# Pay Error with ' .  $splitInfo . ' : ' . $e->getMessage());
                 $splitPayment->sendErrorEmail();
                 Mage::logException($e);
             }
@@ -142,24 +142,24 @@ class Allopass_Hipay_Model_Observer
     public function paySplitPayments()
     {
         $date = new Zend_Date();
-        Mage::helper('hipay')->debugInternalProcessHipay('###################################');
-        Mage::helper('hipay')->debugInternalProcessHipay('# Start process "paySplitPayments"');
+        Mage::helper('hipay')->debug('###################################');
+        Mage::helper('hipay')->debug('# Start process "paySplitPayments"');
 
         $splitPaymentsFailed = Mage::getModel('hipay/splitPayment')->getCollection()
             ->addFieldToFilter('status', array('eq'=> Allopass_Hipay_Model_SplitPayment::SPLIT_PAYMENT_STATUS_FAILED))
             ->addFieldTofilter('attempts', array('lteq' => 3));
-        Mage::helper('hipay')->debugInternalProcessHipay('# ' . count($splitPaymentsFailed) . ' splits in failed to pay ');
+        Mage::helper('hipay')->debug('# ' . count($splitPaymentsFailed) . ' splits in failed to pay ');
         $this->processSplitPayment($splitPaymentsFailed);
 
         $splitPaymentsPending = Mage::getModel('hipay/splitPayment')->getCollection()
         ->addFieldToFilter('status', array('eq'=> Allopass_Hipay_Model_SplitPayment::SPLIT_PAYMENT_STATUS_PENDING))
         ->addFieldTofilter('date_to_pay', array('to' => $date->toString('Y-MM-dd 00:00:00')))
         ->addFieldTofilter('attempts', array('lteq' => 3));
-        Mage::helper('hipay')->debugInternalProcessHipay('# ' . count($splitPaymentsPending) . ' splits in pending to pay ');
+        Mage::helper('hipay')->debug('# ' . count($splitPaymentsPending) . ' splits in pending to pay ');
         $this->processSplitPayment($splitPaymentsPending);
 
-        Mage::helper('hipay')->debugInternalProcessHipay('# End process "paySplitPayments"');
-        Mage::helper('hipay')->debugInternalProcessHipay('###################################');
+        Mage::helper('hipay')->debug('# End process "paySplitPayments"');
+        Mage::helper('hipay')->debug('###################################');
     }
 
     /**

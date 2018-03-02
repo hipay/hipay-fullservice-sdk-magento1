@@ -35,7 +35,7 @@ casper.test.begin('Change Hash Algorithm ' + paymentType + ' with ' + typeCC, fu
 		this.echo("Synchronize Hashing Algorithm", "INFO");
 		this.waitForSelector('button#synchronize_button', function success() {
 			var current = this.evaluate(function () {
-				return document.querySelector('select#hipay_hipay_api_hashing_algorithm').value;
+				return document.querySelector('select#hipay_hipay_hash_algorithm_test').value;
 			});
 			test.info("Initial Hashing Algorithm :" + current);
 			if (current != 'SHA1') {
@@ -43,7 +43,7 @@ casper.test.begin('Change Hash Algorithm ' + paymentType + ' with ' + typeCC, fu
 			}
 			this.thenClick('button#synchronize_button', function() {
 				var newHashingAlgo = this.evaluate(function () {
-					return document.querySelector('select#hipay_hipay_api_hashing_algorithm').value;
+					return document.querySelector('select#hipay_hipay_hash_algorithm_test').value;
 				});
 				if (newHashingAlgo != 'SHA512') {
 					test.fail("Synchronize doesn't work : " + current );
