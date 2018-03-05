@@ -44,7 +44,7 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 		this.logToHipayBackend(loginBackend,passBackend);
 	})
 	.then(function() {
-		this.selectAccountBackend("OGONE_DEV");
+		this.selectAccountBackend("OGONE_RECETTE");
 	})
 	.then(function() {
 		cartID = casper.getOrderId();
