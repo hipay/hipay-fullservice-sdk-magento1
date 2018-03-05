@@ -49,7 +49,7 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 	.then(function() {
 		cartID = casper.getOrderId();
 		orderID = casper.getOrderId();
-		this.processNotifications(true,false,true,false);
+		this.processNotifications(true,false,true,false,"OGONE_RECETTE");
 	})
 	/* Open Magento admin panel and access to details of this order */
 	.thenOpen(baseURL + "admin/", function() {

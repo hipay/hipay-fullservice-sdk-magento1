@@ -94,7 +94,7 @@ casper.test.begin('Change Hash Algorithm ' + paymentType + ' with ' + typeCC, fu
 	.then(function() {
 		cartID = casper.getOrderId();
 		orderID = casper.getOrderId();
-		this.processNotifications(true,false,true,false);
+		this.processNotifications(true,false,true,false,"OGONE_RECETTE");
 	})
 	.thenOpen(urlBackend, function() {
 		this.logToHipayBackend(loginBackend,passBackend);
