@@ -566,6 +566,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
                     }
                 }
             } catch (Exception $e) {
+                Mage::logException($e);
                 Mage::helper('hipay')->debug('Error with retry hashing configuration . ' . $e->getMessage());
             }
         }
