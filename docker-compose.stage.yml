@@ -11,6 +11,8 @@ web:
     - ./bin/conf/stage/hipay.env.sample
     - ./bin/conf/stage/mage.env.sample
     - ./bin/conf/stage/mysql.env.sample
+  volumes:
+    - ./log:/var/www/htdocs/var/log
 mysql:
   image: mysql:5.6.23
   env_file:
