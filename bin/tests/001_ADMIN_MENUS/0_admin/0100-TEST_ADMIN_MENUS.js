@@ -2,7 +2,22 @@ casper.test.begin('Test Magento Admin Menus', function(test) {
 	phantom.clearCookies();
 
     casper.start(baseURL + "admin/")
-    .then(function() {
+	.thenOpen(urlBackend, function() {
+		this.logToHipayBackend(loginBackend,passBackend);
+	})
+	.then(function() {
+		this.selectAccountBackend("OGONE_RECETTE");
+	})
+	/* Open Integration tab */
+	.then(function() {
+		this.echo("Open Integration nav", "INFO");
+		this.waitForUrl(/maccount/, function success() {
+			this.selectHashingAlgorithm("SHA1");
+		}, function fail() {
+			test.assertUrlMatch(/maccount/, "Dashboard page with account ID exists");
+		});
+	})
+    .thenOpen(urlBackend, function() {
     	this.logToBackend();
     })
     /* Check HiPay Split Payments menu */

@@ -9,7 +9,7 @@ casper.test.begin('Functions Administration', function(test) {
                 this.waitForUrl(/security/, function success() {
                     this.echo("Selecting Hashing Algorithm", "INFO");
                     this.fillSelectors('form.form-vertical', {
-                        'select[name="hash_algorithm"]': "SHA512",
+                        'select[name="hash_algorithm"]': hashing,
                     }, false);
                     this.click('div.form-actions button[type="submit"]');
 
