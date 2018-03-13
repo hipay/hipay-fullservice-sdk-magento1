@@ -169,3 +169,5 @@
 "You have to activate and configuring the support of basket before activate the payment method klarna.","You have to activate and configuring the support of basket before activate the payment method klarna."
 "Period of validity of the payment page","Period of validity of the payment page"
 "Please check the phone number entered.","Please check the phone number entered."
+"Send Notification url":"Send Notification url"
+"If enabled, then the URL of your site is sent during the payment and notifications will be sent to this URL. To use only for multi site.","If enabled, then the URL of your site is sent during the payment and notifications will be sent to this URL. To use only for multi site."

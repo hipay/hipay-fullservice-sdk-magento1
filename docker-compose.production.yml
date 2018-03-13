@@ -15,6 +15,7 @@ web:
   labels:
     - "com.hipay.github={label}"
     - "com.hipay.circleci={circleci}"
+  mem_limit: 500M
 mysql:
   restart: always
   container_name: {CONTAINER_NAME_MYSQL}
@@ -26,6 +27,7 @@ mysql:
   labels:
     - "com.hipay.github={label}"
     - "com.hipay.circleci={circleci}"
+  mem_limit: 500M
 smtp:
   restart: always
   container_name: {CONTAINER_NAME_SMTP}
@@ -34,3 +36,4 @@ smtp:
   labels:
     - "com.hipay.github={label}"
     - "com.hipay.circleci={circleci}"
+  mem_limit: 256M
