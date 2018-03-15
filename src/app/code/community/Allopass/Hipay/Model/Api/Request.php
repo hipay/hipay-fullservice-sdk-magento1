@@ -134,7 +134,6 @@ class Allopass_Hipay_Model_Api_Request
     public function getClient()
     {
         if (is_null($this->_client)) {
-            //$credentials = $this->getApiUsername($storeId) . ':' . $this->getApiPassword($storeId);
                 
             //adapter options
             $config = array('curloptions' => array(
@@ -202,7 +201,6 @@ class Allopass_Hipay_Model_Api_Request
 
 		if($response->isSuccessful())
 		{
-			//$this->getClient()->getAdapter()->close();
 			return json_decode($response->getBody(),true);
 		}
 		else
@@ -287,7 +285,6 @@ class Allopass_Hipay_Model_Api_Request
 	
 		/* @var $response Allopass_Hipay_Model_Api_Response_Gateway */
 		$response  = Mage::getModel('hipay/api_response_gateway',$this->_request($uri,$params,$this->getMethodHttp($action),$storeId));
-		//Mage::log($response, null, 'log-hipay-gatewayRequest.log', true);
 
 		return $response;
 	}
