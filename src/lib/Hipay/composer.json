@@ -1,0 +1,8 @@
+{
+  "require" : {
+    "hipay/hipay-fullservice-sdk-php" : "dev-develop"
+  },
+  "config": {
+    "vendor-dir": "hipay-fullservice-sdk-php"
+  }
+}

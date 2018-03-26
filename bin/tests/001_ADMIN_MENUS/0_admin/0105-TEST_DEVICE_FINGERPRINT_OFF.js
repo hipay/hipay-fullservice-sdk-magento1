@@ -1,20 +1,23 @@
+var initialCredential,
+    currentBrandCC = typeCC;
+
 casper.test.begin('Test Magento Without Device Fingerprint', function(test) {
 	phantom.clearCookies();
     var ioBB = "";
-    casper.start(headlink)
+    casper.start(baseURL)
     .then(function() {
         if (this.visible('p[class="bugs"]')) {
             test.done();
         }
     })
-    .thenOpen(headlink + "admin/", function () {
-        authentification.proceed(test);
+    .thenOpen(baseURL + "admin/", function () {
+        this.logToBackend();
     })
     /* Disactive device fingerprint */
     .then(function() {
         this.setDeviceFingerprint('0');
     })
-    .thenOpen(headlink, function() {
+    .thenOpen(baseURL, function() {
         this.selectItemAndOptions();
     })
     .then(function() {

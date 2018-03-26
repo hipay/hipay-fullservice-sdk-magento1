@@ -46,6 +46,19 @@ class Allopass_Hipay_Model_Config extends Varien_Object
     }
 
     /**
+     *  Set config data
+     *
+     * @param    string $key Var path key
+     * @param    int $storeId Store View Id
+     * @param    int $scope Scope
+     * @return   Mage_Core_Store_Config
+     */
+    public function setConfigData($key, $value, $storeId = null, $scope = 'default')
+    {
+        return Mage::getConfig()->saveConfig('hipay/hipay_api/' . $key, $value, $scope, $storeId);
+    }
+
+    /**
      *  Internal to get config and cache it
      *
      * @param    string $key context key
@@ -105,6 +118,38 @@ class Allopass_Hipay_Model_Config extends Varien_Object
     }
 
     /**
+     *  Return config for hashing algorithm
+     *
+     * @param    int $storeId Store View Id
+     * @return   mixed
+     */
+    public function getConfigHashing($environment, $storeId = null)
+    {
+        $path = 'hipay/hipay_hash_algorithm/' . $environment;
+        $config = Mage::getStoreConfig($path , $storeId);
+        if (!$config && !is_null($storeId)) {
+            $config =  Mage::getStoreConfig($path);
+        }
+
+        return $config;
+    }
+
+    /**
+     * Set config data for specific config
+     *
+     * @param $environment
+     * @param $value
+     * @param int  $storeId
+     * @param string $scope
+     * @return Mage_Core_Store_Config
+     */
+    public function setConfigDataHashing($environment,$value, $storeId = null, $scope = 'default')
+    {
+        $path = 'hipay/hipay_hash_algorithm/' . $environment;
+        return Mage::getConfig()->saveConfig($path, $value, $scope, $storeId);
+    }
+
+    /**
      *  Return config var
      *
      * @param    string $key Var path key
@@ -127,6 +172,22 @@ class Allopass_Hipay_Model_Config extends Varien_Object
 
     public function getSecretPassphraseTest($storeId = null)
     {
+        return $this->getConfigData(self::SECRET_PASSPHRASE_TEST, $storeId);
+    }
+
+    public function getSecretPassphraseMoto($storeId = null)
+    {
+        if ($this->getConfigDataMoto(self::SECRET_PASSPHRASE, $storeId)) {
+            return  $this->getConfigDataMoto(self::SECRET_PASSPHRASE, $storeId);
+        }
+        return $this->getConfigData(self::SECRET_PASSPHRASE, $storeId);
+    }
+
+    public function getSecretPassphraseTestMoto($storeId = null)
+    {
+        if ($this->getConfigDataMoto(self::SECRET_PASSPHRASE_TEST, $storeId)) {
+            return  $this->getConfigDataMoto(self::SECRET_PASSPHRASE_TEST, $storeId);
+        }
         return $this->getConfigData(self::SECRET_PASSPHRASE_TEST, $storeId);
     }
 

@@ -6,18 +6,19 @@
  *
 /**********************************************************************************************/
 
-var paymentType = "HiPay Enterprise Hosted Page";
+var paymentType = "HiPay Enterprise Hosted Page",
+    currentBrandCC = typeCC;
 
-casper.test.begin('Test Checkout ' + paymentType + ' with Iframe', function(test) {
+casper.test.begin('Test Checkout ' + paymentType + ' with Iframe and ' + currentBrandCC, function(test) {
 	phantom.clearCookies();
 
-	casper.start(headlink + "admin/")
+	casper.start(baseURL + "admin/")
     /* Active Hosted payment method with display iframe */
     .then(function() {
-        authentification.proceed(test);
+        this.logToBackend();
         method.proceed(test, paymentType, "hosted", ['select[name="groups[hipay_hosted][fields][display_iframe][value]"]', '1']);
     })
-    .thenOpen(headlink, function() {
+    .thenOpen(baseURL, function() {
         this.waitUntilVisible('div.footer', function success() {
             this.selectItemAndOptions();
         }, function fail() {
@@ -37,28 +38,17 @@ casper.test.begin('Test Checkout ' + paymentType + ' with Iframe', function(test
         this.shippingMethod();
     })
     .then(function() {
-    	this.echo("Choosing payment method...", "INFO");
-    	this.waitUntilVisible('#checkout-step-payment', function success() {
-            method_hipay="method_hipay_hosted";
-            if (this.visible('p[class="bugs"]')) {
-                this.click('input#p_' + method_hipay);
-            } else {
-                this.click('#dt_' + method_hipay +'>input[name="payment[method]"]');
-            }
-    		this.click("div#payment-buttons-container>button");
-    		test.info("Done");
-		}, function fail() {
-        	test.assertVisible("#checkout-step-payment", "'Payment Information' formular exists");
-        }, 10000);
+        this.choosingPaymentMethod("method_hipay_hosted");
     })
     .then(function() {
         this.orderReview(paymentType);
     })
     /* Fill payment formular inside iframe */
     .then(function() {
-    	this.wait(5000, function() {
+    	this.wait(10000, function() {
 			this.withFrame(0, function() {
-				pay.proceed(test, true);
+                this.echo("Fill payment Formular", "INFO");
+                this.fillCCFormular(currentBrandCC);
 			});
     	});
     })

@@ -3,9 +3,9 @@ casper.test.begin('Test Magento Hipay Enterprise Config', function(test) {
 	var fields = [],
 		configsID = ["", "_moto", "_basket"];
 
-    casper.start(headlink + "admin/")
+    casper.start(baseURL + "admin/")
     .then(function() {
-    	authentification.proceed(test);
+    	this.logToBackend();
     })
     /* Check HiPay Enterprise menu blocs */
     .then(function() {

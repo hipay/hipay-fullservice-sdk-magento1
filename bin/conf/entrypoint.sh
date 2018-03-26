@@ -47,6 +47,14 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     cp -Rf /tmp/src/app/etc /var/www/htdocs/app/
     cp -Rf /tmp/src/app/locale /var/www/htdocs/app/
     cp -Rf /tmp/src/skin /var/www/htdocs/
+    cp -Rf /tmp/src/lib /var/www/htdocs/
+
+    printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+    printf "\n${COLOR_SUCCESS}              Install PHP SDK            ${NC}\n"
+    printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+    cd /var/www/htdocs/lib/Hipay/
+    composer install
+    cd /tmp
 
     printf "\n"
     echo "Files from local folder \"src\" are transfered in dockerized magento"

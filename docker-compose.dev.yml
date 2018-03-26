@@ -10,6 +10,7 @@ web:
     - ./bin/conf/development/mysql.env.sample
   volumes:
     - ./src/app/code/community/Allopass:/var/www/htdocs/app/code/community/Allopass
+    - ./src/lib/Hipay:/var/www/htdocs/lib/Hipay
     - ./src/app/design/frontend/base/default/template/hipay:/var/www/htdocs/app/design/frontend/base/default/template/hipay
     - ./src/app/design/adminhtml/default/default/template/hipay:/var/www/htdocs/app/design/adminhtml/default/default/template/hipay
     - ./src/skin/adminhtml/base/default/hipay/css:/var/www/htdocs/skin/adminhtml/base/default/hipay/css

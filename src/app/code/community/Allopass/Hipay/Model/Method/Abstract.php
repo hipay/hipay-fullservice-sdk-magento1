@@ -126,7 +126,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $uri = Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_MAINTENANCE . $transactionId;
 
         if ($transactionId) {
-            $gatewayResponse = $request->gatewayRequestMaintenance($uri, $gatewayParams,
+            $gatewayResponse = $request->gatewayRequest($uri, $gatewayParams,
                 $payment->getOrder()->getStoreId());
 
             if (is_a($gatewayResponse, 'Allopass_Hipay_Model_Api_Response_Error')) {
