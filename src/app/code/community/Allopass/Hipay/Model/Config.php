@@ -42,7 +42,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
      */
     public function getConfigData($key, $storeId = null)
     {
-        return $this->getInternalConfig('hipay_api', $key, $storeId = null);
+        return $this->getInternalConfig('hipay_api', $key, $storeId);
     }
 
     /**
@@ -53,7 +53,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
      * @param    int $storeId Store View Id
      * @return      mixed
      */
-    private function getInternalConfig($key_api, $key, $storeId = null)
+    private function getInternalConfig($key_api, $key, $storeId )
     {
         $index = 'hipay' . $key_api . $key . $storeId;
         if (!$this->hasData($index)) {
@@ -72,7 +72,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
      */
     public function getConfig($key, $storeId = null)
     {
-        return $this->getInternalConfig('hipay_api', $key, $storeId = null);
+        return $this->getInternalConfig('hipay_api', $key, $storeId );
     }
 
     /**
@@ -84,7 +84,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
      */
     public function getConfigDataMoto($key, $storeId = null)
     {
-        return $this->getInternalConfig('hipay_api_moto', $key, $storeId = null);
+        return $this->getInternalConfig('hipay_api_moto', $key, $storeId );
     }
 
     /**
