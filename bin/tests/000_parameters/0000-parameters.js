@@ -15,7 +15,7 @@ var fs = require('fs'),
 	order = casper.cli.get('order'),
 	orderID = 0,
 	headerModule = "../../Modules/",
-	urlBackend = "https://merchant.hipay-tpp.com/default/auth/login",
+	urlBackend = "https://stage-merchant.hipay-tpp.com/default/auth/login",
 	pathGenerator = 'bin/tests/000_lib/bower_components/hipay-casperjs-lib/generator/generator.sh',
 	urlNotification = "index.php/hipay/notify/index",
 	method = require(headerModule + 'step-config-method'),
@@ -62,4 +62,3 @@ casper.test.begin('Parameters', function(test) {
 	casper.echo('Paramètres chargés !', 'INFO');
 	test.done();
 });
-	
