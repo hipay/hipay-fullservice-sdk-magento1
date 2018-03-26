@@ -1,3 +1,9 @@
+# Version 1.8.0
+
+ - FIX Configuration per Store without default value doesn't work
+ - Add support for notify_url
+ - Add support for several hashing algorithm for notification
+
 # Version 1.7.10
 
  - Add Support for Mastercard BIN Range Update
