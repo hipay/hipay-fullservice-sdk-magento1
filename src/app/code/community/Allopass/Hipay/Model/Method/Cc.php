@@ -287,50 +287,52 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
                     // CB
                     'CB' => '/^4[0-9]{12}([0-9]{3})?$/',
                     // Master Card
-                    'MC' => '/^5[1-5][0-9]{14}$/',
-                    // American Express
-                    'AE' => '/^3[47][0-9]{13}$/',
-                    // Discovery
-                    'DI' => '/^6011[0-9]{12}$/',
-                    // JCB
-                    'JCB' => '/^(3[0-9]{15}|(2131|1800)[0-9]{11})$/',
-                );
-
-                foreach ($ccTypeRegExpList as $ccTypeMatch => $ccTypeRegExp) {
-                    if (preg_match($ccTypeRegExp, $ccNumber)) {
-                        $ccType = $ccTypeMatch;
-                        break;
-                    }
-                }
-                if (!$this->OtherCcType($info->getCcType()) && $ccType != $info->getCcType()) {
-                    $errorMsg = Mage::helper('payment')->__('Credit card number mismatch with credit card type.');
-                }
-            } else {
-                $errorMsg = Mage::helper('payment')->__('Invalid Credit Card Number');
-            }
-
-        } else {
-            $errorMsg = Mage::helper('payment')->__('Credit card type is not allowed for this payment method.');
-        }
-
-        //validate credit card verification number
-        if ($errorMsg === false && $this->hasVerification() && $info->getCcType() != 'BCMC') {
-            $verifcationRegEx = $this->getVerificationRegEx();
-            $regExp = isset($verifcationRegEx[$info->getCcType()]) ? $verifcationRegEx[$info->getCcType()] : '';
-            if (!$info->getCcCid() || !$regExp || !preg_match($regExp, $info->getCcCid())) {
-                $errorMsg = Mage::helper('payment')->__('Please enter a valid credit card verification number.');
-            }
-        }
-
-        if ($ccType != 'SS' && !$this->_validateExpDate($info->getCcExpYear(), $info->getCcExpMonth())) {
-            $errorMsg = Mage::helper('payment')->__('Incorrect credit card expiration date.');
-        }
-
-        if ($errorMsg) {
-            Mage::throwException($errorMsg);
-        }
-
-        //This must be after all validation conditions
+                    'MC'  => '/^(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}$/',
+            		// American Express
+            		'AE'  => '/^3[47][0-9]{13}$/',
+            		// Discovery
+            		'DI'  => '/^6011[0-9]{12}$/',
+            		// JCB
+            		'JCB' => '/^(3[0-9]{15}|(2131|1800)[0-9]{11})$/',
+	             );
+	
+	       foreach ($ccTypeRegExpList as $ccTypeMatch=>$ccTypeRegExp) {
+				if (preg_match($ccTypeRegExp, $ccNumber)) {
+					$ccType = $ccTypeMatch;
+					break;
+				}
+			}
+			if (!$this->OtherCcType($info->getCcType()) && $ccType!=$info->getCcType()) {
+				$errorMsg = Mage::helper('payment')->__('Credit card number mismatch with credit card type.');
+			}
+		}
+		else {
+			$errorMsg = Mage::helper('payment')->__('Invalid Credit Card Number');
+		}
+	
+	}
+	else {
+		$errorMsg = Mage::helper('payment')->__('Credit card type is not allowed for this payment method.');
+	}
+	
+		//validate credit card verification number
+	if ($errorMsg === false && $this->hasVerification() && $info->getCcType() != 'BCMC') {
+		$verifcationRegEx = $this->getVerificationRegEx();
+			$regExp = isset($verifcationRegEx[$info->getCcType()]) ? $verifcationRegEx[$info->getCcType()] : '';
+			if (!$info->getCcCid() || !$regExp || !preg_match($regExp ,$info->getCcCid())){
+			$errorMsg = Mage::helper('payment')->__('Please enter a valid credit card verification number.');
+			}
+			}
+	
+			if ($ccType != 'SS' && !$this->_validateExpDate($info->getCcExpYear(), $info->getCcExpMonth())) {
+			$errorMsg = Mage::helper('payment')->__('Incorrect credit card expiration date.');
+			}
+	
+			if($errorMsg){
+				Mage::throwException($errorMsg);
+			}
+	
+						//This must be after all validation conditions
         if ($this->getIsCentinelValidationEnabled()) {
             $this->getCentinelValidator()->validate($this->getCentinelValidationData());
         }

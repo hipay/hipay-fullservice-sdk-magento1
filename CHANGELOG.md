@@ -1,3 +1,7 @@
+# Version 1.7.10
+
+ - Add Support for Mastercard BIN Range Update
+ 
 # Version 1.7.9
 
  - Rework stripos during curl call
