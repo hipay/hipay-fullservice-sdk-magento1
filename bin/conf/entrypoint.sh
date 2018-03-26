@@ -14,6 +14,8 @@ printf "\n${COLOR_SUCCESS}       CHECK MAGENTO INSTALLATION        ${NC}\n"
 printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
  if [ ! -f /var/www/htdocs/index.php ]; then
 
+    cp -f /tmp/apache2/mpm_prefork.conf /etc/apache2/mods-available/
+
     printf "\n${COLOR_SUCCESS} MAGENTO IS NOT YET INSTALLED : INSTALLATION IS BEGINNING ${NC}\n"
 
     # Download MAGENTO from repository

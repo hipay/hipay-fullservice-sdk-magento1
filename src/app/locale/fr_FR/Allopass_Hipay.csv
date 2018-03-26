@@ -186,3 +186,5 @@
 "You must enter credentials to synchronize your configuration.","Vous devez saisir vos identifiants d'Api pour synchroniser votre configuration."
 "The hash configuration has not been updated. Please check the configuration in the hipay back office.","La configuration de hachage n'a pas été mise à jour. Veuillez vérifier la configuration dans le back-office hipay."
 "The hash configuration has been updated with ","La configuration du hashage a été mis à jour avec "
+"Send Notification url":"Envoie de l'url de notification"
+"If enabled, then the URL of your site is sent during the payment and notifications will be sent to this URL. To use only for multi site.","Si activé, l'URL de votre site est envoyée lors du paiement et les notifications seront envoyées à cette URL. À utiliser uniquement pour les sites multiples."

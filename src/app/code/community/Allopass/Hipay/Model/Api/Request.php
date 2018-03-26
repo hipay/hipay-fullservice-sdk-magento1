@@ -143,8 +143,6 @@ class Allopass_Hipay_Model_Api_Request
     public function getClient()
     {
         if (is_null($this->_client)) {
-            //$credentials = $this->getApiUsername($storeId) . ':' . $this->getApiPassword($storeId);
-
             //adapter options
             $config = array('curloptions' => array(
                 //CURLOPT_USERPWD=>$credentials,
@@ -400,6 +398,5 @@ class Allopass_Hipay_Model_Api_Request
     public function getEnvironment() {
         return  $this->_environment ;
     }
-
 }
 
