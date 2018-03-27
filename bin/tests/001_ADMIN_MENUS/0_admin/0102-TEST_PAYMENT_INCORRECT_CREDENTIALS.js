@@ -1,12 +1,13 @@
-var initialCredential;
+var initialCredential,
+    currentBrandCC = typeCC;
 
 casper.test.begin('Test Payment With Incorrect Credentials', function(test) {
 	phantom.clearCookies();
     var paymentType = "HiPay Enterprise Credit Card";
 
-    casper.start(headlink + "admin/")
+    casper.start(baseURL + "admin/")
     .then(function() {
-        authentification.proceed(test);
+        this.logToBackend();
         method.proceed(test, paymentType, "cc");
     })
     /* Disactive MOTO option */
@@ -19,7 +20,7 @@ casper.test.begin('Test Payment With Incorrect Credentials', function(test) {
         test.info("Initial credential for api_user_name was :" + initialCredential);
         this.fillFormHipayEnterprise("blabla");
     })
-    .thenOpen(headlink, function() {
+    .thenOpen(baseURL, function() {
         this.selectItemAndOptions();
     })
     .then(function() {
@@ -36,26 +37,7 @@ casper.test.begin('Test Payment With Incorrect Credentials', function(test) {
     })
     /* HiPay CC payment */
     .then(function() {
-        this.echo("Choosing payment method and filling 'Payment Information' formular with " + typeCC + "...", "INFO");
-        this.waitUntilVisible('#checkout-step-payment', function success() {
-            method_hipay="method_hipay_cc";
-            if (this.visible('p[class="bugs"]')) {
-                this.click('input#p_' + method_hipay);
-            } else {
-                this.click('#dt_' + method_hipay +'>input[name="payment[method]"]');
-            }
-            if(typeCC == 'VISA')
-                this.fillFormPaymentHipayCC('VI', cardsNumber[0]);
-            else if(typeCC == 'CB' || typeCC == "MasterCard")
-                this.fillFormPaymentHipayCC('MC', cardsNumber[1]);
-
-            this.click("div#payment-buttons-container>button");
-            test.info("Done");
-        }, function fail() {
-            test.info("Initial credential for api_user_name was :" + initialCredential);
-            this.fillFormHipayEnterprise(initialCredential);
-            test.assertVisible("#checkout-step-payment", "'Payment Information' formular exists");
-        }, 10000);
+        this.fillStepPayment();
     })
     .then(function() {
         this.orderReview(paymentType);
@@ -72,8 +54,8 @@ casper.test.begin('Test Payment With Incorrect Credentials', function(test) {
             test.assertUrlMatch(/checkout\/cart/, "Checkout page exists");
         }, 15000);
     })
-    .thenOpen(headlink + "admin/", function() {
-        authentification.proceed(test);
+    .then(function() {
+        this.logToBackend();
     })
     /* Reinitialize credentials inside HiPay Enterprise */
     .then(function() {

@@ -14,6 +14,8 @@ printf "\n${COLOR_SUCCESS}       CHECK MAGENTO INSTALLATION        ${NC}\n"
 printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
  if [ ! -f /var/www/htdocs/index.php ]; then
 
+    cp -f /tmp/apache2/mpm_prefork.conf /etc/apache2/mods-available/
+
     printf "\n${COLOR_SUCCESS} MAGENTO IS NOT YET INSTALLED : INSTALLATION IS BEGINNING ${NC}\n"
 
     # Download MAGENTO from repository
@@ -45,6 +47,14 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     cp -Rf /tmp/src/app/etc /var/www/htdocs/app/
     cp -Rf /tmp/src/app/locale /var/www/htdocs/app/
     cp -Rf /tmp/src/skin /var/www/htdocs/
+    cp -Rf /tmp/src/lib /var/www/htdocs/
+
+    printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+    printf "\n${COLOR_SUCCESS}              Install PHP SDK            ${NC}\n"
+    printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+    cd /var/www/htdocs/lib/Hipay/
+    composer install
+    cd /tmp
 
     printf "\n"
     echo "Files from local folder \"src\" are transfered in dockerized magento"

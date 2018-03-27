@@ -11,12 +11,12 @@ var paymentType = "HiPay Enterprise Przelewy24";
 casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(test) {
     phantom.clearCookies();
 
-    casper.start(headlink + "admin/")
+    casper.start(baseURL + "admin/")
     .then(function() {
-        authentification.proceed(test);
+        this.logToBackend();
         method.proceed(test, paymentType, "przelewy24api");
     })
-    .thenOpen(headlink, function() {
+    .thenOpen(baseURL, function() {
         this.selectItemAndOptions();
     })
     .then(function() {

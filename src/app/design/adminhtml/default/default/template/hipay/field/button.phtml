@@ -1,0 +1,6 @@
+<button type="button" class="scalable"
+        onclick="if (confirm('<?php echo $this->getConfirmationMessage() ; ?>')) {
+            window.location='<?php echo $this->getButtonAction(); ?>'; return false; }"
+        id="synchronize_button">
+        <?php echo $this->escapeHtml($this->getLabel()); ?>
+</button>

@@ -1,7 +1,7 @@
 <config>
 	<modules>
 		<Allopass_Hipay>
-			<version>1.7.10</version>
+			<version>1.8.0</version>
 		</Allopass_Hipay>
 	</modules>
 	<global>
@@ -179,6 +179,17 @@
 				</statuses>
 			</order>
 		</sales>
+		<events>
+			<controller_front_init_before>
+				<observers>
+					<hipay_autoload_sdk>
+						<type>singleton</type>
+						<class>hipay/observer</class>
+						<method>autoloadLibrary</method>
+					</hipay_autoload_sdk>
+				</observers>
+			</controller_front_init_before>
+		</events>
 	</global>
 	<frontend>
 		<secure_url>
@@ -347,19 +358,28 @@
 				<secret_passphrase_test backend_model="adminhtml/system_config_backend_encrypted"/>
 				<vault_endpoint_stage>https://stage-secure-vault.hipay-tpp.com/rest/v1/token/</vault_endpoint_stage>
 				<vault_endpoint_production>https://secure-vault.hipay-tpp.com/rest/v1/token/</vault_endpoint_production>
-				<gateway_endpoint_stage>https://stage-secure-gateway.hipay-tpp.com/rest/v1/</gateway_endpoint_stage>
-				<gateway_endpoint_production>https://secure-gateway.hipay-tpp.com/rest/v1/</gateway_endpoint_production>
+				<gateway_endpoint_stage>https://stage-secure-gateway.hipay-tpp.com/rest/</gateway_endpoint_stage>
+				<gateway_endpoint_production>https://secure-gateway.hipay-tpp.com/rest/</gateway_endpoint_production>
 				<currency_transaction>0</currency_transaction>
 				<fingerprint>1</fingerprint>
+				<hashing_algorithm>SHA-1</hashing_algorithm>
+				<send_notification_url>0</send_notification_url>
 			</hipay_api>
 			<hipay_api_moto>
 				<api_password backend_model="adminhtml/system_config_backend_encrypted"/>
 				<api_password_test backend_model="adminhtml/system_config_backend_encrypted"/>
 				<secret_passphrase backend_model="adminhtml/system_config_backend_encrypted"/>
+				<secret_passphrase_test backend_model="adminhtml/system_config_backend_encrypted"/>
 				<identity>general</identity>
 				<template>hipay_link_payment_moto_template</template>
 				<moto_send_email>0</moto_send_email>
 			</hipay_api_moto>
+			<hipay_hash_algorithm>
+				<production>SHA-1</production>
+				<test>SHA-1</test>
+				<production_moto>SHA-1</production_moto>
+				<test_moto>SHA-1</test_moto>
+			</hipay_hash_algorithm>
 			<hipay_basket>
 				<activate_basket>0</activate_basket>
 			</hipay_basket>

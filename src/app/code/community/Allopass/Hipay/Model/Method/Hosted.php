@@ -104,8 +104,7 @@ class Allopass_Hipay_Model_Method_Hosted extends Allopass_Hipay_Model_Method_Abs
             $gatewayParams = $this->getSpecificsParams($gatewayParams,$payment);
 
             $this->_debug($gatewayParams);
-            $gatewayResponse = $request->gatewayRequest(Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_HOSTED,$gatewayParams,$payment->getOrder()->getStoreId(),$this->isAdmin());
-
+            $gatewayResponse = $request->gatewayRequest(Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_HOSTED,$gatewayParams,$payment->getOrder()->getStoreId());
             $this->_debug($gatewayResponse->debug());
 
             // MOTO Redirection

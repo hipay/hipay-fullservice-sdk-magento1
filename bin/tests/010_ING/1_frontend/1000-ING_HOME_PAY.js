@@ -11,12 +11,12 @@ var paymentType = "HiPay Enterprise ING Home'Pay";
 casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(test) {
     phantom.clearCookies();
 
-    casper.start(headlink + "admin/")
+    casper.start(baseURL + "admin/")
     .then(function() {
-        authentification.proceed(test);
+        this.logToBackend();
         method.proceed(test, paymentType, "ing");
     })
-    .thenOpen(headlink, function() {
+    .thenOpen(baseURL, function() {
         this.waitUntilVisible('div.footer', function success() {
             this.selectItemAndOptions();
         }, function fail() {

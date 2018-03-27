@@ -11,13 +11,13 @@ var paymentType = "HiPay Enterprise SEPA Direct Debit";
 casper.test.begin('Test Checkout ' + paymentType + ' without Electronic Signature', function(test) {
 	phantom.clearCookies();
 
-    casper.start(headlink + "admin/")
+    casper.start(baseURL + "admin/")
     /* Active SEPA payment method with electronic signature */
     .then(function() {
-        authentification.proceed(test);
+        this.logToBackend();
         method.proceed(test, paymentType, "sdd", ['select[name="groups[hipay_sdd][fields][electronic_signature][value]"]', '1']);
     })
-    .thenOpen(headlink, function() {
+    .thenOpen(baseURL, function() {
 		this.waitUntilVisible('div.footer', function success() {
 			this.selectItemAndOptions();
 		}, function fail() {
@@ -37,56 +37,14 @@ casper.test.begin('Test Checkout ' + paymentType + ' without Electronic Signatur
         this.shippingMethod();
     })
     .then(function() {
-    	this.echo("Choosing payment method...", "INFO");
-    	this.waitUntilVisible('#checkout-step-payment', function success() {
-            method_hipay="method_hipay_sdd";
-            if (this.visible('p[class="bugs"]')) {
-                this.click('input#p_' + method_hipay);
-            } else {
-                this.click('#dt_' + method_hipay +'>input[name="payment[method]"]');
-            }
-
-    		this.click("div#payment-buttons-container>button");
-    		test.info("Done");
-		}, function fail() {
-        	test.assertVisible("#checkout-step-payment", "'Payment Information' formular exists");
-        }, 10000);
+        this.choosingPaymentMethod('method_hipay_sdd');
     })
     .then(function() {
         this.orderReview(paymentType);
     })
     /* Fill SEPA payment formular */
     .then(function() {
-    	this.echo("Filling payment formular...", "INFO");
-    	this.waitForUrl(/payment\/pay\/reference/, function success() {
-    		this.fillSelectors('#registrationform', {
-    			'select[name="gender"]': "male",
-    			'input[name="firstname"]': "TEST",
-    			'input[name="lastname"]': "TEST",
-    			'input[name="street"]': "Rue de la paix",
-    			'input[name="zip"]': "75000",
-    			'input[name="city"]': "PARIS",
-    			'select[name="country"]': "GB",
-    			'input[name="email"]': "email@yopmail.com"
-    		}, false);
-    		this.thenClick('input[name="bankaccountselection"]', function() {
-    			this.fillSelectors('#registrationform', {
-    				'input[name="iban"]': ibanNumber[0],
-    				'input[name="bic"]': bicNumber[0]
-    			}, false);
-	    		this.click('body');
-    			this.waitUntilVisible('div.ajaxsuccess', function success() {
-    				test.assertNotVisible('div.ajaxerror', "Correct IBAN and BIC number");
-	    			this.click('input#nyrosubmitfix');
-    				test.info("Done");
-                    this.echo("Submitting formular...", "INFO");
-    			}, function fail() {
-    				test.assertAllVisible('div.ajaxsuccess', "Succesful div block exists");
-    			});
-    		});
-    	}, function fail() {
-    		test.assertUrlMatch(/payment\/pay\/reference/, "Payment page exists");
-    	}, 10000);
+		this.fillPaymentFormularByPaymentProduct("sdd");
     })
     .then(function() {
         test.info("Done");

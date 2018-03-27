@@ -126,7 +126,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $uri = Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_MAINTENANCE . $transactionId;
 
         if ($transactionId) {
-            $gatewayResponse = $request->gatewayRequestMaintenance($uri, $gatewayParams,
+            $gatewayResponse = $request->gatewayRequest($uri, $gatewayParams,
                 $payment->getOrder()->getStoreId());
 
             if (is_a($gatewayResponse, 'Allopass_Hipay_Model_Api_Response_Error')) {
@@ -302,7 +302,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
                         $order->addStatusHistoryComment(Mage::helper('hipay')->getTransactionMessage(
                             $payment, self::OPERATION_AUTHORIZATION, null, $amount, true, $gatewayResponse->getMessage()
-                        ),$status);
+                        ), $status);
 
                         $order->save();
 
@@ -654,7 +654,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
                                     $message = Mage::helper("hipay")->__('Refund accepted by Hipay.');
 
-                                    $order->addStatusHistoryComment($message,$status);
+                                    $order->addStatusHistoryComment($message, $status);
 
                                     Mage::getModel('core/resource_transaction')
                                         ->addObject($creditmemo)->addObject($creditmemo->getOrder())
@@ -700,7 +700,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
                     default:
                         $message = Mage::helper("hipay")->__('Message Hipay: %s. Status: %s',
                             $gatewayResponse->getMessage(), $gatewayResponse->getStatus());
-                        $order->addStatusHistoryComment($message,$order->getStatus());
+                        $order->addStatusHistoryComment($message, $order->getStatus());
                         break;
                 }
 
@@ -783,7 +783,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
                 $order->addStatusHistoryComment(Mage::helper('hipay')->getTransactionMessage(
                     $payment, $this->getOperation(), null, $amount, true, $gatewayResponse->getMessage()
-                ),$status);
+                ), $status);
 
                 $order->save();
                 break;
@@ -845,7 +845,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
                 if (defined('Mage_Sales_Model_Order::STATUS_FRAUD')) {
                     $status = Mage_Sales_Model_Order::STATUS_FRAUD;
-                }else{
+                } else {
                     $status = null;
                 }
 
@@ -856,7 +856,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
                 if ($addToHistory) {
                     $order->addStatusHistoryComment(Mage::helper('hipay')->getTransactionMessage(
                         $payment, $this->getOperation(), null, $amount, true, $gatewayResponse->getMessage()
-                    ),$status);
+                    ), $status);
                 }
 
                 $message = Mage::helper('hipay')->__($gatewayResponse->getMessage());
@@ -1047,18 +1047,18 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         }
 
         return $this;
-	}
-	
-	/**
-	 *
-	 * @param Mage_Sales_Model_Order_Payment $payment
-	 * @param float $amount
-	 * @param string|null $token
+    }
+
+    /**
+     *
+     * @param Mage_Sales_Model_Order_Payment $payment
+     * @param float $amount
+     * @param string|null $token
      * @param string $split_number
-	 * @return multitype:
-	 */
-	public function getGatewayParams($payment,$amount,$token=null,$split_number = null)
-	{
+     * @return multitype:
+     */
+    public function getGatewayParams($payment, $amount, $token = null, $split_number = null)
+    {
         $params = array();
         $params['orderid'] = $payment->getOrder()->getIncrementId();
         $paymentProduct = null;
@@ -1098,8 +1098,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $params['cid'] = $payment->getOrder()->getCustomerId();//CUSTOMER ID
 
         // Astropay needs National identification number
-        if ($payment->getAdditionalInformation('national_identification_number')){
-            $params['national_identification_number']  = $payment->getAdditionalInformation('national_identification_number');
+        if ($payment->getAdditionalInformation('national_identification_number')) {
+            $params['national_identification_number'] = $payment->getAdditionalInformation('national_identification_number');
         }
 
         $remoteIp = $payment->getOrder()->getRemoteIp();
@@ -1163,11 +1163,14 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
             $params['cancel_url'] = $isAdmin ? Mage::helper('adminhtml')->getUrl('*/payment/cancel') : Mage::getUrl($this->getConfigData('cancel_url'));
         }
 
+        if ($this->getConfig("send_notification_url", Mage::app()->getStore())) {
+            $params['notify_url'] = Mage::getUrl("*/notify/index");
+        }
+
         $params = $this->getCustomerParams($payment, $params);
         $params = $this->getShippingParams($payment, $params);
 
         $customDataHipay = Mage::helper('hipay')->getCustomData($payment, $amount, $this, $split_number);
-
         // Add custom data for transaction request
         if (file_exists(Mage::getModuleDir('', 'Allopass_Hipay') . DS . 'Helper' . DS . 'CustomData.php')) {
             if (class_exists('Allopass_Hipay_Helper_CustomData', true)) {
@@ -1193,8 +1196,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         // Check if delivery method is required for the payment method
         if (Mage::helper('hipay')->isDeliveryMethodAndCartItemsRequired($payment->getCcType())) {
             if ($payment->getOrder()->getShippingMethod() && !$payment->getOrder()->getIsVirtual()) {
-                Mage::helper('hipay')->processDeliveryInformation($payment->getOrder()->getShippingMethod(), Mage::app()->getStore(),$this, $params);
-            } else{
+                Mage::helper('hipay')->processDeliveryInformation($payment->getOrder()->getShippingMethod(), Mage::app()->getStore(), $this, $params);
+            } else {
                 //TODO
             }
         }
@@ -1219,7 +1222,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $params['phone'] = $order->getBillingAddress()->getTelephone();
 
         if ($overrideParams) {
-            $params['phone'] =  preg_replace('/^(\+33)|(33)/','0', $params['phone']);
+            $params['phone'] = preg_replace('/^(\+33)|(33)/', '0', $params['phone']);
         }
 
         if (($dob = $order->getCustomerDob()) != "") {
@@ -1287,7 +1290,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $params['shipto_streetaddress2'] = $shippingAddress->getStreet2();
         $params['shipto_city'] = $shippingAddress->getCity();
 
-        $params['shipto_state'] = $shippingAddress->getRegionCode() ? $shippingAddress->getRegionCode() :  $shippingAddress->getCity();
+        $params['shipto_state'] = $shippingAddress->getRegionCode() ? $shippingAddress->getRegionCode() : $shippingAddress->getCity();
 
         $params['shipto_zipcode'] = $shippingAddress->getPostcode();
         $params['shipto_country'] = $shippingAddress->getCountry();
@@ -1464,7 +1467,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         array $transactionDetails = array(),
         array $transactionAdditionalInfo = array(),
         $message = false
-    ) {
+    )
+    {
         $payment->setTransactionId($transactionId);
         if (method_exists($payment, "resetTransactionAdditionalInfo")) {
             $payment->resetTransactionAdditionalInfo();
@@ -1619,7 +1623,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
     public function canUseForCurrency($currencyCode)
     {
         if (!$this->getConfigData('currency') || $currencyCode == $this->getConfigData('currency')
-            || in_array($currencyCode, $this->getConfigData('currency'))) {
+            || in_array($currencyCode, $this->getConfigData('currency'))
+        ) {
             return true;
         }
         return true;
@@ -1717,5 +1722,14 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
     public function generateSplitOrderId($splitPayment)
     {
         return "-split-" . $splitPayment->getSplitNumber() . "-" . $splitPayment->getAttempts() . "-" . $splitPayment->getId();
+    }
+
+    /**
+     *
+     * @return Allopass_Hipay_Model_Config
+     */
+    protected function getConfig($key, $storeId = null)
+    {
+        return Mage::getSingleton('hipay/config')->getConfig($key, $storeId);
     }
 }

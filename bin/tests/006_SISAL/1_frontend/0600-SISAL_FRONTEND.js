@@ -11,12 +11,12 @@ var paymentType = "HiPay Enterprise Sisal";
 casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(test) {
     phantom.clearCookies();
 
-    casper.start(headlink + "admin/")
+    casper.start(baseURL + "admin/")
     .then(function() {
-        authentification.proceed(test);
+        this.logToBackend();
         method.proceed(test, paymentType, "sisalapi");
     })
-    .thenOpen(headlink, function() {
+    .thenOpen(baseURL, function() {
         this.selectItemAndOptions();
     })
     .then(function() {
@@ -32,33 +32,14 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
         this.shippingMethod();
     })
     .then(function() {
-    	this.echo("Choosing payment method...", "INFO");
-    	this.waitUntilVisible('#checkout-step-payment', function success() {
-            method_hipay="method_hipay_sisalapi";
-            if (this.visible('p[class="bugs"]')) {
-                this.click('input#p_' + method_hipay);
-            } else {
-                this.click('#dt_' + method_hipay +'>input[name="payment[method]"]');
-            }
-
-    		this.click("div#payment-buttons-container>button");
-    		test.info("Done");
-		}, function fail() {
-        	test.assertVisible("#checkout-step-payment", "'Payment Information' formular exists");
-        }, 10000);
+        this.choosingPaymentMethod('method_hipay_sisalapi');
     })
     .then(function() {
         this.orderReview(paymentType);
     })
     /* Fill Sisal formular */
     .then(function() {
-    	this.echo("Filling payment method...", "INFO");
-    	this.waitForUrl(/provider\/sisal/, function success() {
-    		this.click('a#submit-button');
-    		test.info("Done");
-    	}, function fail() {
-    		test.assertUrlMatch(/provider\/sisal/, "Payment page exists");
-    	}, 10000);
+        this.fillPaymentFormularByPaymentProduct("sisal");
     })
     .then(function() {
         this.orderResult(paymentType);
