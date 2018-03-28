@@ -29,8 +29,6 @@ class Allopass_Hipay_Model_Method_CcXtimes extends Allopass_Hipay_Model_Method_C
     /**
      * Check whether payment method can be used
      *
-     * TODO: payment method instance is not supposed to know about quote
-     *
      * @param Mage_Sales_Model_Quote|null $quote
      *
      * @return bool

@@ -72,7 +72,7 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
         if ($this->_canSaveCc) {
             $info->setCcNumberEnc($info->encrypt($info->getCcNumber()));
         }
-        //$info->setCcCidEnc($info->encrypt($info->getCcCid()));
+
         $info->setCcNumber(null)
             ->setCcCid(null);
         return $this;
@@ -92,6 +92,7 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
                 Mage::helper('payment')->__('Cannot retrieve the payment information object instance.')
             );
         }
+
         return $instance;
     }
 
@@ -103,16 +104,14 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
     {
         $params = array();
         $params['card_number'] = $payment->getCcNumber();
-        $params['card_expiry_month'] = ($payment->getCcExpMonth() < 10) ? '0' . $payment->getCcExpMonth(
-            ) : $payment->getCcExpMonth();
+        $params['card_expiry_month'] = ($payment->getCcExpMonth() < 10) ? '0' . $payment->getCcExpMonth() : $payment->getCcExpMonth();
         $params['card_expiry_year'] = $payment->getCcExpYear();
         $params['cvc'] = $payment->getCcCid();
         $params['multi_use'] = 1;
 
         //Add card holder
         $billing = $payment->getOrder()->getBillingAddress();
-        $defaultOwner = $billing->getFirstname() && $billing->getLastname() ? $billing->getFirstname(
-            ) . ' ' . $billing->getLastname() : $billing->getEmail();
+        $defaultOwner = $billing->getFirstname() && $billing->getLastname() ? $billing->getFirstname() . ' ' . $billing->getLastname() : $billing->getEmail();
 
         $params['card_holder'] = $payment->getCcOwner() ? $payment->getCcOwner() : $defaultOwner;
 
@@ -147,10 +146,11 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
         if ($payment->getAdditionalInformation('use_oneclick') && $customer->getId()) {
             $cardId = $payment->getAdditionalInformation('selected_oneclick_card');
             $card = Mage::getModel('hipay/card')->load($cardId);
-            if ($card->getId() && $card->getCustomerId() == $customer->getId())
+            if ($card->getId() && $card->getCustomerId() == $customer->getId()) {
                 $token = $card->getCcToken();
-            else
+            } else {
                 Mage::throwException(Mage::helper('hipay')->__("Error with your card!"));
+            }
         } else {
             $request = Mage::getModel('hipay/api_request', array($this));
             /* @var $request Allopass_Hipay_Model_Api_Request */
@@ -162,6 +162,7 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
             $this->_debug($vaultResponse->debug());
             $token = $vaultResponse->getToken();
         }
+
         $payment->setAdditionalInformation('token', $token);
 
         return $this;
@@ -175,12 +176,12 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
      */
     public function capture(Varien_Object $payment, $amount)
     {
-        //TODO CHECK AMOUNT FOR SPLIT PAYMENT
 
         parent::capture($payment, $amount);
 
-        if ($this->isPreauthorizeCapture($payment) /*|| $this->orderDue($payment->getOrder())*/)
+        if ($this->isPreauthorizeCapture($payment)) {
             $this->_preauthorizeCapture($payment, $amount);
+        }
 
         $payment->setSkipTransactionCreation(true);
         return $this;
@@ -207,11 +208,11 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
             $cardId = $payment->getAdditionalInformation('selected_oneclick_card');
             $card = Mage::getModel('hipay/card')->load($cardId);
 
-            if ($card->getId() && $card->getCustomerId() == $customer->getId())
+            if ($card->getId() && $card->getCustomerId() == $customer->getId()) {
                 $paymentProduct = $card->getCcType();
-            else
+            } else {
                 Mage::throwException(Mage::helper('hipay')->__("Error with your card!"));
-
+            }
         } else {
             $paymentProduct = $this->getSpecifiedPaymentProduct($payment);
         }
@@ -245,6 +246,7 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
         if (!empty($paymentFees)) {
             return $paymentFees;
         }
+
         return false;
     }
 
@@ -265,8 +267,8 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
     /**
      * Validate payment method information object
      *
-     * @param   Mage_Payment_Model_Info $info
-     * @return  Mage_Payment_Model_Abstract
+     * @return $this
+     * @throws Mage_Core_Exception
      */
     public function validate()
     {
@@ -297,16 +299,8 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
                 // Other credit card type number validation
                 || ($this->OtherCcType($info->getCcType()) && $this->validateCcNumOther($ccNumber))
             ) {
-
                 $ccType = 'OT';
                 $ccTypeRegExpList = array(
-                    //Solo, Switch or Maestro. International safe
-                    /*
-            // Maestro / Solo
-            'SS'  => '/^((6759[0-9]{12})|(6334|6767[0-9]{12})|(6334|6767[0-9]{14,15})'
-                    . '|(5018|5020|5038|6304|6759|6761|6763[0-9]{12,19})|(49[013][1356][0-9]{12})'
-                    . '|(633[34][0-9]{12})|(633110[0-9]{10})|(564182[0-9]{10}))([0-9]{2,3})?$/',
-            */
                     // Solo only
                     'SO' => '/(^(6334)[5-9](\d{11}$|\d{13,14}$))|(^(6767)(\d{12}$|\d{14,15}$))/',
                     //Bancontact / mister cash
@@ -336,13 +330,13 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
                         break;
                     }
                 }
+
                 if (!$this->OtherCcType($info->getCcType()) && $ccType != $info->getCcType()) {
                     $errorMsg = Mage::helper('payment')->__('Credit card number mismatch with credit card type.');
                 }
             } else {
                 $errorMsg = Mage::helper('payment')->__('Invalid Credit Card Number');
             }
-
         } else {
             $errorMsg = Mage::helper('payment')->__('Credit card type is not allowed for this payment method.');
         }
@@ -378,6 +372,7 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
         if (is_null($configData)) {
             return true;
         }
+
         return (bool)$configData;
     }
 
@@ -401,11 +396,14 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
     protected function _validateExpDate($expYear, $expMonth)
     {
         $date = Mage::app()->getLocale()->date();
-        if (!$expYear || !$expMonth || ($date->compareYear($expYear) == 1)
+        if (!$expYear
+            || !$expMonth
+            || ($date->compareYear($expYear) == 1)
             || ($date->compareYear($expYear) == 0 && ($date->compareMonth($expMonth) == 1))
         ) {
             return false;
         }
+
         return true;
     }
 
@@ -538,6 +536,7 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
             if (!$info->getQuote()->getReservedOrderId()) {
                 $info->getQuote()->reserveOrderId();
             }
+
             return $info->getQuote()->getReservedOrderId();
         }
     }

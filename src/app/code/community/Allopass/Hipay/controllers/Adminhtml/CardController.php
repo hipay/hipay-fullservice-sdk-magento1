@@ -123,7 +123,6 @@ class Allopass_Hipay_Adminhtml_CardController extends Mage_Adminhtml_Controller_
     {
         // check if data sent
         if ($data = $this->getRequest()->getPost()) {
-
             //init model and set data
             $model = Mage::getModel('hipay/card');
 
@@ -153,7 +152,6 @@ class Allopass_Hipay_Adminhtml_CardController extends Mage_Adminhtml_Controller_
                 // go to grid
                 $this->_redirect('adminhtml/customer/edit', array('id' => $model->getCustomerId()));
                 return;
-
             } catch (Mage_Core_Exception $e) {
                 $this->_getSession()->addError($e->getMessage());
             } catch (Exception $e) {
@@ -166,7 +164,6 @@ class Allopass_Hipay_Adminhtml_CardController extends Mage_Adminhtml_Controller_
             $this->_getSession()->setFormData($data);
             $this->_redirect('*/*/edit', array('card_id' => $this->getRequest()->getParam('card_id')));
             return;
-
         }
         $this->_redirect('adminhtml/customer/index');
     }

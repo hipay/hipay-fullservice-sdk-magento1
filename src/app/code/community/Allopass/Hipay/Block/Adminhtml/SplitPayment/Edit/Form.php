@@ -46,6 +46,7 @@ class Allopass_Hipay_Block_Adminhtml_SplitPayment_Edit_Form extends Mage_Adminht
                 )
             );
         }
+
         $fieldset->addField(
             'real_order_id',
             'text',

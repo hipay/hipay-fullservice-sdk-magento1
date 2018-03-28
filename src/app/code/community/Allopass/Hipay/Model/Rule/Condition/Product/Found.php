@@ -47,7 +47,8 @@ class Allopass_Hipay_Model_Rule_Condition_Product_Found
 
     public function asHtml()
     {
-        $html = $this->getTypeElement()->getHtml() . Mage::helper('salesrule')->__(
+        $html = $this->getTypeElement()->getHtml()
+            . Mage::helper('salesrule')->__(
                 "If an item is %s in the cart with %s of these conditions true:",
                 $this->getValueElement()->getHtml(),
                 $this->getAggregatorElement()->getHtml()

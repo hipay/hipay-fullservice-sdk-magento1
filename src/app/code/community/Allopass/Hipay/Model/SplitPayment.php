@@ -47,8 +47,9 @@ class Allopass_Hipay_Model_SplitPayment extends Mage_Core_Model_Abstract
     }
 
     /**
-     *
-     * @return boolean|string
+     * @return $this
+     * @throws Exception
+     * @throws Mage_Core_Exception
      */
     public function pay()
     {
@@ -61,7 +62,6 @@ class Allopass_Hipay_Model_SplitPayment extends Mage_Core_Model_Abstract
         }
 
         try {
-
             $state = $this->getMethodInstance()->paySplitPayment($this);
             switch ($state) {
                 case Allopass_Hipay_Model_Method_Abstract::STATE_COMPLETED:
@@ -75,11 +75,8 @@ class Allopass_Hipay_Model_SplitPayment extends Mage_Core_Model_Abstract
                     $this->setStatus(self::SPLIT_PAYMENT_STATUS_FAILED);
                     $this->sendErrorEmail();
                     break;
-
             }
-
         } catch (Exception $e) {
-
             if ($e->getMessage() != 'Code: 3010004. Message: This order has already been paid') {
                 $this->setStatus(self::SPLIT_PAYMENT_STATUS_FAILED);
                 $this->setAttempts($this->getAttempts() + 1);
@@ -88,7 +85,6 @@ class Allopass_Hipay_Model_SplitPayment extends Mage_Core_Model_Abstract
             } else { //Order is already paid, so we set complete status
                 $this->setStatus(self::SPLIT_PAYMENT_STATUS_COMPLETE);
             }
-
         }
 
         $this->setAttempts($this->getAttempts() + 1);
@@ -118,6 +114,7 @@ class Allopass_Hipay_Model_SplitPayment extends Mage_Core_Model_Abstract
         if (strpos($methodClass, 'xtimes') !== false) {
             $methodClass = str_replace("x", "X", $methodClass);
         }
+        
         return Mage::getSingleton($moduleName . "/method_" . $methodClass);
     }
 

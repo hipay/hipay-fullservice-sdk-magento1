@@ -47,6 +47,7 @@ class Allopass_Hipay_Model_Rule_Condition_Customer extends Mage_Rule_Model_Condi
             case 'customer_group':
                 return 'multiselect';
         }
+
         return 'string';
     }
 
@@ -59,6 +60,7 @@ class Allopass_Hipay_Model_Rule_Condition_Customer extends Mage_Rule_Model_Condi
             case 'customer_group':
                 return 'multiselect';
         }
+
         return 'text';
     }
 
@@ -78,8 +80,10 @@ class Allopass_Hipay_Model_Rule_Condition_Customer extends Mage_Rule_Model_Condi
                 default:
                     $options = array();
             }
+
             $this->setData('value_select_options', $options);
         }
+
         return $this->getData('value_select_options');
     }
 
@@ -91,11 +95,6 @@ class Allopass_Hipay_Model_Rule_Condition_Customer extends Mage_Rule_Model_Condi
      */
     public function validate(Varien_Object $object)
     {
-
-
-        /* @var $object Mage_Sales_Model_Order|Mage_Sales_Model_Quote */
-
-
         //Get infos from billing address
         $toValidate = new Varien_Object();
 
@@ -146,9 +145,8 @@ class Allopass_Hipay_Model_Rule_Condition_Customer extends Mage_Rule_Model_Condi
             $this->getPrefix() . '__' . $this->getId() . '_' . $this->getPaymentMethodCode() . '__type',
             'hidden',
             array(
-                //'name'    => 'rule_' . $this->getPaymentMethodCode() . '[' . $this->getPrefix() . '][' . $this->getId().'_'. $this->getPaymentMethodCode() . '][type]',
-                'name' => 'rule_' . $this->getPaymentMethodCode() . '[' . $this->getPrefix() . '][' . $this->getId(
-                    ) . '][type]',
+                'name' => 'rule_' . $this->getPaymentMethodCode()
+                    . '[' . $this->getPrefix() . '][' . $this->getId() . '][type]',
                 'value' => $this->getType(),
                 'no_span' => true,
                 'class' => 'hidden',
@@ -164,13 +162,13 @@ class Allopass_Hipay_Model_Rule_Condition_Customer extends Mage_Rule_Model_Condi
                 break;
             }
         }
+
         return $this->getForm()->addField(
             $this->getPrefix() . '__' . $this->getId() . '_' . $this->getPaymentMethodCode() . '__attribute',
             'select',
             array(
-                //'name'=>'rule_' . $this->getPaymentMethodCode() . '['.$this->getPrefix().']['.$this->getId().'_'. $this->getPaymentMethodCode().'][attribute]',
-                'name' => 'rule_' . $this->getPaymentMethodCode() . '[' . $this->getPrefix() . '][' . $this->getId(
-                    ) . '][attribute]',
+                'name' => 'rule_' . $this->getPaymentMethodCode()
+                    . '[' . $this->getPrefix() . '][' . $this->getId() . '][attribute]',
                 'values' => $this->getAttributeSelectOptions(),
                 'value' => $this->getAttribute(),
                 'value_name' => $this->getAttributeName(),
@@ -199,7 +197,6 @@ class Allopass_Hipay_Model_Rule_Condition_Customer extends Mage_Rule_Model_Condi
             $this->getPrefix(),
             $this->getId() . '_' . $this->getPaymentMethodCode()
         );
-        //$elementName = sprintf('rule_'.$this->getPaymentMethodCode().'[%s][%s][operator]', $this->getPrefix(), $this->getId().'_'. $this->getPaymentMethodCode());
         $elementName = sprintf(
             'rule_' . $this->getPaymentMethodCode() . '[%s][%s][operator]',
             $this->getPrefix(),
@@ -223,9 +220,8 @@ class Allopass_Hipay_Model_Rule_Condition_Customer extends Mage_Rule_Model_Condi
     public function getValueElement()
     {
         $elementParams = array(
-            //'name'               => 'rule_'.$this->getPaymentMethodCode().'['.$this->getPrefix().']['.$this->getId().'_'. $this->getPaymentMethodCode().'][value]',
-            'name' => 'rule_' . $this->getPaymentMethodCode() . '[' . $this->getPrefix() . '][' . $this->getId(
-                ) . '][value]',
+            'name' => 'rule_' . $this->getPaymentMethodCode()
+                . '[' . $this->getPrefix() . '][' . $this->getId() . '][value]',
             'value' => $this->getValue(),
             'values' => $this->getValueSelectOptions(),
             'value_name' => $this->getValueName(),

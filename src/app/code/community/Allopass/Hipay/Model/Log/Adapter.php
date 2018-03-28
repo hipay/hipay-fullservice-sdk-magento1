@@ -70,6 +70,7 @@ class Allopass_Hipay_Model_Log_Adapter
                 $data = array($data);
             }
         }
+
         $data = $this->_filterDebugData($data);
         $data['__pid'] = getmypid();
         Mage::log($data, null, $this->_logFileName, true);
@@ -82,7 +83,6 @@ class Allopass_Hipay_Model_Log_Adapter
      * @param string|array $key
      * @param mixed $value
      * @return Mage_Core_Model_Log_Adapter
-     * @todo replace whole data
      */
     public function setData($key, $value = null)
     {
@@ -91,6 +91,7 @@ class Allopass_Hipay_Model_Log_Adapter
         } else {
             $this->_data[$key] = $value;
         }
+
         return $this;
     }
 
@@ -105,6 +106,7 @@ class Allopass_Hipay_Model_Log_Adapter
         if (!is_array($keys)) {
             $keys = array($keys);
         }
+
         $this->_debugReplacePrivateDataKeys = $keys;
         return $this;
     }
@@ -128,6 +130,7 @@ class Allopass_Hipay_Model_Log_Adapter
                 }
             }
         }
+        
         return $debugData;
     }
 }

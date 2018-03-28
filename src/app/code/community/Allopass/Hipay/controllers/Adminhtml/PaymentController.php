@@ -40,6 +40,7 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
             $this->setFlag('', self::FLAG_NO_DISPATCH, true);
             return false;
         }
+
         Mage::register('sales_order', $order);
         Mage::register('current_order', $order);
 
@@ -90,6 +91,7 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
             $this->_getSession()->addError($this->__('Failed to update the payment.'));
             Mage::logException($e);
         }
+
         $this->_redirect('adminhtml/sales_order/view', array('order_id' => $order->getId()));
     }
 
@@ -172,8 +174,8 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
                             );
                         }
 
-
-                        return $this->_order; //because only one nominal item in cart is authorized and Hipay not manage many profiles
+                        //because only one nominal item in cart is authorized and Hipay not manage many profiles
+                        return $this->_order;
                     }
                 }
 
@@ -265,13 +267,11 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
     {
         $this->processResponse();
         $this->_redirect('adminhtml/sales_order_create/');
-        //$this->_redirect('checkout/onepage/failure');
         return $this;
     }
 
     public function exceptionAction()
     {
-        //$this->_redirect('checkout/onepage/failure');
         $this->_redirect('adminhtml/sales_order_create/');
         return $this;
     }
@@ -279,7 +279,6 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
     public function cancelAction()
     {
         $this->processResponse();
-        //$this->_redirect('checkout/cart');
         $this->_redirect('adminhtml/sales_order_create/');
         return $this;
     }

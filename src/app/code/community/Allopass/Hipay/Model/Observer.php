@@ -128,12 +128,12 @@ class Allopass_Hipay_Model_Observer
         if ($payment->getAdditionalInformation('use_oneclick')) {
             return $this;
         }
+
         /* @var $controller Mage_Checkout_OnepageController */
         $controller = $observer->getControllerAction();
 
         $result = Mage::helper('core')->jsonDecode($controller->getResponse()->getBody());
 
-        //TODO check if payment method is hosted and iframe active and is success
         $methodInstance = $payment->getMethodInstance();
         if ($result['success']
             && ($methodInstance->getCode() == 'hipay_hosted' || $methodInstance->getCode() == 'hipay_hostedxtimes')
@@ -155,8 +155,8 @@ class Allopass_Hipay_Model_Observer
     private function processSplitPayment($splitPayments)
     {
         foreach ($splitPayments as $splitPayment) {
-            $splitInfo = $splitPayment->getSplitNumber() . ' for order ' . $splitPayment->getOrderId(
-                ) . ' with amount ' . $splitPayment->getAmountToPay();
+            $splitInfo = $splitPayment->getSplitNumber() . ' for order '
+                . $splitPayment->getOrderId() . ' with amount ' . $splitPayment->getAmountToPay();
             try {
                 Mage::helper('hipay')->debug('# Pay ' . $splitInfo);
                 $splitPayment->pay();
@@ -236,7 +236,8 @@ class Allopass_Hipay_Model_Observer
 
             $order = Mage::getModel('sales/order')->loadByIncrementId(trim($orderIncrementId));
             if ($order->getId() && strpos($order->getPayment()->getMethod(), 'hipay') !== false) {
-                $link = '<a href="https://merchant.hipay-tpp.com//transaction/detail/index/trxid/' . $txnId . '" target="_blank">' . $txnId . '</a>';
+                $link = '<a href="https://merchant.hipay-tpp.com//transaction/detail/index/trxid/'
+                    . $txnId . '" target="_blank">' . $txnId . '</a>';
                 $block->setTxnIdHtml($link);
             }
         }
@@ -255,20 +256,18 @@ class Allopass_Hipay_Model_Observer
         if ($order->getStatus() == Allopass_Hipay_Model_Method_Abstract::STATUS_CAPTURE_REQUESTED) {
             $order->setForcedCanCreditmemo(false);
             $order->setForcedCanCreditmemoFromHipay(true);
-        } elseif ($order->getPayment() && $order->getPayment()->getMethod() == 'hipay_cc' && strtolower(
-                $order->getPayment()->getCcType()
-            ) == 'bcmc'
+        } elseif ($order->getPayment()
+            && $order->getPayment()->getMethod() == 'hipay_cc'
+            && strtolower($order->getPayment()->getCcType()) == 'bcmc'
         ) {
             $order->setForcedCanCreditmemo(false);
             $order->setForcedCanCreditmemoFromHipay(true);
         } elseif ($order->getPayment() && strpos($order->getPayment()->getMethod(), 'hipay') !== false) {
 
-            //If configuration validate order with status 117 (capture requested) and Notification 118 (Captured) is not received
+            //If configuration validate order with status 117 (capture requested)
+            // and Notification 118 (Captured) is not received
             // we disallow refund
-            if (((int)$order->getPayment()->getMethodInstance()->getConfigData(
-                        'hipay_status_validate_order'
-                    ) == 117) === true
-            ) {
+            if (((int)$order->getPayment()->getMethodInstance()->getConfigData('hipay_status_validate_order') == 117)) {
                 $histories = Mage::getResourceModel('sales/order_status_history_collection')
                     ->setOrderFilter($order)
                     ->addFieldToFilter(

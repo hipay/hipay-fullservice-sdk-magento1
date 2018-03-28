@@ -83,9 +83,7 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
                 $gatewayResponse = Mage::getSingleton('hipay/api_response_gateway', $this->getRequest()->getParams());
                 $collection = Mage::getModel('sales/recurring_profile')->getCollection()
                     ->addFieldToFilter('profile_id', array('in' => $profileIds));
-                $profiles = array();
                 foreach ($collection as $profile) {
-                    //$referenceId = $gatewayResponse->getToken()."-".$profile->getId();
                     $additionalInfo = array();
                     $additionalInfo['ccType'] = $gatewayResponse->getBrand();
                     $additionalInfo['ccExpMonth'] = $gatewayResponse->getCardExpiryMonth();
@@ -93,7 +91,6 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
                     $additionalInfo['token'] = $gatewayResponse->getToken();
                     $additionalInfo['transaction_id'] = $gatewayResponse->getTransactionReference();
                     $profile->setAdditionalInfo($additionalInfo);
-                    //$profile->setReferenceId($referenceId);
                     $profile->setState(Mage_Sales_Model_Recurring_Profile::STATE_ACTIVE);
 
                     $profile->save();
@@ -109,12 +106,12 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
         }
 
         $this->processResponse();
-        $url_redirect = Mage::helper('hipay')->getCheckoutSuccessPage($this->getOrder()->getPayment());
+        $urlRedirect = Mage::helper('hipay')->getCheckoutSuccessPage($this->getOrder()->getPayment());
 
-        if (preg_match('/http/', $url_redirect)) {
-            $this->_redirectUrl($url_redirect);
+        if (preg_match('/http/', $urlRedirect)) {
+            $this->_redirectUrl($urlRedirect);
         } else {
-            $this->_redirect($url_redirect);
+            $this->_redirect($urlRedirect);
         }
 
         return $this;
@@ -257,8 +254,8 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
                             );
                         }
 
-
-                        return $this->_order; //because only one nominal item in cart is authorized and Hipay not manage many profiles
+                        //because only one nominal item in cart is authorized and Hipay not manage many profiles
+                        return $this->_order;
                     }
                 }
 
@@ -315,7 +312,7 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
         $response['error'] = true;
         $response['success'] = false;
 
-        $payment_profile_id = $this->getRequest()->getParam('payment_profile_id', false);
+        $paymentProfileId = $this->getRequest()->getParam('payment_profile_id', false);
         $amount = $this->getCheckout()->getQuote()->getGrandTotal();
         $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction', Mage::app()->getStore());
 
@@ -330,33 +327,36 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
             $currency->format($amount, array(), true)
         );
 
-        if ($payment_profile_id) {
+        if ($paymentProfileId) {
             try {
-                $splitPayment = $_helper->splitPayment((int)$payment_profile_id, $amount);
+                $splitPayment = $_helper->splitPayment((int)$paymentProfileId, $amount);
                 $response['success'] = true;
                 $response['error'] = false;
                 $response['splitPayment'] = $splitPayment;
                 $response['grandTotal'] = $amount;
                 $firstAmount = $splitPayment[0]['amountToPay'];
                 array_shift($splitPayment);
-                $otherPayments = "<p><span>" . Mage::helper('hipay')->__(
-                        "Your next payments:"
-                    ) . '</span><table class="data-table" id="split-payment-cc-table">';
+                $otherPayments = "<p><span>"
+                    . Mage::helper('hipay')->__("Your next payments:")
+                    . '</span><table class="data-table" id="split-payment-cc-table">';
                 foreach ($splitPayment as $value) {
                     $otherPayments .= '<tr>';
                     $amount = $currency->format($value['amountToPay'], array(), true);
                     $dateToPay = new Zend_Date($value['dateToPay']);
-                    $otherPayments .= '<td>' . $dateToPay->toString(
-                            Zend_Date::DATE_LONG
-                        ) . "</td><td> " . $amount . '</td>';
+                    $otherPayments .= '<td>'
+                        . $dateToPay->toString(Zend_Date::DATE_LONG)
+                        . "</td><td> " . $amount . '</td>';
                     $otherPayments .= '</tr>';
                 }
+
                 $otherPayments .= '<table></p>';
 
-                $response['labelSplitPayment'] = "<p><span>" . Mage::helper('hipay')->__(
+                $response['labelSplitPayment'] = "<p><span>"
+                    . Mage::helper('hipay')->__(
                         'You will be debited of  %s only after submitting order.',
                         $currency->format($firstAmount, array(), true)
-                    ) . '</span></p>';
+                    )
+                    . '</span></p>';
                 $response['labelSplitPayment'] .= $otherPayments;
             } catch (Exception $e) {
                 $response['message'] = $e->getMessage();

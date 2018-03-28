@@ -55,8 +55,9 @@ abstract class Allopass_Hipay_Block_Form_Abstract extends Mage_Payment_Block_For
                 ->setOrder('is_default', 'desc');
 
             foreach ($this->_cards as $card) {
-                if ($card->ccExpYear == $currentYear && $currentMonth < $card->ccExpMonth)
+                if ($card->ccExpYear == $currentYear && $currentMonth < $card->ccExpMonth) {
                     $this->_cards->removeItemByKey($card->getId());
+                }
             }
         }
 
@@ -100,8 +101,9 @@ abstract class Allopass_Hipay_Block_Form_Abstract extends Mage_Payment_Block_For
     {
         $checkoutMethod = Mage::getSingleton('checkout/session')->getQuote()->getCheckoutMethod();
 
-        if ($checkoutMethod == Mage_Checkout_Model_Type_Onepage::METHOD_GUEST || !$this->allowUseOneClick())
+        if ($checkoutMethod == Mage_Checkout_Model_Type_Onepage::METHOD_GUEST || !$this->allowUseOneClick()) {
             return false;
+        }
 
         return true;
 
@@ -120,18 +122,21 @@ abstract class Allopass_Hipay_Block_Form_Abstract extends Mage_Payment_Block_For
     {
 
         $checkoutMethod = $this->getQuote()->getCheckoutMethod();
-        $minAmount = (float)$this->getMethod()->getConfigData('min_order_total_split_payment');
 
-        if ($checkoutMethod == Mage_Checkout_Model_Type_Onepage::METHOD_GUEST || (strpos(
-                    $this->getMethodCode(),
-                    "xtimes"
-                ) === false)
-        )
+        if ($checkoutMethod == Mage_Checkout_Model_Type_Onepage::METHOD_GUEST
+            || (strpos($this->getMethodCode(), "xtimes") === false)
+        ) {
             return false;
+        }
 
         return true;
     }
 
+    /**
+     * Get split payment profiles
+     *
+     * @return mixed
+     */
     public function getSplitPaymentProfiles()
     {
         $profileIds = explode(",", $this->getMethod()->getConfigData('split_payment_profile'));
@@ -140,29 +145,32 @@ abstract class Allopass_Hipay_Block_Form_Abstract extends Mage_Payment_Block_For
 
     }
 
-
+    /**
+     * Allowed to use one click
+     *
+     * @return bool|int
+     */
     protected function allowUseOneClick()
     {
         switch ((int)$this->getMethod()->getConfigData('allow_use_oneclick')) {
             case 0:
                 return false;
-
             case 1:
                 /* @var $rule Allopass_Hipay_Model_Rule */
 
                 $rule = Mage::getModel('hipay/rule')->load($this->getMethod()->getConfigData('filter_oneclick'));
                 if ($rule->getId()) {
-                    /*$objToValidate = new Varien_Object();
-                    $objToValidate->setQuoteId($this->getQuote()->getId());
-                    $objToValidate->setQuote($this->getQuote());
-                    $objToValidate->setCreatedAt($this->getQuote()->getCreatedAt());*/
                     return (int)$rule->validate($this->getQuote());
                 }
                 return true;
-
         }
     }
 
+    /**
+     * Return iframe config
+     *
+     * @return array
+     */
     public function getIframeConfig()
     {
         $iframe = array();

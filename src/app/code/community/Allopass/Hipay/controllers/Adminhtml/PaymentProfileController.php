@@ -96,7 +96,6 @@ class Allopass_Hipay_Adminhtml_PaymentProfileController extends Mage_Adminhtml_C
     {
         // check if data sent
         if ($data = $this->getRequest()->getPost()) {
-
             //init model and set data
             $model = Mage::getModel('hipay/paymentProfile');
 
@@ -122,10 +121,10 @@ class Allopass_Hipay_Adminhtml_PaymentProfileController extends Mage_Adminhtml_C
                     $this->_redirect('*/*/edit', array('profile_id' => $model->getId(), '_current' => true));
                     return;
                 }
+
                 // go to grid
                 $this->_redirect('*/*/');
                 return;
-
             } catch (Mage_Core_Exception $e) {
                 $this->_getSession()->addError($e->getMessage());
             } catch (Exception $e) {
@@ -138,7 +137,6 @@ class Allopass_Hipay_Adminhtml_PaymentProfileController extends Mage_Adminhtml_C
             $this->_getSession()->setFormData($data);
             $this->_redirect('*/*/edit', array('profile_id' => $this->getRequest()->getParam('profile_id')));
             return;
-
         }
         $this->_redirect('*/*/');
     }
@@ -147,7 +145,6 @@ class Allopass_Hipay_Adminhtml_PaymentProfileController extends Mage_Adminhtml_C
     {
         // check if we know what should be deleted
         if ($id = $this->getRequest()->getParam('profile_id')) {
-
             try {
                 // init model and delete
                 $model = Mage::getModel('hipay/paymentProfile');
@@ -161,7 +158,6 @@ class Allopass_Hipay_Adminhtml_PaymentProfileController extends Mage_Adminhtml_C
                 // go to grid
                 $this->_redirect('*/*/');
                 return;
-
             } catch (Exception $e) {
                 // display error message
                 Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
@@ -170,6 +166,7 @@ class Allopass_Hipay_Adminhtml_PaymentProfileController extends Mage_Adminhtml_C
                 return;
             }
         }
+        
         // display error message
         Mage::getSingleton('adminhtml/session')->addError(
             Mage::helper('hipay')->__('Unable to find a payment profile to delete.')

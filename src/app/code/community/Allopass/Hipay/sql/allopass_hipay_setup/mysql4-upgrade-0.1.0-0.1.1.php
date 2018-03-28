@@ -46,13 +46,11 @@ if (!$attribute) {
     $attribute->setData('sort_order', 700);
 
     $attribute->save();
-
 }
 
 $entityId = $installerCustomer->getEntityTypeId('customer');
 $attribute = $installerCustomer->getAttribute($entityId, 'hipay_alias_recurring');
 if (!$attribute) {
-
     $installerCustomer->addAttribute(
         'customer',
         'hipay_alias_recurring',
@@ -78,12 +76,10 @@ if (!$attribute) {
     $attribute->setData('sort_order', 700);
 
     $attribute->save();
-
 }
 
 $attribute = $installerCustomer->getAttribute($entityId, 'hipay_cc_number_enc');
 if (!$attribute) {
-
     $installerCustomer->addAttribute(
         'customer',
         'hipay_cc_number_enc',
@@ -109,12 +105,10 @@ if (!$attribute) {
     $attribute->setData('sort_order', 700);
 
     $attribute->save();
-
 }
 
 $attribute = $installerCustomer->getAttribute($entityId, 'hipay_cc_exp_date');
 if (!$attribute) {
-
     $installerCustomer->addAttribute(
         'customer',
         'hipay_cc_exp_date',
@@ -140,7 +134,6 @@ if (!$attribute) {
     $attribute->setData('sort_order', 700);
 
     $attribute->save();
-
 }
 
 $installerCustomer->endSetup();

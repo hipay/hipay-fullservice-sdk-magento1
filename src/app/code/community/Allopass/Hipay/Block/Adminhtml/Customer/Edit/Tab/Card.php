@@ -198,6 +198,7 @@ class Allopass_Hipay_Block_Adminhtml_Customer_Edit_Tab_Card extends
         if (Mage::registry('current_customer')->getId()) {
             return true;
         }
+
         return false;
     }
 
@@ -206,6 +207,7 @@ class Allopass_Hipay_Block_Adminhtml_Customer_Edit_Tab_Card extends
         if (Mage::registry('current_customer')->getId()) {
             return false;
         }
+        
         return true;
     }
 

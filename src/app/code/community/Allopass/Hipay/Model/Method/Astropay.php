@@ -37,6 +37,7 @@ class Allopass_Hipay_Model_Method_Astropay extends Allopass_Hipay_Model_Method_A
         if (!($data instanceof Varien_Object)) {
             $data = new Varien_Object($data);
         }
+
         $info = $this->getInfoInstance();
         $info->setCcType($this->getConfigData('cctypes'))
             ->setAdditionalInformation('national_identification_number', $data["national_identification_number"]);
@@ -49,8 +50,8 @@ class Allopass_Hipay_Model_Method_Astropay extends Allopass_Hipay_Model_Method_A
     /**
      * Validate payment method information object
      *
-     * @param   Mage_Payment_Model_Info $info
-     * @return  Mage_Payment_Model_Abstract
+     * @return $this
+     * @throws Mage_Core_Exception
      */
     public function validate()
     {
@@ -64,6 +65,7 @@ class Allopass_Hipay_Model_Method_Astropay extends Allopass_Hipay_Model_Method_A
         } else {
             $billingCountry = $paymentInfo->getQuote()->getBillingAddress()->getCountryId();
         }
+
         if (!$this->canUseForCountry($billingCountry)) {
             Mage::throwException(
                 Mage::helper('payment')->__('Selected payment type is not allowed for billing country.')

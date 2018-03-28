@@ -32,10 +32,8 @@ class Allopass_Hipay_Block_Checkout_Cart_Totals extends Mage_Checkout_Block_Cart
         $quote = $this->getQuote();
         $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction', Mage::app()->getStore());
 
-        if (!$useOrderCurrency) {
-            if ($quote->getBaseCurrencyCode() != $quote->getQuoteCurrencyCode()) {
-                return true;
-            }
+        if (!$useOrderCurrency && $quote->getBaseCurrencyCode() != $quote->getQuoteCurrencyCode()) {
+            return true;
         }
 
         return false;

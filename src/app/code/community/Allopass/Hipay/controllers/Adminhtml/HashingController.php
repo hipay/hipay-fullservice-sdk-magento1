@@ -67,12 +67,12 @@ class Allopass_Hipay_Adminhtml_HashingController extends Mage_Adminhtml_Controll
                     Mage::helper('hipay')->synchronizeSecuritySettings($request, $storeId, $scope, $session);
                 }
             }
+
             if (!$atLeastCredential) {
                 $this->_getSession()->addError(
                     $this->__('You must enter credentials to synchronize your configuration.')
                 );
             }
-
         } catch (Exception $e) {
             Mage::logException($e);
             $this->_getSession()->addError(

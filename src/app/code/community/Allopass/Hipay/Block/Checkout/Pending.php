@@ -35,7 +35,6 @@ class Allopass_Hipay_Block_Checkout_Pending extends Mage_Core_Block_Template
     public function getErrorMessage()
     {
         $error = Mage::getSingleton('checkout/session')->getErrorMessage();
-        // Mage::getSingleton('checkout/session')->unsErrorMessage();
         return $error;
     }
 

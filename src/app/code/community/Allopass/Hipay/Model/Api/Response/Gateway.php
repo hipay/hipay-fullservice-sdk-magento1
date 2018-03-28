@@ -49,8 +49,9 @@ class Allopass_Hipay_Model_Api_Response_Gateway extends Allopass_Hipay_Model_Api
 
     public function getTransactionReference()
     {
-        if ($this->getData('transactionReference') == '')
+        if ($this->getData('transactionReference') == '') {
             return $this->getData('reference');
+        }
 
         return $this->getData('transactionReference');
     }

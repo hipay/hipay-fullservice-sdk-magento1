@@ -128,10 +128,10 @@ class Allopass_Hipay_Adminhtml_SplitPaymentController extends Mage_Adminhtml_Con
                     $this->_redirect('*/*/edit', array('split_payment_id' => $model->getId(), '_current' => true));
                     return;
                 }
+
                 // go to grid
                 $this->_redirect('*/*/');
                 return;
-
             } catch (Mage_Core_Exception $e) {
                 $this->_getSession()->addError($e->getMessage());
             } catch (Exception $e) {
@@ -147,7 +147,6 @@ class Allopass_Hipay_Adminhtml_SplitPaymentController extends Mage_Adminhtml_Con
                 array('split_payment_id' => $this->getRequest()->getParam('split_payment_id'))
             );
             return;
-
         }
         $this->_redirect('*/*/');
     }
@@ -177,14 +176,11 @@ class Allopass_Hipay_Adminhtml_SplitPaymentController extends Mage_Adminhtml_Con
                         );
                         break;
                 }
-
             } catch (Exception $e) {
-
                 $this->_getSession()->addException(
                     $e,
                     Mage::helper('hipay')->__('An error occurred while paid the split payment.')
                 );
-
             }
 
             if ($this->getRequest()->getParam('back')) {

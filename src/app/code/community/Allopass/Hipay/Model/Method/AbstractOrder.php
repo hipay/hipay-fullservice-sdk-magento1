@@ -42,6 +42,7 @@ class Allopass_Hipay_Model_Method_AbstractOrder extends Allopass_Hipay_Model_Met
         if (!($data instanceof Varien_Object)) {
             $data = new Varien_Object($data);
         }
+
         $info = $this->getInfoInstance();
         $info->setCcType($this->getConfigData('cctypes'));
 
@@ -50,6 +51,12 @@ class Allopass_Hipay_Model_Method_AbstractOrder extends Allopass_Hipay_Model_Met
         return $this;
     }
 
+    /**
+     * @param string $paymentAction
+     * @param object $stateObject
+     * @return $this
+     * @throws Mage_Core_Exception
+     */
     public function initialize($paymentAction, $stateObject)
     {
         /* @var $payment Mage_Sales_Model_Order_Payment */
@@ -61,10 +68,11 @@ class Allopass_Hipay_Model_Method_AbstractOrder extends Allopass_Hipay_Model_Met
         if ($payment->getAdditionalInformation('use_oneclick') && $customer->getId()) {
             $cardId = $payment->getAdditionalInformation('selected_oneclick_card');
             $card = Mage::getModel('hipay/card')->load($cardId);
-            if ($card->getId() && $card->getCustomerId() == $customer->getId())
+            if ($card->getId() && $card->getCustomerId() == $customer->getId()) {
                 $token = $card->getCcToken();
-            else
+            } else {
                 Mage::throwException(Mage::helper('hipay')->__("Error with your card!"));
+            }
 
             $payment->setAdditionalInformation('token', $token);
         }
@@ -82,8 +90,8 @@ class Allopass_Hipay_Model_Method_AbstractOrder extends Allopass_Hipay_Model_Met
     /**
      * Validate payment method information object
      *
-     * @param   Mage_Payment_Model_Info $info
-     * @return  Mage_Payment_Model_Abstract
+     * @return $this
+     * @throws Mage_Core_Exception
      */
     public function validate()
     {
@@ -96,11 +104,13 @@ class Allopass_Hipay_Model_Method_AbstractOrder extends Allopass_Hipay_Model_Met
         } else {
             $billingCountry = $paymentInfo->getQuote()->getBillingAddress()->getCountryId();
         }
+
         if (!$this->canUseForCountry($billingCountry)) {
             Mage::throwException(
                 Mage::helper('payment')->__('Selected payment type is not allowed for billing country.')
             );
         }
+
         return $this;
     }
 

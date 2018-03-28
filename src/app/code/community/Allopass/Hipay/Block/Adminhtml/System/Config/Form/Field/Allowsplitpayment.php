@@ -48,9 +48,9 @@ class Allopass_Hipay_Block_Adminhtml_System_Config_Form_Field_Allowsplitpayment 
     public function toggleDisabled($element)
     {
         if (!$element->getValue() || $element->getValue() != 1) {
-
             $element->getForm()->getElement($this->_getSplitPaymentElementId($element))->setDisabled('disabled');
         }
+        
         return parent::getHtml();
     }
 

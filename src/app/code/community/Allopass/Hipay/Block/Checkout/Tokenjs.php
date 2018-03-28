@@ -25,8 +25,10 @@ class Allopass_Hipay_Block_Checkout_Tokenjs extends Mage_Core_Block_Template
 
     /**
      * Check if credentials are enter in configuration
+     *
+     * @return bool
      */
-    function hasPublicCredentials()
+    public function hasPublicCredentials()
     {
         return ($this->getConfig()->getApiTokenJSUsername() && $this->getConfig()->getApiTokenJSPublickey())
         || ($this->getConfig()->getApiTokenJSUsernameTest() && $this->getConfig()->getApiTokenJSPublickeyTest());
@@ -52,6 +54,7 @@ class Allopass_Hipay_Block_Checkout_Tokenjs extends Mage_Core_Block_Template
                 'is_test_mode' => $methodInstance->getConfigData('is_test_mode'),
             );
         }
+
         return $methodsData;
     }
 
@@ -72,11 +75,12 @@ class Allopass_Hipay_Block_Checkout_Tokenjs extends Mage_Core_Block_Template
                 $types[$data['code']] = $data['name'];
             }
         }
+
         return $types;
     }
 
     /**
-     * Retrive config json
+     * Retrieve config json
      *
      * @return string
      */

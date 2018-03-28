@@ -97,6 +97,7 @@ class Allopass_Hipay_Model_Rule_Condition_Product_Subselect
         if ($this->getId() != '1') {
             $html .= $this->getRemoveLinkHtml();
         }
+
         return $html;
     }
 
@@ -112,11 +113,6 @@ class Allopass_Hipay_Model_Rule_Condition_Product_Subselect
             return false;
         }
 
-
-//        $value = $this->getValue();
-//        $aggregatorArr = explode('/', $this->getAggregator());
-//        $this->setValue((int)$aggregatorArr[0])->setAggregator($aggregatorArr[1]);
-
         $attr = $this->getAttribute();
         $total = 0;
         foreach ($object->getQuote()->getAllItems() as $item) {
@@ -124,7 +120,6 @@ class Allopass_Hipay_Model_Rule_Condition_Product_Subselect
                 $total += $item->getData($attr);
             }
         }
-//        $this->setAggregator(join('/', $aggregatorArr))->setValue($value);
 
         return $this->validateAttribute($total);
     }

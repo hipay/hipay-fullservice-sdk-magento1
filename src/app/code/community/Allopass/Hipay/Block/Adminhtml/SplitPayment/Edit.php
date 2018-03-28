@@ -24,8 +24,7 @@ class Allopass_Hipay_Block_Adminhtml_SplitPayment_Edit extends Mage_Adminhtml_Bl
 {
     /**
      * Initialize cms page edit block
-     *
-     * @return void
+     * Allopass_Hipay_Block_Adminhtml_SplitPayment_Edit constructor.
      */
     public function __construct()
     {
@@ -43,10 +42,10 @@ class Allopass_Hipay_Block_Adminhtml_SplitPayment_Edit extends Mage_Adminhtml_Bl
             'saveandcontinue',
             array(
                 'label' => Mage::helper('adminhtml')->__('Save and Continue Edit'),
-                'onclick' => 'saveAndContinueEdit(\'' . $this->getUrl(
-                        '*/*/save',
-                        array('_current' => true, 'back' => 'edit')
-                    ) . '\')',
+                'onclick' =>
+                    'saveAndContinueEdit(\''
+                    . $this->getUrl('*/*/save', array('_current' => true, 'back' => 'edit'))
+                    . '\')',
                 'class' => 'save',
             ),
             -100
@@ -57,10 +56,8 @@ class Allopass_Hipay_Block_Adminhtml_SplitPayment_Edit extends Mage_Adminhtml_Bl
                 'payNow',
                 array(
                     'label' => Mage::helper('adminhtml')->__('Pay now'),
-                    'onclick' => 'run(\'' . $this->getUrl(
-                            '*/*/payNow',
-                            array('_current' => true, 'back' => 'edit')
-                        ) . '\')',
+                    'onclick' =>
+                        'run(\'' . $this->getUrl('*/*/payNow', array('_current' => true, 'back' => 'edit')) . '\')',
                     'class' => 'go',
                 ),
                 -120

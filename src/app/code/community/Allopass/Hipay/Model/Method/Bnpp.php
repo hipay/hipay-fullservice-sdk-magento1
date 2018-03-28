@@ -26,8 +26,7 @@ class Allopass_Hipay_Model_Method_Bnpp extends Allopass_Hipay_Model_Method_Abstr
     /**
      * Validate payment method information object
      *
-     * @param   Mage_Payment_Model_Info $info
-     * @return  Mage_Payment_Model_Abstract
+     * @throws Mage_Core_Exception
      */
     public function validate()
     {

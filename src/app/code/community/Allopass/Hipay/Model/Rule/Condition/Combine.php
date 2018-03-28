@@ -90,9 +90,8 @@ class Allopass_Hipay_Model_Rule_Condition_Combine extends Mage_Rule_Model_Condit
             $this->getPrefix() . '__' . $this->getId() . '_' . $this->getPaymentMethodCode() . '__type',
             'hidden',
             array(
-                //'name'    => 'rule_' . $this->getPaymentMethodCode() . '[' . $this->getPrefix() . '][' . $this->getId().'_'. $this->getPaymentMethodCode() . '][type]',
-                'name' => 'rule_' . $this->getPaymentMethodCode() . '[' . $this->getPrefix() . '][' . $this->getId(
-                    ) . '][type]',
+                'name' => 'rule_' . $this->getPaymentMethodCode()
+                    . '[' . $this->getPrefix() . '][' . $this->getId() . '][type]',
                 'value' => $this->getType(),
                 'no_span' => true,
                 'class' => 'hidden',
@@ -108,13 +107,13 @@ class Allopass_Hipay_Model_Rule_Condition_Combine extends Mage_Rule_Model_Condit
                 break;
             }
         }
+
         return $this->getForm()->addField(
             $this->getPrefix() . '__' . $this->getId() . '_' . $this->getPaymentMethodCode() . '__attribute',
             'select',
             array(
-                //'name'=>'rule_' . $this->getPaymentMethodCode() . '['.$this->getPrefix().']['.$this->getId().'_'. $this->getPaymentMethodCode().'][attribute]',
-                'name' => 'rule_' . $this->getPaymentMethodCode() . '[' . $this->getPrefix() . '][' . $this->getId(
-                    ) . '][attribute]',
+                'name' => 'rule_' . $this->getPaymentMethodCode()
+                    . '[' . $this->getPrefix() . '][' . $this->getId() . '][attribute]',
                 'values' => $this->getAttributeSelectOptions(),
                 'value' => $this->getAttribute(),
                 'value_name' => $this->getAttributeName(),
@@ -143,7 +142,6 @@ class Allopass_Hipay_Model_Rule_Condition_Combine extends Mage_Rule_Model_Condit
             $this->getPrefix(),
             $this->getId() . '_' . $this->getPaymentMethodCode()
         );
-        //$elementName = sprintf('rule_'.$this->getPaymentMethodCode().'[%s][%s][operator]', $this->getPrefix(), $this->getId().'_'. $this->getPaymentMethodCode());
         $elementName = sprintf(
             'rule_' . $this->getPaymentMethodCode() . '[%s][%s][operator]',
             $this->getPrefix(),
@@ -167,9 +165,8 @@ class Allopass_Hipay_Model_Rule_Condition_Combine extends Mage_Rule_Model_Condit
     public function getValueElement()
     {
         $elementParams = array(
-            //'name'               => 'rule_'.$this->getPaymentMethodCode().'['.$this->getPrefix().']['.$this->getId().'_'. $this->getPaymentMethodCode().'][value]',
-            'name' => 'rule_' . $this->getPaymentMethodCode() . '[' . $this->getPrefix() . '][' . $this->getId(
-                ) . '][value]',
+            'name' => 'rule_' . $this->getPaymentMethodCode()
+                . '[' . $this->getPrefix() . '][' . $this->getId() . '][value]',
             'value' => $this->getValue(),
             'values' => $this->getValueSelectOptions(),
             'value_name' => $this->getValueName(),
@@ -194,9 +191,8 @@ class Allopass_Hipay_Model_Rule_Condition_Combine extends Mage_Rule_Model_Condit
             $this->getPrefix() . '__' . $this->getId() . '_' . $this->getPaymentMethodCode() . '__new_child',
             'select',
             array(
-                //'name'=>'rule_'.$this->getPaymentMethodCode().'['.$this->getPrefix().']['.$this->getId().'_'. $this->getPaymentMethodCode().'][new_child]',
-                'name' => 'rule_' . $this->getPaymentMethodCode() . '[' . $this->getPrefix() . '][' . $this->getId(
-                    ) . '][new_child]',
+                'name' => 'rule_' . $this->getPaymentMethodCode()
+                    . '[' . $this->getPrefix() . '][' . $this->getId() . '][new_child]',
                 'values' => $this->getNewChildSelectOptions(),
                 'value_name' => $this->getNewChildName(),
             )
@@ -216,9 +212,8 @@ class Allopass_Hipay_Model_Rule_Condition_Combine extends Mage_Rule_Model_Condit
             $this->getPrefix() . '__' . $this->getId() . '_' . $this->getPaymentMethodCode() . '__aggregator',
             'select',
             array(
-                // 'name'=>'rule_'.$this->getPaymentMethodCode().'['.$this->getPrefix().']['.$this->getId().'_'. $this->getPaymentMethodCode().'][aggregator]',
-                'name' => 'rule_' . $this->getPaymentMethodCode() . '[' . $this->getPrefix() . '][' . $this->getId(
-                    ) . '][aggregator]',
+                'name' => 'rule_' . $this->getPaymentMethodCode()
+                    . '[' . $this->getPrefix() . '][' . $this->getId() . '][aggregator]',
                 'values' => $this->getAggregatorSelectOptions(),
                 'value' => $this->getAggregator(),
                 'value_name' => $this->getAggregatorName(),
@@ -228,12 +223,13 @@ class Allopass_Hipay_Model_Rule_Condition_Combine extends Mage_Rule_Model_Condit
 
     public function asHtmlRecursive()
     {
-        $html = $this->asHtml() . '<ul id="' . $this->getPrefix() . '__' . $this->getId(
-            ) . '_' . $this->getPaymentMethodCode() . '__children" class="rule-param-children">';
+        $html = $this->asHtml() . '<ul id="' . $this->getPrefix() . '__'
+            . $this->getId() . '_' . $this->getPaymentMethodCode() . '__children" class="rule-param-children">';
         foreach ($this->getConditions() as $cond) {
             $cond->setPaymentMethodCode($this->getPaymentMethodCode());
             $html .= '<li>' . $cond->asHtmlRecursive() . '</li>';
         }
+
         $html .= '<li>' . $this->getNewChildElement()->getHtml() . '</li></ul>';
         return $html;
     }

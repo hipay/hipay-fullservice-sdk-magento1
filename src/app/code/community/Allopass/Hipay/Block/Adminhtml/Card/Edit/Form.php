@@ -52,6 +52,7 @@ class Allopass_Hipay_Block_Adminhtml_Card_Edit_Form extends Mage_Adminhtml_Block
                 )
             );
         }
+        
         $fieldset->addField(
             'name',
             'text',
@@ -91,9 +92,9 @@ class Allopass_Hipay_Block_Adminhtml_Card_Edit_Form extends Mage_Adminhtml_Block
         );
 
 
-        $fieldset_info = $form->addFieldset('card_info', array('legend' => Mage::helper('hipay')->__('Informations')));
+        $fieldsetInfo = $form->addFieldset('card_info', array('legend' => Mage::helper('hipay')->__('Informations')));
 
-        $fieldset_info->addField(
+        $fieldsetInfo->addField(
             'cc_type',
             'text',
             array(
@@ -104,7 +105,7 @@ class Allopass_Hipay_Block_Adminhtml_Card_Edit_Form extends Mage_Adminhtml_Block
             )
         );
 
-        $fieldset_info->addField(
+        $fieldsetInfo->addField(
             'cc_number_enc',
             'text',
             array(
@@ -115,7 +116,7 @@ class Allopass_Hipay_Block_Adminhtml_Card_Edit_Form extends Mage_Adminhtml_Block
             )
         );
 
-        $fieldset_info->addField(
+        $fieldsetInfo->addField(
             'cc_exp_month',
             'text',
             array(
@@ -126,7 +127,7 @@ class Allopass_Hipay_Block_Adminhtml_Card_Edit_Form extends Mage_Adminhtml_Block
             )
         );
 
-        $fieldset_info->addField(
+        $fieldsetInfo->addField(
             'cc_exp_year',
             'text',
             array(
@@ -138,7 +139,7 @@ class Allopass_Hipay_Block_Adminhtml_Card_Edit_Form extends Mage_Adminhtml_Block
         );
 
 
-        $fieldset_info->addField(
+        $fieldsetInfo->addField(
             'cc_token',
             'text',
             array(

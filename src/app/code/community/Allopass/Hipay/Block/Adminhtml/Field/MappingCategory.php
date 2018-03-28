@@ -103,6 +103,7 @@ class Allopass_Hipay_Block_Adminhtml_Field_MappingCategory extends Mage_Adminhtm
         if (!$this->_labelRenderer) {
             $this->_labelRenderer = $this->getLayout()->createBlock('hipay/adminhtml_field_renderer_label', '');
         }
+
         return $this->_labelRenderer;
     }
 
@@ -122,6 +123,7 @@ class Allopass_Hipay_Block_Adminhtml_Field_MappingCategory extends Mage_Adminhtm
             );
             $this->_listRenderer->setListOptions($options);
         }
+
         return $this->_listRenderer;
     }
 
@@ -134,19 +136,20 @@ class Allopass_Hipay_Block_Adminhtml_Field_MappingCategory extends Mage_Adminhtm
     protected function _getHipayCategoryMapping($codeMagentoCategory)
     {
         $mappingSaved = $this->getElement()->getValue();
-        $id_hipay_category = null;
+        $idHipayCategory = null;
         if (is_array($mappingSaved)) {
             foreach ($mappingSaved as $mapping) {
                 if (is_array($mapping)
                     && array_key_exists('magento_category', $mapping)
                     && $mapping['magento_category'] == $codeMagentoCategory
                 ) {
-                    $id_hipay_category = $mapping['hipay_category'];
+                    $idHipayCategory = $mapping['hipay_category'];
                     break;
                 }
             }
         }
-        return $id_hipay_category;
+        
+        return $idHipayCategory;
     }
 
 

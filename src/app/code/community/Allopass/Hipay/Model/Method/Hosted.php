@@ -63,8 +63,9 @@ class Allopass_Hipay_Model_Method_Hosted extends Allopass_Hipay_Model_Method_Abs
     {
         parent::capture($payment, $amount);
 
-        if ($this->isPreauthorizeCapture($payment) /* || $this->orderDue($payment->getOrder())*/)
+        if ($this->isPreauthorizeCapture($payment)) {
             $this->_preauthorizeCapture($payment, $amount);
+        }
 
         $payment->setSkipTransactionCreation(true);
         return $this;
@@ -85,11 +86,11 @@ class Allopass_Hipay_Model_Method_Hosted extends Allopass_Hipay_Model_Method_Abs
             $cardId = $payment->getAdditionalInformation('selected_oneclick_card');
             $card = Mage::getModel('hipay/card')->load($cardId);
 
-            if ($card->getId() && $card->getCustomerId() == $customer->getId())
+            if ($card->getId() && $card->getCustomerId() == $customer->getId()) {
                 $token = $card->getCcToken();
-            else
+            } else {
                 Mage::throwException(Mage::helper('hipay')->__("Error with your card!"));
-
+            }
         }
 
         $gatewayParams = $this->getGatewayParams($payment, $amount, $token);
@@ -102,17 +103,17 @@ class Allopass_Hipay_Model_Method_Hosted extends Allopass_Hipay_Model_Method_Abs
             $gatewayParams['template'] = $this->getConfigData('display_iframe') ? 'iframe' : $this->getConfigData(
                 'template'
             );
-            if ($this->getConfigData(
-                    'template'
-                ) == 'basic-js' && $gatewayParams['template'] == 'iframe'
-            ) $gatewayParams['template'] .= '-js';
-            $gatewayParams['display_selector'] = $this->getConfigData('display_selector');
-            //$gatewayParams['payment_product_list'] = $this->getConfigData('cctypes');
+            if ($this->getConfigData('template') == 'basic-js' && $gatewayParams['template'] == 'iframe') {
+                $gatewayParams['template'] .= '-js';
+            }
 
-            if ($gatewayParams['country'] == 'BE')
+            $gatewayParams['display_selector'] = $this->getConfigData('display_selector');
+
+            if ($gatewayParams['country'] == 'BE') {
                 $gatewayParams['payment_product_list'] = $this->getConfigData('cctypes');
-            else
+            } else {
                 $gatewayParams['payment_product_list'] = str_replace('bcmc', '', $this->getConfigData('cctypes'));
+            }
 
 
             $gatewayParams['payment_product_category_list'] = "credit-card";
@@ -120,8 +121,9 @@ class Allopass_Hipay_Model_Method_Hosted extends Allopass_Hipay_Model_Method_Abs
                 $this->getConfigData('time_limit_to_pay')
             );
 
-            if (Mage::getStoreConfig('general/store_information/name') != "")
+            if (Mage::getStoreConfig('general/store_information/name') != "") {
                 $gatewayParams['merchant_display_name'] = Mage::getStoreConfig('general/store_information/name');
+            }
 
             // Override params to gateaways
             $gatewayParams = $this->getSpecificsParams($gatewayParams, $payment);

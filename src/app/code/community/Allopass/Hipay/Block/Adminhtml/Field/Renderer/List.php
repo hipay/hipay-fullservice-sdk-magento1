@@ -46,10 +46,12 @@ class Allopass_Hipay_Block_Adminhtml_Field_Renderer_List extends Mage_Core_Block
                 $defaultValue = Mage::helper('hipay')->__('- Please select one delivery method - ');
                 break;
         }
+
         $this->addOption('', $defaultValue);
         foreach ($this->_listOptions as $key => $value) {
             $this->addOption($key, $value);
         }
+        
         return parent::_toHtml();
     }
 

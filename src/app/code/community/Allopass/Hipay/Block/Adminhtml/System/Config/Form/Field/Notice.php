@@ -65,10 +65,8 @@ class Allopass_Hipay_Block_Adminhtml_System_Config_Form_Field_Notice extends Mag
             $nbMappingMissing = Mage::helper('hipay')->checkMappingShippingMethod();
             if ($nbMappingMissing > 0) {
                 $notices[] = $commonWarning . '<div class="nb-mapping-missing">
-                ' . $nbMappingMissing . ' ' . Mage::helper('hipay')->__(
-                        'mappings delivery method are actually missing.'
-                    ) . '</div>';
-
+                ' . $nbMappingMissing . ' '
+                    . Mage::helper('hipay')->__('mappings delivery method are actually missing.') . '</div>';
             }
         }
 
@@ -77,9 +75,8 @@ class Allopass_Hipay_Block_Adminhtml_System_Config_Form_Field_Notice extends Mag
             $nbMappingMissing = Mage::helper('hipay')->checkMappingCategoryMethod();
             if ($nbMappingMissing > 0) {
                 $notices[] = $commonWarning . '<div class="nb-mapping-missing">
-                ' . $nbMappingMissing . ' ' . Mage::helper('hipay')->__(
-                        'mappings categories are actually missing.'
-                    ) . '</div>';
+                ' . $nbMappingMissing . ' '
+                    . Mage::helper('hipay')->__('mappings categories are actually missing.') . '</div>';
             }
         }
 

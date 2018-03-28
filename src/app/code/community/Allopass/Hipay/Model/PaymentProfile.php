@@ -60,8 +60,10 @@ class Allopass_Hipay_Model_PaymentProfile extends Mage_Core_Model_Abstract
             foreach ($paymenTypes as $paymenType) {
                 $result[$paymenType] = $this->getPaymentTypeLabel($paymenType);
             }
+
             return $result;
         }
+
         return $paymenTypes;
     }
 
@@ -73,6 +75,7 @@ class Allopass_Hipay_Model_PaymentProfile extends Mage_Core_Model_Abstract
             case self::PAYMENT_TYPE_RECURRING:
                 return Mage::helper('hipay')->__('Recurring Payment');
         }
+
         return $paymentType;
     }
 
@@ -97,15 +100,18 @@ class Allopass_Hipay_Model_PaymentProfile extends Mage_Core_Model_Abstract
             foreach ($units as $unit) {
                 $result[$unit] = $this->getPeriodUnitLabel($unit);
             }
+
             return $result;
         }
+
         return $units;
     }
 
     /**
      * Render label for specified period unit
      *
-     * @param string $unit
+     * @param $unit
+     * @return string
      */
     public function getPeriodUnitLabel($unit)
     {
@@ -121,6 +127,7 @@ class Allopass_Hipay_Model_PaymentProfile extends Mage_Core_Model_Abstract
             case self::PERIOD_UNIT_YEAR:
                 return Mage::helper('payment')->__('Year');
         }
+
         return $unit;
     }
 
@@ -177,6 +184,5 @@ class Allopass_Hipay_Model_PaymentProfile extends Mage_Core_Model_Abstract
                 return Mage::helper('payment')->__('Payment Reference ID');
         }
     }
-
 
 }

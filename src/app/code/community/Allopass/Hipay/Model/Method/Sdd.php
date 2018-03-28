@@ -37,6 +37,7 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
         if (!($data instanceof Varien_Object)) {
             $data = new Varien_Object($data);
         }
+
         $info = $this->getInfoInstance();
         $info->setCcType('SDD')
             ->setAdditionalInformation('cc_gender', $data->getCcGender())
@@ -149,10 +150,9 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
     }
 
     /**
-     * Validate payment method information object
      *
-     * @param   Mage_Payment_Model_Info $info
-     * @return  Mage_Payment_Model_Abstract
+     * @return $this
+     * @throws Mage_Core_Exception
      */
     public function validate()
     {
@@ -164,32 +164,37 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
         // check if Electronic signature
         $codeElectronicSignature = $this->getConfigData('electronic_signature');
         if ($codeElectronicSignature == 0) {
-
             $iban = new Zend_Validate_Iban();
             if (!$iban->isValid($paymentInfo->getAdditionalInformation('cc_iban'))) {
                 $errorMsg = Mage::helper('payment')->__('Iban is not correct, please enter a valid Iban.');
             }
+
             // variable pour la fonction empty
-            $var1 = $paymentInfo->getAdditionalInformation('cc_firstname');
-            $var2 = $paymentInfo->getAdditionalInformation('cc_lastname');
-            $var3 = $paymentInfo->getAdditionalInformation('cc_code_bic');
-            $var4 = $paymentInfo->getAdditionalInformation('cc_bank_name');
-            if (empty($var1)) {
+            $ccFirstName = $paymentInfo->getAdditionalInformation('cc_firstname');
+            $ccLastName = $paymentInfo->getAdditionalInformation('cc_lastname');
+            $ccCodeBic = $paymentInfo->getAdditionalInformation('cc_code_bic');
+            $ccBankName = $paymentInfo->getAdditionalInformation('cc_bank_name');
+            if (empty($ccFirstName)) {
                 $errorMsg = Mage::helper('payment')->__('Firstname is mandatory.');
             }
-            if (empty($var2)) {
+
+            if (empty($ccLastName)) {
                 $errorMsg = Mage::helper('payment')->__('Lastname is mandatory.');
             }
-            if (empty($var3)) {
+
+            if (empty($ccCodeBic)) {
                 $errorMsg = Mage::helper('payment')->__('Code BIC is not correct, please enter a valid Code BIC.');
             }
-            if (empty($var4)) {
+
+            if (empty($ccBankName)) {
                 $errorMsg = Mage::helper('payment')->__('Bank name is not correct, please enter a valid Bank name.');
             }
+
             if ($errorMsg) {
                 Mage::throwException($errorMsg);
             }
         }
+
         return $this;
     }
 }

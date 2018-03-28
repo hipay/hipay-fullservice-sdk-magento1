@@ -47,8 +47,8 @@ class Allopass_Hipay_Block_Form_Cc extends Allopass_Hipay_Block_Form_Abstract
                     if (!in_array($code, $availableTypes)) {
                         unset($types[$code]);
                     }
-
                 }
+
                 $ordered = array();
                 foreach ($availableTypes as $key) {
                     if (array_key_exists($key, $types)) {
@@ -56,11 +56,11 @@ class Allopass_Hipay_Block_Form_Cc extends Allopass_Hipay_Block_Form_Abstract
                         unset($types[$key]);
                     }
                 }
-                return $ordered;
 
-                //todo order $types
+                return $ordered;
             }
         }
+
         return $types;
     }
 
@@ -77,6 +77,7 @@ class Allopass_Hipay_Block_Form_Cc extends Allopass_Hipay_Block_Form_Abstract
             $months = array_merge($months, $this->_getConfig()->getMonths());
             $this->setData('cc_months', $months);
         }
+
         return $months;
     }
 
@@ -93,6 +94,7 @@ class Allopass_Hipay_Block_Form_Cc extends Allopass_Hipay_Block_Form_Abstract
             $years = array(0 => $this->__('Year')) + $years;
             $this->setData('cc_years', $years);
         }
+
         return $years;
     }
 
@@ -108,14 +110,18 @@ class Allopass_Hipay_Block_Form_Cc extends Allopass_Hipay_Block_Form_Abstract
             if (is_null($configData)) {
                 return true;
             }
+
             return (bool)$configData;
         }
+
         return true;
     }
 
-    /*
-    * Whether switch/solo card type available
-    */
+    /**
+     * Whether switch/solo card type available
+     *
+     * @return bool
+     */
     public function hasSsCardType()
     {
         $availableTypes = explode(',', $this->getMethod()->getConfigData('cctypes'));
@@ -123,6 +129,7 @@ class Allopass_Hipay_Block_Form_Cc extends Allopass_Hipay_Block_Form_Abstract
         if ($availableTypes && count($ssPresenations) > 0) {
             return true;
         }
+
         return false;
     }
 
@@ -139,6 +146,7 @@ class Allopass_Hipay_Block_Form_Cc extends Allopass_Hipay_Block_Form_Abstract
             $year = $first - $index;
             $years[$year] = $year;
         }
+        
         $years = array(0 => $this->__('Year')) + $years;
         return $years;
     }

@@ -97,6 +97,7 @@ class Allopass_Hipay_Model_Rule_Condition_Address extends Mage_Rule_Model_Condit
                 case 'created_at':
                     return 'boolean';
             }
+
             return 'string';
         }
     }
@@ -114,6 +115,7 @@ class Allopass_Hipay_Model_Rule_Condition_Address extends Mage_Rule_Model_Condit
                 case 'created_at':
                     return 'select';
             }
+
             return 'text';
         } else {
             switch ($this->getAttribute()) {
@@ -124,6 +126,7 @@ class Allopass_Hipay_Model_Rule_Condition_Address extends Mage_Rule_Model_Condit
                 case 'created_at':
                     return 'select';
             }
+
             return 'text';
         }
     }
@@ -164,8 +167,10 @@ class Allopass_Hipay_Model_Rule_Condition_Address extends Mage_Rule_Model_Condit
                 default:
                     $options = array();
             }
+
             $this->setData('value_select_options', $options);
         }
+
         return $this->getData('value_select_options');
     }
 
@@ -199,6 +204,7 @@ class Allopass_Hipay_Model_Rule_Condition_Address extends Mage_Rule_Model_Condit
             $toValidate->setBaseGrandTotal($quote->getBaseGrandTotal());
             $toValidate->setBaseCurrencyCode($quote->getBaseCurrencyCode());
         }
+
         $toValidate->setBillingPostcode($address->getPostcode());
         $toValidate->setBillingRegion($address->getRegion());
         $toValidate->setBillingRegionId($address->getRegionId());
@@ -236,7 +242,6 @@ class Allopass_Hipay_Model_Rule_Condition_Address extends Mage_Rule_Model_Condit
                 return '15::20';
             case ($hour > 20 && $hour <= 23):
                 return '20::23';
-
         }
 
         return '';
@@ -248,9 +253,8 @@ class Allopass_Hipay_Model_Rule_Condition_Address extends Mage_Rule_Model_Condit
             $this->getPrefix() . '__' . $this->getId() . '_' . $this->getPaymentMethodCode() . '__type',
             'hidden',
             array(
-                //'name'    => 'rule_' . $this->getPaymentMethodCode() . '[' . $this->getPrefix() . '][' . $this->getId().'_'. $this->getPaymentMethodCode() . '][type]',
-                'name' => 'rule_' . $this->getPaymentMethodCode() . '[' . $this->getPrefix() . '][' . $this->getId(
-                    ) . '][type]',
+                'name' => 'rule_' . $this->getPaymentMethodCode()
+                    . '[' . $this->getPrefix() . '][' . $this->getId() . '][type]',
                 'value' => $this->getType(),
                 'no_span' => true,
                 'class' => 'hidden',
@@ -266,13 +270,13 @@ class Allopass_Hipay_Model_Rule_Condition_Address extends Mage_Rule_Model_Condit
                 break;
             }
         }
+
         return $this->getForm()->addField(
             $this->getPrefix() . '__' . $this->getId() . '_' . $this->getPaymentMethodCode() . '__attribute',
             'select',
             array(
-                //'name'=>'rule_' . $this->getPaymentMethodCode() . '['.$this->getPrefix().']['.$this->getId().'_'. $this->getPaymentMethodCode().'][attribute]',
-                'name' => 'rule_' . $this->getPaymentMethodCode() . '[' . $this->getPrefix() . '][' . $this->getId(
-                    ) . '][attribute]',
+                'name' => 'rule_' . $this->getPaymentMethodCode()
+                    . '[' . $this->getPrefix() . '][' . $this->getId() . '][attribute]',
                 'values' => $this->getAttributeSelectOptions(),
                 'value' => $this->getAttribute(),
                 'value_name' => $this->getAttributeName(),
@@ -301,7 +305,6 @@ class Allopass_Hipay_Model_Rule_Condition_Address extends Mage_Rule_Model_Condit
             $this->getPrefix(),
             $this->getId() . '_' . $this->getPaymentMethodCode()
         );
-        //$elementName = sprintf('rule_'.$this->getPaymentMethodCode().'[%s][%s][operator]', $this->getPrefix(), $this->getId().'_'. $this->getPaymentMethodCode());
         $elementName = sprintf(
             'rule_' . $this->getPaymentMethodCode() . '[%s][%s][operator]',
             $this->getPrefix(),
@@ -325,9 +328,8 @@ class Allopass_Hipay_Model_Rule_Condition_Address extends Mage_Rule_Model_Condit
     public function getValueElement()
     {
         $elementParams = array(
-            //'name'               => 'rule_'.$this->getPaymentMethodCode().'['.$this->getPrefix().']['.$this->getId().'_'. $this->getPaymentMethodCode().'][value]',
-            'name' => 'rule_' . $this->getPaymentMethodCode() . '[' . $this->getPrefix() . '][' . $this->getId(
-                ) . '][value]',
+            'name' => 'rule_' . $this->getPaymentMethodCode()
+                . '[' . $this->getPrefix() . '][' . $this->getId() . '][value]',
             'value' => $this->getValue(),
             'values' => $this->getValueSelectOptions(),
             'value_name' => $this->getValueName(),

@@ -46,6 +46,7 @@ class Allopass_Hipay_Block_Adminhtml_PaymentProfile_Edit_Form extends Mage_Admin
                 )
             );
         }
+        
         $fieldset->addField(
             'name',
             'text',

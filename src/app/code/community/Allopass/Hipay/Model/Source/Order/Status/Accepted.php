@@ -37,20 +37,20 @@ class Allopass_Hipay_Model_Source_Order_Status_Accepted extends Allopass_Hipay_M
         } else {
             $statuses = Mage::getSingleton('sales/order_config')->getStatuses();
         }
+
         $options = array();
-        /*$options[] = array(
-            'value' => '',
-            'label' => Mage::helper('adminhtml')->__('-- Please Select --')
-        );*/
+
         foreach ($statuses as $code => $label) {
-            if ($code != Mage_Sales_Model_Order::STATE_PROCESSING && $code != Mage_Sales_Model_Order::STATE_COMPLETE)
+            if ($code != Mage_Sales_Model_Order::STATE_PROCESSING && $code != Mage_Sales_Model_Order::STATE_COMPLETE) {
                 continue;
+            }
 
             $options[] = array(
                 'value' => $code,
                 'label' => $label
             );
         }
+
         return $options;
     }
 

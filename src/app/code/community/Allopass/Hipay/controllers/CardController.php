@@ -78,6 +78,7 @@ class Allopass_Hipay_CardController extends Mage_Core_Controller_Front_Action
         if ($navigationBlock) {
             $navigationBlock->setActive('hipay/card');
         }
+
         $this->renderLayout();
 
         return $this;
@@ -91,9 +92,9 @@ class Allopass_Hipay_CardController extends Mage_Core_Controller_Front_Action
         if (!$this->_validateFormKey()) {
             return $this->_redirect('*/*/');
         }
+
         // Save data
         if ($this->getRequest()->isPost()) {
-
             $customer = $this->_getSession()->getCustomer();
             $card = Mage::getModel('hipay/card');
             $cardId = $this->getRequest()->getParam('id');
@@ -110,9 +111,8 @@ class Allopass_Hipay_CardController extends Mage_Core_Controller_Front_Action
             }
 
             try {
-
-                $is_default = $this->getRequest()->getPost('is_default');
-                if ($is_default) {
+                $isDefault = $this->getRequest()->getPost('is_default');
+                if ($isDefault) {
                     $cardsByDefault = Mage::getModel('hipay/card')->getCollection()->addFieldToFilter(
                         'customer_id',
                         $customer->getId()
@@ -124,14 +124,13 @@ class Allopass_Hipay_CardController extends Mage_Core_Controller_Front_Action
                 }
 
                 $card->setName($this->getRequest()->getPost('name'));
-                $card->setIsDefault(empty($is_default) ? 0 : 1);
+                $card->setIsDefault(empty($isDefault) ? 0 : 1);
 
                 $card->save();
                 $this->_getSession()->addSuccess($this->__('The card has been saved.'));
                 $this->_redirectSuccess(Mage::getUrl('*/*/index', array('_secure' => true)));
 
                 return $this;
-
             } catch (Mage_Core_Exception $e) {
                 $this->_getSession()->setCardFormData($this->getRequest()->getPost())
                     ->addException($e, $e->getMessage());
@@ -166,9 +165,7 @@ class Allopass_Hipay_CardController extends Mage_Core_Controller_Front_Action
                 return $this->_redirectError(Mage::getUrl('*/*/'));
             }
 
-
             try {
-
                 //Delete the card
                 $card->delete();
                 // display success message
@@ -178,7 +175,6 @@ class Allopass_Hipay_CardController extends Mage_Core_Controller_Front_Action
                 // go to grid
                 $this->_redirect('*/*/');
                 return;
-
             } catch (Exception $e) {
                 // display error message
                 $this->_getSession()->addError($e->getMessage());
@@ -187,12 +183,12 @@ class Allopass_Hipay_CardController extends Mage_Core_Controller_Front_Action
                 return;
             }
         }
+
         // display error message
         $this->_getSession()->addError(Mage::helper('hipay')->__('Unable to find a card to delete.'));
         // go to grid
         $this->_redirect('*/*/');
 
     }
-
 
 }

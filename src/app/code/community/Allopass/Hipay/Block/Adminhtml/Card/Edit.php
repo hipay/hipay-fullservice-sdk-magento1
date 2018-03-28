@@ -22,10 +22,10 @@
  */
 class Allopass_Hipay_Block_Adminhtml_Card_Edit extends Mage_Adminhtml_Block_Widget_Form_Container
 {
+
     /**
      * Initialize cms page edit block
-     *
-     * @return void
+     * Allopass_Hipay_Block_Adminhtml_Card_Edit constructor.
      */
     public function __construct()
     {
@@ -43,10 +43,10 @@ class Allopass_Hipay_Block_Adminhtml_Card_Edit extends Mage_Adminhtml_Block_Widg
             'saveandcontinue',
             array(
                 'label' => Mage::helper('adminhtml')->__('Save and Continue Edit'),
-                'onclick' => 'saveAndContinueEdit(\'' . $this->getUrl(
-                        '*/*/save',
-                        array('_current' => true, 'back' => 'edit')
-                    ) . '\')',
+                'onclick' =>
+                    'saveAndContinueEdit(\'' .
+                    $this->getUrl('*/*/save', array('_current' => true, 'back' => 'edit'))
+                    . '\')',
                 'class' => 'save',
             ),
             -100

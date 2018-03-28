@@ -20,7 +20,6 @@ $installerCustomer->startSetup();
 $entityId = $installerCustomer->getEntityTypeId('customer');
 $attribute = $installerCustomer->getAttribute($entityId, 'hipay_cc_type');
 if (!$attribute) {
-
     $installerCustomer->addAttribute(
         'customer',
         'hipay_cc_type',
@@ -46,7 +45,6 @@ if (!$attribute) {
     $attribute->setData('sort_order', 800);
 
     $attribute->save();
-
 }
 
 $installerCustomer->endSetup();

@@ -54,6 +54,7 @@ class Allopass_Hipay_Model_Source_CcTypeHosted extends Varien_Object
 
             return array_merge($ordered, $types);
         }
+        
         return $types;
     }
 }

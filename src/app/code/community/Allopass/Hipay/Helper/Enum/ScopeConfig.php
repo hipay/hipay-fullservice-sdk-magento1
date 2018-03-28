@@ -76,6 +76,7 @@ abstract class ScopeConfig
                 $label = 'Test MO/TO';
                 break;
         }
+        
         return $label;
     }
 

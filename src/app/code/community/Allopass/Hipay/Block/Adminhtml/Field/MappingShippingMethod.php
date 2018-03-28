@@ -59,7 +59,8 @@ class Allopass_Hipay_Block_Adminhtml_Field_MappingShippingMethod extends Mage_Ad
                             'delay_preparation' => $mapping['delay_preparation'],
                             'delay_delivery' => $mapping['delay_delivery'],
                             'class' => empty($mapping) || (empty($mapping['hipay_delivery_method'])
-                                || empty($mapping['delay_preparation']) || empty($mapping['delay_delivery'])) ? 'warning-mapping' : ''
+                                || empty($mapping['delay_preparation'])
+                                || empty($mapping['delay_delivery'])) ? 'warning-mapping' : ''
                         );
                 }
             }
@@ -122,6 +123,7 @@ class Allopass_Hipay_Block_Adminhtml_Field_MappingShippingMethod extends Mage_Ad
         if (!$this->_labelRenderer) {
             $this->_labelRenderer = $this->getLayout()->createBlock('hipay/adminhtml_field_renderer_label', '');
         }
+
         return $this->_labelRenderer;
     }
 
@@ -141,6 +143,7 @@ class Allopass_Hipay_Block_Adminhtml_Field_MappingShippingMethod extends Mage_Ad
             );
             $this->_listRenderer->setListOptions($options);
         }
+
         return $this->_listRenderer;
     }
 
@@ -160,10 +163,10 @@ class Allopass_Hipay_Block_Adminhtml_Field_MappingShippingMethod extends Mage_Ad
                     && $mapping['magento_shipping_method'] == $codeMagentoCategory
                 ) {
                     return $mapping;
-                    break;
                 }
             }
         }
+        
         return null;
     }
 

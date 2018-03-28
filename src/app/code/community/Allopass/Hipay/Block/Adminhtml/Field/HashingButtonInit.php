@@ -27,7 +27,7 @@ class Allopass_Hipay_Block_Adminhtml_Field_HashingButtonInit extends Mage_Adminh
      *
      * @type string
      */
-    protected $labelButton = "Click";
+    protected $_labelButton = "Click";
 
     /**
      *  Unset Scope
@@ -62,7 +62,7 @@ class Allopass_Hipay_Block_Adminhtml_Field_HashingButtonInit extends Mage_Adminh
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
         $fieldConfig = $element->getFieldConfig();
-        $this->labelButton = $fieldConfig->label_button;
+        $this->_labelButton = $fieldConfig->label_button;
         return $this->_toHtml();
     }
 
@@ -73,11 +73,11 @@ class Allopass_Hipay_Block_Adminhtml_Field_HashingButtonInit extends Mage_Adminh
      */
     public function getLabel()
     {
-        return $this->labelButton;
+        return $this->_labelButton;
     }
 
     /**
-     * Display confirmation message before syncronization
+     * Display confirmation message before synchronization
      *
      * @return string
      */
@@ -90,8 +90,6 @@ class Allopass_Hipay_Block_Adminhtml_Field_HashingButtonInit extends Mage_Adminh
      * Get Path for Synchronize Action
      *
      * @return string
-     * @type url
-     *
      */
     public function getButtonAction()
     {

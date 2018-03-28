@@ -66,12 +66,13 @@ class Allopass_Hipay_Model_Config extends Varien_Object
     }
 
     /**
-     *  Set config data
+     * Set config data
      *
-     * @param    string $key Var path key
-     * @param    int $storeId Store View Id
-     * @param    int $scope Scope
-     * @return   Mage_Core_Store_Config
+     * @param $key
+     * @param $value
+     * @param null $storeId
+     * @param string $scope
+     * @return Mage_Core_Store_Config
      */
     public function setConfigData($key, $value, $storeId = null, $scope = 'default')
     {
@@ -93,6 +94,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
             $value = Mage::getStoreConfig('hipay/' . $key_api . '/' . $key, $storeId);
             $this->setData($index, $value);
         }
+
         return $this->getData($index);
     }
 
@@ -182,6 +184,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
             $value = Mage::getStoreConfigFlag('hipay/hipay_api/' . $key, $storeId);
             $this->setData($key, $value);
         }
+
         return $this->getData($key);
     }
 
@@ -200,6 +203,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
         if ($this->getConfigDataMoto(self::SECRET_PASSPHRASE, $storeId)) {
             return $this->getConfigDataMoto(self::SECRET_PASSPHRASE, $storeId);
         }
+
         return $this->getConfigData(self::SECRET_PASSPHRASE, $storeId);
     }
 
@@ -208,6 +212,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
         if ($this->getConfigDataMoto(self::SECRET_PASSPHRASE_TEST, $storeId)) {
             return $this->getConfigDataMoto(self::SECRET_PASSPHRASE_TEST, $storeId);
         }
+
         return $this->getConfigData(self::SECRET_PASSPHRASE_TEST, $storeId);
     }
 
@@ -321,6 +326,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
                 $types[$data['code']] = $data['name'];
             }
         }
+
         return $types;
     }
 
@@ -339,6 +345,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
                 $types[$data['code']] = $data['code_hipay'];
             }
         }
+
         return $types;
     }
 
@@ -357,6 +364,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
                 $templates[$data['value']] = $data['label'];
             }
         }
+
         return $templates;
     }
 
@@ -375,6 +383,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
                 $types[$data['code_hipay']] = $data['name'];
             }
         }
+
         return $types;
     }
 
@@ -390,6 +399,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
             $monthNum = ($key < 10) ? '0' . $key : $key;
             $data[$key] = $monthNum . ' - ' . $value;
         }
+
         return $data;
     }
 
@@ -407,6 +417,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
             $year = $first + $index;
             $years[$year] = $year;
         }
+        
         return $years;
     }
 

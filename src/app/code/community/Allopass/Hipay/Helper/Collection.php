@@ -298,6 +298,7 @@ EOT;
         foreach ($jsonArr as $item) {
             $collection[$item['categoryCode']] = $item['categoryName'];
         }
+
         return $collection;
     }
 
@@ -323,6 +324,7 @@ EOT;
         foreach ($jsonArr as $item) {
             $collection[$item['code']] = $item['mode'] . '-' . $item['shipping'];
         }
+        
         return $collection;
     }
 

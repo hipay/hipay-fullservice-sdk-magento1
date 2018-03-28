@@ -64,7 +64,6 @@ class Allopass_Hipay_Adminhtml_Sales_Order_CreateController extends Mage_Adminht
                     ->setMethod($order->getPayment()->getMethod())
                     ->setLastRealOrderId($order->getIncrementId());
             } else {
-
                 if (Mage::getSingleton('admin/session')->isAllowed('sales/order/actions/view')) {
                     $this->_redirect('*/sales_order/view', array('order_id' => $order->getId()));
                 } else {
@@ -77,12 +76,14 @@ class Allopass_Hipay_Adminhtml_Sales_Order_CreateController extends Mage_Adminht
             if (!empty($message)) {
                 $this->_getSession()->addError($message);
             }
+
             $this->_redirect('*/*/');
         } catch (Mage_Core_Exception $e) {
             $message = $e->getMessage();
             if (!empty($message)) {
                 $this->_getSession()->addError($message);
             }
+            
             $this->_redirect('*/*/');
         } catch (Exception $e) {
             $this->_getSession()->addException($e, $this->__('Order saving error: %s', $e->getMessage()));
