@@ -5,7 +5,8 @@ $installer = $this;
 
 $installer->startSetup();
 
-$installer->run("
+$installer->run(
+    "
 
 -- DROP TABLE IF EXISTS {$this->getTable('hipay_payment_profile')};
 CREATE TABLE {$this->getTable('hipay_payment_profile')} (
@@ -36,7 +37,6 @@ CREATE TABLE {$this->getTable('hipay_split_payment')} (
 
 "
 );
-
 
 
 $installer->endSetup();

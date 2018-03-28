@@ -27,7 +27,7 @@ class Allopass_Hipay_Block_Adminhtml_Field_MappingShippingMethod extends Mage_Ad
         $mappingSaved = $this->getElement()->getValue();
 
         // Add All Magento categories in Array Rows
-        if (!$mappingSaved || !array_key_exists('magento_code',$mappingSaved[key($mappingSaved)])) {
+        if (!$mappingSaved || !array_key_exists('magento_code', $mappingSaved[key($mappingSaved)])) {
             if (!empty($shippingMethod) && is_array($shippingMethod)) {
                 foreach ($shippingMethod as $code => $label) {
                     $mapping = $this->_getHipayDeliveryMapping($code);
@@ -39,8 +39,8 @@ class Allopass_Hipay_Block_Adminhtml_Field_MappingShippingMethod extends Mage_Ad
                             'delay_preparation' => $mapping['delay_preparation'],
                             'delay_delivery' => $mapping['delay_delivery'],
                             'class' => empty($mapping) || (empty($mapping['hipay_delivery_method'])
-                                    || empty($mapping['delay_preparation']) ||  empty($mapping['delay_delivery']) ) ? 'warning-mapping' : ''
-                    );
+                                || empty($mapping['delay_preparation']) || empty($mapping['delay_delivery'])) ? 'warning-mapping' : ''
+                        );
                 }
             }
         } else {
@@ -114,9 +114,11 @@ class Allopass_Hipay_Block_Adminhtml_Field_MappingShippingMethod extends Mage_Ad
     {
         if (!$this->_listRenderer) {
             $options = Mage::helper('hipay/collection')->getItemsDelivery();
-            $this->_listRenderer = $this->getLayout()->createBlock('hipay/adminhtml_field_renderer_list',
+            $this->_listRenderer = $this->getLayout()->createBlock(
+                'hipay/adminhtml_field_renderer_list',
                 '',
-                array('is_render_to_js_template' => true));
+                array('is_render_to_js_template' => true)
+            );
             $this->_listRenderer->setListOptions($options);
         }
         return $this->_listRenderer;
@@ -134,8 +136,9 @@ class Allopass_Hipay_Block_Adminhtml_Field_MappingShippingMethod extends Mage_Ad
         if (is_array($mappingSaved)) {
             foreach ($mappingSaved as $mapping) {
                 if (is_array($mapping)
-                    && array_key_exists('magento_shipping_method',$mapping)
-                    && $mapping['magento_shipping_method'] == $codeMagentoCategory) {
+                    && array_key_exists('magento_shipping_method', $mapping)
+                    && $mapping['magento_shipping_method'] == $codeMagentoCategory
+                ) {
                     return $mapping;
                     break;
                 }

@@ -6,7 +6,6 @@ class Allopass_Hipay_Adminhtml_Sales_Order_CreateController extends Mage_Adminht
 {
 
 
-   
     /**
      * Saving quote and create order
      */
@@ -32,45 +31,41 @@ class Allopass_Hipay_Adminhtml_Sales_Order_CreateController extends Mage_Adminht
 
             $this->_getSession()->clear();
             Mage::getSingleton('adminhtml/session')->addSuccess($this->__('The order has been created.'));
-            
+
 
             /**
-             * if payment method is hipay so we need to change redirection 
+             * if payment method is hipay so we need to change redirection
              */
-            if(strpos($order->getPayment()->getMethod(), 'hipay') !== false)
-            {
-            	$url = Mage::helper('adminhtml')->getUrl('*/payment/sendRequest',array('_secure' => true));
-            	$this->_redirectUrl($url);
-            
-	            // add order information to the session
-	            Mage::getSingleton('checkout/session')->setLastOrderId($order->getId())
-	            ->setMethod($order->getPayment()->getMethod())
-	            ->setLastRealOrderId($order->getIncrementId());
-            }
-            else 
-            {
-            	
-	             if (Mage::getSingleton('admin/session')->isAllowed('sales/order/actions/view')) {
-	                 $this->_redirect('*/sales_order/view', array('order_id' => $order->getId()));
-	             } else {
-	                 $this->_redirect('*/sales_order/index');
-	            }
+            if (strpos($order->getPayment()->getMethod(), 'hipay') !== false) {
+                $url = Mage::helper('adminhtml')->getUrl('*/payment/sendRequest', array('_secure' => true));
+                $this->_redirectUrl($url);
+
+                // add order information to the session
+                Mage::getSingleton('checkout/session')->setLastOrderId($order->getId())
+                    ->setMethod($order->getPayment()->getMethod())
+                    ->setLastRealOrderId($order->getIncrementId());
+            } else {
+
+                if (Mage::getSingleton('admin/session')->isAllowed('sales/order/actions/view')) {
+                    $this->_redirect('*/sales_order/view', array('order_id' => $order->getId()));
+                } else {
+                    $this->_redirect('*/sales_order/index');
+                }
             }
         } catch (Mage_Payment_Model_Info_Exception $e) {
             $this->_getOrderCreateModel()->saveQuote();
             $message = $e->getMessage();
-            if( !empty($message)) {
+            if (!empty($message)) {
                 $this->_getSession()->addError($message);
             }
             $this->_redirect('*/*/');
-        } catch (Mage_Core_Exception $e){
+        } catch (Mage_Core_Exception $e) {
             $message = $e->getMessage();
-            if( !empty($message)) {
+            if (!empty($message)) {
                 $this->_getSession()->addError($message);
             }
             $this->_redirect('*/*/');
-        }
-        catch (Exception $e){
+        } catch (Exception $e) {
             $this->_getSession()->addException($e, $this->__('Order saving error: %s', $e->getMessage()));
             $this->_redirect('*/*/');
         }

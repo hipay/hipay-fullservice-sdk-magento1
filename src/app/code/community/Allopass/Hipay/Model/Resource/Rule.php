@@ -1,7 +1,6 @@
 <?php
 
 
-
 /**
  * Hipay Rule resource model
  */

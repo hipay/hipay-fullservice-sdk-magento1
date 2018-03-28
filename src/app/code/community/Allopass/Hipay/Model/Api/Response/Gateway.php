@@ -1,7 +1,8 @@
 <?php
+
 /**
  *
- * @method string getState() transaction state. completed,forwarding, pending, declined, error
+ * @method string getState() transaction state. completed, forwarding, pending, declined, error
  * @method array getReason() optional element. Reason why transaction was declined.
  * @method string getForwardUrl() optional element. Merchant must redirect the customer's browser to this URL.
  * @method bool getTest() true if the transaction is a testing transaction, otherwise false
@@ -29,86 +30,86 @@
  */
 class Allopass_Hipay_Model_Api_Response_Gateway extends Allopass_Hipay_Model_Api_Response_Abstract
 {
-	public function getForwardUrl()
-	{
-		return $this->getData('forwardUrl');
-	}
-	
-	public function getAttemptId()
-	{
-		return $this->getData('attemptId');
-	}
-	
-	public function getAuthorizationCode()
-	{
-		return $this->getData('authorizationCode');
-	}
-	
-	
-	public function getTransactionReference()
-	{
-		if($this->getData('transactionReference') == '')
-			return $this->getData('reference');
-		
-		return $this->getData('transactionReference');
-	}
-	
-	
-	public function getDateCreated()
-	{
-		return $this->getData('dateCreated');
-	}
-	
-	
-	public function getDateUpdated()
-	{
-		return $this->getData('dateUpdated');
-	}
-	
-	
-	public function getDateAuthorized()
-	{
-		return $this->getData('dateAuthorized');
-	}
-	
-	public function getAuthorizedAmount()
-	{
-		return $this->getData('authorizedAmount');
-	}
-	
-	public function getCapturedAmount()
-	{
-		return $this->getData('capturedAmount');
-	}
-	
-	public function getRefundedAmount()
-	{
-		return $this->getData('refundedAmount');
-	}
-	
-	public function getIpAddress()
-	{
-		return $this->getData('ipAddress');
-	}
-	
-	public function getIpCountry()
-	{
-		return $this->getData('ipCountry');
-	}
-	
-	public function getPaymentProduct()
-	{
-		return $this->getData('paymentProduct');
-	}
-	
-	public function getPaymentMethod()
-	{
-		return $this->getData('paymentMethod');
-	}
-	
-	public function getFraudScreening()
-	{
-		return $this->getData('fraudScreening');
-	}
-	
+    public function getForwardUrl()
+    {
+        return $this->getData('forwardUrl');
+    }
+
+    public function getAttemptId()
+    {
+        return $this->getData('attemptId');
+    }
+
+    public function getAuthorizationCode()
+    {
+        return $this->getData('authorizationCode');
+    }
+
+
+    public function getTransactionReference()
+    {
+        if ($this->getData('transactionReference') == '')
+            return $this->getData('reference');
+
+        return $this->getData('transactionReference');
+    }
+
+
+    public function getDateCreated()
+    {
+        return $this->getData('dateCreated');
+    }
+
+
+    public function getDateUpdated()
+    {
+        return $this->getData('dateUpdated');
+    }
+
+
+    public function getDateAuthorized()
+    {
+        return $this->getData('dateAuthorized');
+    }
+
+    public function getAuthorizedAmount()
+    {
+        return $this->getData('authorizedAmount');
+    }
+
+    public function getCapturedAmount()
+    {
+        return $this->getData('capturedAmount');
+    }
+
+    public function getRefundedAmount()
+    {
+        return $this->getData('refundedAmount');
+    }
+
+    public function getIpAddress()
+    {
+        return $this->getData('ipAddress');
+    }
+
+    public function getIpCountry()
+    {
+        return $this->getData('ipCountry');
+    }
+
+    public function getPaymentProduct()
+    {
+        return $this->getData('paymentProduct');
+    }
+
+    public function getPaymentMethod()
+    {
+        return $this->getData('paymentMethod');
+    }
+
+    public function getFraudScreening()
+    {
+        return $this->getData('fraudScreening');
+    }
+
 }

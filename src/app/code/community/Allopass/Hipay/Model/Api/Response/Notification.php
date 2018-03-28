@@ -1,7 +1,8 @@
 <?php
+
 /**
  *
- * @method string getState() transaction state. completed,forwarding, pending, declined, error
+ * @method string getState() transaction state. completed, forwarding, pending, declined, error
  * @method array getReason() optional element. Reason why transaction was declined.
  * @method bool getTest() true if the transaction is a testing transaction, otherwise false
  * @method int getMid() your merchant account number (issued to you by Allopass).
@@ -28,6 +29,6 @@
  */
 class Allopass_Hipay_Model_Api_Response_Notification extends Allopass_Hipay_Model_Api_Response_Abstract
 {
-	
-	
+
+
 }

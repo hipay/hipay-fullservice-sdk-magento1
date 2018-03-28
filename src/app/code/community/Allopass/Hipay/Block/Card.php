@@ -12,12 +12,13 @@ class Allopass_Hipay_Block_Card extends Mage_Core_Block_Template
             ->addFieldToSelect('*')
             ->addFieldToFilter('customer_id', Mage::getSingleton('customer/session')->getCustomer()->getId())
             ->addFieldToFilter('cc_status', Allopass_Hipay_Model_Card::STATUS_ENABLED)
-            ->setOrder('card_id', 'desc')
-        ;
+            ->setOrder('card_id', 'desc');
 
         $this->setCards($cards);
 
-        Mage::app()->getFrontController()->getAction()->getLayout()->getBlock('root')->setHeaderTitle(Mage::helper('hipay')->__("My Payment Cards"));
+        Mage::app()->getFrontController()->getAction()->getLayout()->getBlock('root')->setHeaderTitle(
+            Mage::helper('hipay')->__("My Payment Cards")
+        );
     }
 
     protected function _prepareLayout()
@@ -40,10 +41,10 @@ class Allopass_Hipay_Block_Card extends Mage_Core_Block_Template
     {
         return $this->getUrl('*/*/edit', array('card_id' => $card->getId()));
     }
-    
+
     public function canDelete()
     {
-    	return true;
+        return true;
     }
 
 

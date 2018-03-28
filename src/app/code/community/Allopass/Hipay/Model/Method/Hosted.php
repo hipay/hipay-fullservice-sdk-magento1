@@ -1,10 +1,11 @@
 <?php
+
 class Allopass_Hipay_Model_Method_Hosted extends Allopass_Hipay_Model_Method_Abstract
 {
 
-    protected $_canReviewPayment		= true;
+    protected $_canReviewPayment = true;
 
-    protected $_code  = 'hipay_hosted';
+    protected $_code = 'hipay_hosted';
 
     protected $_formBlockType = 'hipay/form_hosted';
     protected $_infoBlockType = 'hipay/info_hosted';
@@ -13,7 +14,7 @@ class Allopass_Hipay_Model_Method_Hosted extends Allopass_Hipay_Model_Method_Abs
     public function getOrderPlaceRedirectUrl()
     {
 
-        return Mage::getUrl(str_replace("_", "/", $this->getCode()).'/sendRequest',array('_secure' => true));
+        return Mage::getUrl(str_replace("_", "/", $this->getCode()) . '/sendRequest', array('_secure' => true));
     }
 
     /**
@@ -32,7 +33,6 @@ class Allopass_Hipay_Model_Method_Hosted extends Allopass_Hipay_Model_Method_Abs
 
         return $this;
     }
-
 
 
     /**
@@ -56,33 +56,36 @@ class Allopass_Hipay_Model_Method_Hosted extends Allopass_Hipay_Model_Method_Abs
         $order = $payment->getOrder();
         $customer = Mage::getModel('customer/customer')->load($order->getCustomerId());
 
-        $request = Mage::getModel('hipay/api_request',array($this));
+        $request = Mage::getModel('hipay/api_request', array($this));
 
         $payment->setAmount($amount);
 
         $token = null;
-        if($payment->getAdditionalInformation('use_oneclick'))
-        {
+        if ($payment->getAdditionalInformation('use_oneclick')) {
             $cardId = $payment->getAdditionalInformation('selected_oneclick_card');
             $card = Mage::getModel('hipay/card')->load($cardId);
 
-            if($card->getId() && $card->getCustomerId() == $customer->getId())
+            if ($card->getId() && $card->getCustomerId() == $customer->getId())
                 $token = $card->getCcToken();
             else
                 Mage::throwException(Mage::helper('hipay')->__("Error with your card!"));
 
         }
 
-        $gatewayParams = $this->getGatewayParams($payment, $amount,$token);
+        $gatewayParams = $this->getGatewayParams($payment, $amount, $token);
 
-        if(is_null($token))
-        {
-            $gatewayParams['payment_product'] = 'cb' ;
+        if (is_null($token)) {
+            $gatewayParams['payment_product'] = 'cb';
 
             $gatewayParams['operation'] = $this->getOperation();
             $gatewayParams['css'] = $this->getConfigData('css_url');
-            $gatewayParams['template'] = $this->getConfigData('display_iframe') ? 'iframe' :  $this->getConfigData('template');
-            if ($this->getConfigData('template') == 'basic-js' && $gatewayParams['template'] == 'iframe') $gatewayParams['template'] .= '-js';
+            $gatewayParams['template'] = $this->getConfigData('display_iframe') ? 'iframe' : $this->getConfigData(
+                'template'
+            );
+            if ($this->getConfigData(
+                    'template'
+                ) == 'basic-js' && $gatewayParams['template'] == 'iframe'
+            ) $gatewayParams['template'] .= '-js';
             $gatewayParams['display_selector'] = $this->getConfigData('display_selector');
             //$gatewayParams['payment_product_list'] = $this->getConfigData('cctypes');
 
@@ -93,43 +96,50 @@ class Allopass_Hipay_Model_Method_Hosted extends Allopass_Hipay_Model_Method_Abs
 
 
             $gatewayParams['payment_product_category_list'] = "credit-card";
-            $gatewayParams['time_limit_to_pay'] =  Mage::helper('hipay')->convertHoursToSecond(
+            $gatewayParams['time_limit_to_pay'] = Mage::helper('hipay')->convertHoursToSecond(
                 $this->getConfigData('time_limit_to_pay')
             );
 
-            if(Mage::getStoreConfig('general/store_information/name') != "")
+            if (Mage::getStoreConfig('general/store_information/name') != "")
                 $gatewayParams['merchant_display_name'] = Mage::getStoreConfig('general/store_information/name');
 
             // Override params to gateaways
-            $gatewayParams = $this->getSpecificsParams($gatewayParams,$payment);
+            $gatewayParams = $this->getSpecificsParams($gatewayParams, $payment);
 
             $this->_debug($gatewayParams);
-            $gatewayResponse = $request->gatewayRequest(Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_HOSTED,$gatewayParams,$payment->getOrder()->getStoreId());
+            $gatewayResponse = $request->gatewayRequest(
+                Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_HOSTED,
+                $gatewayParams,
+                $payment->getOrder()->getStoreId()
+            );
             $this->_debug($gatewayResponse->debug());
 
             // MOTO Redirection
-            if (array_key_exists('eci',$gatewayParams)
+            if (array_key_exists('eci', $gatewayParams)
                 && $gatewayParams['eci'] == '1'
-                && $this->sendMailToCustomer() && strpos($order->getPayment()->getMethod(),'hipay_hosted') !== false){
+                && $this->sendMailToCustomer() && strpos($order->getPayment()->getMethod(), 'hipay_hosted') !== false
+            ) {
                 $payment->setAdditionalInformation('redirectUrl', $gatewayResponse->getForwardUrl());
 
                 return $gatewayParams['moto_url_redirect'];
-            }else{
-                return  $gatewayResponse->getForwardUrl();
+            } else {
+                return $gatewayResponse->getForwardUrl();
             }
-        }
-        else
-        {
+        } else {
             $gatewayParams['operation'] = $this->getOperation();
-            $gatewayParams['payment_product']  = Mage::getSingleton('customer/session')->getCustomer()->getHipayCcType();
+            $gatewayParams['payment_product'] = Mage::getSingleton('customer/session')->getCustomer()->getHipayCcType();
 
             $this->_debug($gatewayParams);
 
-            $gatewayResponse = $request->gatewayRequest(Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_ORDER,$gatewayParams,$payment->getOrder()->getStoreId());
+            $gatewayResponse = $request->gatewayRequest(
+                Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_ORDER,
+                $gatewayParams,
+                $payment->getOrder()->getStoreId()
+            );
 
             $this->_debug($gatewayResponse->debug());
 
-            $redirectUrl =  $this->processResponseToRedirect($gatewayResponse, $payment, $amount);
+            $redirectUrl = $this->processResponseToRedirect($gatewayResponse, $payment, $amount);
 
             return $redirectUrl;
         }

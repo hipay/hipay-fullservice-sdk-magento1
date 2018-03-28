@@ -13,8 +13,8 @@ require_once(dirname(__FILE__) . '/../../Helper/Enum/HashingCode.php');
 
 class Allopass_Hipay_Model_Source_HashingAlgorithm
 {
-	
- 	/**
+
+    /**
      * Options getter
      *
      * @return array

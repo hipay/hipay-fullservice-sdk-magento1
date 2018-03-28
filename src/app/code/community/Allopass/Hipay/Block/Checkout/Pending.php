@@ -1,4 +1,5 @@
 <?php
+
 class Allopass_Hipay_Block_Checkout_Pending extends Mage_Core_Block_Template
 {
     public function getRealOrderId()
@@ -9,7 +10,7 @@ class Allopass_Hipay_Block_Checkout_Pending extends Mage_Core_Block_Template
     /**
      *  Payment custom error message
      *
-     *  @return	  string
+     * @return      string
      */
     public function getErrorMessage()
     {
@@ -21,7 +22,7 @@ class Allopass_Hipay_Block_Checkout_Pending extends Mage_Core_Block_Template
     /**
      * Continue shopping URL
      *
-     *  @return	  string
+     * @return      string
      */
     public function getContinueShoppingUrl()
     {

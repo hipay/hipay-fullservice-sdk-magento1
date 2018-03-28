@@ -1,4 +1,5 @@
 <?php
+
 class Allopass_Hipay_Model_Rule_Condition_Customer extends Mage_Rule_Model_Condition_Abstract
 {
     public function loadAttributeOptions()
@@ -7,7 +8,7 @@ class Allopass_Hipay_Model_Rule_Condition_Customer extends Mage_Rule_Model_Condi
             'orders_count' => Mage::helper('hipay')->__('Orders count'),
             'customer_is_guest' => Mage::helper('sales')->__('Customer is guest'),
             'diff_addresses' => Mage::helper('hipay')->__('Billing and shipping addresses are differents'),
-        	'customer_group' => Mage::helper('adminhtml')->__('Customer Groups')
+            'customer_group' => Mage::helper('adminhtml')->__('Customer Groups')
         );
 
         $this->setAttributeOption($attributes);
@@ -20,10 +21,10 @@ class Allopass_Hipay_Model_Rule_Condition_Customer extends Mage_Rule_Model_Condi
         switch ($this->getAttribute()) {
             case 'orders_count':
                 return 'numeric';
-			case 'customer_is_guest': 
-			case 'diff_addresses':
-				return 'boolean';
-			case 'customer_group':
+            case 'customer_is_guest':
+            case 'diff_addresses':
+                return 'boolean';
+            case 'customer_group':
                 return 'multiselect';
         }
         return 'string';
@@ -31,9 +32,9 @@ class Allopass_Hipay_Model_Rule_Condition_Customer extends Mage_Rule_Model_Condi
 
     public function getValueElementType()
     {
-    	switch ($this->getAttribute()) {
-			case 'customer_is_guest': 
-			case 'diff_addresses':
+        switch ($this->getAttribute()) {
+            case 'customer_is_guest':
+            case 'diff_addresses':
                 return 'select';
             case 'customer_group':
                 return 'multiselect';
@@ -46,13 +47,13 @@ class Allopass_Hipay_Model_Rule_Condition_Customer extends Mage_Rule_Model_Condi
         if (!$this->hasData('value_select_options')) {
             switch ($this->getAttribute()) {
                 case 'customer_is_guest':
-				case 'diff_addresses':
+                case 'diff_addresses':
                     $options = Mage::getModel('adminhtml/system_config_source_yesno')
                         ->toOptionArray();
                     break;
-               case 'customer_group':
+                case 'customer_group':
                     $options = Mage::getModel('adminhtml/system_config_source_customer_group_multiselect')
-                    	->toOptionArray();
+                        ->toOptionArray();
                     break;
                 default:
                     $options = array();
@@ -70,83 +71,94 @@ class Allopass_Hipay_Model_Rule_Condition_Customer extends Mage_Rule_Model_Condi
      */
     public function validate(Varien_Object $object)
     {
-    	
-    	
-    	/* @var $object Mage_Sales_Model_Order|Mage_Sales_Model_Quote */
-    	
-		
-		//Get infos from billing address
-		$toValidate = new Varien_Object();
-		
-		$customer_id = $object->getCustomerId();
-		$orders_count = Mage::getModel('sales/order')->getCollection()->addAttributeToFilter('customer_id',$customer_id)->count();
-		$toValidate->setOrdersCount($orders_count);
-		$toValidate->setCustomerIsGuest(is_null($object->getCustomerIsGuest()) ? 0 : $object->getCustomerIsGuest());
-		$toValidate->setDiffAddresses($this->_addressesesAreDifferent($object));
-		$toValidate->setCustomerGroup($object->getCustomerGroupId());
-		
-		return parent::validate($toValidate);
+
+
+        /* @var $object Mage_Sales_Model_Order|Mage_Sales_Model_Quote */
+
+
+        //Get infos from billing address
+        $toValidate = new Varien_Object();
+
+        $customer_id = $object->getCustomerId();
+        $orders_count = Mage::getModel('sales/order')->getCollection()->addAttributeToFilter(
+            'customer_id',
+            $customer_id
+        )->count();
+        $toValidate->setOrdersCount($orders_count);
+        $toValidate->setCustomerIsGuest(is_null($object->getCustomerIsGuest()) ? 0 : $object->getCustomerIsGuest());
+        $toValidate->setDiffAddresses($this->_addressesesAreDifferent($object));
+        $toValidate->setCustomerGroup($object->getCustomerGroupId());
+
+        return parent::validate($toValidate);
 
     }
 
-	/**
-	 * @param Mage_Sales_Model_Order $order
-	 * @return boolean $isDifferent
-	 */
-	protected function _addressesesAreDifferent($order)
-	{
-		$isDifferent = 0;
-		if($order->getIsVirtual())
-			return $isDifferent;
-		
-		
-		$billingAddress = $order->getBillingAddress();
-		$shippingAddress = $order->getShippingAddress();
-		$methods = array('getStreetFull','getCity','getCountryId','getPostcode','getRegionId');
-		
-		foreach($methods as $method_name)
-		{
-			$billingValue = call_user_func(array($billingAddress, $method_name));
-			$shippingValue = call_user_func(array($shippingAddress,$method_name));
-			if($billingValue != $shippingValue)
-			{
-				$isDifferent =  1;
-				break;
-			}
-		}
-		
-		return $isDifferent;
-	}
-	
- 	public function getTypeElement()
-  {
-        return $this->getForm()->addField($this->getPrefix() . '__' . $this->getId() .'_'. $this->getPaymentMethodCode() . '__type', 'hidden', array(
-            //'name'    => 'rule_' . $this->getPaymentMethodCode() . '[' . $this->getPrefix() . '][' . $this->getId().'_'. $this->getPaymentMethodCode() . '][type]',
-            'name'    => 'rule_' . $this->getPaymentMethodCode() . '[' . $this->getPrefix() . '][' . $this->getId() . '][type]',
-            'value'   => $this->getType(),
-            'no_span' => true,
-            'class'   => 'hidden',
-        ));
+    /**
+     * @param Mage_Sales_Model_Order $order
+     * @return boolean $isDifferent
+     */
+    protected function _addressesesAreDifferent($order)
+    {
+        $isDifferent = 0;
+        if ($order->getIsVirtual())
+            return $isDifferent;
+
+
+        $billingAddress = $order->getBillingAddress();
+        $shippingAddress = $order->getShippingAddress();
+        $methods = array('getStreetFull', 'getCity', 'getCountryId', 'getPostcode', 'getRegionId');
+
+        foreach ($methods as $method_name) {
+            $billingValue = call_user_func(array($billingAddress, $method_name));
+            $shippingValue = call_user_func(array($shippingAddress, $method_name));
+            if ($billingValue != $shippingValue) {
+                $isDifferent = 1;
+                break;
+            }
+        }
+
+        return $isDifferent;
     }
 
-	public function getAttributeElement()
- {
+    public function getTypeElement()
+    {
+        return $this->getForm()->addField(
+            $this->getPrefix() . '__' . $this->getId() . '_' . $this->getPaymentMethodCode() . '__type',
+            'hidden',
+            array(
+                //'name'    => 'rule_' . $this->getPaymentMethodCode() . '[' . $this->getPrefix() . '][' . $this->getId().'_'. $this->getPaymentMethodCode() . '][type]',
+                'name' => 'rule_' . $this->getPaymentMethodCode() . '[' . $this->getPrefix() . '][' . $this->getId(
+                    ) . '][type]',
+                'value' => $this->getType(),
+                'no_span' => true,
+                'class' => 'hidden',
+            )
+        );
+    }
+
+    public function getAttributeElement()
+    {
         if (is_null($this->getAttribute())) {
             foreach ($this->getAttributeOption() as $k => $v) {
                 $this->setAttribute($k);
                 break;
             }
         }
-        return $this->getForm()->addField($this->getPrefix().'__'.$this->getId().'_'. $this->getPaymentMethodCode().'__attribute', 'select', array(
-            //'name'=>'rule_' . $this->getPaymentMethodCode() . '['.$this->getPrefix().']['.$this->getId().'_'. $this->getPaymentMethodCode().'][attribute]',
-             'name'=>'rule_' . $this->getPaymentMethodCode() . '['.$this->getPrefix().']['.$this->getId().'][attribute]',
-            'values'=>$this->getAttributeSelectOptions(),
-            'value'=>$this->getAttribute(),
-            'value_name'=>$this->getAttributeName(),
-        ))->setRenderer(Mage::getBlockSingleton('rule/editable'));
+        return $this->getForm()->addField(
+            $this->getPrefix() . '__' . $this->getId() . '_' . $this->getPaymentMethodCode() . '__attribute',
+            'select',
+            array(
+                //'name'=>'rule_' . $this->getPaymentMethodCode() . '['.$this->getPrefix().']['.$this->getId().'_'. $this->getPaymentMethodCode().'][attribute]',
+                'name' => 'rule_' . $this->getPaymentMethodCode() . '[' . $this->getPrefix() . '][' . $this->getId(
+                    ) . '][attribute]',
+                'values' => $this->getAttributeSelectOptions(),
+                'value' => $this->getAttribute(),
+                'value_name' => $this->getAttributeName(),
+            )
+        )->setRenderer(Mage::getBlockSingleton('rule/editable'));
     }
-	
-	/**
+
+    /**
      * Retrieve Condition Operator element Instance
      * If the operator value is empty - define first available operator value as default
      *
@@ -162,37 +174,51 @@ class Allopass_Hipay_Model_Rule_Condition_Customer extends Mage_Rule_Model_Condi
             }
         }
 
-        $elementId   = sprintf('%s__%s__operator', $this->getPrefix(), $this->getId().'_'. $this->getPaymentMethodCode());
+        $elementId = sprintf(
+            '%s__%s__operator',
+            $this->getPrefix(),
+            $this->getId() . '_' . $this->getPaymentMethodCode()
+        );
         //$elementName = sprintf('rule_'.$this->getPaymentMethodCode().'[%s][%s][operator]', $this->getPrefix(), $this->getId().'_'. $this->getPaymentMethodCode());
-        $elementName = sprintf('rule_'.$this->getPaymentMethodCode().'[%s][%s][operator]', $this->getPrefix(), $this->getId());      
-        $element     = $this->getForm()->addField($elementId, 'select', array(
-            'name'          => $elementName,
-            'values'        => $options,
-            'value'         => $this->getOperator(),
-            'value_name'    => $this->getOperatorName(),
-        ));
+        $elementName = sprintf(
+            'rule_' . $this->getPaymentMethodCode() . '[%s][%s][operator]',
+            $this->getPrefix(),
+            $this->getId()
+        );
+        $element = $this->getForm()->addField(
+            $elementId,
+            'select',
+            array(
+                'name' => $elementName,
+                'values' => $options,
+                'value' => $this->getOperator(),
+                'value_name' => $this->getOperatorName(),
+            )
+        );
         $element->setRenderer(Mage::getBlockSingleton('rule/editable'));
 
         return $element;
     }
-	
-	 public function getValueElement()
-  {
+
+    public function getValueElement()
+    {
         $elementParams = array(
             //'name'               => 'rule_'.$this->getPaymentMethodCode().'['.$this->getPrefix().']['.$this->getId().'_'. $this->getPaymentMethodCode().'][value]',
-            'name'               => 'rule_'.$this->getPaymentMethodCode().'['.$this->getPrefix().']['.$this->getId().'][value]',
-            'value'              => $this->getValue(),
-            'values'             => $this->getValueSelectOptions(),
-            'value_name'         => $this->getValueName(),
+            'name' => 'rule_' . $this->getPaymentMethodCode() . '[' . $this->getPrefix() . '][' . $this->getId(
+                ) . '][value]',
+            'value' => $this->getValue(),
+            'values' => $this->getValueSelectOptions(),
+            'value_name' => $this->getValueName(),
             'after_element_html' => $this->getValueAfterElementHtml(),
-            'explicit_apply'     => $this->getExplicitApply(),
+            'explicit_apply' => $this->getExplicitApply(),
         );
-        if ($this->getInputType()=='date') {
+        if ($this->getInputType() == 'date') {
             // date format intentionally hard-coded
             $elementParams['input_format'] = Varien_Date::DATE_INTERNAL_FORMAT;
-            $elementParams['format']       = Varien_Date::DATE_INTERNAL_FORMAT;
+            $elementParams['format'] = Varien_Date::DATE_INTERNAL_FORMAT;
         }
-        return $this->getForm()->addField($this->getPrefix().'__'.$this->getId().'_'. $this->getPaymentMethodCode().'__value',
+        return $this->getForm()->addField(
+            $this->getPrefix() . '__' . $this->getId() . '_' . $this->getPaymentMethodCode() . '__value',
             $this->getValueElementType(),
             $elementParams
         )->setRenderer($this->getValueElementRenderer());

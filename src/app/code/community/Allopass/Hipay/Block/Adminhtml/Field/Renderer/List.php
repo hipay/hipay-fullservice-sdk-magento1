@@ -18,7 +18,7 @@ class Allopass_Hipay_Block_Adminhtml_Field_Renderer_List extends Mage_Core_Block
     {
         $this->setName($this->inputName);
 
-        switch ($this->column_name){
+        switch ($this->column_name) {
             case "hipay_category":
                 $defaultValue = Mage::helper('hipay')->__('- Please select one category - ');
                 break;
@@ -38,7 +38,8 @@ class Allopass_Hipay_Block_Adminhtml_Field_Renderer_List extends Mage_Core_Block
      *
      * @param $options
      */
-    public function setListOptions($options){
+    public function setListOptions($options)
+    {
         $this->_listOptions = $options;
     }
 }

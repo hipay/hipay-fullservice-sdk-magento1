@@ -144,12 +144,14 @@ class Allopass_Hipay_Model_Api_Request
     {
         if (is_null($this->_client)) {
             //adapter options
-            $config = array('curloptions' => array(
-                //CURLOPT_USERPWD=>$credentials,
-                //CURLOPT_HTTPHEADER => array('Accept: application/json'),
-                CURLOPT_FAILONERROR => false,
-                CURLOPT_HEADER => false,
-                CURLOPT_RETURNTRANSFER => true),
+            $config = array(
+                'curloptions' => array(
+                    //CURLOPT_USERPWD=>$credentials,
+                    //CURLOPT_HTTPHEADER => array('Accept: application/json'),
+                    CURLOPT_FAILONERROR => false,
+                    CURLOPT_HEADER => false,
+                    CURLOPT_RETURNTRANSFER => true
+                ),
             );
 
             // ----------------------------------------------------------------------
@@ -178,8 +180,12 @@ class Allopass_Hipay_Model_Api_Request
                 $this->_client = new Zend_Http_Client();
                 //$adapter->setConfig($config);
                 $this->_client->setConfig($config);
-                $this->_client->setHeaders(array('Content-Type' => 'application/xml',
-                    'Accept' => 'application/json'));
+                $this->_client->setHeaders(
+                    array(
+                        'Content-Type' => 'application/xml',
+                        'Accept' => 'application/json'
+                    )
+                );
 
                 $this->_client->setAdapter($adapter);
 
@@ -199,7 +205,8 @@ class Allopass_Hipay_Model_Api_Request
      * If Environment exist, Do not take payment method configuration
      *
      */
-    protected function setAuthentification() {
+    protected function setAuthentification()
+    {
         if (!empty($this->_environment)) {
             switch ($this->_environment) {
                 case ScopeConfig::PRODUCTION:
@@ -227,8 +234,13 @@ class Allopass_Hipay_Model_Api_Request
         $this->_client->setAuth($apiUsername, $apiPassword, Zend_Http_Client::AUTH_BASIC);
     }
 
-    protected function _request($uri, $params = array(), $method = Zend_Http_Client::POST, $storeId = null, $throwException = true)
-    {
+    protected function _request(
+        $uri,
+        $params = array(),
+        $method = Zend_Http_Client::POST,
+        $storeId = null,
+        $throwException = true
+    ) {
 
         if ($method == Zend_Http_Client::POST)
             $this->getClient()->setParameterPost($params);
@@ -307,7 +319,10 @@ class Allopass_Hipay_Model_Api_Request
         $uri = $this->getVaultApiEndpoint($storeId) . $action . "/";
 
         /* @var $response Allopass_Hipay_Model_Api_Response_Vault */
-        $response = Mage::getSingleton('hipay/api_response_vault', $this->_request($uri, $params, $this->getMethodHttp($action), $storeId));
+        $response = Mage::getSingleton(
+            'hipay/api_response_vault',
+            $this->_request($uri, $params, $this->getMethodHttp($action), $storeId)
+        );
 
         return $response;
     }
@@ -320,8 +335,13 @@ class Allopass_Hipay_Model_Api_Request
      * @param string $environment
      * @return Allopass_Hipay_Model_Response_Abstract
      */
-    public function gatewayRequest($action, $params, $storeId = null, $typeResponse = self::TYPE_RESPONSE_GATEWAY, $environment = null)
-    {
+    public function gatewayRequest(
+        $action,
+        $params,
+        $storeId = null,
+        $typeResponse = self::TYPE_RESPONSE_GATEWAY,
+        $environment = null
+    ) {
         $this->setStoreId($storeId);
         $uri = $this->getGatewayApiEndpoint($storeId) . $action;
 
@@ -384,7 +404,8 @@ class Allopass_Hipay_Model_Api_Request
      * @param ScopeConfig $environment
      * @return $this
      */
-    public function setEnvironment($environment) {
+    public function setEnvironment($environment)
+    {
         $this->_environment = $environment;
         return $this;
     }
@@ -395,8 +416,9 @@ class Allopass_Hipay_Model_Api_Request
      *
      * @return string
      */
-    public function getEnvironment() {
-        return  $this->_environment ;
+    public function getEnvironment()
+    {
+        return $this->_environment;
     }
 }
 

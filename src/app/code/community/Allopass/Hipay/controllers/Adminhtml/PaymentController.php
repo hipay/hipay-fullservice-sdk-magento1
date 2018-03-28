@@ -1,4 +1,5 @@
 <?php
+
 class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controller_Action
 {
     /**
@@ -24,7 +25,10 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
 
         try {
             $order->getPayment()->accept();
-            $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, Allopass_Hipay_Model_Method_Cc::STATUS_PENDING_CAPTURE);
+            $order->setState(
+                Mage_Sales_Model_Order::STATE_PROCESSING,
+                Allopass_Hipay_Model_Method_Cc::STATUS_PENDING_CAPTURE
+            );
             $message = $this->__('The payment has been accepted.');
             $order->save();
             $this->_getSession()->addSuccess($message);
@@ -87,7 +91,7 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
         }
 
         // Send Mail to customer with payment information
-        $url = $payment ->getAdditionalInformation('redirectUrl');
+        $url = $payment->getAdditionalInformation('redirectUrl');
         if ($url && (strpos($order->getPayment()->getMethod(), 'hipay_hosted') !== false)) {
             $receiver = Mage::getModel('customer/customer')->load($payment->getOrder()->getCustomerId());
             Mage::helper('hipay')->sendLinkPaymentEmail($receiver, $payment->getOrder());
@@ -121,15 +125,32 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
 
                             $additionalInfo = $profile->getAdditionalInfo();
 
-                            $this->_order->getPayment()->setCcType(isset($additionalInfo['ccType']) ? $additionalInfo['ccType'] : "");
-                            $this->_order->getPayment()->setCcExpMonth(isset($additionalInfo['ccExpMonth']) ? $additionalInfo['ccExpMonth'] : "");
-                            $this->_order->getPayment()->setCcExpYear(isset($additionalInfo['ccExpYear']) ? $additionalInfo['ccExpYear'] : "");
-                            $this->_order->getPayment()->setAdditionalInformation('token', isset($additionalInfo['token']) ? $additionalInfo['token'] : "");
-                            $this->_order->getPayment()->setAdditionalInformation('create_oneclick', isset($additionalInfo['create_oneclick']) ? $additionalInfo['create_oneclick'] : 1);
-                            $this->_order->getPayment()->setAdditionalInformation('use_oneclick', isset($additionalInfo['use_oneclick']) ? $additionalInfo['use_oneclick'] : 0);
-                            $this->_order->getPayment()->setAdditionalInformation('selected_oneclick_card', isset($additionalInfo['selected_oneclick_card']) ? $additionalInfo['selected_oneclick_card'] : 0);
+                            $this->_order->getPayment()->setCcType(
+                                isset($additionalInfo['ccType']) ? $additionalInfo['ccType'] : ""
+                            );
+                            $this->_order->getPayment()->setCcExpMonth(
+                                isset($additionalInfo['ccExpMonth']) ? $additionalInfo['ccExpMonth'] : ""
+                            );
+                            $this->_order->getPayment()->setCcExpYear(
+                                isset($additionalInfo['ccExpYear']) ? $additionalInfo['ccExpYear'] : ""
+                            );
+                            $this->_order->getPayment()->setAdditionalInformation(
+                                'token',
+                                isset($additionalInfo['token']) ? $additionalInfo['token'] : ""
+                            );
+                            $this->_order->getPayment()->setAdditionalInformation(
+                                'create_oneclick',
+                                isset($additionalInfo['create_oneclick']) ? $additionalInfo['create_oneclick'] : 1
+                            );
+                            $this->_order->getPayment()->setAdditionalInformation(
+                                'use_oneclick',
+                                isset($additionalInfo['use_oneclick']) ? $additionalInfo['use_oneclick'] : 0
+                            );
+                            $this->_order->getPayment()->setAdditionalInformation(
+                                'selected_oneclick_card',
+                                isset($additionalInfo['selected_oneclick_card']) ? $additionalInfo['selected_oneclick_card'] : 0
+                            );
                         }
-
 
 
                         return $this->_order; //because only one nominal item in cart is authorized and Hipay not manage many profiles
@@ -160,7 +181,7 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
      */
     protected function _getMethodInstance()
     {
-        $modelName = Mage::getStoreConfig('payment/'.$this->getCheckout()->getMethod()."/model");
+        $modelName = Mage::getStoreConfig('payment/' . $this->getCheckout()->getMethod() . "/model");
         return Mage::getSingleton($modelName);
     }
 
@@ -169,15 +190,14 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
         if (($profileIds = Mage::getSingleton('checkout/session')->getLastRecurringProfileIds())) {
             if (is_array($profileIds)) {
                 /* @var $gatewayResponse Allopass_Hipay_Model_Api_Response_Gateway */
-                $gatewayResponse  = Mage::getSingleton('hipay/api_response_gateway', $this->getRequest()->getParams());
+                $gatewayResponse = Mage::getSingleton('hipay/api_response_gateway', $this->getRequest()->getParams());
                 $collection = Mage::getModel('sales/recurring_profile')->getCollection()
-                    ->addFieldToFilter('profile_id', array('in' => $profileIds))
-                ;
+                    ->addFieldToFilter('profile_id', array('in' => $profileIds));
                 $profiles = array();
                 foreach ($collection as $profile) {
                     $additionalInfo = array();
                     $additionalInfo['ccType'] = $gatewayResponse->getBrand();
-                    $additionalInfo['ccExpMonth'] = $gatewayResponse->getCardExpiryMonth() ;
+                    $additionalInfo['ccExpMonth'] = $gatewayResponse->getCardExpiryMonth();
                     $additionalInfo['ccExpYear'] = $gatewayResponse->getCardExpiryYear();
                     $additionalInfo['token'] = $gatewayResponse->getToken();
                     $additionalInfo['transaction_id'] = $gatewayResponse->getTransactionReference();
@@ -208,7 +228,7 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
         $payment = $order->getPayment();
 
         /* @var $gatewayResponse Allopass_Hipay_Model_Api_Response_Gateway */
-        $gatewayResponse  = Mage::getSingleton('hipay/api_response_gateway', $this->getRequest()->getParams());
+        $gatewayResponse = Mage::getSingleton('hipay/api_response_gateway', $this->getRequest()->getParams());
 
         $this->_getMethodInstance()->processResponseToRedirect($gatewayResponse, $payment, $order->getBaseTotalDue());
     }
@@ -254,7 +274,7 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
         $amount = $profile->getBillingAmount() + $profile->getTaxAmount() + $profile->getShippingAmount();
 
         if ($this->isInitialProfileOrder($profile)) {
-            $amount += $profile->getInitAmount() ;
+            $amount += $profile->getInitAmount();
         }
 
         return $amount;

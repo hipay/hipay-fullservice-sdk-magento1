@@ -265,6 +265,7 @@ EOT;
         ]
         
 EOT;
+
     /**
      *  Return HiPay's Category
      *

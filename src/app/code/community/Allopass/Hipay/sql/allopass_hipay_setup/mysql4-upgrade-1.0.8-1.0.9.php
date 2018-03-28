@@ -5,7 +5,8 @@ $installer = $this;
 
 $installer->startSetup();
 
-$installer->run("
+$installer->run(
+    "
 
 CREATE TABLE {$this->getTable('hipay_customer_card')} (
   `card_id` int(10) unsigned NOT NULL auto_increment,
@@ -26,7 +27,6 @@ CREATE TABLE {$this->getTable('hipay_customer_card')} (
 
 "
 );
-
 
 
 $installer->endSetup();

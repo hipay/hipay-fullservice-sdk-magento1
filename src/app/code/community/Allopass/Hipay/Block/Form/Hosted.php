@@ -1,4 +1,5 @@
 <?php
+
 class Allopass_Hipay_Block_Form_Hosted extends Allopass_Hipay_Block_Form_Abstract
 {
     protected function _construct()

@@ -1,6 +1,7 @@
 <?php
 
-class Allopass_Hipay_Block_Adminhtml_System_Config_Form_Field_ListDisabled extends Mage_Adminhtml_Block_System_Config_Form_Field {
+class Allopass_Hipay_Block_Adminhtml_System_Config_Form_Field_ListDisabled extends Mage_Adminhtml_Block_System_Config_Form_Field
+{
 
     /**
      *  Set element Disabled
@@ -8,7 +9,8 @@ class Allopass_Hipay_Block_Adminhtml_System_Config_Form_Field_ListDisabled exten
      * @param Varien_Data_Form_Element_Abstract $element
      * @return string
      */
-    protected function _getElementHtml($element) {
+    protected function _getElementHtml($element)
+    {
         $element->setDisabled('disabled');
         return parent::_getElementHtml($element);
     }

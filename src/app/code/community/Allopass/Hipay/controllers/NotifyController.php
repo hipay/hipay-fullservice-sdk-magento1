@@ -32,7 +32,11 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
         $orderArr = $response->getOrder();
         $order = Mage::getModel('sales/order')->loadByIncrementId($orderArr['id']);
 
-        if (!$order->getId() && (strpos($orderArr['id'], 'recurring') === false && strpos($orderArr['id'], 'split') === false)) {
+        if (!$order->getId() && (strpos($orderArr['id'], 'recurring') === false && strpos(
+                    $orderArr['id'],
+                    'split'
+                ) === false)
+        ) {
             $this->getResponse()->setBody("Order not found in notification");
             $this->getResponse()->setHttpResponseCode(403);
             return;
@@ -46,7 +50,9 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
                 /* @var $profile Mage_Sales_Model_Recurring_Profile */
                 $profile = Mage::getModel('sales/recurring_profile')->load($profileId);
                 if (!$profile->getId()) {
-                    Mage::app()->getResponse()->setBody(Mage::helper('hipay')->__("Profile for ID: %d doesn't exists (Recurring).", $profileId));
+                    Mage::app()->getResponse()->setBody(
+                        Mage::helper('hipay')->__("Profile for ID: %d doesn't exists (Recurring).", $profileId)
+                    );
                 }
 
             } else
@@ -85,7 +91,11 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
         $transactionId = $response->getTransactionReference();
 
         // Move Notification before processing
-        $message = Mage::helper('hipay')->__("Notification from Hipay:") . " " . Mage::helper('hipay')->__("status") . ": code-" . $response->getStatus() . " Message: " . $response->getMessage() . " " . Mage::helper('hipay')->__('amount: %s', (string)$amount);
+        $message = Mage::helper('hipay')->__("Notification from Hipay:") . " " . Mage::helper('hipay')->__(
+                "status"
+            ) . ": code-" . $response->getStatus() . " Message: " . $response->getMessage() . " " . Mage::helper(
+                'hipay'
+            )->__('amount: %s', (string)$amount);
 
         $order->addStatusToHistory($order->getStatus(), $message);
         $order->save();
@@ -105,8 +115,10 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
      * @param Allopass_Hipay_Model_Api_Response_Notification $response
      * @return Mage_Sales_Model_Order
      */
-    protected function createProfileOrder(Mage_Sales_Model_Recurring_Profile $profile, Allopass_Hipay_Model_Api_Response_Notification $response)
-    {
+    protected function createProfileOrder(
+        Mage_Sales_Model_Recurring_Profile $profile,
+        Allopass_Hipay_Model_Api_Response_Notification $response
+    ) {
 
         $amount = $this->getAmountFromProfile($profile);
 
@@ -135,7 +147,11 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
         $order->getPayment()->setAdditionalInformation('use_oneclick', $additionalInfo['use_oneclick']);
         //$order->getPayment()->setAdditionalInformation('selected_oneclick_card', $additionalInfo['selected_oneclick_card']);
 
-        $order->setState(Mage_Sales_Model_Order::STATE_NEW, 'pending', Mage::helper('hipay')->__("New Order Recurring!"));
+        $order->setState(
+            Mage_Sales_Model_Order::STATE_NEW,
+            'pending',
+            Mage::helper('hipay')->__("New Order Recurring!")
+        );
 
         $order->save();
 

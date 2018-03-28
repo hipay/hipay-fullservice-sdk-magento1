@@ -95,9 +95,11 @@ class Allopass_Hipay_Block_Adminhtml_Field_MappingCategory extends Mage_Adminhtm
     {
         $options = Mage::helper('hipay/collection')->getItemsCategory();
         if (!$this->_listRenderer) {
-            $this->_listRenderer = $this->getLayout()->createBlock('hipay/adminhtml_field_renderer_list',
+            $this->_listRenderer = $this->getLayout()->createBlock(
+                'hipay/adminhtml_field_renderer_list',
                 '',
-                array('is_render_to_js_template' => true));
+                array('is_render_to_js_template' => true)
+            );
             $this->_listRenderer->setListOptions($options);
         }
         return $this->_listRenderer;

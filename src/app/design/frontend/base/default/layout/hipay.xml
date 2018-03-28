@@ -1,60 +1,74 @@
-<?xml version="1.0" encoding="UTF-8"?><layout version="0.1.0">
-	<hipay_checkout_pending translate="label">
+<?xml version="1.0" encoding="UTF-8"?>
+<layout version="0.1.0">
+    <hipay_checkout_pending translate="label">
         <label>Hipay Checkout Pending</label>
         <reference name="root">
-            <action method="setTemplate"><template>page/2columns-right.phtml</template></action>
+            <action method="setTemplate">
+                <template>page/2columns-right.phtml</template>
+            </action>
         </reference>
         <reference name="content">
             <block type="hipay/checkout_pending" name="checkout.pending" template="hipay/checkout/pending.phtml"/>
         </reference>
     </hipay_checkout_pending>
-    
-	<customer_account>
+
+    <customer_account>
         <!-- Allopass_Hipay -->
         <reference name="customer_account_navigation">
             <!-- @TODO Add config for enable it -->
             <!--  ifconfig="hipay/general/card_front_active"-->
-            <action method="addLink" translate="label" module="hipay" ><name>hipay</name><path>hipay/card/</path><label>My Payment Cards</label></action>
+            <action method="addLink" translate="label" module="hipay">
+                <name>hipay</name>
+                <path>hipay/card/</path>
+                <label>My Payment Cards</label>
+            </action>
         </reference>
     </customer_account>
-    
-	<hipay_card_index translate="label">
-	    <label>Customer My Account Hipay's Card</label>
-        <update handle="customer_account" />
+
+    <hipay_card_index translate="label">
+        <label>Customer My Account Hipay's Card</label>
+        <update handle="customer_account"/>
         <reference name="my.account.wrapper">
-        	 <block type="hipay/card" name="hipay.card.account">
+            <block type="hipay/card" name="hipay.card.account">
                 <block type="core/text_list" name="hipay.card.account.info" as="info" translate="label">
                     <label>Cards account Info</label>
                 </block>
             </block>
-            <block type="customer/account_dashboard" name="customer.account.link.back" template="customer/account/link/back.phtml"/>
+            <block type="customer/account_dashboard" name="customer.account.link.back"
+                   template="customer/account/link/back.phtml"/>
         </reference>
-	</hipay_card_index>
-	
-	<hipay_card_edit translate="label">
-	    <label>Customer Edit Hipay Card</label>
-	    <update handle="customer_account" />
+    </hipay_card_index>
+
+    <hipay_card_edit translate="label">
+        <label>Customer Edit Hipay Card</label>
+        <update handle="customer_account"/>
         <reference name="my.account.wrapper">
-             <block type="hipay/card_edit" name="hipay.card.account.edit" template="hipay/card/form/edit.phtml" />
+            <block type="hipay/card_edit" name="hipay.card.account.edit" template="hipay/card/form/edit.phtml"/>
         </reference>
-	</hipay_card_edit>
-	
-	<!-- TOKENJS integration -->
-	<checkout_onepage_index>
-		<reference name="head">
-			<action method="addItem"><type>skin_js</type><name>js/hipay-fullservice-sdk.min.js</name></action>
-            <action method="addItem"><type>skin_js</type><name>js/hipay-fingerprint.min.js</name></action>
+    </hipay_card_edit>
+
+    <!-- TOKENJS integration -->
+    <checkout_onepage_index>
+        <reference name="head">
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/hipay-fullservice-sdk.min.js</name>
+            </action>
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>js/hipay-fingerprint.min.js</name>
+            </action>
             <block type="core/text" name="iesnare">
-                <action method="setText"  ifconfig="hipay/hipay_api/fingerprint">
+                <action method="setText" ifconfig="hipay/hipay_api/fingerprint">
                     <text>
                         <![CDATA[<script type="text/javascript" src="https://mpsnare.iesnare.com/snare.js"></script>]]>
                     </text>
                 </action>
             </block>
-		</reference>
-		<reference name="content" >
-			<block type="hipay/checkout_tokenjs" template="hipay/checkout/tokenjs.phtml" />
-		</reference>
-	</checkout_onepage_index>
-	
+        </reference>
+        <reference name="content">
+            <block type="hipay/checkout_tokenjs" template="hipay/checkout/tokenjs.phtml"/>
+        </reference>
+    </checkout_onepage_index>
+
 </layout>

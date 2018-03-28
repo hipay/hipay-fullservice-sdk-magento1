@@ -42,7 +42,7 @@ class Allopass_Hipay_Block_Adminhtml_Field_HashingButtonInit extends Mage_Adminh
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
         $fieldConfig = $element->getFieldConfig();
-        $this->labelButton =  $fieldConfig->label_button;
+        $this->labelButton = $fieldConfig->label_button;
         return $this->_toHtml();
     }
 
@@ -51,7 +51,8 @@ class Allopass_Hipay_Block_Adminhtml_Field_HashingButtonInit extends Mage_Adminh
      *
      * @return string
      */
-    public function getLabel() {
+    public function getLabel()
+    {
         return $this->labelButton;
     }
 
@@ -60,7 +61,8 @@ class Allopass_Hipay_Block_Adminhtml_Field_HashingButtonInit extends Mage_Adminh
      *
      * @return string
      */
-    public function getConfirmationMessage() {
+    public function getConfirmationMessage()
+    {
         return Mage::helper('hipay')->__('Are you sure you want to sync the hashing configuration for notifications ?');
     }
 
@@ -71,9 +73,15 @@ class Allopass_Hipay_Block_Adminhtml_Field_HashingButtonInit extends Mage_Adminh
      * @type url
      *
      */
-    public function getButtonAction() {
-        return $this->getUrl('adminhtml/hashing/synchronize/', array('store' => Mage::getSingleton('adminhtml/config_data')->getStore(),
-            'website' => Mage::getSingleton('adminhtml/config_data')->getWebsite()));
+    public function getButtonAction()
+    {
+        return $this->getUrl(
+            'adminhtml/hashing/synchronize/',
+            array(
+                'store' => Mage::getSingleton('adminhtml/config_data')->getStore(),
+                'website' => Mage::getSingleton('adminhtml/config_data')->getWebsite()
+            )
+        );
     }
 
 

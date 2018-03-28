@@ -40,13 +40,13 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
         <tbody>
 
         <tr class="headings" id="headings<?php echo $_htmlId ?>">
-            <?php foreach ($this->_columns as $columnName => $column):?>
+            <?php foreach ($this->_columns as $columnName => $column): ?>
                 <th><?php echo $column['label'] ?></th>
-            <?php endforeach;?>
+            <?php endforeach; ?>
         </tr>
         </tbody>
     </table>
-    <input type="hidden" name="<?php echo $this->getElement()->getName() ?>[__empty]" value="" />
+    <input type="hidden" name="<?php echo $this->getElement()->getName() ?>[__empty]" value=""/>
 </div>
 
 <script type="text/javascript">
@@ -54,29 +54,32 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
     // create row creator
     var arrayRow<?php echo $_htmlId ?> = {
         // define row prototypeJS template
-        template : new Template(
+        template: new Template(
             '<tr id="#{_id}">'
             <?php foreach ($this->_columns as $columnName => $column):?>
-            +'<td>'
-            +'<?php echo Mage::helper('core')->jsQuoteEscape($this->_renderCellTemplate($columnName)) ?>'
-            +'<\/td>'
+            + '<td>'
+            + '<?php echo Mage::helper('core')->jsQuoteEscape($this->_renderCellTemplate($columnName)) ?>'
+            + '<\/td>'
             <?php endforeach;?>
-            +'<\/tr>'
+            + '<\/tr>'
         ),
 
-        rowsCount : 0,
+        rowsCount: 0,
 
-        add : function(templateData, insertAfterId)
-        {
+        add: function (templateData, insertAfterId) {
             // generate default template data
             if ('' == templateData) {
                 var d = new Date();
                 var templateData = {
                 <?php foreach ($this->_columns as $columnName => $column):?>
-                <?php echo $columnName ?> : '',
+                <?php echo $columnName ?> :
+                '',
                 <?php endforeach;?>
-                    _id : '_' + d.getTime() + '_' + d.getMilliseconds()
-            };
+                    _id
+            :
+                '_' + d.getTime() + '_' + d.getMilliseconds()
+            }
+                ;
             }
 
             // insert after specified row
@@ -91,8 +94,7 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
             this.rowsCount += 1;
         },
 
-        del : function(rowId)
-        {
+        del: function (rowId) {
             $(rowId).remove();
             this.rowsCount -= 1;
             if (0 == this.rowsCount) {
@@ -100,8 +102,7 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
             }
         },
 
-        showButtonOnly : function()
-        {
+        showButtonOnly: function () {
             $('grid<?php echo $_htmlId ?>').hide();
             $('empty<?php echo $_htmlId ?>').show();
         }
@@ -124,7 +125,7 @@ $_colspan = $_colspan > 1 ? 'colspan="' . $_colspan . '"' : '';
 
     // toggle the grid, if element is disabled (depending on scope)
     <?php if ($this->getElement()->getDisabled()):?>
-    toggleValueElements({checked:true}, $('grid<?php echo $_htmlId ?>').parentNode);
+    toggleValueElements({checked: true}, $('grid<?php echo $_htmlId ?>').parentNode);
     <?php endif;?>
     //]]>
 </script>

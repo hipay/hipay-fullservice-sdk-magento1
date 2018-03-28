@@ -48,8 +48,9 @@ abstract class ScopeConfig
      * @return string
      *
      */
-    public static function getLabelFromEnvironment($environment) {
-        $label='';
+    public static function getLabelFromEnvironment($environment)
+    {
+        $label = '';
         switch ($environment) {
             case ScopeConfig::PRODUCTION:
                 $label = 'Production';
@@ -64,7 +65,7 @@ abstract class ScopeConfig
                 $label = 'Test MO/TO';
                 break;
         }
-        return $label ;
+        return $label;
     }
 
 }

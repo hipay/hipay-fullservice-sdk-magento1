@@ -2,12 +2,12 @@
 <?php $_htmlId = $this->getHtmlId() ? $this->getHtmlId() : '_' . uniqid(); ?>
 <?php $notices = $_element->getNoticesHipay(); ?>
 
-<?php if (!empty($notices)){ ?>
-<div class="notice-hipay">
-    <?php foreach ($notices as $notice) { ?>
-        <span class="warning"><?php echo $notice; ?></span>
-    <?php } ?>
-</div>
+<?php if (!empty($notices)) { ?>
+    <div class="notice-hipay">
+        <?php foreach ($notices as $notice) { ?>
+            <span class="warning"><?php echo $notice; ?></span>
+        <?php } ?>
+    </div>
 <?php } ?>
 
 

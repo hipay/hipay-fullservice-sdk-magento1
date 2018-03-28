@@ -1,4 +1,5 @@
 <?php
+
 /**
  *
  * @method string getToken() card token
@@ -13,5 +14,5 @@
  */
 abstract class Allopass_Hipay_Model_Api_Response_Abstract extends Varien_Object
 {
-	
+
 }

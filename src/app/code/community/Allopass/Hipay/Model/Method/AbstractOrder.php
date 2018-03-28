@@ -8,7 +8,7 @@ class Allopass_Hipay_Model_Method_AbstractOrder extends Allopass_Hipay_Model_Met
 
     public function getOrderPlaceRedirectUrl()
     {
-        return Mage::getUrl(str_replace("_", "/", $this->getCode()).'/sendRequest',array('_secure' => true));
+        return Mage::getUrl(str_replace("_", "/", $this->getCode()) . '/sendRequest', array('_secure' => true));
     }
 
     /**
@@ -38,16 +38,15 @@ class Allopass_Hipay_Model_Method_AbstractOrder extends Allopass_Hipay_Model_Met
         $customer = Mage::getModel('customer/customer')->load($order->getCustomerId());
 
 
-        if($payment->getAdditionalInformation('use_oneclick') && $customer->getId())
-        {
+        if ($payment->getAdditionalInformation('use_oneclick') && $customer->getId()) {
             $cardId = $payment->getAdditionalInformation('selected_oneclick_card');
             $card = Mage::getModel('hipay/card')->load($cardId);
-            if($card->getId() && $card->getCustomerId() == $customer->getId())
+            if ($card->getId() && $card->getCustomerId() == $customer->getId())
                 $token = $card->getCcToken();
             else
                 Mage::throwException(Mage::helper('hipay')->__("Error with your card!"));
 
-            $payment->setAdditionalInformation('token',$token);
+            $payment->setAdditionalInformation('token', $token);
         }
 
         return $this;
@@ -78,7 +77,9 @@ class Allopass_Hipay_Model_Method_AbstractOrder extends Allopass_Hipay_Model_Met
             $billingCountry = $paymentInfo->getQuote()->getBillingAddress()->getCountryId();
         }
         if (!$this->canUseForCountry($billingCountry)) {
-            Mage::throwException(Mage::helper('payment')->__('Selected payment type is not allowed for billing country.'));
+            Mage::throwException(
+                Mage::helper('payment')->__('Selected payment type is not allowed for billing country.')
+            );
         }
         return $this;
     }

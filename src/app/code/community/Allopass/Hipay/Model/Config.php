@@ -66,7 +66,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
      * @param    int $storeId Store View Id
      * @return      mixed
      */
-    private function getInternalConfig($key_api, $key, $storeId )
+    private function getInternalConfig($key_api, $key, $storeId)
     {
         $index = 'hipay' . $key_api . $key . $storeId;
         if (!$this->hasData($index)) {
@@ -85,7 +85,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
      */
     public function getConfig($key, $storeId = null)
     {
-        return $this->getInternalConfig('hipay_api', $key, $storeId );
+        return $this->getInternalConfig('hipay_api', $key, $storeId);
     }
 
     /**
@@ -97,7 +97,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
      */
     public function getConfigDataMoto($key, $storeId = null)
     {
-        return $this->getInternalConfig('hipay_api_moto', $key, $storeId );
+        return $this->getInternalConfig('hipay_api_moto', $key, $storeId);
     }
 
     /**
@@ -126,9 +126,9 @@ class Allopass_Hipay_Model_Config extends Varien_Object
     public function getConfigHashing($environment, $storeId = null)
     {
         $path = 'hipay/hipay_hash_algorithm/' . $environment;
-        $config = Mage::getStoreConfig($path , $storeId);
+        $config = Mage::getStoreConfig($path, $storeId);
         if (!$config && !is_null($storeId)) {
-            $config =  Mage::getStoreConfig($path);
+            $config = Mage::getStoreConfig($path);
         }
 
         return $config;
@@ -139,11 +139,11 @@ class Allopass_Hipay_Model_Config extends Varien_Object
      *
      * @param $environment
      * @param $value
-     * @param int  $storeId
+     * @param int $storeId
      * @param string $scope
      * @return Mage_Core_Store_Config
      */
-    public function setConfigDataHashing($environment,$value, $storeId = null, $scope = 'default')
+    public function setConfigDataHashing($environment, $value, $storeId = null, $scope = 'default')
     {
         $path = 'hipay/hipay_hash_algorithm/' . $environment;
         return Mage::getConfig()->saveConfig($path, $value, $scope, $storeId);
@@ -178,7 +178,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
     public function getSecretPassphraseMoto($storeId = null)
     {
         if ($this->getConfigDataMoto(self::SECRET_PASSPHRASE, $storeId)) {
-            return  $this->getConfigDataMoto(self::SECRET_PASSPHRASE, $storeId);
+            return $this->getConfigDataMoto(self::SECRET_PASSPHRASE, $storeId);
         }
         return $this->getConfigData(self::SECRET_PASSPHRASE, $storeId);
     }
@@ -186,7 +186,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
     public function getSecretPassphraseTestMoto($storeId = null)
     {
         if ($this->getConfigDataMoto(self::SECRET_PASSPHRASE_TEST, $storeId)) {
-            return  $this->getConfigDataMoto(self::SECRET_PASSPHRASE_TEST, $storeId);
+            return $this->getConfigDataMoto(self::SECRET_PASSPHRASE_TEST, $storeId);
         }
         return $this->getConfigData(self::SECRET_PASSPHRASE_TEST, $storeId);
     }

@@ -1,11 +1,13 @@
 <?php
 
-class Allopass_Hipay_Model_Source_Order_Status {
+class Allopass_Hipay_Model_Source_Order_Status
+{
 
     // set null to enable all possible
     protected $_stateStatuses = array();
 
-    public function toOptionArray() {
+    public function toOptionArray()
+    {
         if ($this->_stateStatuses) {
             $statuses = Mage::getSingleton('sales/order_config')->getStateStatuses($this->_stateStatuses);
         } else {

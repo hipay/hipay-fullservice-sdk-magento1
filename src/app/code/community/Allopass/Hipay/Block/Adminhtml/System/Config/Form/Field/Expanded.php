@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Class Allopass_Hipay_Block_Adminhtml_System_Config_Form_Field_Expanded
  */

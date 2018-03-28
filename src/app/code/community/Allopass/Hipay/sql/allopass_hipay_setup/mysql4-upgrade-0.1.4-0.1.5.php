@@ -5,7 +5,8 @@ $installer = $this;
 
 $installer->startSetup();
 
-$installer->run("
+$installer->run(
+    "
 
 -- DROP TABLE IF EXISTS {$this->getTable('hipay_rule')};
 CREATE TABLE {$this->getTable('hipay_rule')} (

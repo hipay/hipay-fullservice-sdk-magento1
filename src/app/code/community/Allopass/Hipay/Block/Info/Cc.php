@@ -5,13 +5,13 @@
  */
 class Allopass_Hipay_Block_Info_Cc extends Mage_Payment_Block_Info
 {
-	
-	protected function _construct()
-	{
-		parent::_construct();
-		$this->setTemplate('hipay/info/cc.phtml');
-	}
-	
+
+    protected function _construct()
+    {
+        parent::_construct();
+        $this->setTemplate('hipay/info/cc.phtml');
+    }
+
     /**
      * Retrieve credit card type name
      *
@@ -45,8 +45,8 @@ class Allopass_Hipay_Block_Info_Cc extends Mage_Payment_Block_Info
     public function getCcExpMonth()
     {
         $month = $this->getInfo()->getCcExpMonth();
-        if ($month<10) {
-            $month = '0'.$month;
+        if ($month < 10) {
+            $month = '0' . $month;
         }
         return $month;
     }
@@ -81,15 +81,24 @@ class Allopass_Hipay_Block_Info_Cc extends Mage_Payment_Block_Info
             $data[Mage::helper('payment')->__('Credit Card Type')] = $ccType;
         }
         if ($this->getInfo()->getCcLast4()) {
-            $data[Mage::helper('payment')->__('Credit Card Number')] = sprintf('xxxx-%s', $this->getInfo()->getCcLast4());
+            $data[Mage::helper('payment')->__('Credit Card Number')] = sprintf(
+                'xxxx-%s',
+                $this->getInfo()->getCcLast4()
+            );
         }
-        
-        if($this->getInfo()->getAdditionalInformation('fraud_type') && $this->getInfo()->getAdditionalInformation('fraud_score'))
-        {
-        	$data[Mage::helper('hipay')->__('Fraud result')] = ucfirst($this->getInfo()->getAdditionalInformation('fraud_type'));
-        	$data[Mage::helper('hipay')->__('Fraud scoring')] = $this->getInfo()->getAdditionalInformation('fraud_score');
-        } 
-        
+
+        if ($this->getInfo()->getAdditionalInformation('fraud_type') && $this->getInfo()->getAdditionalInformation(
+                'fraud_score'
+            )
+        ) {
+            $data[Mage::helper('hipay')->__('Fraud result')] = ucfirst(
+                $this->getInfo()->getAdditionalInformation('fraud_type')
+            );
+            $data[Mage::helper('hipay')->__('Fraud scoring')] = $this->getInfo()->getAdditionalInformation(
+                'fraud_score'
+            );
+        }
+
         if (!$this->getIsSecureMode()) {
             if ($ccSsIssue = $this->getInfo()->getCcSsIssue()) {
                 $data[Mage::helper('payment')->__('Switch/Solo/Maestro Issue Number')] = $ccSsIssue;
@@ -97,7 +106,10 @@ class Allopass_Hipay_Block_Info_Cc extends Mage_Payment_Block_Info
             $year = $this->getInfo()->getCcSsStartYear();
             $month = $this->getInfo()->getCcSsStartMonth();
             if ($year && $month) {
-                $data[Mage::helper('payment')->__('Switch/Solo/Maestro Start Date')] =  $this->_formatCardDate($year, $month);
+                $data[Mage::helper('payment')->__('Switch/Solo/Maestro Start Date')] = $this->_formatCardDate(
+                    $year,
+                    $month
+                );
             }
         }
         return $transport->setData(array_merge($data, $transport->getData()));
