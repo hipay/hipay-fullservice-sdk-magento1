@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * HiPay Fullservice SDK Magento 1
+ *
+ * 2018 HiPay
+ *
+ * NOTICE OF LICENSE
+ *
+ * @author    HiPay <support.tpp@hipay.com>
+ * @copyright 2018 HiPay
+ * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ */
+
 
 /**
  * @see Zend_Uri_Http
@@ -16,9 +28,14 @@
 #require_once 'Zend/Http/Client/Adapter/Stream.php';
 
 /**
+ *
  * An adapter class for Zend_Http_Client based on the curl extension.
  * Curl requires libcurl. See for full requirements the PHP manual: http://php.net/curl
  *
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-fullservice-sdk-magento1
  */
 class Allopass_Hipay_Model_Api_Http_Client_Adapter_Curl implements Zend_Http_Client_Adapter_Interface, Allopass_Hipay_Model_Api_Http_Client_Adapter_Stream
 {
