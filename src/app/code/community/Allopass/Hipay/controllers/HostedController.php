@@ -29,5 +29,4 @@ class Allopass_Hipay_HostedController extends Allopass_Hipay_Controller_Payment
         return Mage::getSingleton('hipay/method_hosted');;
     }
 
-
 }

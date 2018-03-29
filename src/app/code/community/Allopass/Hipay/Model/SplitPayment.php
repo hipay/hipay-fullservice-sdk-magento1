@@ -54,8 +54,9 @@ class Allopass_Hipay_Model_SplitPayment extends Mage_Core_Model_Abstract
     public function pay()
     {
 
-        if (!$this->canPay())
+        if (!$this->canPay()) {
             Mage::throwException("This split payment is already paid!");
+        }
 
         if (!$this->getId()) {
             Mage::throwException("Split Payment not found!");
@@ -114,14 +115,14 @@ class Allopass_Hipay_Model_SplitPayment extends Mage_Core_Model_Abstract
         if (strpos($methodClass, 'xtimes') !== false) {
             $methodClass = str_replace("x", "X", $methodClass);
         }
-        
+
         return Mage::getSingleton($moduleName . "/method_" . $methodClass);
     }
 
     public function canPay()
     {
-        return $this->getStatus() == self::SPLIT_PAYMENT_STATUS_FAILED || $this->getStatus(
-        ) == self::SPLIT_PAYMENT_STATUS_PENDING;
+        return $this->getStatus() == self::SPLIT_PAYMENT_STATUS_FAILED
+        || $this->getStatus() == self::SPLIT_PAYMENT_STATUS_PENDING;
     }
 
 

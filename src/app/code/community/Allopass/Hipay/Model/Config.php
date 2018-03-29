@@ -132,7 +132,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
     public function getConfigDataBasket($key, $storeId = null)
     {
         $basket = $this->getInternalConfig('hipay_basket', $key, $storeId);
-        if (!$basket && !is_null($storeId)) {
+        if (!$basket && $storeId !== null) {
             $basket = $this->getInternalConfig('hipay_basket', $key, null);
         }
 
@@ -149,7 +149,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
     {
         $path = 'hipay/hipay_hash_algorithm/' . $environment;
         $config = Mage::getStoreConfig($path, $storeId);
-        if (!$config && !is_null($storeId)) {
+        if (!$config && $storeId !== null) {
             $config = Mage::getStoreConfig($path);
         }
 
@@ -417,7 +417,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
             $year = $first + $index;
             $years[$year] = $year;
         }
-        
+
         return $years;
     }
 

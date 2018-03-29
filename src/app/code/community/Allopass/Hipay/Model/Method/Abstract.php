@@ -57,8 +57,6 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
     const CHECK_RECURRING_PROFILES = 64;
     const CHECK_ZERO_TOTAL = 128;
 
-    //const STATUS_PENDING_CAPTURE = 'pending_capture';
-
     /**
      * Availability options
      */
@@ -74,8 +72,6 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
     protected $_canUseForMultishipping = false;
     protected $_canSaveCc = false;
     protected $_canReviewPayment = false;
-
-    //protected $_allowCurrencyCode = array('EUR');
 
     /**
      * Fields that should be replaced in debug with '***'
@@ -794,7 +790,9 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
                                 $transactionId = $gatewayResponse->getTransactionReference();
                                 $order->addStatusHistoryComment(
                                     Mage::helper('hipay')->__(
-                                        'Notification "Refunded". Refund issued by merchant. Registered notification about refunded amount of %s. Transaction ID: "%s". Credit Memo has not been created. Please create offline Credit Memo.',
+                                        'Notification "Refunded". Refund issued by merchant.' .
+                                        ' Registered notification about refunded amount of %s. Transaction ID: "%s".' .
+                                        ' Credit Memo has not been created. Please create offline Credit Memo.',
                                         $currency->formatTxt($amount),
                                         $transactionId
                                     ),
@@ -1278,7 +1276,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $remoteIp = $payment->getOrder()->getRemoteIp();
 
         //Check if it's forwarded and in this case, explode and retrieve the first part
-        if (!is_null($payment->getOrder()->getXForwardedFor())) {
+        if ($payment->getOrder()->getXForwardedFor() !== null) {
             if (strpos($payment->getOrder()->getXForwardedFor(), ",") !== false) {
                 $xfParts = explode(",", $payment->getOrder()->getXForwardedFor());
                 $remoteIp = current($xfParts);
@@ -1296,7 +1294,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         /**
          * Parameters specific to the payment product
          */
-        if (!is_null($token)) {
+        if ($token !== null) {
             $params['cardtoken'] = $token;
         }
 
@@ -1539,6 +1537,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
             return $gatewayResponse->getState();
         }
+
         return false;
     }
 
@@ -1567,7 +1566,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
             return false;
         }
 
-        if ($lastTransaction->getTxnType() == Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE && $this->orderDue($payment->getOrder())
+        if ($lastTransaction->getTxnType() == Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE
+            && $this->orderDue($payment->getOrder())
         ) {
             return true;
         }

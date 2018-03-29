@@ -244,6 +244,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
                 + $product->getBaseWeeeTaxAppliedRowAmount()
                 - $product->getDiscountAmount();
         }
+
         // Add information in basket only if the product is simple
         if ($item['quantity'] > 0 && $total_amount > 0) {
             if ($action == Allopass_Hipay_Helper_Data::STATE_CAPTURE
@@ -518,7 +519,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
                     'date_to_pay' => $split['dateToPay'],
                     'method_code' => $order->getPayment()->getMethod(),
                     'status' => Allopass_Hipay_Model_SplitPayment::SPLIT_PAYMENT_STATUS_PENDING,
-                    'split_number' => strval($numberSplit) . '-' . strval(count($paymentsSplit)),
+                    'split_number' => (string)$numberSplit . '-' . (string)count($paymentsSplit),
                 );
 
                 // First split is already paid
@@ -548,7 +549,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     public function splitPaymentsExists($orderId)
     {
         $collection = Mage::getModel('hipay/splitPayment')->getCollection()->addFieldToFilter('order_id', $orderId);
-        if ($collection->count()) {
+        if (!$collection->empty()) {
             return true;
         }
 
@@ -566,8 +567,9 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $storeId = $order->getStore()->getId();
         $environment = $isMoto ? ScopeConfig::PRODUCTION_MOTO : ScopeConfig::PRODUCTION;
-        $passphrase = $isMoto ? $this->getConfig()->getSecretPassphraseMoto($storeId) : $this->getConfig()->getSecretPassphrase($storeId);
-        if (!is_null($order)) {
+        $passphrase = $isMoto ? $this->getConfig()->getSecretPassphraseMoto($storeId)
+            : $this->getConfig()->getSecretPassphrase($storeId);
+        if ($order !== null) {
             if ($order->getId()) {
                 $method = $order->getPayment()->getMethodInstance();
                 if ($method->getConfigData('is_test_mode')) {
@@ -865,7 +867,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         $exception = false,
         $additionalMessage = false
     ) {
-        $operation = 'Operation: ' . $requestType;// $this->_getOperation($requestType);
+        $operation = 'Operation: ' . $requestType;
 
         if (!$operation) {
             return false;
@@ -887,7 +889,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         $pattern = '%s - %s.<br /> %s<br /> %s.<br /> %s';
         $texts = array($operation, $result, $card, $amount, $cardType);
 
-        if (!is_null($lastTransactionId)) {
+        if ($lastTransactionId !== null) {
             $pattern .= '<br />%s.';
             $texts[] = $this->__('Hipay Transaction ID %s', $lastTransactionId);
         }
@@ -951,6 +953,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
                 );
             }
         }
+
         $shippingMethod = '';
         if ($shippingInfo = $order->getShippingAddress()->getShippingMethod()) {
             $data = explode('_', $shippingInfo);
@@ -969,6 +972,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
                 . $order->getStoreCurrencyCode() . ' '
                 . $_item->getProduct()->getFinalPrice($_item->getQty()) . "\n";
         }
+
         $total = $order->getStoreCurrencyCode() . ' ' . $order->getGrandTotal();
 
         foreach ($sendTo as $recipient) {
@@ -1009,6 +1013,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         if (!empty($data)) {
             return explode(',', $data);
         }
+        
         return false;
     }
 

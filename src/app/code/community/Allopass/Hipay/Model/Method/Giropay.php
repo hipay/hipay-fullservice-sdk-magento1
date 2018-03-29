@@ -50,7 +50,7 @@ class Allopass_Hipay_Model_Method_Giropay extends Allopass_Hipay_Model_Method_Ho
 
         $gatewayParams = $this->getGatewayParams($payment, $amount, $token);
 
-        if (is_null($token)) {
+        if ($token === null) {
             $gatewayParams['payment_product'] = 'cb';
             $gatewayParams['operation'] = $this->getOperation();
             $gatewayParams['css'] = $this->getConfigData('css_url');

@@ -57,8 +57,6 @@ class Allopass_Hipay_Adminhtml_CardController extends Mage_Adminhtml_Controller_
     public function preDispatch()
     {
         parent::preDispatch();
-
-
     }
 
     protected function _getCustomer()
@@ -73,8 +71,6 @@ class Allopass_Hipay_Adminhtml_CardController extends Mage_Adminhtml_Controller_
             ->renderLayout();
 
         return $this;
-
-
     }
 
     public function editAction()
@@ -110,7 +106,6 @@ class Allopass_Hipay_Adminhtml_CardController extends Mage_Adminhtml_Controller_
         Mage::register('current_card', $model);
 
         // 5. Build edit form
-
         $this->_initAction()->renderLayout();
     }
 
@@ -165,6 +160,7 @@ class Allopass_Hipay_Adminhtml_CardController extends Mage_Adminhtml_Controller_
             $this->_redirect('*/*/edit', array('card_id' => $this->getRequest()->getParam('card_id')));
             return;
         }
+
         $this->_redirect('adminhtml/customer/index');
     }
 

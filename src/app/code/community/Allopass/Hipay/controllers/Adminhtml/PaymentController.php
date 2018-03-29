@@ -130,7 +130,7 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
      */
     protected function getOrder()
     {
-        if (is_null($this->_order)) {
+        if ($this->_order === null) {
             if (($profileIds = $this->getCheckout()->getLastRecurringProfileIds())) {
                 if (is_array($profileIds)) {
                     foreach ($profileIds as $profileId) {
@@ -170,7 +170,8 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
                             );
                             $this->_order->getPayment()->setAdditionalInformation(
                                 'selected_oneclick_card',
-                                isset($additionalInfo['selected_oneclick_card']) ? $additionalInfo['selected_oneclick_card'] : 0
+                                isset($additionalInfo['selected_oneclick_card'])
+                                    ? $additionalInfo['selected_oneclick_card'] : 0
                             );
                         }
 
@@ -301,7 +302,7 @@ class Allopass_Hipay_Adminhtml_PaymentController extends Mage_Adminhtml_Controll
 
     protected function isInitialProfileOrder(Mage_Sales_Model_Recurring_Profile $profile)
     {
-        if (count($profile->getChildOrderIds()) && current($profile->getChildOrderIds()) == "-1") {
+        if (!empty($profile->getChildOrderIds()) && current($profile->getChildOrderIds()) == "-1") {
             return true;
         }
 

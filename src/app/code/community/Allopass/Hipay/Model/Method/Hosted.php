@@ -48,6 +48,7 @@ class Allopass_Hipay_Model_Method_Hosted extends Allopass_Hipay_Model_Method_Abs
         if (!($data instanceof Varien_Object)) {
             $data = new Varien_Object($data);
         }
+
         $info = $this->getInfoInstance();
         $this->assignInfoData($info, $data);
 
@@ -95,7 +96,7 @@ class Allopass_Hipay_Model_Method_Hosted extends Allopass_Hipay_Model_Method_Abs
 
         $gatewayParams = $this->getGatewayParams($payment, $amount, $token);
 
-        if (is_null($token)) {
+        if ($token === null) {
             $gatewayParams['payment_product'] = 'cb';
 
             $gatewayParams['operation'] = $this->getOperation();

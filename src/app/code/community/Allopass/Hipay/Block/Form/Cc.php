@@ -72,7 +72,7 @@ class Allopass_Hipay_Block_Form_Cc extends Allopass_Hipay_Block_Form_Abstract
     public function getCcMonths()
     {
         $months = $this->getData('cc_months');
-        if (is_null($months)) {
+        if ($months === null) {
             $months["0"] = $this->__('Month');
             $months = array_merge($months, $this->_getConfig()->getMonths());
             $this->setData('cc_months', $months);
@@ -89,7 +89,7 @@ class Allopass_Hipay_Block_Form_Cc extends Allopass_Hipay_Block_Form_Abstract
     public function getCcYears()
     {
         $years = $this->getData('cc_years');
-        if (is_null($years)) {
+        if ($years === null) {
             $years = $this->_getConfig()->getYears();
             $years = array(0 => $this->__('Year')) + $years;
             $this->setData('cc_years', $years);
@@ -107,7 +107,7 @@ class Allopass_Hipay_Block_Form_Cc extends Allopass_Hipay_Block_Form_Abstract
     {
         if ($this->getMethod()) {
             $configData = $this->getMethod()->getConfigData('useccv');
-            if (is_null($configData)) {
+            if ($configData === null) {
                 return true;
             }
 
@@ -126,7 +126,7 @@ class Allopass_Hipay_Block_Form_Cc extends Allopass_Hipay_Block_Form_Abstract
     {
         $availableTypes = explode(',', $this->getMethod()->getConfigData('cctypes'));
         $ssPresenations = array_intersect(array('SS', 'SM', 'SO'), $availableTypes);
-        if ($availableTypes && count($ssPresenations) > 0) {
+        if ($availableTypes && !empty($ssPresenations)) {
             return true;
         }
 
@@ -140,15 +140,14 @@ class Allopass_Hipay_Block_Form_Cc extends Allopass_Hipay_Block_Form_Abstract
     public function getSsStartYears()
     {
         $years = array();
-        $first = date("Y");
+        $first = Mage::getSingleton('core/date')->date('Y');
 
         for ($index = 5; $index >= 0; $index--) {
             $year = $first - $index;
             $years[$year] = $year;
         }
-        
-        $years = array(0 => $this->__('Year')) + $years;
-        return $years;
+
+        return array(0 => $this->__('Year')) + $years;
     }
 
 

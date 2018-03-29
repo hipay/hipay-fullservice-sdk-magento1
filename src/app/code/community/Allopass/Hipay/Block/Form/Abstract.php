@@ -140,8 +140,7 @@ abstract class Allopass_Hipay_Block_Form_Abstract extends Mage_Payment_Block_For
     public function getSplitPaymentProfiles()
     {
         $profileIds = explode(",", $this->getMethod()->getConfigData('split_payment_profile'));
-        $profiles = Mage::getModel('hipay/paymentProfile')->getCollection()->addIdsToFilter($profileIds);
-        return $profiles;
+        return Mage::getModel('hipay/paymentProfile')->getCollection()->addIdsToFilter($profileIds);
 
     }
 

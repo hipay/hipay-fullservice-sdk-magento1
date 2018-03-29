@@ -51,7 +51,7 @@ class Allopass_Hipay_Block_Adminhtml_SplitPayment_Edit extends Mage_Adminhtml_Bl
             -100
         );
 
-        if ($this->getSplitPayment()->canPay())
+        if ($this->getSplitPayment()->canPay()) {
             $this->_addButton(
                 'payNow',
                 array(
@@ -62,6 +62,7 @@ class Allopass_Hipay_Block_Adminhtml_SplitPayment_Edit extends Mage_Adminhtml_Bl
                 ),
                 -120
             );
+        }
 
         $this->_formScripts[] = "
             function saveAndContinueEdit(){

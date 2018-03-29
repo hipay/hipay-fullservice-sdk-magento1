@@ -56,6 +56,7 @@ class Allopass_Hipay_Model_Rule_Condition_Product_Found
         if ($this->getId() != '1') {
             $html .= $this->getRemoveLinkHtml();
         }
+
         return $html;
     }
 
@@ -79,10 +80,12 @@ class Allopass_Hipay_Model_Rule_Condition_Product_Found
                     break;
                 }
             }
+
             if (($found && $true) || (!$true && $found)) {
                 break;
             }
         }
+        
         // found an item and we're looking for existing one
         if ($found && $true) {
             return true;

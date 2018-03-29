@@ -286,7 +286,7 @@ class Allopass_Hipay_Controller_Payment extends Mage_Core_Controller_Front_Actio
 
     protected function isInitialProfileOrder(Mage_Sales_Model_Recurring_Profile $profile)
     {
-        if (count($profile->getChildOrderIds()) && current($profile->getChildOrderIds()) == "-1") {
+        if (!empty($profile->getChildOrderIds()) && current($profile->getChildOrderIds()) == "-1") {
             return true;
         }
 

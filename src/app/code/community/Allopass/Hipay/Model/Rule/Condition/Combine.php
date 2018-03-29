@@ -101,7 +101,7 @@ class Allopass_Hipay_Model_Rule_Condition_Combine extends Mage_Rule_Model_Condit
 
     public function getAttributeElement()
     {
-        if (is_null($this->getAttribute())) {
+        if ($this->getAttribute() === null) {
             foreach ($this->getAttributeOption() as $k => $v) {
                 $this->setAttribute($k);
                 break;
@@ -130,7 +130,7 @@ class Allopass_Hipay_Model_Rule_Condition_Combine extends Mage_Rule_Model_Condit
     public function getOperatorElement()
     {
         $options = $this->getOperatorSelectOptions();
-        if (is_null($this->getOperator())) {
+        if ($this->getOperator() === null) {
             foreach ($options as $option) {
                 $this->setOperator($option['value']);
                 break;
@@ -201,7 +201,7 @@ class Allopass_Hipay_Model_Rule_Condition_Combine extends Mage_Rule_Model_Condit
 
     public function getAggregatorElement()
     {
-        if (is_null($this->getAggregator())) {
+        if ($this->getAggregator() === null) {
             foreach ($this->getAggregatorOption() as $k => $v) {
                 $this->setAggregator($k);
                 break;

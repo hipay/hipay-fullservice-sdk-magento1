@@ -104,14 +104,16 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
     {
         $params = array();
         $params['card_number'] = $payment->getCcNumber();
-        $params['card_expiry_month'] = ($payment->getCcExpMonth() < 10) ? '0' . $payment->getCcExpMonth() : $payment->getCcExpMonth();
+        $params['card_expiry_month'] = ($payment->getCcExpMonth() < 10) ? '0' . $payment->getCcExpMonth()
+            : $payment->getCcExpMonth();
         $params['card_expiry_year'] = $payment->getCcExpYear();
         $params['cvc'] = $payment->getCcCid();
         $params['multi_use'] = 1;
 
         //Add card holder
         $billing = $payment->getOrder()->getBillingAddress();
-        $defaultOwner = $billing->getFirstname() && $billing->getLastname() ? $billing->getFirstname() . ' ' . $billing->getLastname() : $billing->getEmail();
+        $defaultOwner = $billing->getFirstname() && $billing->getLastname()
+            ? $billing->getFirstname() . ' ' . $billing->getLastname() : $billing->getEmail();
 
         $params['card_holder'] = $payment->getCcOwner() ? $payment->getCcOwner() : $defaultOwner;
 
@@ -369,7 +371,7 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
     public function hasVerification()
     {
         $configData = $this->getConfigData('useccv');
-        if (is_null($configData)) {
+        if ($configData === null) {
             return true;
         }
 
@@ -415,8 +417,8 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
     /**
      * Validate credit card number
      *
-     * @param   string $cc_number
-     * @return  bool
+     * @param $ccNumber
+     * @return bool
      */
     public function validateCcNum($ccNumber)
     {

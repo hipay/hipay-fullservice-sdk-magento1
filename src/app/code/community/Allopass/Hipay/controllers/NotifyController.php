@@ -146,8 +146,8 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
             $productItemInfo->setPaymentType(Mage_Sales_Model_Recurring_Profile::PAYMENT_TYPE_REGULAR);
         }
 
-        if ($this->isInitialProfileOrder($profile))// because is not auditioned in profile obj
-        {
+        // because is not auditioned in profile obj
+        if ($this->isInitialProfileOrder($profile)) {
             $productItemInfo->setPrice($profile->getBillingAmount() + $profile->getInitAmount());
         }
 
@@ -175,26 +175,6 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
         $profile->save();
 
         return $order;
-
-
-        $order->getPayment()->registerCaptureNotification($amount);
-        $order->save();
-
-        // notify customer
-        if ($invoice = $order->getPayment()->getCreatedInvoice()) {
-            $message = Mage::helper('hipay')->__('Notified customer about invoice #%s.', $invoice->getIncrementId());
-            $comment = $order->sendNewOrderEmail()->addStatusHistoryComment($message)
-                ->setIsCustomerNotified(true)
-                ->save();
-
-            /* Add this to send invoice to customer */
-            $invoice->setEmailSent(true);
-            $invoice->save();
-            $invoice->sendEmail();
-        }
-
-        return $order;
-
     }
 
     /**
@@ -215,7 +195,7 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
 
     protected function isInitialProfileOrder(Mage_Sales_Model_Recurring_Profile $profile)
     {
-        if (count($profile->getChildOrderIds()) && current($profile->getChildOrderIds()) == "-1") {
+        if (!empty($profile->getChildOrderIds()) && current($profile->getChildOrderIds()) == "-1") {
             return true;
         }
 

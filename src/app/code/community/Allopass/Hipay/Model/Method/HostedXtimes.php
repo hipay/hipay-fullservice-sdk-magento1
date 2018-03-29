@@ -35,8 +35,7 @@ class Allopass_Hipay_Model_Method_HostedXtimes extends Allopass_Hipay_Model_Meth
      */
     public function isAvailable($quote = null)
     {
-        if (!is_null($quote)) {
-
+        if ($quote !== null) {
             $checkoutMethod = $quote->getCheckoutMethod();
 
             if ($checkoutMethod == Mage_Checkout_Model_Type_Onepage::METHOD_GUEST) {

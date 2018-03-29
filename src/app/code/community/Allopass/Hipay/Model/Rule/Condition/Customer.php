@@ -156,7 +156,7 @@ class Allopass_Hipay_Model_Rule_Condition_Customer extends Mage_Rule_Model_Condi
 
     public function getAttributeElement()
     {
-        if (is_null($this->getAttribute())) {
+        if ($this->getAttribute() === null) {
             foreach ($this->getAttributeOption() as $k => $v) {
                 $this->setAttribute($k);
                 break;
@@ -185,7 +185,7 @@ class Allopass_Hipay_Model_Rule_Condition_Customer extends Mage_Rule_Model_Condi
     public function getOperatorElement()
     {
         $options = $this->getOperatorSelectOptions();
-        if (is_null($this->getOperator())) {
+        if ($this->getOperator() ===  null) {
             foreach ($options as $option) {
                 $this->setOperator($option['value']);
                 break;

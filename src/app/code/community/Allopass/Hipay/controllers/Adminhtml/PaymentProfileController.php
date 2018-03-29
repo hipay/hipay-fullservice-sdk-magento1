@@ -138,6 +138,7 @@ class Allopass_Hipay_Adminhtml_PaymentProfileController extends Mage_Adminhtml_C
             $this->_redirect('*/*/edit', array('profile_id' => $this->getRequest()->getParam('profile_id')));
             return;
         }
+        
         $this->_redirect('*/*/');
     }
 

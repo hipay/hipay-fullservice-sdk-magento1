@@ -83,13 +83,14 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
             $gatewayParams = $this->getGatewayParams($payment, $amount, $token);
 
             $gatewayParams['authentication_indicator'] = 1;
-            if (is_null($token)) {
+            if ($token === null) {
                 $gatewayParams['payment_product'] = $this->getCcTypeHipay($payment->getCcType());;
                 $gatewayParams['operation'] = $this->getOperation();
 
-                if (Mage::getStoreConfig('general/store_information/name') != "")
+                if (Mage::getStoreConfig('general/store_information/name') != "") {
                     $gatewayParams['merchant_display_name'] = Mage::getStoreConfig('general/store_information/name');
-
+                }
+                
                 $this->_debug($gatewayParams);
                 $gatewayResponse = $request->gatewayRequest(
                     Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_ORDER,
@@ -101,8 +102,7 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
                 return $gatewayResponse->getForwardUrl();
             } else {
                 $gatewayParams['operation'] = $this->getOperation();
-                $gatewayParams['payment_product'] = Mage::getSingleton('customer/session')->getCustomer(
-                )->getHipaySddType();
+                $gatewayParams['payment_product'] = Mage::getSingleton('customer/session')->getCustomer()->getHipaySddType();
 
                 $this->_debug($gatewayParams);
                 $gatewayResponse = $request->gatewayRequest(

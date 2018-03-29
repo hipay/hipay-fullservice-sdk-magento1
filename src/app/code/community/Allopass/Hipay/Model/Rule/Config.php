@@ -116,7 +116,7 @@ class Allopass_Hipay_Model_Rule_Config extends Mage_Core_Model_Config_Data
 
     protected function _getRuleData()
     {
-        if (is_null($this->_ruleData)) {
+        if ($this->_ruleData === null) {
             $post = Mage::app()->getRequest()->getPost();
 
             $this->_ruleData = array();

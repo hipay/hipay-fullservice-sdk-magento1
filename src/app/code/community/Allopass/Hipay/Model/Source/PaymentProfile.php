@@ -29,7 +29,7 @@ class Allopass_Hipay_Model_Source_PaymentProfile extends Varien_Object
 
     protected function _getCollection()
     {
-        if (is_null($this->_collection)) {
+        if ($this->_collection === null) {
             $this->_collection = Mage::getModel('hipay/paymentProfile')->getCollection();
         }
 

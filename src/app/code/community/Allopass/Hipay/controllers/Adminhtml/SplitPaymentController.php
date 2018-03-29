@@ -148,6 +148,7 @@ class Allopass_Hipay_Adminhtml_SplitPaymentController extends Mage_Adminhtml_Con
             );
             return;
         }
+
         $this->_redirect('*/*/');
     }
 

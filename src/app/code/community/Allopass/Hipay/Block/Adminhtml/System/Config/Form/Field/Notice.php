@@ -83,7 +83,8 @@ class Allopass_Hipay_Block_Adminhtml_System_Config_Form_Field_Notice extends Mag
         // Notice for Hashing
         if (preg_match('/hashing/', $element->getId())) {
             $notices[] = Mage::helper('hipay')->__(
-                'If the hash configuration is different than the one set in your Hipay back office, then the notifications will not work. Check that both values match.'
+                'If the hash configuration is different than the one set in your Hipay back office,'
+                .' then the notifications will not work. Check that both values match.'
             );
         }
 
