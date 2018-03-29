@@ -14,7 +14,7 @@ casper.test.begin('Change Hash Algorithm ' + paymentType + ' with ' + typeCC, fu
 		this.logToHipayBackend(loginBackend,passBackend);
 	})
 	.then(function() {
-		this.selectAccountBackend("OGONE_RECETTE");
+		this.selectAccountBackend("OGONE_DEV");
 	})
 	/* Open Integration tab */
 	.then(function() {
@@ -89,18 +89,18 @@ casper.test.begin('Change Hash Algorithm ' + paymentType + ' with ' + typeCC, fu
 		this.logToHipayBackend(loginBackend,passBackend);
 	})
 	.then(function() {
-		this.selectAccountBackend("OGONE_RECETTE");
+		this.selectAccountBackend("OGONE_DEV");
 	})
 	.then(function() {
 		cartID = casper.getOrderId();
 		orderID = casper.getOrderId();
-		this.processNotifications(true,false,true,false,"OGONE_RECETTE");
+		this.processNotifications(true,false,true,false,"OGONE_DEV");
 	})
 	.thenOpen(urlBackend, function() {
 		this.logToHipayBackend(loginBackend,passBackend);
 	})
 	.then(function() {
-		this.selectAccountBackend("OGONE_RECETTE");
+		this.selectAccountBackend("OGONE_DEV");
 	})
 	/* Open Integration tab */
 	.then(function() {

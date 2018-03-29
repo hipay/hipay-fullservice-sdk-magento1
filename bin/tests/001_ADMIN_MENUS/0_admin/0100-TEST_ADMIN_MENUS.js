@@ -6,7 +6,7 @@ casper.test.begin('Test Magento Admin Menus', function(test) {
 		this.logToHipayBackend(loginBackend,passBackend);
 	})
 	.then(function() {
-		this.selectAccountBackend("OGONE_RECETTE");
+		this.selectAccountBackend("OGONE_DEV");
 	})
 	/* Open Integration tab */
 	.then(function() {

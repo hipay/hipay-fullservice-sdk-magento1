@@ -1,9 +1,14 @@
 #!/bin/bash
 
-BASE_URL=$MAGENTO_URL
-if [ "$PORT_WEB" != "80" ];then
-    BASE_URL=$BASE_URL:$PORT_WEB
+if [ "$1" != "" ]; then
+    BASE_URL=$1
+else
+    BASE_URL=$MAGENTO_URL
+    if [ "$PORT_WEB" != "80" ];then
+        BASE_URL=$BASE_URL:$PORT_WEB
+    fi
 fi
+
 
 if [ "$URL_MAILCATCHER" = "" ];then
     URL_MAILCATCHER="http://smtp:1080/"

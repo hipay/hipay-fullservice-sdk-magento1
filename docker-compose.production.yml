@@ -1,36 +1,43 @@
-web:
-  container_name: {CONTAINER_NAME_WEB}
-  build: .
-  dockerfile: ./bin/docker/php5-6/Dockerfile
-  ports:
-      - "{PORT_WEB}:80"
-  environment:
-    - SAMPLE_DATA_VERSION=1.9
-    - MAGENTO_VERSION=1.9.3.8
-  env_file:
-    - ./bin/conf/production/hipay.env.sample
-    - ./bin/conf/production/mage.env.sample
-    - ./bin/conf/production/mysql.env.sample
-  labels:
-    - "com.hipay.github={label}"
-    - "com.hipay.circleci={circleci}"
-  mem_limit: 500M
-mysql:
-  container_name: {CONTAINER_NAME_MYSQL}
-  image: mysql:5.6.23
-  ports:
-    - "{PORT_MYSQL}:3306"
-  env_file:
-     - ./bin/conf/production/mysql.env.sample
-  labels:
-    - "com.hipay.github={label}"
-    - "com.hipay.circleci={circleci}"
-  mem_limit: 500M
-smtp:
-  container_name: {CONTAINER_NAME_SMTP}
-  ports:
-     - "{PORT_SMTP}:80"
-  labels:
-    - "com.hipay.github={label}"
-    - "com.hipay.circleci={circleci}"
-  mem_limit: 256M
+version: "2.1"
+
+services:
+  web:
+    container_name: {CONTAINER_NAME_WEB}
+    build:
+      context: .
+      dockerfile: ./bin/docker/php5-6/Dockerfile
+    ports:
+        - "{PORT_WEB}:80"
+    environment:
+      - SAMPLE_DATA_VERSION=1.9
+      - MAGENTO_VERSION=1.9.3.8
+    env_file:
+      - ./bin/conf/production/hipay.env.sample
+      - ./bin/conf/production/mage.env.sample
+      - ./bin/conf/production/mysql.env.sample
+    labels:
+      - "com.hipay.github={label}"
+      - "com.hipay.circleci={circleci}"
+    mem_limit: 500M
+    links:
+      - mysql
+      - smtp
+  mysql:
+    container_name: {CONTAINER_NAME_MYSQL}
+    image: mysql:5.6.23
+    ports:
+      - "{PORT_MYSQL}:3306"
+    env_file:
+       - ./bin/conf/production/mysql.env.sample
+    labels:
+      - "com.hipay.github={label}"
+      - "com.hipay.circleci={circleci}"
+    mem_limit: 500M
+  smtp:
+    container_name: {CONTAINER_NAME_SMTP}
+    ports:
+       - "{PORT_SMTP}:80"
+    labels:
+      - "com.hipay.github={label}"
+      - "com.hipay.circleci={circleci}"
+    mem_limit: 256M
