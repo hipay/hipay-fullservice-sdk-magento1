@@ -1083,7 +1083,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
             $payment->getOrder()->getCustomerEmail());//MANDATORY
         $params['long_description'] = $longDesc;// optional
 
-        $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction', Mage::app()->getStore());
+        $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction', Mage::app()->getStore()->getId());
 
         if ($useOrderCurrency) {
             $params['currency'] = $payment->getOrder()->getOrderCurrencyCode();
@@ -1163,7 +1163,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
             $params['cancel_url'] = $isAdmin ? Mage::helper('adminhtml')->getUrl('*/payment/cancel') : Mage::getUrl($this->getConfigData('cancel_url'));
         }
 
-        if ($this->getConfig("send_notification_url", Mage::app()->getStore())) {
+        if ($this->getConfig("send_notification_url", Mage::app()->getStore()->getId())) {
             $params['notify_url'] = Mage::getUrl("*/notify/index");
         }
 
