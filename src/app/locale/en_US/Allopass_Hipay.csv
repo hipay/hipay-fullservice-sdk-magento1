@@ -1,186 +1,352 @@
-"HiPay API configuration","HiPay API configuration"
-"Api username","Api username"
-"Api password","Api password"
-"Api username test","Api username test"
-"Api password test","Api password test"
-"Enabled","Enabled"
-"Title","Title"
-"Payment Action","Payment Action"
-"Notification from Hipay:","Notification from Hipay:"
-"status","status"
-"Order %s by %s","Order %s by %s"
-"amount: %s","amount: %s"
-"failed","failed"
-"successful","successful"
-"Credit Card: xxxx-%s","Credit Card: xxxx-%s"
-"Hipay Transaction ID %s","Hipay Transaction ID %s"
-"Payment authorization error.","Payment authorization error."
-"Payment capturing error.","Payment capturing error."
-"Payment accepted by Hipay.","Payment accepted by Hipay."
-"Waiting for capture transaction ID '%s' of amount %s","Waiting for capture transaction ID '%s' of amount %s"
-"Reason","Reason"
-"Code Credit Card Type Hipay not found!","Code Credit Card Type Hipay not found!"
-"Authorization","Authorization"
-"Sale","Sale"
-"basic","basic"
-"basic2","basic2"
-"Order canceled automatically by cron because order is pending since %d minutes","Order canceled automatically by cron because order is pending since %d minutes"
-"--Please Select--","--Please Select--"
-"Credit Card Number","Credit Card Number"
-"Credit Card Type","Credit Card Type"
-"Credit Card Types","Credit Card Types"
-"Expiration Date","Expiration Date"
-"Card Verification Number","Card Verification Number"
-"Save your card data for a next buy.","Save your card data for a next buy."
-"Use my saved card","Select your favorite credit card"
-"Save new card data","Record new credit card data"
-"Do not use saved card data","Do not use saved card data"
-"You will be redirected to payment page after submitting order.","You will be redirected to payment page after submitting order."
-"Enabled","Enabled"
-"Title","Title"
-"Order status when payment accepted","Order status when payment accepted"
-"Order status when payment refused","Order status when payment refused"
-"Order status when payment canceled by customer","Order status when payment canceled by customer"
-"Payment Action","Payment Action"
-"Credit Card Types","Credit Card Types"
-"Credit Card Verification","Credit Card Verification"
-"Use 3D Secure","Enable 3D Secure"
-"Use Oneclick","Use Oneclick"
-"Use recurring profile","Use recurring profile"
-"Create invoice when payment accepted","Create invoice when payment accepted"
-"Add product to cart","Add product to cart"
-"Fill cart when payment canceled or refused","Fill cart when payment canceled or refused"
-"Cancel pending order","Cancel pending order"
-"Cancel orders stayed in pending because customer not validated payment","Cancel orders stayed in pending because customer not validated payment"
-"Payment from applicable countries","Payment from applicable countries"
-"Payment from Specific countries","Payment from Specific countries"
-"Minimum Order Total","Minimum Order Total"
-"Maximum Order Total","Maximum Order Total"
-"Sort order","Sort order"
-"Enable debug log","Enable debug log"
-"Enable test mode","Enable test mode"
-"Css Url","Css Url"
-"Important, HTTPS protocol is required","Important, HTTPS protocol is required"
-"Page payment template","Page payment template"
-"Display card selector","Display card selector"
-"What is this?","What is this?"
-"Hipay Hosted","Hipay Hosted"
-"You will be debited of %s only after submitting order.","You will be debit of %s only after submitting order."
-"Pending Capture","Pending Capture"
-"Capture Requested","Capture Requested"
-"Refund Requested","Refund Requested"
-"Capture Requested by Hipay.","Capture Requested by Hipay."
-"Payment accepted by Hipay.","Payment accepted by Hipay."
-"Refund Requested by Hipay.","Refund Requested by Hipay."
-"Refund accepted by Hipay.","Refund accepted by Hipay."
-"Your payment is in pending.","Your payment is in pending."
-"Order #","Order #"
-"Pending page","Pending page"
-"Success page","Success page"
-"Failure page","Failure page"
-"Redirect page pending status","Redirect page pending status"
-"Page to redirect when transaction is in pending status","Page to redirect when transaction is in pending status"
-"Record your card data for recurring.","Record your card data for recurring."
-"Hipay status to validate order","Hipay status to validate order"
-"Display hosted page in Iframe","Display hosted page in Iframe"
-"Configure Rules to activate 3D Secure","Configure Rules to activate 3D Secure"
-"Rules 3D Secure","Rules 3D Secure"
-"Enable for all transactions","Enable for all transactions"
-"Enable for configured 3ds rules","Enable for configured 3ds rules",
-"Disabled","Disabled"
-"Order Attribute","Order Attribute"
-"Customer Attribute","Customer Attribute"
-"Order's time","Order's time"
-"Billing Postcode","Billing Postcode"
-"Billing Region","Billing Region"
-"Billing State/Province","Billing State/Province"
-"Billing Country","Billing Country"
-"Midnight - 8:00 a.m.","Midnight - 8:00 a.m."
-"8:00 a.m. - 3:00 p.m.","8:00 a.m. - 3:00 p.m."
-"3:00 pm. - 8:00 p.m.","3:00 pm. - 8:00 p.m."
-"8:00 p.m. - 11:59 p.m.","8:00 p.m. - 11:59 p.m."
-"Orders count","Orders count"
-"Customer is guest","Customer is guest"
-"Billing and shipping addresses are differents","Billing and shipping addresses are differents"
-"Sort the list by drag'n/drop credit card type","Sort the list by drag'n/drop credit card type"
-"Split your Payment","Split your Payment"
-"-- Please select your card --","-- Please select your card --"
-"Try to enable for all transactions.","Try to enable for all transactions."
-"Try to enable for configured 3ds rules","Try to enable for configured 3ds rules"
-"Force for configured 3ds rules","Force for configured 3ds rules"
-"Force for all transactions.","Force for all transactions."
-"Your next payments:","Your next payments:"
-"Name on Card","Name on Card"
-"Use Split Payment","Use Split Payment"
-"Payment Profile","Payment Profile"
-"Minimum Order Total for Split Payment","Minimum Order Total for Split Payment"
-"Rules Oneclick","Rules Oneclick"
-"Send fraud payment email","Send fraud payment email"
-"Display card owner","Display card owner"
-"Display card owner in card form","Display card owner in card form"
-"Split Payment Profiles","Split Payment Profiles"
-"Split payments","Split payments"
-"HiPay Split Payments","HiPay Split Payments"
-"Card token","Card token"
-"Amount to pay","Amount to pay"
-"Date to pay","Date to pay"
-"Attempts","Attempts"
-"Status","Status"
-"Pay now","Pay now"
-"Hipay Payment Profiles","Hipay Payment Profiles"
-"payment_type","payment_type"
-"Add payment profile","Add payment profile"
-"Payment Profile","Payment Profile"
-"Wrapper iFrame Style","Wrapper iFrame Style"
-"iFrame Width","iFrame Width"
-"iFrame Height","iFrame Height"
-"iFrame Style","iFrame Style"
-"HiPay Enterprise credentials configuration","HiPay Enterprise credentials configuration"
-"HiPay Enterprise Credit Card","HiPay Enterprise Credit Card API"
-"HiPay Enterprise Hosted Page","HiPay Enterprise Credit Card Hosted Page"
-"Hipay Hosted","HiPay Enterprise Credit Card Hosted Page"
-"Hipay Credit Card","HiPay Enterprise Credit Card API"
-"HiPay Enterprise Credit Card Split Payment","HiPay Enterprise Credit Card Split Payment"
-"Credit Card Split Payment","Credit Card Split Payment"
-"HiPay Enterprise Hosted Page Split Payment","HiPay Enterprise Hosted Page Split Payment"
-"Bankwire method","Bankwire method"
-"Gender","Gender"
-"Male","Male"
-"Female","Female"
-"firstname","Firstname"
-"lastname","Lastname"
-"Bank name","Bank name"
-"Notification ""Refunded"". Refund issued by merchant. Registered notification about refunded amount of %s. Transaction ID: ""%s"". Credit Memo has not been created. Please create offline Credit Memo.","Notification ""Refunded"". Refund issued by merchant. Registered notification about refunded amount of %s. Transaction ID: ""%s"". Credit Memo has not been created. Please create offline Credit Memo."
-"Notification ""Capture"". Capture issued by merchant. Registered notification about captured amount of %s. Transaction ID: ""%s"". Invoice has not been created. Please create offline Invoice.","Notification ""Capture"". Capture issued by merchant. Registered notification about captured amount of %s. Transaction ID: ""%s"". Invoice has not been created. Please create offline Invoice."
-"Accept and Capture Payment","Accept and Capture Payment"
-"The Capture was requested.","The Capture was requested."
-"You must reload the page to see new status.","You must reload the page to see new status."
-"Your payment is declined. Please retry checkout with another payment card.","Your payment is declined. Please retry checkout with another payment card."
-"An exception has occured. Please retry checkout.","An exception has occured. Please retry checkout."
-"Transaction is in pending notification.","Transaction is in pending notification."
-"Leave blank if no proxy","Leave blank if no proxy"
-"Device fingerprint","Device fingerprint"
-"The CPF format is invalid.","The CPF format is invalid."
-"The CPN format is invalid.","The CPN format is invalid."
-"An email with a payment link will be sent to the customer.","Un email avec un lien de paiement sera envoyé au client."
-"Please check the configuration","'Please check the configuration"
-"You have to activate and configuring the support of basket before activate the payment method klarna.","You have to activate and configuring the support of basket before activate the payment method klarna."
-"Please check the configuration","'Please check the configuration"
-"You have to activate and configuring the support of basket before activate the payment method klarna.","You have to activate and configuring the support of basket before activate the payment method klarna."
-"Period of validity of the payment page","Period of validity of the payment page"
-"Please check the phone number entered.","Please check the phone number entered."
-"Use order currency for transaction","Use order currency for transaction"
-"Device fingerprint","Device fingerprint"
-"Hashing Algorithm","Hashing Algorithm"
-"If the hash configuration is different than the one set in your Hipay back office, then the notifications will not work. Check that both values match.","If the hash configuration is different than the one set in your Hipay back office, then the notifications will not work. Check that both values match."
-"Retrieve the hashing configuration for notifications configured in your account.","Retrieve the hashing configuration for notifications configured in your account."
-"Synchronize Hashing","Synchronize Hashing"
-"Other configuration","Other configuration"
-"Only if payment method is in ""Sale"" mode.","Only if payment method is in ""Sale"" mode."
-"Are you sure you want to sync the hashing configuration for notifications ?","Are you sure you want to sync the hashing configuration for notifications ?"
-"The hash configuration was already updated with","The hash configuration was already updated with"
-"You must enter credentials to synchronize your configuration.","You must enter credentials to synchronize your configuration."
-"The hash configuration has not been updated. Please check the configuration in the hipay back office.","The hash configuration has not been updated. Please check the configuration in the hipay back office."
-"The hash configuration has been updated with ","The hash configuration has been updated with "
-"Send Notification url","Send Notification url"
+HiPay API configuration,HiPay API configuration
+- Please select one category - ,- Please select one category -
+- Please select one delivery method - ,- Please select one delivery method -
+-- Please Select --,-- Please Select --
+-- Please select your card --,-- Please select your card --
+--Please Select--,--Please Select--
+* Required Fields,* Required Fields
+3:00 pm. - 8:00 p.m.,3:00 pm. - 8:00 p.m.
+8:00 a.m. - 3:00 p.m.,8:00 a.m. - 3:00 p.m.
+8:00 p.m. - 11:59 p.m.,8:00 p.m. - 11:59 p.m.
+Accept and Capture Payment,Accept and Capture Payment
+Add,Add
+Add payment profile,Add payment profile
+Add product to cart,Add product to cart
+Alias oneclick,Alias oneclick
+Allow Initial Fee Failure,Allow Initial Fee Failure
+Amount to pay,Amount to pay
+amount: %s,amount: %s
+An email with a payment link will be sent to the customer.,An email with a payment link will be sent to the customer.
+An error occurred while paid the split payment.,An error occurred while paid the split payment.
+An error occurred while saving the card.,An error occurred while saving the card.
+An error occurred while saving the payment profile.,An error occurred while saving the payment profile.
+An error occurred while saving the split payment.,An error occurred while saving the split payment.
+An exception has occured. Please retry checkout.,An exception has occured. Please retry checkout.
+Api password,Api password
+Api password test,Api password test
+Api username,Api username
+Api username test,Api username test
+Are you sure you want to accept this payment?,Are you sure you want to accept this payment?
+Are you sure you want to sync the hashing configuration for notifications ?,Are you sure you want to sync the hashing configuration for notifications ?
+Attempts,Attempts
+Authorization,Authorization
+Auto Bill on Next Cycle,Auto Bill on Next Cycle
+Back,Back
+Bank name,Bank name
+"Bank name is not correct, please enter a valid Bank name.","Bank name is not correct, please enter a valid Bank name."
+Bankwire method,Bankwire method
+basic,basic
+Billing Amount,Billing Amount
+Billing and shipping addresses are differents,Billing and shipping addresses are differents
+Billing Country,Billing Country
+Billing delay,Billing delay
+Billing Period Unit,Billing Period Unit
+Billing Postcode,Billing Postcode
+Billing Region,Billing Region
+Billing State/Province,Billing State/Province
+Cancel orders stayed in pending because customer not validated payment,Cancel orders stayed in pending because customer not validated payment
+Cancel pending order,Cancel pending order
+Cannot add the item to shopping cart.,Cannot add the item to shopping cart.
+Cannot create an invoice without products.,Cannot create an invoice without products.
+Cannot retrieve the payment information object instance.,Cannot retrieve the payment information object instance.
+Cannot save card.,Cannot save card.
+Capture,Capture
+Capture Requested,Capture Requested
+Capture Requested by Hipay.,Capture Requested by Hipay.
+Card #,Card #
+Card %s,Card %s
+Card %s - %s,Card %s - %s
+Card Exp. month,Card Exp. month
+Card Exp. year,Card Exp. year
+Card Hipay,Card Hipay
+Card name,Card name
+Card Number,Card Number
+Card Status,Card Status
+Card Token,Card Token
+Card type,Card type
+Card type: %s,Card type: %s
+Card Verification Number,Card Verification Number
+"Click <a href=""%s"">here</a> to continue shopping.","Click <a href=""%s"">here</a> to continue shopping."
+Code BIC,Code BIC
+"Code BIC is not correct, please enter a valid Code BIC.","Code BIC is not correct, please enter a valid Code BIC."
+Code Credit Card Type Hipay not found!,Code Credit Card Type Hipay not found!
+Complete,Complete
+Conditions combination,Conditions combination
+Configure Rules to activate 3D Secure,Configure Rules to activate 3D Secure
+CPF,CPF
+CPF is incorrect,CPF is incorrect
+CPF is not valid.,CPF is not valid.
+CPN,CPN
+CPN is incorrect,CPN is incorrect
+CPN is incorrect.,CPN is incorrect.
+Create invoice when payment accepted,Create invoice when payment accepted
+Credit Card Number,Credit Card Number
+Credit card number mismatch with credit card type.,Credit card number mismatch with credit card type.
+Credit Card Split Payment,Credit Card Split Payment
+Credit Card Type,Credit Card Type
+Credit card type is not allowed for this payment method.,Credit card type is not allowed for this payment method.
+Credit Card Types,Credit Card Types
+Credit Card Verification,Credit Card Verification
+Credit Card: xxxx-%s,Credit Card: xxxx-%s
+Css Url,Css Url
+Currency,Currency
+Customer Attribute,Customer Attribute
+Customer Groups,Customer Groups
+Customer ID,Customer ID
+Customer is guest,Customer is guest
+Customers,Customers
+Date to pay,Date to pay
+Day,Day
+Delay delivery is not a correct value for %s,Delay delivery is not a correct value for %s
+Delete,Delete
+Delivery delay,Delivery delay
+Device fingerprint,Device fingerprint
+Disabled,Disabled
+Display card owner,Display card owner
+Display card owner in card form,Display card owner in card form
+Display card selector,Display card selector
+Display hosted page in Iframe,Display hosted page in Iframe
+Do not use saved card data,Do not use saved card data
+Edit Card,Edit Card
+Enable debug log,Enable debug log
+Enable for all transactions,Enable for all transactions
+Enable for configured 3ds rules,Enable for configured 3ds rules
+Enable test mode,Enable test mode
+Enabled,Enabled
+equals or greater than,equals or greater than
+equals or less than,equals or less than
+Error with your card!,Error with your card!
+Exp. Date,Exp. Date
+Exp. Month,Exp. Month
+Exp. Year,Exp. Year
+Expiration Date,Expiration Date
+Failed,Failed
+Failed to update the payment.,Failed to update the payment.
+Failure page,Failure page
+Female,Female
+Fill cart when payment canceled or refused,Fill cart when payment canceled or refused
+firstname,firstname
+Firstname is mandatory.,Firstname is mandatory.
+Force for all transactions.,Force for all transactions.
+Force for configured 3ds rules,Force for configured 3ds rules
+FOUND,FOUND
+Fraud result,Fraud result
+Fraud scoring,Fraud scoring
+G.T. (Purchased),G.T. (Purchased)
+Gender,Gender
+Grand Total,Grand Total
+greater than,greater than
+Hashing Algorithm,Hashing Algorithm
+Hipay,Hipay
+Hipay Card,Hipay Card
+Hipay cards,Hipay cards
+HiPay category,HiPay category
+Hipay Credit Card,HiPay Enterprise Credit Card API
+Hipay delivery method,Hipay delivery method
+HiPay Enterprise credentials configuration,HiPay Enterprise credentials configuration
+HiPay Enterprise Credit Card,HiPay Enterprise Credit Card API
+HiPay Enterprise Credit Card Split Payment,HiPay Enterprise Credit Card Split Payment
+HiPay Enterprise Hosted Page,HiPay Enterprise Credit Card Hosted Page
+HiPay Enterprise Hosted Page Split Payment,HiPay Enterprise Hosted Page Split Payment
+Hipay Hosted,Hipay Hosted
+Hipay Hosted,HiPay Enterprise Credit Card Hosted Page
+Hipay Payment Profiles,Hipay Payment Profiles
+Hipay Split Payment,Hipay Split Payment
+HiPay Split Payments,HiPay Split Payments
+Hipay status to validate order,Hipay status to validate order
+Hipay Transaction ID %s,Hipay Transaction ID %s
+IBAN,IBAN
+"Iban is not correct, please enter a valid Iban.","Iban is not correct, please enter a valid Iban."
+ID,ID
 "If enabled, then the URL of your site is sent during the payment and notifications will be sent to this URL. To use only for multi site.","If enabled, then the URL of your site is sent during the payment and notifications will be sent to this URL. To use only for multi site."
+"If the hash configuration is different than the one set in your Hipay back office, then the notifications will not work. Check that both values match.","If the hash configuration is different than the one set in your Hipay back office, then the notifications will not work. Check that both values match."
+iFrame Height,iFrame Height
+iFrame Style,iFrame Style
+iFrame Width,iFrame Width
+"Important, HTTPS protocol is required","Important, HTTPS protocol is required"
+Incorrect credit card expiration date.,Incorrect credit card expiration date.
+Informations,Informations
+Initial Fee,Initial Fee
+Internal Reference ID,Internal Reference ID
+Invalid Credit Card Number,Invalid Credit Card Number
+is,is
+Is default,Is default
+is not,is not
+is not one of,is not one of
+is one of,is one of
+lastname,Lastname
+Lastname is mandatory.,Lastname is mandatory.
+Leave blank if no proxy,Leave blank if no proxy
+less than,less than
+Magento category,Magento category
+Magento shipping method,Magento shipping method
+Male,Male
+Manage Customers,Manage Customers
+mappings categories are actually missing.,mappings categories are actually missing.
+mappings delivery method are actually missing.,mappings delivery method are actually missing.
+Maximum Billing Cycles,Maximum Billing Cycles
+Maximum Order Total,Maximum Order Total
+Maximum Payment Failures,Maximum Payment Failures
+Maximum Trial Billing Cycles,Maximum Trial Billing Cycles
+Midnight - 8:00 a.m.,Midnight - 8:00 a.m.
+Minimum Order Total,Minimum Order Total
+Minimum Order Total for Split Payment,Minimum Order Total for Split Payment
+Month,Month
+My Payment Cards,My Payment Cards
+N/A,N/A
+Name,Name
+Name on Card,Name on Card
+New card,New card
+New Order Recurring!,New Order Recurring!
+New payment profile,New payment profile
+No,No
+No Cancel Transaction because no transaction number,No Cancel Transaction because no transaction number
+NOT FOUND,NOT FOUND
+"Notification ""Capture"". Capture issued by merchant. Registered notification about captured amount of %s. Transaction ID: ""%s"". Invoice has not been created. Please create offline Invoice.","Notification ""Capture"". Capture issued by merchant. Registered notification about captured amount of %s. Transaction ID: ""%s"". Invoice has not been created. Please create offline Invoice."
+"Notification ""Refunded"". Refund issued by merchant. Registered notification about refunded amount of %s. Transaction ID: ""%s"". Credit Memo has not been created. Please create offline Credit Memo.","Notification ""Refunded"". Refund issued by merchant. Registered notification about refunded amount of %s. Transaction ID: ""%s"". Credit Memo has not been created. Please create offline Credit Memo."
+Notification from Hipay:,Notification from Hipay:
+"Only if payment method is in ""Sale"" mode.","Only if payment method is in ""Sale"" mode."
+Order #,Order #
+Order %s by %s,Order %s by %s
+Order Attribute,Order Attribute
+Order canceled automatically by cron because order is pending since %d minutes,Order canceled automatically by cron because order is pending since %d minutes
+Order Id not present (Recurring).,Order Id not present (Recurring).
+Order preparation delay,Order preparation delay
+Order saving error: %s,Order saving error: %s
+Order status when payment accepted,Order status when payment accepted
+Order status when payment canceled by customer,Order status when payment canceled by customer
+Order status when payment refused,Order status when payment refused
+Order's time,Order's time
+Orders count,Orders count
+Other configuration,Other configuration
+Page payment template,Page payment template
+Page to redirect when transaction is in pending status,Page to redirect when transaction is in pending status
+Pay now,Pay now
+Payment accepted by Hipay.,Payment accepted by Hipay.
+Payment Action,Payment Action
+Payment authorization error.,Payment authorization error.
+Payment capturing error.,Payment capturing error.
+Payment error.,Payment error.
+Payment from applicable countries,Payment from applicable countries
+Payment from Specific countries,Payment from Specific countries
+Payment Method,Payment Method
+Payment Profile,Payment Profile
+Payment Reference ID,Payment Reference ID
+Payment type,Payment type
+payment_type,payment_type
+Pending,Pending
+Pending Capture,Pending Capture
+Pending page,Pending page
+Period of validity of the payment page,Period of validity of the payment page
+Please check the configuration,Please check the configuration
+Please check the phone number entered.,Please check the phone number entered.
+Please enter a valid credit card verification number.,Please enter a valid credit card verification number.
+Price in order,Price in order
+Product Attribute,Product Attribute
+Product attribute combination,Product attribute combination
+Products subselection,Products subselection
+Profile for ID: %d doesn't exists (Recurring).,Profile for ID: %d doesn't exists (Recurring).
+Quantity in order,Quantity in order
+Reason,Reason
+Record your card data for recurring.,Record your card data for recurring.
+Recurring Payment,Recurring Payment
+Redirect page pending status,Redirect page pending status
+Refund accepted by Hipay.,Refund accepted by Hipay.
+Refund Requested,Refund Requested
+Refund Requested by Hipay.,Refund Requested by Hipay.
+Retrieve the hashing configuration for notifications configured in your account.,Retrieve the hashing configuration for notifications configured in your account.
+Row total in order,Row total in order
+Rules 3D Secure,Rules 3D Secure
+Rules Oneclick,Rules Oneclick
+Sale,Sale
+Save,Save
+Save and Continue Edit,Save and Continue Edit
+Save new card data,Record new credit card data
+Save your card data for a next buy.,Save your card data for a next buy.
+Schedule Description,Schedule Description
+Selected payment type is not allowed for billing country.,Selected payment type is not allowed for billing country.
+Send fraud payment email,Send fraud payment email
+Send Notification url,Send Notification url
+Shipping Amount,Shipping Amount
+Shipping Method,Shipping Method
+Sort order,Sort order
+Sort the list by drag'n/drop credit card type,Sort the list by drag'n/drop credit card type
+Split number,Split number
+Split Payment,Split Payment
+Split Payment for order %s,Split Payment for order %s
+Split Payment Profiles,Split Payment Profiles
+Split payments,Split payments
+Split your Payment,Split your Payment
+Start Date,Start Date
+status,status
+Subscriber Name,Subscriber Name
+Subtotal,Subtotal
+Success page,Success page
+successful,successful
+Switch/Solo/Maestro Issue Number,Switch/Solo/Maestro Issue Number
+Switch/Solo/Maestro Start Date,Switch/Solo/Maestro Start Date
+Synchronize Hashing,Synchronize Hashing
+Tax Amount,Tax Amount
+The Capture was requested.,The Capture was requested.
+The card has been deleted.,The card has been deleted.
+The card has been saved.,The card has been saved.
+The CPF format is invalid.,The CPF format is invalid.
+The CPN format is invalid.,The CPN format is invalid.
+The hash configuration has been updated with ,The hash configuration has been updated with 
+The hash configuration has not been updated. Please check the configuration in the hipay back office.,The hash configuration has not been updated. Please check the configuration in the hipay back office.
+The hash configuration was already updated with,The hash configuration was already updated with
+The number of billing cycles for payment period.,The number of billing cycles for payment period.
+The order does not allow creating an invoice.,The order does not allow creating an invoice.
+The order has been created.,The order has been created.
+The payment has been accepted.,The payment has been accepted.
+The payment profile has been deleted.,The payment profile has been deleted.
+The payment profile has been saved.,The payment profile has been saved.
+The split payment has been paid,The split payment has been paid
+The split payment has been saved.,The split payment has been saved.
+The split payment has NOT been paid,The split payment has NOT been paid
+This card no longer exists.,This card no longer exists.
+This order no longer exists.,This order no longer exists.
+This payment profile no longer exists.,This payment profile no longer exists.
+This split payment no longer exists.,This split payment no longer exists.
+Time to wait between installments in a billing cycle.,Time to wait between installments in a billing cycle.
+Title,Title
+total amount,total amount
+Total Items Quantity,Total Items Quantity
+total quantity,total quantity
+Total Weight,Total Weight
+Transaction is in pending notification.,Transaction is in pending notification.
+Trial Billing Amount,Trial Billing Amount
+Trial Billing Frequency,Trial Billing Frequency
+Trial Billing Period Unit,Trial Billing Period Unit
+Try to enable for all transactions.,Try to enable for all transactions.
+Try to enable for configured 3ds rules,Try to enable for configured 3ds rules
+Two Weeks,Two Weeks
+Type,Type
+Unable to find a card to delete.,Unable to find a card to delete.
+Unable to find a payment profile to delete.,Unable to find a payment profile to delete.
+Unit for billing during the subscription period.,Unit for billing during the subscription period.
+Use 3D Secure,Enable 3D Secure
+Use my saved card,Select your favorite credit card
+Use Oneclick,Use Oneclick
+Use order currency for transaction,Use order currency for transaction
+Use recurring profile,Use recurring profile
+Use Split Payment,Use Split Payment
+Waiting for capture transaction ID '%s' of amount %s,Waiting for capture transaction ID '%s' of amount %s
+Week,Week
+What is this?,What is this?
+With fees,With fees
+Without fees,Without fees
+Wrapper iFrame Style,Wrapper iFrame Style
+Year,Year
+Yes,Yes
+You have saved no cards.,You have saved no cards.
+You have to activate and configuring the support of basket before activate the payment method klarna.,You have to activate and configuring the support of basket before activate the payment method klarna.
+You must enter credentials to synchronize your configuration.,You must enter credentials to synchronize your configuration.
+You must reload the page to see new status.,You must reload the page to see new status.
+You will be debited of %s only after submitting order.,You will be debit of %s only after submitting order.
+You will be redirected to payment page after submitting order.,You will be redirected to payment page after submitting order.
+Your next payments:,Your next payments:
+Your payment is declined. Please retry checkout with another payment card.,Your payment is declined. Please retry checkout with another payment card.
+Your payment is in pending.,Your payment is in pending.
+Your transaction has been approved.,Your transaction has been approved.
+Your transaction has been refused.,Your transaction has been refused.
