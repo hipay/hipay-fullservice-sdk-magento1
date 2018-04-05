@@ -43,10 +43,12 @@ $_typeNationalIdentification = $this->getTypeNationalIdentification();
     <?php endif; ?>
     <?php if (Mage::getStoreConfig('hipay/hipay_api/fingerprint', Mage::app()->getStore())) : ?>
         <script type="text/javascript">
-            $('ioBB_fingerprint').value = $('ioBB').value;
+            $$('.ioBB_fingerprint').forEach(function(element){
+                element.value = $('ioBB').value;
+            })
         </script>
         <li>
-            <input type="hidden" id="ioBB_fingerprint" name="payment[device_fingerprint]" value=""/>
+            <input type="hidden" class="ioBB_fingerprint" name="payment[device_fingerprint]" value=""/>
         </li>
     <?php endif; ?>
     <?php if (!empty($_typeNationalIdentification)) : ?>
