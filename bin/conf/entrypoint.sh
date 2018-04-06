@@ -142,7 +142,7 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
         n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" dev:log:db --on
 
         # INSTALL X DEBUG
-        echo '' | pecl install xdebug
+        echo '' | pecl install xdebug-2.5.0
         echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini
         echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini
         echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini

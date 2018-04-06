@@ -55,7 +55,7 @@
                             <show_in_store>1</show_in_store>
                         </api_tokenjs_username>
                         <api_tokenjs_publickey translate="label">
-                            <label>Api TokenJS Password/Public Key </label>
+                            <label>Api TokenJS Password/Public Key</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>23</sort_order>
                             <show_in_default>1</show_in_default>
@@ -213,7 +213,9 @@
                         </debug>
                         <send_notification_url translate="label comment">
                             <label>Send Notification url</label>
-                            <comment>If enabled, then the URL of your site is sent during the payment and notifications will be sent to this URL. To use only for multi site.</comment>
+                            <comment>If enabled, then the URL of your site is sent during the payment and notifications
+                                will be sent to this URL. To use only for multi site.
+                            </comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>160</sort_order>
@@ -363,7 +365,8 @@
                         </notice_hashing_production>
                         <init_hashing translate="label,comment">
                             <label_button>Synchronize Hashing</label_button>
-                            <comment>Retrieve the hashing configuration for notifications configured in your account.</comment>
+                            <comment>Retrieve the hashing configuration for notifications configured in your account.
+                            </comment>
                             <frontend_model>hipay/adminhtml_field_hashingButtonInit</frontend_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
@@ -478,7 +481,7 @@
                         <attribute_ean translate="label comment">
                             <label>Attribute ean</label>
                             <frontend_type>select</frontend_type>
-                            <comment>If your store supports ean, indicate the field name </comment>
+                            <comment>If your store supports ean, indicate the field name</comment>
                             <source_model>hipay/source_attributes</source_model>
                             <sort_order>120</sort_order>
                             <show_in_default>1</show_in_default>
@@ -488,7 +491,9 @@
                         <load_product_ean translate="label comment">
                             <label>Load attribute</label>
                             <frontend_type>select</frontend_type>
-                            <comment>If you activate this option, a product loading is carried out to get ean (please see documentation)</comment>
+                            <comment>If you activate this option, a product loading is carried out to get ean (please
+                                see documentation)
+                            </comment>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>130</sort_order>
                             <show_in_default>1</show_in_default>
@@ -4677,8 +4682,8 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </is_test_mode>
-                      </fields> 
-             	</hipay_paypalapi>
+                    </fields>
+                </hipay_paypalapi>
                 <hipay_sdd translate="label" module="hipay">
                     <label>HiPay Enterprise SEPA Direct Debit</label>
                     <frontend_type>text</frontend_type>
@@ -4687,23 +4692,23 @@ From this information, an estimated (estimated) delivery day is calculated and s
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-	                    <active translate="label">
-	                        <label>Enabled</label>
-	                        <frontend_type>select</frontend_type>
-	                        <source_model>adminhtml/system_config_source_yesno</source_model>
-	                        <sort_order>10</sort_order>
-	                        <show_in_default>1</show_in_default>
-	                        <show_in_website>1</show_in_website>
-	                        <show_in_store>1</show_in_store>
-	                    </active>
-	                    <title translate="label">
-	                        <label>Title</label>
-	                        <frontend_type>text</frontend_type>
-	                        <sort_order>20</sort_order>
-	                        <show_in_default>1</show_in_default>
-	                        <show_in_website>1</show_in_website>
-	                        <show_in_store>1</show_in_store>
-	                     </title>
+                        <active translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                        <title translate="label">
+                            <label>Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>
                         <order_status_payment_accepted translate="label">
                             <label>Order status when payment accepted</label>
                             <frontend_type>select</frontend_type>
@@ -4731,7 +4736,7 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </order_status_payment_canceled>
-                         <hipay_status_validate_order translate="label">
+                        <hipay_status_validate_order translate="label">
                             <label>Hipay status to validate order</label>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_order_hipayStatusValidate</source_model>
@@ -4742,14 +4747,16 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </success_redirect_page>
-                         <pending_redirect_page translate="label">
+                        <pending_redirect_page translate="label">
                             <label>Redirect page pending status</label>
                             <comment>Page to redirect when transaction is in pending status</comment>
                             <frontend_type>select</frontend_type>
@@ -4759,9 +4766,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </pending_redirect_page>
-                         <re_add_to_cart translate="label comment">
-                        	<label>Add product to cart</label>
-                        	<comment>Fill cart when payment canceled or refused</comment>
+                        <re_add_to_cart translate="label comment">
+                            <label>Add product to cart</label>
+                            <comment>Fill cart when payment canceled or refused</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>95</sort_order>
@@ -4770,25 +4777,25 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_store>0</show_in_store>
                         </re_add_to_cart>
                         <cancel_pending_order translate="label comment">
-                         	<label>Cancel pending order</label>
-                        	<comment>Cancel orders stayed in pending because customer not validated payment</comment>
+                            <label>Cancel pending order</label>
+                            <comment>Cancel orders stayed in pending because customer not validated payment</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>97</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
-                         </cancel_pending_order>
-                         <send_fraud_payment_email translate="label">
-	                        <label>Send fraud payment email</label>
-	                        <frontend_type>select</frontend_type>
-	                        <source_model>adminhtml/system_config_source_yesno</source_model>
-	                        <sort_order>99</sort_order>
-	                        <show_in_default>1</show_in_default>
-	                        <show_in_website>1</show_in_website>
-	                        <show_in_store>1</show_in_store>
-	                    </send_fraud_payment_email>
-                         <allowspecific translate="label">
+                        </cancel_pending_order>
+                        <send_fraud_payment_email translate="label">
+                            <label>Send fraud payment email</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>99</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </send_fraud_payment_email>
+                        <allowspecific translate="label">
                             <label>Payment from applicable countries</label>
                             <frontend_type>allowspecific</frontend_type>
                             <sort_order>100</sort_order>
@@ -4840,8 +4847,8 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_store>0</show_in_store>
                         </electronic_signature>
                         <debug translate="label">
-                        	<label>Enable debug log</label>
-                        	<comment></comment>
+                            <label>Enable debug log</label>
+                            <comment></comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>150</sort_order>
@@ -4849,9 +4856,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </debug>
-	                      <is_test_mode translate="label comment">
-                        	<label>Enable test mode</label>
-                        	<comment></comment>
+                        <is_test_mode translate="label comment">
+                            <label>Enable test mode</label>
+                            <comment></comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>200</sort_order>
@@ -4859,10 +4866,10 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </is_test_mode>
-                      </fields>
-             	</hipay_sdd>
+                    </fields>
+                </hipay_sdd>
                 <hipay_postfinancecardapi translate="label" module="hipay">
-            		<label>HiPay Fullservice PostFinance Card</label>
+                    <label>HiPay Fullservice PostFinance Card</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>147</sort_order>
                     <show_in_default>1</show_in_default>
@@ -4885,7 +4892,7 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                         </title>
+                        </title>
                         <order_status_payment_accepted translate="label">
                             <label>Order status when payment accepted</label>
                             <frontend_type>select</frontend_type>
@@ -4913,7 +4920,7 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </order_status_payment_canceled>
-                         <hipay_status_validate_order translate="label">
+                        <hipay_status_validate_order translate="label">
                             <label>Hipay status to validate order</label>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_order_hipayStatusValidate</source_model>
@@ -4962,17 +4969,17 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </send_fraud_payment_email>
-                         <re_add_to_cart translate="label comment">
-                        	<label>Add product to cart</label>
-                        	<comment>Fill cart when payment canceled or refused</comment>
+                        <re_add_to_cart translate="label comment">
+                            <label>Add product to cart</label>
+                            <comment>Fill cart when payment canceled or refused</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>95</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
-                         </re_add_to_cart>
-                         <cancel_pending_order translate="label comment">
+                        </re_add_to_cart>
+                        <cancel_pending_order translate="label comment">
                             <label>Cancel pending order</label>
                             <comment>Cancel orders stayed in pending because customer not validated payment</comment>
                             <frontend_type>select</frontend_type>
@@ -4981,7 +4988,7 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
-                         </cancel_pending_order>
+                        </cancel_pending_order>
                         <delay_cancel_pending_order translate="label">
                             <label>Delay before cancel order</label>
                             <comment>In Hours</comment>
@@ -5000,7 +5007,7 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </send_fraud_payment_email>
-                         <allowspecific translate="label">
+                        <allowspecific translate="label">
                             <label>Payment from applicable countries</label>
                             <frontend_type>allowspecific</frontend_type>
                             <sort_order>100</sort_order>
@@ -5043,8 +5050,8 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_store>1</show_in_store>
                         </sort_order>
                         <debug>
-                        	<label>Enable debug log</label>
-                        	<comment></comment>
+                            <label>Enable debug log</label>
+                            <comment></comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>150</sort_order>
@@ -5052,9 +5059,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </debug>
-	                      <is_test_mode translate="label comment">
-                        	<label>Enable test mode</label>
-                        	<comment></comment>
+                        <is_test_mode translate="label comment">
+                            <label>Enable test mode</label>
+                            <comment></comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>200</sort_order>
@@ -5062,7 +5069,7 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </is_test_mode>
-                      </fields> 
+                    </fields>
                 </hipay_postfinancecardapi>
                 <hipay_boleto translate="label" module="hipay">
                     <label>HiPay Enterprise Boleto</label>
@@ -5127,7 +5134,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -5461,7 +5470,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -5733,7 +5744,7 @@ From this information, an estimated (estimated) delivery day is calculated and s
                     </fields>
                 </hipay_itau>
                 <hipay_postfinanceefinanceapi translate="label" module="hipay">
-            		<label>HiPay Enterprise PostFinance E-Finance</label>
+                    <label>HiPay Enterprise PostFinance E-Finance</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>241</sort_order>
                     <show_in_default>1</show_in_default>
@@ -5824,9 +5835,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </pending_redirect_page>
-                         <re_add_to_cart translate="label comment">
-                        	<label>Add product to cart</label>
-                        	<comment>Fill cart when payment canceled or refused</comment>
+                        <re_add_to_cart translate="label comment">
+                            <label>Add product to cart</label>
+                            <comment>Fill cart when payment canceled or refused</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>95</sort_order>
@@ -5933,8 +5944,8 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </is_test_mode>
-                      </fields> 
-             	</hipay_postfinanceefinanceapi>
+                    </fields>
+                </hipay_postfinanceefinanceapi>
                 <hipay_klarna translate="label" module="hipay">
                     <label>HiPay Klarna Invoice</label>
                     <frontend_type>text</frontend_type>
@@ -6264,7 +6275,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -6598,7 +6611,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -6932,7 +6947,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -7266,7 +7283,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -7600,7 +7619,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -8267,7 +8288,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -8601,7 +8624,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -8935,7 +8960,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -9269,7 +9296,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -9627,7 +9656,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -9861,7 +9892,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -10070,7 +10103,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -10270,7 +10305,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -10408,6 +10445,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                     </fields>
                 </hipay_bnpp4x>
             </groups>
-		</payment>
-	</sections>
+        </payment>
+    </sections>
 </config>

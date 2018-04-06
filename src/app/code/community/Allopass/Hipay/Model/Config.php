@@ -1,5 +1,25 @@
 <?php
 
+/**
+ * HiPay Fullservice SDK Magento 1
+ *
+ * 2018 HiPay
+ *
+ * NOTICE OF LICENSE
+ *
+ * @author    HiPay <support.tpp@hipay.com>
+ * @copyright 2018 HiPay
+ * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ */
+
+/**
+ *
+ *
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-fullservice-sdk-magento1
+ */
 class Allopass_Hipay_Model_Config extends Varien_Object
 {
     const API_USERNAME = 'api_username';
@@ -46,12 +66,13 @@ class Allopass_Hipay_Model_Config extends Varien_Object
     }
 
     /**
-     *  Set config data
+     * Set config data
      *
-     * @param    string $key Var path key
-     * @param    int $storeId Store View Id
-     * @param    int $scope Scope
-     * @return   Mage_Core_Store_Config
+     * @param $key
+     * @param $value
+     * @param null $storeId
+     * @param string $scope
+     * @return Mage_Core_Store_Config
      */
     public function setConfigData($key, $value, $storeId = null, $scope = 'default')
     {
@@ -66,13 +87,14 @@ class Allopass_Hipay_Model_Config extends Varien_Object
      * @param    int $storeId Store View Id
      * @return      mixed
      */
-    private function getInternalConfig($key_api, $key, $storeId )
+    private function getInternalConfig($key_api, $key, $storeId)
     {
         $index = 'hipay' . $key_api . $key . $storeId;
         if (!$this->hasData($index)) {
             $value = Mage::getStoreConfig('hipay/' . $key_api . '/' . $key, $storeId);
             $this->setData($index, $value);
         }
+
         return $this->getData($index);
     }
 
@@ -85,7 +107,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
      */
     public function getConfig($key, $storeId = null)
     {
-        return $this->getInternalConfig('hipay_api', $key, $storeId );
+        return $this->getInternalConfig('hipay_api', $key, $storeId);
     }
 
     /**
@@ -97,7 +119,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
      */
     public function getConfigDataMoto($key, $storeId = null)
     {
-        return $this->getInternalConfig('hipay_api_moto', $key, $storeId );
+        return $this->getInternalConfig('hipay_api_moto', $key, $storeId);
     }
 
     /**
@@ -110,7 +132,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
     public function getConfigDataBasket($key, $storeId = null)
     {
         $basket = $this->getInternalConfig('hipay_basket', $key, $storeId);
-        if (!$basket && !is_null($storeId)) {
+        if (!$basket && $storeId !== null) {
             $basket = $this->getInternalConfig('hipay_basket', $key, null);
         }
 
@@ -126,9 +148,9 @@ class Allopass_Hipay_Model_Config extends Varien_Object
     public function getConfigHashing($environment, $storeId = null)
     {
         $path = 'hipay/hipay_hash_algorithm/' . $environment;
-        $config = Mage::getStoreConfig($path , $storeId);
-        if (!$config && !is_null($storeId)) {
-            $config =  Mage::getStoreConfig($path);
+        $config = Mage::getStoreConfig($path, $storeId);
+        if (!$config && $storeId !== null) {
+            $config = Mage::getStoreConfig($path);
         }
 
         return $config;
@@ -139,11 +161,11 @@ class Allopass_Hipay_Model_Config extends Varien_Object
      *
      * @param $environment
      * @param $value
-     * @param int  $storeId
+     * @param int $storeId
      * @param string $scope
      * @return Mage_Core_Store_Config
      */
-    public function setConfigDataHashing($environment,$value, $storeId = null, $scope = 'default')
+    public function setConfigDataHashing($environment, $value, $storeId = null, $scope = 'default')
     {
         $path = 'hipay/hipay_hash_algorithm/' . $environment;
         return Mage::getConfig()->saveConfig($path, $value, $scope, $storeId);
@@ -162,6 +184,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
             $value = Mage::getStoreConfigFlag('hipay/hipay_api/' . $key, $storeId);
             $this->setData($key, $value);
         }
+
         return $this->getData($key);
     }
 
@@ -178,16 +201,18 @@ class Allopass_Hipay_Model_Config extends Varien_Object
     public function getSecretPassphraseMoto($storeId = null)
     {
         if ($this->getConfigDataMoto(self::SECRET_PASSPHRASE, $storeId)) {
-            return  $this->getConfigDataMoto(self::SECRET_PASSPHRASE, $storeId);
+            return $this->getConfigDataMoto(self::SECRET_PASSPHRASE, $storeId);
         }
+
         return $this->getConfigData(self::SECRET_PASSPHRASE, $storeId);
     }
 
     public function getSecretPassphraseTestMoto($storeId = null)
     {
         if ($this->getConfigDataMoto(self::SECRET_PASSPHRASE_TEST, $storeId)) {
-            return  $this->getConfigDataMoto(self::SECRET_PASSPHRASE_TEST, $storeId);
+            return $this->getConfigDataMoto(self::SECRET_PASSPHRASE_TEST, $storeId);
         }
+
         return $this->getConfigData(self::SECRET_PASSPHRASE_TEST, $storeId);
     }
 
@@ -301,6 +326,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
                 $types[$data['code']] = $data['name'];
             }
         }
+
         return $types;
     }
 
@@ -319,6 +345,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
                 $types[$data['code']] = $data['code_hipay'];
             }
         }
+
         return $types;
     }
 
@@ -337,6 +364,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
                 $templates[$data['value']] = $data['label'];
             }
         }
+
         return $templates;
     }
 
@@ -355,6 +383,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
                 $types[$data['code_hipay']] = $data['name'];
             }
         }
+
         return $types;
     }
 
@@ -370,6 +399,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
             $monthNum = ($key < 10) ? '0' . $key : $key;
             $data[$key] = $monthNum . ' - ' . $value;
         }
+
         return $data;
     }
 
@@ -387,6 +417,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
             $year = $first + $index;
             $years[$year] = $year;
         }
+
         return $years;
     }
 

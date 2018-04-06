@@ -1,3 +1,15 @@
+/**
+ * HiPay Fullservice SDK Magento 1
+ *
+ * 2018 HiPay
+ *
+ * NOTICE OF LICENSE
+ *
+ * @author    HiPay <support.tpp@hipay.com>
+ * @copyright 2018 HiPay
+ * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ */
+
 @import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
 
 .warning-mapping {
@@ -6,11 +18,12 @@
 }
 
 .warning-mapping:before {
-    font-family:FontAwesome;
-    content:'\f071';
+    font-family: FontAwesome;
+    content: '\f071';
     color: #D8000C;
     font-weight: 600;
 }
+
 .notice-hipay {
     padding: 8px 30px;
     border: 0;
@@ -27,24 +40,24 @@
 }
 
 .notice-hipay .nb-mapping-missing:before {
-    content:'-';
+    content: '-';
 }
 
 .notice-hipay:before {
-    font-family:FontAwesome;
-    content:'\f071';
-    font-size:5em;
-    font-style:normal;
-    font-weight:400;
-    speak:none;
-    display:inline-block;
-    text-decoration:inherit;
-    width:1em;
-    margin-right:.2em;
-    text-align:center;
-    font-variant:normal;
-    text-transform:none;
-    line-height:1em;
-    margin-left:.2em;
+    font-family: FontAwesome;
+    content: '\f071';
+    font-size: 5em;
+    font-style: normal;
+    font-weight: 400;
+    speak: none;
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    margin-right: .2em;
+    text-align: center;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1em;
+    margin-left: .2em;
     color: #D8000C;
 }

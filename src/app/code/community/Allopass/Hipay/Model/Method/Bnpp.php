@@ -1,12 +1,32 @@
 <?php
+
+/**
+ * HiPay Fullservice SDK Magento 1
+ *
+ * 2018 HiPay
+ *
+ * NOTICE OF LICENSE
+ *
+ * @author    HiPay <support.tpp@hipay.com>
+ * @copyright 2018 HiPay
+ * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ */
+
+/**
+ *
+ *
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-fullservice-sdk-magento1
+ */
 class Allopass_Hipay_Model_Method_Bnpp extends Allopass_Hipay_Model_Method_AbstractOrder
-{	
+{
 
     /**
      * Validate payment method information object
      *
-     * @param   Mage_Payment_Model_Info $info
-     * @return  Mage_Payment_Model_Abstract
+     * @throws Mage_Core_Exception
      */
     public function validate()
     {
@@ -19,7 +39,7 @@ class Allopass_Hipay_Model_Method_Bnpp extends Allopass_Hipay_Model_Method_Abstr
             $phone = $paymentInfo->getQuote()->getBillingAddress()->getTelephone();
         }
 
-        if (!preg_match('"(0|\\+33|0033)[1-9][0-9]{8}"',$phone)) {
+        if (!preg_match('"(0|\\+33|0033)[1-9][0-9]{8}"', $phone)) {
             Mage::throwException(Mage::helper('payment')->__('Please check the phone number entered.'));
         }
     }

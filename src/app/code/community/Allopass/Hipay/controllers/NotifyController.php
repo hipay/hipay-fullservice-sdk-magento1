@@ -1,5 +1,25 @@
 <?php
 
+/**
+ * HiPay Fullservice SDK Magento 1
+ *
+ * 2018 HiPay
+ *
+ * NOTICE OF LICENSE
+ *
+ * @author    HiPay <support.tpp@hipay.com>
+ * @copyright 2018 HiPay
+ * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ */
+
+/**
+ *
+ *
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-fullservice-sdk-magento1
+ */
 class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
 {
     /**
@@ -8,12 +28,11 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
      */
     protected $_order = null;
 
-
     /**
-     *  Validate signature
+     * Validate signature
      *
-     * @param int $storeId
-     * @param boolean $isMoto
+     * @param $order
+     * @param $isMoto
      * @return bool
      */
     protected function _validateSignature($order, $isMoto)
@@ -32,7 +51,10 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
         $orderArr = $response->getOrder();
         $order = Mage::getModel('sales/order')->loadByIncrementId($orderArr['id']);
 
-        if (!$order->getId() && (strpos($orderArr['id'], 'recurring') === false && strpos($orderArr['id'], 'split') === false)) {
+        if (!$order->getId()
+            && (strpos($orderArr['id'], 'recurring') === false
+                && strpos($orderArr['id'], 'split') === false)
+        ) {
             $this->getResponse()->setBody("Order not found in notification");
             $this->getResponse()->setHttpResponseCode(403);
             return;
@@ -46,12 +68,13 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
                 /* @var $profile Mage_Sales_Model_Recurring_Profile */
                 $profile = Mage::getModel('sales/recurring_profile')->load($profileId);
                 if (!$profile->getId()) {
-                    Mage::app()->getResponse()->setBody(Mage::helper('hipay')->__("Profile for ID: %d doesn't exists (Recurring).", $profileId));
+                    Mage::app()->getResponse()->setBody(
+                        Mage::helper('hipay')->__("Profile for ID: %d doesn't exists (Recurring).", $profileId)
+                    );
                 }
-
-            } else
+            } else {
                 Mage::app()->getResponse()->setBody(Mage::helper('hipay')->__("Order Id not present (Recurring)."));
-
+            }
         } elseif (strpos($orderArr['id'], 'split') !== false) {
             list($id, $type, $splitPaymentId) = explode("-", $orderArr['id']);
             /* @var $order Mage_Sales_Model_Order */
@@ -75,17 +98,20 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
         $methodInstance = $payment->getMethodInstance();
         $methodInstance->debugData($response->debug());
         $amount = 0;
-        if ((int)$response->getRefundedAmount() == 0 && (int)$response->getCapturedAmount() == 0)
+        if ((int)$response->getRefundedAmount() == 0 && (int)$response->getCapturedAmount() == 0) {
             $amount = $response->getAuthorizedAmount();
-        elseif ((int)$response->getRefundedAmount() == 0 && (int)$response->getCapturedAmount() > 0)
+        } elseif ((int)$response->getRefundedAmount() == 0 && (int)$response->getCapturedAmount() > 0) {
             $amount = $response->getCapturedAmount();
-        else
+        } else {
             $amount = $response->getRefundedAmount();
-
-        $transactionId = $response->getTransactionReference();
+        }
 
         // Move Notification before processing
-        $message = Mage::helper('hipay')->__("Notification from Hipay:") . " " . Mage::helper('hipay')->__("status") . ": code-" . $response->getStatus() . " Message: " . $response->getMessage() . " " . Mage::helper('hipay')->__('amount: %s', (string)$amount);
+        $message = Mage::helper('hipay')->__("Notification from Hipay:")
+            . " "
+            . Mage::helper('hipay')->__("status")
+            . ": code-" . $response->getStatus() . " Message: " . $response->getMessage()
+            . " " . Mage::helper('hipay')->__('amount: %s', (string)$amount);
 
         $order->addStatusToHistory($order->getStatus(), $message);
         $order->save();
@@ -105,8 +131,10 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
      * @param Allopass_Hipay_Model_Api_Response_Notification $response
      * @return Mage_Sales_Model_Order
      */
-    protected function createProfileOrder(Mage_Sales_Model_Recurring_Profile $profile, Allopass_Hipay_Model_Api_Response_Notification $response)
-    {
+    protected function createProfileOrder(
+        Mage_Sales_Model_Recurring_Profile $profile,
+        Allopass_Hipay_Model_Api_Response_Notification $response
+    ) {
 
         $amount = $this->getAmountFromProfile($profile);
 
@@ -118,13 +146,14 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
             $productItemInfo->setPaymentType(Mage_Sales_Model_Recurring_Profile::PAYMENT_TYPE_REGULAR);
         }
 
-        if ($this->isInitialProfileOrder($profile))// because is not additonned in prodile obj
+        // because is not auditioned in profile obj
+        if ($this->isInitialProfileOrder($profile)) {
             $productItemInfo->setPrice($profile->getBillingAmount() + $profile->getInitAmount());
+        }
 
         /* @var $order Mage_Sales_Model_Order */
         $order = $profile->createOrder($productItemInfo);
 
-        //$this->responseToPayment($order->getPayment(),$response);
         $additionalInfo = $profile->getAdditionalInfo();
 
         $order->getPayment()->setCcType($additionalInfo['ccType']);
@@ -133,9 +162,12 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
         $order->getPayment()->setAdditionalInformation('token', $additionalInfo['token']);
         $order->getPayment()->setAdditionalInformation('create_oneclick', $additionalInfo['create_oneclick']);
         $order->getPayment()->setAdditionalInformation('use_oneclick', $additionalInfo['use_oneclick']);
-        //$order->getPayment()->setAdditionalInformation('selected_oneclick_card', $additionalInfo['selected_oneclick_card']);
 
-        $order->setState(Mage_Sales_Model_Order::STATE_NEW, 'pending', Mage::helper('hipay')->__("New Order Recurring!"));
+        $order->setState(
+            Mage_Sales_Model_Order::STATE_NEW,
+            'pending',
+            Mage::helper('hipay')->__("New Order Recurring!")
+        );
 
         $order->save();
 
@@ -143,26 +175,6 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
         $profile->save();
 
         return $order;
-
-
-        $order->getPayment()->registerCaptureNotification($amount);
-        $order->save();
-
-        // notify customer
-        if ($invoice = $order->getPayment()->getCreatedInvoice()) {
-            $message = Mage::helper('hipay')->__('Notified customer about invoice #%s.', $invoice->getIncrementId());
-            $comment = $order->sendNewOrderEmail()->addStatusHistoryComment($message)
-                ->setIsCustomerNotified(true)
-                ->save();
-
-            /* Add this to send invoice to customer */
-            $invoice->setEmailSent(true);
-            $invoice->save();
-            $invoice->sendEmail();
-        }
-
-        return $order;
-
     }
 
     /**
@@ -174,16 +186,18 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
     {
         $amount = $profile->getBillingAmount() + $profile->getTaxAmount() + $profile->getShippingAmount();
 
-        if ($this->isInitialProfileOrder($profile))
+        if ($this->isInitialProfileOrder($profile)) {
             $amount += $profile->getInitAmount();
+        }
 
         return $amount;
     }
 
     protected function isInitialProfileOrder(Mage_Sales_Model_Recurring_Profile $profile)
     {
-        if (count($profile->getChildOrderIds()) && current($profile->getChildOrderIds()) == "-1")
+        if (!empty($profile->getChildOrderIds()) && current($profile->getChildOrderIds()) == "-1") {
             return true;
+        }
 
         return false;
     }

@@ -1,7 +1,19 @@
 <?php
+
 /**
- * 
- * 
+ * HiPay Fullservice SDK Magento 1
+ *
+ * 2018 HiPay
+ *
+ * NOTICE OF LICENSE
+ *
+ * @author    HiPay <support.tpp@hipay.com>
+ * @copyright 2018 HiPay
+ * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ */
+
+/**
+ *
  * @method getCustomerId() int
  * @method getName() string
  * @method getCcExpMonth() int
@@ -14,17 +26,19 @@
  * @method getCcStatus() int
  * @method getCcToken() string
  * @method getIsDefault() bool
- * 
- * @author Kassim Belghait <kassim@sirateck.com>
  *
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-fullservice-sdk-magento1
  */
 class Allopass_Hipay_Model_Card extends Mage_Core_Model_Abstract
 {
-	
-	const STATUS_DISABLED = 0;
-	const STATUS_ENABLED = 1;
 
-  /**
+    const STATUS_DISABLED = 0;
+    const STATUS_ENABLED = 1;
+
+    /**
      * Init resource model and id field
      */
     protected function _construct()
@@ -34,6 +48,5 @@ class Allopass_Hipay_Model_Card extends Mage_Core_Model_Abstract
         $this->setIdFieldName('card_id');
     }
 
-   
-	
+
 }

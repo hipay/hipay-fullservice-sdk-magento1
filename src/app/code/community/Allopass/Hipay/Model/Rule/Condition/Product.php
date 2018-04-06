@@ -1,12 +1,30 @@
 <?php
 
 /**
+ * HiPay Fullservice SDK Magento 1
+ *
+ * 2018 HiPay
+ *
+ * NOTICE OF LICENSE
+ *
+ * @author    HiPay <support.tpp@hipay.com>
+ * @copyright 2018 HiPay
+ * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ */
+
+/**
+ *
  * 3ds Rule Product Condition data model
+ *
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-fullservice-sdk-magento1
  */
 class Allopass_Hipay_Model_Rule_Condition_Product extends Mage_CatalogRule_Model_Rule_Condition_Product
 {
-	
-	
+
+
     /**
      * Add special attributes
      *
@@ -20,7 +38,7 @@ class Allopass_Hipay_Model_Rule_Condition_Product extends Mage_CatalogRule_Model
         $attributes['order_item_row_total'] = Mage::helper('salesrule')->__('Row total in order');
     }
 
-	/**
+    /**
      * Validate Product Rule Condition
      *
      * @param Varien_Object $object
@@ -39,41 +57,50 @@ class Allopass_Hipay_Model_Rule_Condition_Product extends Mage_CatalogRule_Model
 
         $product
             ->setOrderItemQty($object->getQtyOrdered())
-            ->setOrderItemPrice($object->getPrice()) // possible bug: need to use $object->getBasePrice()
+            ->setOrderItemPrice($object->getPrice())// possible bug: need to use $object->getBasePrice()
             ->setOrderItemRowTotal($object->getBaseRowTotal());
 
         return parent::validate($product);
     }
-    
- 	public function getTypeElement()
-  {
-        return $this->getForm()->addField($this->getPrefix() . '__' . $this->getId() .'_'. $this->getPaymentMethodCode() . '__type', 'hidden', array(
-            //'name'    => 'rule_' . $this->getPaymentMethodCode() . '[' . $this->getPrefix() . '][' . $this->getId().'_'. $this->getPaymentMethodCode() . '][type]',
-            'name'    => 'rule_' . $this->getPaymentMethodCode() . '[' . $this->getPrefix() . '][' . $this->getId() . '][type]',
-            'value'   => $this->getType(),
-            'no_span' => true,
-            'class'   => 'hidden',
-        ));
+
+    public function getTypeElement()
+    {
+        return $this->getForm()->addField(
+            $this->getPrefix() . '__' . $this->getId() . '_' . $this->getPaymentMethodCode() . '__type',
+            'hidden',
+            array(
+                'name' => 'rule_' . $this->getPaymentMethodCode()
+                    . '[' . $this->getPrefix() . '][' . $this->getId() . '][type]',
+                'value' => $this->getType(),
+                'no_span' => true,
+                'class' => 'hidden',
+            )
+        );
     }
 
-	public function getAttributeElement()
- {
-        if (is_null($this->getAttribute())) {
+    public function getAttributeElement()
+    {
+        if ($this->getAttribute() === null) {
             foreach ($this->getAttributeOption() as $k => $v) {
                 $this->setAttribute($k);
                 break;
             }
         }
-        return $this->getForm()->addField($this->getPrefix().'__'.$this->getId().'_'. $this->getPaymentMethodCode().'__attribute', 'select', array(
-            //'name'=>'rule_' . $this->getPaymentMethodCode() . '['.$this->getPrefix().']['.$this->getId().'_'. $this->getPaymentMethodCode().'][attribute]',
-             'name'=>'rule_' . $this->getPaymentMethodCode() . '['.$this->getPrefix().']['.$this->getId().'][attribute]',
-            'values'=>$this->getAttributeSelectOptions(),
-            'value'=>$this->getAttribute(),
-            'value_name'=>$this->getAttributeName(),
-        ))->setRenderer(Mage::getBlockSingleton('rule/editable'));
+
+        return $this->getForm()->addField(
+            $this->getPrefix() . '__' . $this->getId() . '_' . $this->getPaymentMethodCode() . '__attribute',
+            'select',
+            array(
+                'name' => 'rule_' . $this->getPaymentMethodCode()
+                    . '[' . $this->getPrefix() . '][' . $this->getId() . '][attribute]',
+                'values' => $this->getAttributeSelectOptions(),
+                'value' => $this->getAttribute(),
+                'value_name' => $this->getAttributeName(),
+            )
+        )->setRenderer(Mage::getBlockSingleton('rule/editable'));
     }
-	
-	/**
+
+    /**
      * Retrieve Condition Operator element Instance
      * If the operator value is empty - define first available operator value as default
      *
@@ -82,44 +109,56 @@ class Allopass_Hipay_Model_Rule_Condition_Product extends Mage_CatalogRule_Model
     public function getOperatorElement()
     {
         $options = $this->getOperatorSelectOptions();
-        if (is_null($this->getOperator())) {
+        if ($this->getOperator() === null) {
             foreach ($options as $option) {
                 $this->setOperator($option['value']);
                 break;
             }
         }
 
-        $elementId   = sprintf('%s__%s__operator', $this->getPrefix(), $this->getId().'_'. $this->getPaymentMethodCode());
-        //$elementName = sprintf('rule_'.$this->getPaymentMethodCode().'[%s][%s][operator]', $this->getPrefix(), $this->getId().'_'. $this->getPaymentMethodCode());
-        $elementName = sprintf('rule_'.$this->getPaymentMethodCode().'[%s][%s][operator]', $this->getPrefix(), $this->getId());      
-        $element     = $this->getForm()->addField($elementId, 'select', array(
-            'name'          => $elementName,
-            'values'        => $options,
-            'value'         => $this->getOperator(),
-            'value_name'    => $this->getOperatorName(),
-        ));
+        $elementId = sprintf(
+            '%s__%s__operator',
+            $this->getPrefix(),
+            $this->getId() . '_' . $this->getPaymentMethodCode()
+        );
+        $elementName = sprintf(
+            'rule_' . $this->getPaymentMethodCode() . '[%s][%s][operator]',
+            $this->getPrefix(),
+            $this->getId()
+        );
+        $element = $this->getForm()->addField(
+            $elementId,
+            'select',
+            array(
+                'name' => $elementName,
+                'values' => $options,
+                'value' => $this->getOperator(),
+                'value_name' => $this->getOperatorName(),
+            )
+        );
         $element->setRenderer(Mage::getBlockSingleton('rule/editable'));
 
         return $element;
     }
-	
-	 public function getValueElement()
-  {
+
+    public function getValueElement()
+    {
         $elementParams = array(
-            //'name'               => 'rule_'.$this->getPaymentMethodCode().'['.$this->getPrefix().']['.$this->getId().'_'. $this->getPaymentMethodCode().'][value]',
-            'name'               => 'rule_'.$this->getPaymentMethodCode().'['.$this->getPrefix().']['.$this->getId().'][value]',
-            'value'              => $this->getValue(),
-            'values'             => $this->getValueSelectOptions(),
-            'value_name'         => $this->getValueName(),
+            'name' => 'rule_' . $this->getPaymentMethodCode()
+                . '[' . $this->getPrefix() . '][' . $this->getId() . '][value]',
+            'value' => $this->getValue(),
+            'values' => $this->getValueSelectOptions(),
+            'value_name' => $this->getValueName(),
             'after_element_html' => $this->getValueAfterElementHtml(),
-            'explicit_apply'     => $this->getExplicitApply(),
+            'explicit_apply' => $this->getExplicitApply(),
         );
-        if ($this->getInputType()=='date') {
+        if ($this->getInputType() == 'date') {
             // date format intentionally hard-coded
             $elementParams['input_format'] = Varien_Date::DATE_INTERNAL_FORMAT;
-            $elementParams['format']       = Varien_Date::DATE_INTERNAL_FORMAT;
+            $elementParams['format'] = Varien_Date::DATE_INTERNAL_FORMAT;
         }
-        return $this->getForm()->addField($this->getPrefix().'__'.$this->getId().'_'. $this->getPaymentMethodCode().'__value',
+        return $this->getForm()->addField(
+            $this->getPrefix() . '__' . $this->getId() . '_' . $this->getPaymentMethodCode() . '__value',
             $this->getValueElementType(),
             $elementParams
         )->setRenderer($this->getValueElementRenderer());

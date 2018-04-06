@@ -18,49 +18,49 @@ Use vars: {{var var_name}}
 
 <table>
     <thead>
-        <tr>
-            <th>Une transaction de paiement est en attente de validation.</th>
-        </tr>
+    <tr>
+        <th>Une transaction de paiement est en attente de validation.</th>
+    </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>
-                <p>
-                    <b>Raison</b><br />
-                    {{var reason}}
-                </p>
-                <p>
-                  <b>Client&nbsp;:</b><br />
-                    <a href="mailto:{{var customerEmail}}">{{var customer}}</a> &lt;{{var customerEmail}}&gt;
-                </p>
-                <p><b>Articles&nbsp;:</b><br />
-                    {{var items}}
-                </p>
-                <p>
-                  <b>Total&nbsp;:</b><br />
-                    {{var total}}
-                </p>
-                <p>
-                    <b>Adresse de facturation&nbsp;:</b><br />
-                    {{var billingAddress.format('html')}}
-                </p>
-                <p>
-                  <b>Adresse de livraison&nbsp;:</b><br />
-                    {{var shippingAddress.format('html')}}
-                </p>
-                <p>
-                  <b>Mode de livraison&nbsp;:</b><br />
-                    {{var shippingMethod}}
-                </p>
-                <p>
-                  <b>Mode de paiement&nbsp;:</b><br />
-                    {{var paymentMethod}}
-                </p>
-                <p>
-                  <b>Date &amp; Heure&nbsp;:</b><br />
-                    {{var dateAndTime}}
-                </p>
-            </td>
-        </tr>
+    <tr>
+        <td>
+            <p>
+                <b>Raison</b><br/>
+                {{var reason}}
+            </p>
+            <p>
+                <b>Client&nbsp;:</b><br/>
+                <a href="mailto:{{var customerEmail}}">{{var customer}}</a> &lt;{{var customerEmail}}&gt;
+            </p>
+            <p><b>Articles&nbsp;:</b><br/>
+                {{var items}}
+            </p>
+            <p>
+                <b>Total&nbsp;:</b><br/>
+                {{var total}}
+            </p>
+            <p>
+                <b>Adresse de facturation&nbsp;:</b><br/>
+                {{var billingAddress.format('html')}}
+            </p>
+            <p>
+                <b>Adresse de livraison&nbsp;:</b><br/>
+                {{var shippingAddress.format('html')}}
+            </p>
+            <p>
+                <b>Mode de livraison&nbsp;:</b><br/>
+                {{var shippingMethod}}
+            </p>
+            <p>
+                <b>Mode de paiement&nbsp;:</b><br/>
+                {{var paymentMethod}}
+            </p>
+            <p>
+                <b>Date &amp; Heure&nbsp;:</b><br/>
+                {{var dateAndTime}}
+            </p>
+        </td>
+    </tr>
     </tbody>
 </table>
