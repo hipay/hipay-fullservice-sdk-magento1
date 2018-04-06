@@ -633,7 +633,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
                             /* @var $creditmemo Mage_Sales_Model_Order_Creditmemo */
                             //We get total already refunded for found the amount of this creditmemo
                             foreach ($order->getCreditmemosCollection() as $creditmemo) {
-                                if ($creditmemo->getState() == Mage_Sales_Model_Order_Creditmemo::STATE_REFUNDED) {
+                                if ($creditmemo->getTransactionId() && $creditmemo->getState() == Mage_Sales_Model_Order_Creditmemo::STATE_REFUNDED) {
                                     $total_already_refunded += $creditmemo->getGrandTotal();
                                 }
                             }
