@@ -96,33 +96,6 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
         return $instance;
     }
 
-    /**
-     * @param Mage_Sales_Model_Order_Payment $payment
-     * @return    array
-     */
-    protected function getVaultParams($payment)
-    {
-        $params = array();
-        $params['card_number'] = $payment->getCcNumber();
-        $params['card_expiry_month'] = ($payment->getCcExpMonth() < 10) ? '0' . $payment->getCcExpMonth()
-            : $payment->getCcExpMonth();
-        $params['card_expiry_year'] = $payment->getCcExpYear();
-        $params['cvc'] = $payment->getCcCid();
-        $params['multi_use'] = 1;
-
-        //Add card holder
-        $billing = $payment->getOrder()->getBillingAddress();
-        $defaultOwner = $billing->getFirstname() && $billing->getLastname()
-            ? $billing->getFirstname() . ' ' . $billing->getLastname() : $billing->getEmail();
-
-        $params['card_holder'] = $payment->getCcOwner() ? $payment->getCcOwner() : $defaultOwner;
-
-        $this->_debug($params);
-
-        return $params;
-    }
-
-
     public function getOrderPlaceRedirectUrl()
     {
 
@@ -154,21 +127,12 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
                 Mage::throwException(Mage::helper('hipay')->__("Error with your card!"));
             }
         } else {
-            $request = Mage::getModel('hipay/api_request', array($this));
-            /* @var $request Allopass_Hipay_Model_Api_Request */
-            $vaultResponse = $request->vaultRequest(
-                Allopass_Hipay_Model_Api_Request::VAULT_ACTION_CREATE,
-                $this->getVaultParams($payment),
-                $payment->getOrder()->getStoreId()
-            );
-            $this->_debug($vaultResponse->debug());
-            $token = $vaultResponse->getToken();
+            Mage::throwException(Mage::helper('hipay')->__("Try to tokenize from server!"));
         }
 
         $payment->setAdditionalInformation('token', $token);
 
         return $this;
-
     }
 
 
