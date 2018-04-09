@@ -98,9 +98,7 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
 
     public function getOrderPlaceRedirectUrl()
     {
-
         return Mage::getUrl('hipay/cc/sendRequest', array('_secure' => true));
-
     }
 
 
@@ -437,6 +435,7 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
     public function isAvailable($quote = null)
     {
         return $this->getConfigData('cctypes', ($quote ? $quote->getStoreId() : null))
+        && !$this->getHiPayConfig()->publicCredentialsEmpty(($quote ? $quote->getStoreId() : null))
         && parent::isAvailable($quote);
     }
 
@@ -572,5 +571,9 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
         }
     }
 
+    private function getHiPayConfig()
+    {
+        return Mage::getSingleton('hipay/config');
+    }
 
 }

@@ -226,6 +226,7 @@ Orders count,Nombre de commande passées (inclu celle en cours)
 Other configuration,Autre configurations
 Page payment template,Template de la page de paiement.
 Page to redirect when transaction is in pending status,Page de redirection quand le statut de transaction est en attente
+"Page to redirect when transaction is successful, leave empty for checkout/onepage/success","Page de redirection quand le statut de transaction est en succés, laissez vide pour checkout/onepage/success"
 Pay now,Payer maintenant
 Payment accepted by Hipay.,Paiement accepté par Hipay.
 Payment Action,Type de paiement
@@ -351,3 +352,4 @@ Your payment is declined. Please retry checkout with another payment card.,Votre
 Your payment is in pending.,Votre paiement est en attente de validation.
 Your transaction has been approved.,Your transaction has been approved.
 Your transaction has been refused.,Your transaction has been refused.
+"In order to activate this Payment Method, you have to add a valid 'Api TokenJS Password/Public Key' on the HiPay Entreprise configuration","Pour activer cette méthode de paiement, vous devez renseigner des identifiants 'Api TokenJS Password/Public Key' valides dans la configuration du module HiPay Entreprise"

@@ -252,6 +252,10 @@ class Allopass_Hipay_Model_Config extends Varien_Object
         return $this->getConfigData(self::API_TOKENJS_PUBLICKEY_TEST, $storeId);
     }
 
+    public function publicCredentialsEmpty($storeId = null){
+        return empty($this->getApiTokenJSPublickeyTest($storeId)) || empty($this->getApiTokenJSUsernameTest($storeId));
+    }
+
     public function getGatewayEndpoint($storeId = null)
     {
         return $this->getConfigData(self::GATEWAY_ENDPOINT, $storeId);
