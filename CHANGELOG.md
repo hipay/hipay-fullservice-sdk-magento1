@@ -1,3 +1,7 @@
+# Version 1.8.1
+
+ - Add support for order grand total with 4 digits
+
 # Version 1.8.0
 
  - FIX Configuration per Store without default value doesn't work
