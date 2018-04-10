@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-MAGENTO_VERSION=1.9.3.8
-SAMPLE_DATA_VERSION=1.9
-
 ################################
 # PHP VERSION
 ################################
