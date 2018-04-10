@@ -233,10 +233,10 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
         if ($useOrderCurrency) {
             $currency = $order->getOrderCurrency();
-            $total = $order->getGrandTotal();
+            $total = round($order->getGrandTotal(),2);
         } else {
             $currency = Mage::app()->getStore()->getBaseCurrency();
-            $total = $order->getBaseGrandTotal();
+            $total = round($order->getBaseGrandTotal(),2);
         }
 
         // Process some logs if debug mode is enabled
