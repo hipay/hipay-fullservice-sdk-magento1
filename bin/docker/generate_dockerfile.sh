@@ -22,6 +22,11 @@ cp -f docker-compose.stage.yml docker-compose.stage-php7-0.yml
 cp -f docker-compose.stage.yml docker-compose.stage-php5-3.yml
 cp -f docker-compose.stage.yml docker-compose.stage-magento18.yml
 
+cp -f docker-compose.stage.circle.yml docker-compose.stage.circle-php5-4.yml
+cp -f docker-compose.stage.circle.yml docker-compose.stage.circle-php7-0.yml
+cp -f docker-compose.stage.circle.yml docker-compose.stage.circle-php5-3.yml
+cp -f docker-compose.stage.circle.yml docker-compose.stage.circle-magento18.yml
+
 sed -i -e "s/php5-6/php5-4/" docker-compose.stage-php5-4.yml
 sed -i -e "s/php5-6/php7-0/" docker-compose.stage-php7-0.yml
 sed -i -e "s/php5-6/php5-3/" docker-compose.stage-php5-3.yml

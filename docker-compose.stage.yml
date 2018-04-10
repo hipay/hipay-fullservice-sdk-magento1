@@ -1,23 +1,38 @@
-web:
-  container_name: jira-mg-latest.hipay-pos-platform.com
-  build: .
-  dockerfile: ./bin/docker/php5-6/Dockerfile
-  ports:
-      - "80:80"
-  environment:
-    - SAMPLE_DATA_VERSION={SAMPLE_DATA_VERSION}
-    - MAGENTO_VERSION={MAGENTO_VERSION}
-  env_file:
-    - ./bin/conf/stage/hipay.env.sample
-    - ./bin/conf/stage/mage.env.sample
-    - ./bin/conf/stage/mysql.env.sample
-  volumes:
-    - ./log:/var/www/htdocs/var/log
-mysql:
-  image: mysql:5.6.23
-  env_file:
-     - ./bin/conf/stage/mysql.env.sample
-smtp:
-  container_name: smtp-mg-latest.hipay-pos-platform.com
-  ports:
-     - "1095:80"
+version: "2.1"
+
+networks:
+  magento:
+    internal: true
+  outside:
+    external: true
+
+services:
+  magento:
+    networks:
+      - magento
+      - outside
+    container_name: hipay-mg1-$CI_JOB_ID
+    build:
+      context: .
+      dockerfile: ./bin/docker/php5-6/Dockerfile
+    environment:
+      - SAMPLE_DATA_VERSION=1.9
+      - MAGENTO_VERSION=1.9.3.8
+    env_file:
+      - ./bin/conf/stage/hipay.env.sample
+      - ./bin/conf/stage/mage.env.sample
+      - ./bin/conf/stage/mysql.env.sample
+    volumes:
+      - ./log:/var/www/htdocs/var/log
+    depends_on:
+      - mysql
+  mysql:
+    container_name: hipay-mysql-mg1-$CI_JOB_ID
+    env_file:
+       - ./bin/conf/stage/mysql.env.sample
+    networks:
+      - magento
+  smtp:
+    container_name: hipay-smtp-mg1-$CI_JOB_ID
+    networks:
+      - magento
