@@ -1,11 +1,7 @@
-web:
-  build: ./bin/docker/php5-6/
-  dockerfile: ./bin/docker/php5-6/Dockerfile
-  links:
-    - mysql
-    - smtp
-mysql:
-  image: mysql:5.6.23
-smtp:
-  image: hipay/mailcatcher:1.0.0
-  container_name: smtp-hipay-mg-latest
+version: "2.1"
+
+services:
+  mysql:
+    image: mysql:5.7
+  smtp:
+    image: hipay/mailcatcher:1.0.0

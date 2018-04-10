@@ -10,43 +10,11 @@ machine:
 dependencies:
   pre:
     - sudo apt-get install sshpass git
-    - npm install -g phantomjs@2.1.1
-    - npm install -g casperjs@1.1.3
-    - npm install -g junit-viewer
-    - sed -i -e "s/{HIPAY_API_USER_TEST\}/$HIPAY_API_USER_TEST/" ./bin/conf/stage/hipay.env.sample
-    - sed -i -e "s/{HIPAY_API_PASSWORD_TEST\}/$HIPAY_API_PASSWORD_TEST/" ./bin/conf/stage/hipay.env.sample
-    - sed -i -e "s/{HIPAY_TOKENJS_PUBLICKEY_TEST\}/$HIPAY_TOKENJS_PUBLICKEY_TEST/" ./bin/conf/stage/hipay.env.sample
-    - sed -i -e "s/{HIPAY_TOKENJS_USERNAME_TEST\}/$HIPAY_TOKENJS_USERNAME_TEST/" ./bin/conf/stage/hipay.env.sample
-    - sed -i -e "s/{HIPAY_SECRET_PASSPHRASE_TEST\}/$HIPAY_SECRET_PASSPHRASE_TEST/" ./bin/conf/stage/hipay.env.sample
-    - sed -i -e "s/{LOGIN_BACKEND\}/$LOGIN_BACKEND/" ./bin/conf/stage/test.env.sample
-    - sed -i -e "s/{PASS_BACKEND\}/$PASS_BACKEND/" ./bin/conf/stage/test.env.sample
-    - sed -i -e "s/{LOGIN_PAYPAL\}/$LOGIN_PAYPAL/" ./bin/conf/stage/test.env.sample
-    - sed -i -e "s/{PASS_PAYPAL\}/$PASS_PAYPAL/" ./bin/conf/stage/test.env.sample
-    - mkdir $CIRCLE_ARTIFACTS/casper_report
-    - mkdir $CIRCLE_ARTIFACTS/screenshots
     - sh bin/docker/generate_dockerfile.sh
-    - sh ./bin/deployment/setup_sonar.sh
 test:
   override:
-    - case $CIRCLE_NODE_INDEX in 0) sh ./bin/docker/init-environment.sh php5.6 ;; 1) sh ./bin/docker/init-environment.sh php7-0 ;;  2) sh ./bin/docker/init-environment.sh php5.6 1.8.0.0 1.6_1.8 ;; esac:
+    - case $CIRCLE_NODE_INDEX in 0) sh ./bin/docker/init-environment.circle.sh php5.6 ;; 1) sh ./bin/docker/init-environment.circle.sh php7-0 ;;  2) sh ./bin/docker/init-environment.circle.sh php5.6 1.8.0.0 1.6_1.8 ;; esac:
         parallel: true
     - sleep 60
     - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
-    - curl --retry 30 --retry-delay 3 -v $URL_MAILCATCHER
-    - case $CIRCLE_NODE_INDEX in 0) sh bin/tests/casper_run_circle.sh ;; 1) echo "Test Magento PHP 7";;  2) echo "Test Magento 1.8 skipped" ;; esac:
-        parallel: true
-    - case $CIRCLE_NODE_INDEX in 0) sh ./bin/docker/report-test.sh php5.6 ;; 1) sh ./bin/docker/report-test.sh php7-0 ;; 2) sh ./bin/docker/report-test.sh php5.6 ;; esac:
-           parallel: true
-  post:
-    - cp bin/tests/report*.html $CIRCLE_ARTIFACTS/casper_report/
-    - sh ./bin/deployment/sonar.sh > /dev/null
-deployment:
-  prod:
-    branch: /.*?/
-    tag: /.*?/
-    commands:
-      - cd src/lib/Hipay && composer install && cd ../../..
-      - rm -Rf ./vendor && cp ./composer.json.dist ./composer.json && composer install &&  sh ./bin/deployment/packaging.sh
-      - mkdir $CIRCLE_ARTIFACTS/package
-      - cp ./dist/*.tgz $CIRCLE_ARTIFACTS/package
-      - ./bin/deployment/deploy_project.sh
+

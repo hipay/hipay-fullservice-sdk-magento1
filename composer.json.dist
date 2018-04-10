@@ -4,7 +4,7 @@
 	"repositories": [
         {
             "type": "git",
-            "url": "git@github.com:sirateck/MagentoTarToConnect.git"
+            "url": "https://github.com/sirateck/MagentoTarToConnect.git"
         }
     ],
 	"require": {
