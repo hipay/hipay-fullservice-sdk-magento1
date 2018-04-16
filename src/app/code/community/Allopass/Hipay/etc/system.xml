@@ -1019,6 +1019,8 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <backend_model>hipay/system_config_backend_ccValidCredentials</backend_model>
+                            <comment>In order to activate this Payment Method, you have to add a valid 'Api TokenJS Password/Public Key' on the HiPay Entreprise configuration</comment>
                         </active>
                         <title translate="label">
                             <label>Title</label>

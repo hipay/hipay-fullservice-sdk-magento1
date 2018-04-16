@@ -38,8 +38,9 @@ class Allopass_Hipay_Model_System_Config_Backend_CcValidCredentials extends Mage
         if ((bool)$this->getValue() && $this->getHiPayConfig()->publicCredentialsEmpty($store)) {
             Mage::throwException(
                 Mage::helper('adminhtml')->__(
-                    'In order to activate HiPay Enterprise API credit card, you have to add a valid' .
-                '\'Api TokenJS Password/Public Key\' on the HiPay Entreprise configuration'
+                    'In order to activate HiPay Enterprise API credit card or HiPay Enterprise API credit card'.
+                    ' Split Payment, you have to add a valid \'Api TokenJS Password/Public Key\' on the HiPay'.
+                    ' Entreprise configuration'
                 )
             );
         }
