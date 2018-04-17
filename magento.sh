@@ -77,7 +77,7 @@ elif [ "$1" = 'test' ]; then
     #setPaypalCredentials
 
     cd bin/tests/000_lib
-    bower install hipay-casperjs-lib#develop --allow-root
+    bower install hipay-casperjs-lib#develop --allow-root --force
     cd ../../../;
 
     if [ "$(ls -A ~/.local/share/Ofi\ Labs/PhantomJS/)" ]; then

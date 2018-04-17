@@ -1406,7 +1406,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
     protected function getCustomerParams($payment, $params = array())
     {
         $order = $payment->getOrder();
-        $overrideParams = $payment->getCcType() == 'bnpp-3xcb' || $payment->getCcType() == 'bnpp-4xcb';
+        $overrideParams = $payment->getCcType() == 'bnpp-3xcb' || $payment->getCcType() == 'bnpp-4xcb' || $payment->getCcType() == 'credit-long';
         $params['email'] = $order->getCustomerEmail();
         $params['phone'] = $order->getBillingAddress()->getTelephone();
 

@@ -296,6 +296,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 
             $item['product_reference'] = $sku;
             $item['name'] = $product->getName();
+            $item['shop_id'] = Mage::app()->getStore()->getId();
 
             // According the configuration we use this trick to complete the discount with tax hidden
             $item['discount'] = round($total_amount - ($unitPrice * $item['quantity']), 3);
@@ -1450,7 +1451,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function isDeliveryMethodAndCartItemsRequired($product_code)
     {
-        return in_array($product_code, array('3xcb', '3xcb-no-fees', '4xcb-no-fees', '4xcb'));
+        return in_array($product_code, array('3xcb', '3xcb-no-fees', '4xcb-no-fees', '4xcb','credit-long'));
     }
 
     /**
@@ -1461,7 +1462,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function isCartItemsRequired($product_code)
     {
-        return in_array($product_code, array('klarnainvoice', '3xcb', '3xcb-no-fees', '4xcb-no-fees', '4xcb'));
+        return in_array($product_code, array('klarnainvoice', '3xcb', '3xcb-no-fees', '4xcb-no-fees', '4xcb', 'credit-long'));
     }
 
     /**

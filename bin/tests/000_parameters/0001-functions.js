@@ -274,6 +274,37 @@ casper.test.begin('Functions', function(test) {
         })
     };
 
+    /* Configure Mapping for basket */
+    casper.activeAndFillBasket = function(state) {
+        casper.then(function() {
+            this.gotoMenuHipayEnterprise();
+        }).then(function() {
+            this.echo("Changing 'Send cart items' field...", "INFO");
+            var valueFingerprint = this.evaluate(function() { return document.querySelector('select[name="groups[hipay_basket][fields][activate_basket][value]"]').value; });
+            if(valueFingerprint == state)
+                test.info("Send cart items");
+            else {
+                this.fillSelectors("form#config_edit_form", {
+                    'select[name="groups[hipay_basket][fields][activate_basket][value]"]': "1",
+                    'select[name="groups[hipay_basket][fields][mapping_category][value][4][hipay_category]"]' : "1",
+                    'select[name="groups[hipay_basket][fields][mapping_category][value][5][hipay_category]"]' : "1",
+                    'select[name="groups[hipay_basket][fields][mapping_category][value][6][hipay_category]"]' : "1",
+                    'select[name="groups[hipay_basket][fields][mapping_category][value][7][hipay_category]"]' : "1",
+                    'select[name="groups[hipay_basket][fields][mapping_category][value][8][hipay_category]"]' : "1",
+                    'select[name="groups[hipay_basket][fields][mapping_category][value][9][hipay_category]"]' : "1",
+                    'select[name="groups[hipay_basket][fields][mapping_shipping_method][value][flatrate_flatrate][hipay_delivery_method]"]':"1"
+                }, false);
+
+                this.click(x('//span[text()="Save Config"]'));
+                this.waitForSelector(x('//span[contains(.,"The configuration has been saved.")]'), function success() {
+                    test.info("Send cart items Configuration done");
+                }, function fail() {
+                    test.fail('Failed Send cart items on the system');
+                }, 30000);
+            }
+        })
+    };
+
 	casper.echo('Fonctions chargées !', 'INFO');
 	test.info("Based URL: " + baseURL);
     test.done();
