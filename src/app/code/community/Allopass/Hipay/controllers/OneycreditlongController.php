@@ -3,6 +3,6 @@ class Allopass_Hipay_OneyCreditLongController extends Allopass_Hipay_Controller_
 {
 	protected function _getMethodInstance()
 	{
-		return Mage::getSingleton('hipay/method_oneycreditlong');
+		return Mage::getSingleton('hipay/method_oneyCreditLong');
 	}
 }

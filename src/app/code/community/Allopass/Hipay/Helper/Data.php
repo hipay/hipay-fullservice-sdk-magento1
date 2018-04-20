@@ -296,7 +296,6 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 
             $item['product_reference'] = $sku;
             $item['name'] = $product->getName();
-            $item['shop_id'] = Mage::app()->getStore()->getId();
 
             // According the configuration we use this trick to complete the discount with tax hidden
             $item['discount'] = round($total_amount - ($unitPrice * $item['quantity']), 3);
