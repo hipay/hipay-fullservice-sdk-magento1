@@ -43,7 +43,7 @@ casper.test.begin('Test Checkout ' + paymentType, function(test) {
         this.echo("Wait for oney page", "INFO");
         this.wait("35000", function success() {
             test.comment(this.currentUrl);
-            if (this.currentUrl.match('/oney/')) {
+            if (this.currentUrl.match(/oney/)) {
                 test.info("Done");
                 test.done();
             } else {
