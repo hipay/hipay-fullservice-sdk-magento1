@@ -5,6 +5,7 @@ COLOR_SUCCESS='\033[0;32m'
 NC='\033[0m'
 ENV_DEVELOPMENT="development"
 ENV_STAGE="stage"
+ENV_PROD="production"
 PREFIX_STORE1=$RANDOM
 PREFIX_STORE2=$RANDOM
 PREFIX_STORE3=$RANDOM
@@ -98,6 +99,11 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set hipay/hipay_api/api_tokenjs_publickey_test $HIPAY_TOKENJS_PUBLICKEY_TEST
     n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set --encrypt hipay/hipay_api/secret_passphrase_test $HIPAY_SECRET_PASSPHRASE_TEST
     n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set hipay/hipay_api/api_tokenjs_username_test $HIPAY_TOKENJS_USERNAME_TEST
+
+    if [ "$ENVIRONMENT" = "$ENV_PROD" ];then
+        n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set hipay/hipay_hash_algorithm/test 'SHA512'
+        n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set hipay/hipay_api/send_notification_url 1
+    fi
 
     n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set hipay/hipay_api_moto/api_username_test $HIPAY_API_USER_TEST
     n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set --encrypt hipay/hipay_api_moto/api_password_test $HIPAY_API_PASSWORD_TEST
