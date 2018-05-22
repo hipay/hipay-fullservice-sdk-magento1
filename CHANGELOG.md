@@ -1,3 +1,9 @@
+# Version 1.9.0
+
+ - Add support for Oney credit long payment method
+ - Remove tokenization server to server (deprecated)
+ - Improve CI
+
 # Version 1.8.1
 
  - Add support for order grand total with 4 digits
