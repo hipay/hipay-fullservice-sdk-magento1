@@ -22,12 +22,6 @@
  */
 class Allopass_Hipay_Model_Api_Request
 {
-    const VAULT_ACTION_CREATE = 'create';
-
-    const VAULT_ACTION_UPDATE = 'update';
-
-    const VAULT_ACTION_LOOKUP = '';
-
     const GATEWAY_ACTION_ORDER = 'v1/order';
 
     const GATEWAY_ACTION_MAINTENANCE = 'v1/maintenance/transaction/';
@@ -300,24 +294,11 @@ class Allopass_Hipay_Model_Api_Request
 
     public function getMethodHttp($action)
     {
-        if ($action == self::VAULT_ACTION_LOOKUP || $action == self::GATEWAY_SECURITY_SETTINGS) {
+        if ($action == self::GATEWAY_SECURITY_SETTINGS) {
             return Zend_Http_Client::GET;
         }
 
         return Zend_Http_Client::POST;
-    }
-
-    /**
-     *
-     */
-    protected function getVaultApiEndpoint($storeId = null)
-    {
-        if ($this->isTestMode()) {
-            return $this->getConfig()->getVaultEndpointTest($storeId);
-        }
-
-        return $this->getConfig()->getVaultEndpoint($storeId);
-
     }
 
     /**
@@ -331,28 +312,6 @@ class Allopass_Hipay_Model_Api_Request
 
         return $this->getConfig()->getGatewayEndpoint($storeId);
 
-    }
-
-
-    /**
-     *
-     * @param string $action
-     * @param array $params
-     * @param int $storeId
-     * @return Allopass_Hipay_Model_Response_Vault
-     */
-    public function vaultRequest($action, $params, $storeId = null)
-    {
-        $this->setStoreId($storeId);
-        $uri = $this->getVaultApiEndpoint($storeId) . $action . "/";
-
-        /* @var $response Allopass_Hipay_Model_Api_Response_Vault */
-        $response = Mage::getSingleton(
-            'hipay/api_response_vault',
-            $this->_request($uri, $params, $this->getMethodHttp($action), $storeId)
-        );
-
-        return $response;
     }
 
     /**

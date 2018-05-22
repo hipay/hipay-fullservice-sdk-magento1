@@ -42,10 +42,6 @@ class Allopass_Hipay_Model_Config extends Varien_Object
 
     const SECRET_PASSPHRASE_TEST = 'secret_passphrase_test';
 
-    const VAULT_ENDPOINT_TEST = 'vault_endpoint_stage';
-
-    const VAULT_ENDPOINT = 'vault_endpoint_production';
-
     const GATEWAY_ENDPOINT_TEST = 'gateway_endpoint_stage';
 
     const GATEWAY_ENDPOINT = 'gateway_endpoint_production';
@@ -256,14 +252,8 @@ class Allopass_Hipay_Model_Config extends Varien_Object
         return $this->getConfigData(self::API_TOKENJS_PUBLICKEY_TEST, $storeId);
     }
 
-    public function getVaultEndpoint($storeId = null)
-    {
-        return $this->getConfigData(self::VAULT_ENDPOINT, $storeId);
-    }
-
-    public function getVaultEndpointTest($storeId = null)
-    {
-        return $this->getConfigData(self::VAULT_ENDPOINT_TEST, $storeId);
+    public function publicCredentialsEmpty($storeId = null){
+        return empty($this->getApiTokenJSPublickeyTest($storeId)) || empty($this->getApiTokenJSUsernameTest($storeId));
     }
 
     public function getGatewayEndpoint($storeId = null)
