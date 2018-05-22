@@ -1,13 +1,28 @@
-<?php $_element = $this->getElement() ?>
+<?php
+
+/**
+ * HiPay Fullservice SDK Magento 1
+ *
+ * 2018 HiPay
+ *
+ * NOTICE OF LICENSE
+ *
+ * @author    HiPay <support.tpp@hipay.com>
+ * @copyright 2018 HiPay
+ * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ */
+
+$_element = $this->getElement()
+?>
 <?php $_htmlId = $this->getHtmlId() ? $this->getHtmlId() : '_' . uniqid(); ?>
 <?php $notices = $_element->getNoticesHipay(); ?>
 
-<?php if (!empty($notices)){ ?>
-<div class="notice-hipay">
-    <?php foreach ($notices as $notice) { ?>
-        <span class="warning"><?php echo $notice; ?></span>
-    <?php } ?>
-</div>
+<?php if (!empty($notices)) { ?>
+    <div class="notice-hipay">
+        <?php foreach ($notices as $notice) { ?>
+            <span class="warning"><?php echo $notice; ?></span>
+        <?php } ?>
+    </div>
 <?php } ?>
 
 

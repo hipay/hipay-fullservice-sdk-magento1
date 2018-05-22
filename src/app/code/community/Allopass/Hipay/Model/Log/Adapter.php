@@ -1,7 +1,25 @@
 <?php
 
 /**
+ * HiPay Fullservice SDK Magento 1
+ *
+ * 2018 HiPay
+ *
+ * NOTICE OF LICENSE
+ *
+ * @author    HiPay <support.tpp@hipay.com>
+ * @copyright 2018 HiPay
+ * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ */
+
+/**
+ *
  * Log Adapter
+ *
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-fullservice-sdk-magento1
  */
 class Allopass_Hipay_Model_Log_Adapter
 {
@@ -47,12 +65,12 @@ class Allopass_Hipay_Model_Log_Adapter
     {
         if ($data === null) {
             $data = $this->_data;
-        }
-        else {
+        } else {
             if (!is_array($data)) {
                 $data = array($data);
             }
         }
+
         $data = $this->_filterDebugData($data);
         $data['__pid'] = getmypid();
         Mage::log($data, null, $this->_logFileName, true);
@@ -65,16 +83,15 @@ class Allopass_Hipay_Model_Log_Adapter
      * @param string|array $key
      * @param mixed $value
      * @return Mage_Core_Model_Log_Adapter
-     * @todo replace whole data
      */
     public function setData($key, $value = null)
     {
-        if(is_array($key)) {
+        if (is_array($key)) {
             $this->_data = $key;
-        }
-        else {
+        } else {
             $this->_data[$key] = $value;
         }
+
         return $this;
     }
 
@@ -89,6 +106,7 @@ class Allopass_Hipay_Model_Log_Adapter
         if (!is_array($keys)) {
             $keys = array($keys);
         }
+
         $this->_debugReplacePrivateDataKeys = $keys;
         return $this;
     }
@@ -105,14 +123,14 @@ class Allopass_Hipay_Model_Log_Adapter
             foreach ($debugData as $key => $value) {
                 if (in_array($key, $this->_debugReplacePrivateDataKeys)) {
                     $debugData[$key] = '****';
-                }
-                else {
+                } else {
                     if (is_array($debugData[$key])) {
                         $debugData[$key] = $this->_filterDebugData($debugData[$key]);
                     }
                 }
             }
         }
+        
         return $debugData;
     }
 }

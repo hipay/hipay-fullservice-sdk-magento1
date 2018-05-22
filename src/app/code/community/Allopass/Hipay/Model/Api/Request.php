@@ -1,13 +1,27 @@
 <?php
 
+/**
+ * HiPay Fullservice SDK Magento 1
+ *
+ * 2018 HiPay
+ *
+ * NOTICE OF LICENSE
+ *
+ * @author    HiPay <support.tpp@hipay.com>
+ * @copyright 2018 HiPay
+ * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ */
+
+/**
+ *
+ *
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-fullservice-sdk-magento1
+ */
 class Allopass_Hipay_Model_Api_Request
 {
-    const VAULT_ACTION_CREATE = 'create';
-
-    const VAULT_ACTION_UPDATE = 'update';
-
-    const VAULT_ACTION_LOOKUP = '';
-
     const GATEWAY_ACTION_ORDER = 'v1/order';
 
     const GATEWAY_ACTION_MAINTENANCE = 'v1/maintenance/transaction/';
@@ -144,12 +158,12 @@ class Allopass_Hipay_Model_Api_Request
     {
         if (is_null($this->_client)) {
             //adapter options
-            $config = array('curloptions' => array(
-                //CURLOPT_USERPWD=>$credentials,
-                //CURLOPT_HTTPHEADER => array('Accept: application/json'),
-                CURLOPT_FAILONERROR => false,
-                CURLOPT_HEADER => false,
-                CURLOPT_RETURNTRANSFER => true),
+            $config = array(
+                'curloptions' => array(
+                    CURLOPT_FAILONERROR => false,
+                    CURLOPT_HEADER => false,
+                    CURLOPT_RETURNTRANSFER => true
+                ),
             );
 
             // ----------------------------------------------------------------------
@@ -169,21 +183,21 @@ class Allopass_Hipay_Model_Api_Request
                     $config['curloptions'][CURLOPT_PROXYUSERPWD] = $proxy_user . ':' . $proxy_pass;
                 }
             }
-            // Mage::log($config, null, 'curl.log');
             // ---------------------------------------------------------------------
             try {
                 //innitialize http client and adapter curl
                 $adapter = Mage::getSingleton('hipay/api_http_client_adapter_curl');
 
                 $this->_client = new Zend_Http_Client();
-                //$adapter->setConfig($config);
                 $this->_client->setConfig($config);
-                $this->_client->setHeaders(array('Content-Type' => 'application/xml',
-                    'Accept' => 'application/json'));
+                $this->_client->setHeaders(
+                    array(
+                        'Content-Type' => 'application/xml',
+                        'Accept' => 'application/json'
+                    )
+                );
 
                 $this->_client->setAdapter($adapter);
-
-
             } catch (Exception $e) {
                 Mage::throwException($e);
             }
@@ -199,7 +213,8 @@ class Allopass_Hipay_Model_Api_Request
      * If Environment exist, Do not take payment method configuration
      *
      */
-    protected function setAuthentification() {
+    protected function setAuthentification()
+    {
         if (!empty($this->_environment)) {
             switch ($this->_environment) {
                 case ScopeConfig::PRODUCTION:
@@ -227,13 +242,29 @@ class Allopass_Hipay_Model_Api_Request
         $this->_client->setAuth($apiUsername, $apiPassword, Zend_Http_Client::AUTH_BASIC);
     }
 
-    protected function _request($uri, $params = array(), $method = Zend_Http_Client::POST, $storeId = null, $throwException = true)
-    {
+    /**
+     * @param $uri
+     * @param array $params
+     * @param string $method
+     * @param null $storeId
+     * @param bool $throwException
+     * @return Allopass_Hipay_Model_Api_Response_Error|mixed
+     * @throws Mage_Core_Exception
+     * @throws Zend_Http_Client_Exception
+     */
+    protected function _request(
+        $uri,
+        $params = array(),
+        $method = Zend_Http_Client::POST,
+        $storeId = null,
+        $throwException = true
+    ) {
 
-        if ($method == Zend_Http_Client::POST)
+        if ($method == Zend_Http_Client::POST) {
             $this->getClient()->setParameterPost($params);
-        else
+        } else {
             $this->getClient()->setParameterGet($params);
+        }
 
         $this->getClient()->setUri($uri);
 
@@ -241,15 +272,15 @@ class Allopass_Hipay_Model_Api_Request
         $response = $this->getClient()->request($method);
 
         if ($response->isSuccessful()) {
-            //$this->getClient()->getAdapter()->close();
             return json_decode($response->getBody(), true);
         } else {
             /* @var $error Allopass_Hipay_Model_Api_Response_Error */
             $error = Mage::getSingleton('hipay/api_response_error');
             $error->setData(json_decode($response->getBody(), true));
             $messageError = "Code: " . $error->getCode() . ". Message: " . $error->getMessage();
-            if ($error->getDescription() != "")
+            if ($error->getDescription() != "") {
                 $messageError .= ". Details: " . $error->getDescription();
+            }
 
             if ($throwException) {
                 Mage::throwException($messageError);
@@ -263,8 +294,9 @@ class Allopass_Hipay_Model_Api_Request
 
     public function getMethodHttp($action)
     {
-        if ($action == self::VAULT_ACTION_LOOKUP || $action == self::GATEWAY_SECURITY_SETTINGS)
+        if ($action == self::GATEWAY_SECURITY_SETTINGS) {
             return Zend_Http_Client::GET;
+        }
 
         return Zend_Http_Client::POST;
     }
@@ -272,44 +304,14 @@ class Allopass_Hipay_Model_Api_Request
     /**
      *
      */
-    protected function getVaultApiEndpoint($storeId = null)
-    {
-        if ($this->isTestMode())
-            return $this->getConfig()->getVaultEndpointTest($storeId);
-
-        return $this->getConfig()->getVaultEndpoint($storeId);
-
-    }
-
-    /**
-     *
-     */
     protected function getGatewayApiEndpoint($storeId = null)
     {
-        if ($this->isTestMode())
+        if ($this->isTestMode()) {
             return $this->getConfig()->getGatewayEndpointTest($storeId);
+        }
 
         return $this->getConfig()->getGatewayEndpoint($storeId);
 
-    }
-
-
-    /**
-     *
-     * @param string $action
-     * @param array $params
-     * @param int $storeId
-     * @return Allopass_Hipay_Model_Response_Vault
-     */
-    public function vaultRequest($action, $params, $storeId = null)
-    {
-        $this->setStoreId($storeId);
-        $uri = $this->getVaultApiEndpoint($storeId) . $action . "/";
-
-        /* @var $response Allopass_Hipay_Model_Api_Response_Vault */
-        $response = Mage::getSingleton('hipay/api_response_vault', $this->_request($uri, $params, $this->getMethodHttp($action), $storeId));
-
-        return $response;
     }
 
     /**
@@ -320,8 +322,13 @@ class Allopass_Hipay_Model_Api_Request
      * @param string $environment
      * @return Allopass_Hipay_Model_Response_Abstract
      */
-    public function gatewayRequest($action, $params, $storeId = null, $typeResponse = self::TYPE_RESPONSE_GATEWAY, $environment = null)
-    {
+    public function gatewayRequest(
+        $action,
+        $params,
+        $storeId = null,
+        $typeResponse = self::TYPE_RESPONSE_GATEWAY,
+        $environment = null
+    ) {
         $this->setStoreId($storeId);
         $uri = $this->getGatewayApiEndpoint($storeId) . $action;
 
@@ -339,13 +346,10 @@ class Allopass_Hipay_Model_Api_Request
     }
 
     /**
-     *  Test if "test" or "production" credentials are filled
+     * Test if "test" or "production" credentials are filled
      *
-     * @param int $storeId
-     * @param string $environment
-     * @value ScopeConfig
-     *
-     * @return bool
+     * @param null $storeId
+     * @return bool|mixed
      */
     public function existsCredentials($storeId = null)
     {
@@ -364,6 +368,7 @@ class Allopass_Hipay_Model_Api_Request
                 $existCredential = $this->getConfig()->getApiPasswordTestMoto($storeId);
                 break;
         }
+
         return $existCredential;
     }
 
@@ -384,7 +389,8 @@ class Allopass_Hipay_Model_Api_Request
      * @param ScopeConfig $environment
      * @return $this
      */
-    public function setEnvironment($environment) {
+    public function setEnvironment($environment)
+    {
         $this->_environment = $environment;
         return $this;
     }
@@ -395,8 +401,9 @@ class Allopass_Hipay_Model_Api_Request
      *
      * @return string
      */
-    public function getEnvironment() {
-        return  $this->_environment ;
+    public function getEnvironment()
+    {
+        return $this->_environment;
     }
 }
 

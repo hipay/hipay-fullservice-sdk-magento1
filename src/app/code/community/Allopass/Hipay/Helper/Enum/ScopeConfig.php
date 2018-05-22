@@ -1,14 +1,25 @@
 <?php
 
+/**
+ * HiPay Fullservice SDK Magento 1
+ *
+ * 2018 HiPay
+ *
+ * NOTICE OF LICENSE
+ *
+ * @author    HiPay <support.tpp@hipay.com>
+ * @copyright 2018 HiPay
+ * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ */
 
 /**
  *
  *  Config Scope for hashing algorithm synchronization
  *
  * @author Aymeric Berthelot <aberthelot@hipay.com>
- * @copyright Copyright (c) 2018 - HiPay
- * @license http://www.apache.org/licenses/LICENSE-2.0 Apache 2.0 License
- *
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-fullservice-sdk-magento1
  */
 abstract class ScopeConfig
 {
@@ -48,8 +59,9 @@ abstract class ScopeConfig
      * @return string
      *
      */
-    public static function getLabelFromEnvironment($environment) {
-        $label='';
+    public static function getLabelFromEnvironment($environment)
+    {
+        $label = '';
         switch ($environment) {
             case ScopeConfig::PRODUCTION:
                 $label = 'Production';
@@ -64,7 +76,8 @@ abstract class ScopeConfig
                 $label = 'Test MO/TO';
                 break;
         }
-        return $label ;
+        
+        return $label;
     }
 
 }

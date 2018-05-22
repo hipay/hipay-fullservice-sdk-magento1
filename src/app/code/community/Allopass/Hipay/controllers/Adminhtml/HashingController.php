@@ -1,7 +1,26 @@
 <?php
 
+/**
+ * HiPay Fullservice SDK Magento 1
+ *
+ * 2018 HiPay
+ *
+ * NOTICE OF LICENSE
+ *
+ * @author    HiPay <support.tpp@hipay.com>
+ * @copyright 2018 HiPay
+ * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ */
 require_once(dirname(__FILE__) . '/../../Helper/Enum/ScopeConfig.php');
 
+/**
+ *
+ *
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-fullservice-sdk-magento1
+ */
 class Allopass_Hipay_Adminhtml_HashingController extends Mage_Adminhtml_Controller_Action
 {
 
@@ -20,7 +39,7 @@ class Allopass_Hipay_Adminhtml_HashingController extends Mage_Adminhtml_Controll
      *
      * @var array
      */
-    protected $platforms =  array(
+    protected $platforms = array(
         ScopeConfig::PRODUCTION,
         ScopeConfig::TEST,
         ScopeConfig::PRODUCTION_MOTO,
@@ -37,7 +56,7 @@ class Allopass_Hipay_Adminhtml_HashingController extends Mage_Adminhtml_Controll
         $storeId = $this->_getConfigScopeStoreId();
         $scope = $storeId ? 'stores' : "default";
         $session = $this->_getSession();
-        $atLeastCredential=false;
+        $atLeastCredential = false;
 
         try {
             foreach ($this->platforms as $platform) {
@@ -48,13 +67,21 @@ class Allopass_Hipay_Adminhtml_HashingController extends Mage_Adminhtml_Controll
                     Mage::helper('hipay')->synchronizeSecuritySettings($request, $storeId, $scope, $session);
                 }
             }
-         if (!$atLeastCredential) {
-             $this->_getSession()->addError($this->__('You must enter credentials to synchronize your configuration.'));
-         }
 
+            if (!$atLeastCredential) {
+                $this->_getSession()->addError(
+                    $this->__('You must enter credentials to synchronize your configuration.')
+                );
+            }
         } catch (Exception $e) {
             Mage::logException($e);
-            $this->_getSession()->addError($this->__('An error has occured for environment : "'.  ScopeConfig::getLabelFromEnvironment($platform) . '"" Message :' . $e->getMessage()));
+            $this->_getSession()->addError(
+                $this->__(
+                    'An error has occured for environment : "' . ScopeConfig::getLabelFromEnvironment(
+                        $platform
+                    ) . '"" Message :' . $e->getMessage()
+                )
+            );
         }
 
         $this->setRedirect();
@@ -69,8 +96,8 @@ class Allopass_Hipay_Adminhtml_HashingController extends Mage_Adminhtml_Controll
     protected function _getConfigScopeStoreId()
     {
         $storeId = Mage_Core_Model_App::ADMIN_STORE_ID;
-        $this->store = Mage::app()->getRequest()->getParam('store','');
-        $this->website = Mage::app()->getRequest()->getParam('website','');
+        $this->store = Mage::app()->getRequest()->getParam('store', '');
+        $this->website = Mage::app()->getRequest()->getParam('website', '');
 
         if ('' !== $this->store) {
             $storeId = Mage::getModel('core/store')->load($this->store)->getId();
@@ -86,8 +113,15 @@ class Allopass_Hipay_Adminhtml_HashingController extends Mage_Adminhtml_Controll
      */
     private function setRedirect()
     {
-        $this->_redirect('adminhtml/system_config/edit', array('_secure' => true, 'section' => 'hipay',
-            'store' => $this->store, 'website' => $this->website ));
+        $this->_redirect(
+            'adminhtml/system_config/edit',
+            array(
+                '_secure' => true,
+                'section' => 'hipay',
+                'store' => $this->store,
+                'website' => $this->website
+            )
+        );
     }
 
     /**

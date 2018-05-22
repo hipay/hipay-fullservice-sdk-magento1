@@ -1,37 +1,50 @@
 <?php
 
+/**
+ * HiPay Fullservice SDK Magento 1
+ *
+ * 2018 HiPay
+ *
+ * NOTICE OF LICENSE
+ *
+ * @author    HiPay <support.tpp@hipay.com>
+ * @copyright 2018 HiPay
+ * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ */
+
 $installerCustomer = new Mage_Customer_Model_Entity_Setup('allopass_hipay_setup');
 /* @var $installerCustomer Mage_Customer_Model_Entity_Setup */
 
 $installerCustomer->startSetup();
 
 $entityId = $installerCustomer->getEntityTypeId('customer');
-$attribute = $installerCustomer->getAttribute($entityId,'hipay_cc_type');
-if(!$attribute)
-{
+$attribute = $installerCustomer->getAttribute($entityId, 'hipay_cc_type');
+if (!$attribute) {
+    $installerCustomer->addAttribute(
+        'customer',
+        'hipay_cc_type',
+        array(
+            'type' => 'varchar',
+            'label' => 'Card Type hipay',
+            'visible' => true,
+            'required' => false,
+            'unique' => false,
+            'sort_order' => 800,
+            'default' => 0,
+            'input' => 'text',
 
-	$installerCustomer->addAttribute('customer','hipay_cc_type',array(
-			'type'         => 'varchar',
-			'label'        => 'Card Type hipay',
-			'visible'      => true,
-			'required'     => false,
-			'unique'       => false,
-			'sort_order'   	   => 800,
-			'default'	   => 0,
-			'input'		   => 'text',
+        )
+    );
 
-	));
+    $usedInForms = array(
+        'adminhtml_customer',
+    );
 
-	$usedInForms = array(
-			'adminhtml_customer',
-	);
+    $attribute = Mage::getSingleton('eav/config')->getAttribute('customer', 'hipay_cc_type');
+    $attribute->setData('used_in_forms', $usedInForms);
+    $attribute->setData('sort_order', 800);
 
-	$attribute   = Mage::getSingleton('eav/config')->getAttribute('customer', 'hipay_cc_type');
-	$attribute->setData('used_in_forms', $usedInForms);
-	$attribute->setData('sort_order', 800);
-
-	$attribute->save();
-
+    $attribute->save();
 }
 
 $installerCustomer->endSetup();

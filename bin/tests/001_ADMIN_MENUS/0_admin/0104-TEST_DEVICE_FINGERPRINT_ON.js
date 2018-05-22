@@ -39,8 +39,8 @@ casper.test.begin('Test Magento With Device Fingerprint', function(test) {
     .then(function() {
         this.echo("Checking 'ioBB' field inside checkout page...", "INFO");
         this.waitUntilVisible('#checkout-step-payment', function success() {
-            ioBB = this.getElementAttribute('input#ioBB_fingerprint', 'value');
-            test.assert(this.exists('input#ioBB_fingerprint') && ioBB != "", "'ioBB' field is present and not empty !");
+            ioBB = this.getElementAttribute('input.ioBB_fingerprint', 'value');
+            test.assert(this.exists('input.ioBB_fingerprint') && ioBB != "", "'ioBB' field is present and not empty !");
             this.fillStepPayment();
         }, function fail() {
             test.assertVisible("#checkout-step-payment", "'Payment Information' formular exists");
@@ -58,7 +58,7 @@ casper.test.begin('Test Magento With Device Fingerprint', function(test) {
         this.logToHipayBackend(loginBackend,passBackend);
     })
     .then(function() {
-        this.selectAccountBackend("OGONE_RECETTE");
+        this.selectAccountBackend("OGONE_DEV");
     })
     .then(function() {
         this.waitForUrl(/maccount/, function success() {

@@ -58,16 +58,18 @@ if [ "$1" = '' ] || [ "$1" = '--help' ]; then
     echo ""
 elif [ "$1" = 'init' ]; then
     if [ -f ./bin/conf/development/hipay.env ]; then
+
+
         docker-compose stop
         docker-compose rm -fv
         sudo rm -Rf data/ log/ web/
-        docker-compose -f docker-compose.yml -f docker-compose.dev.yml build --no-cache
-        docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+        docker-compose -f docker-compose.dev.yml build --no-cache
+        docker-compose -f docker-compose.dev.yml up
     else
         echo "Put your credentials in auth.env and hipay.env before start update the docker-compose.dev to link this files"
     fi
 elif [ "$1" = 'restart' ]; then
-    docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+    docker-compose -f docker-compose.dev.yml up
 elif [ "$1" = 'logs' ]; then
     docker-compose logs -f
 elif [ "$1" = 'test' ]; then
@@ -75,7 +77,7 @@ elif [ "$1" = 'test' ]; then
     #setPaypalCredentials
 
     cd bin/tests/000_lib
-    bower install hipay-casperjs-lib#develop --allow-root
+    bower install hipay-casperjs-lib#develop --allow-root --force
     cd ../../../;
 
     if [ "$(ls -A ~/.local/share/Ofi\ Labs/PhantomJS/)" ]; then

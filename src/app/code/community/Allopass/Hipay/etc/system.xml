@@ -55,7 +55,7 @@
                             <show_in_store>1</show_in_store>
                         </api_tokenjs_username>
                         <api_tokenjs_publickey translate="label">
-                            <label>Api TokenJS Password/Public Key </label>
+                            <label>Api TokenJS Password/Public Key</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>23</sort_order>
                             <show_in_default>1</show_in_default>
@@ -213,7 +213,9 @@
                         </debug>
                         <send_notification_url translate="label comment">
                             <label>Send Notification url</label>
-                            <comment>If enabled, then the URL of your site is sent during the payment and notifications will be sent to this URL. To use only for multi site.</comment>
+                            <comment>If enabled, then the URL of your site is sent during the payment and notifications
+                                will be sent to this URL. To use only for multi site.
+                            </comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>160</sort_order>
@@ -363,7 +365,8 @@
                         </notice_hashing_production>
                         <init_hashing translate="label,comment">
                             <label_button>Synchronize Hashing</label_button>
-                            <comment>Retrieve the hashing configuration for notifications configured in your account.</comment>
+                            <comment>Retrieve the hashing configuration for notifications configured in your account.
+                            </comment>
                             <frontend_model>hipay/adminhtml_field_hashingButtonInit</frontend_model>
                             <sort_order>10</sort_order>
                             <show_in_default>1</show_in_default>
@@ -478,7 +481,7 @@
                         <attribute_ean translate="label comment">
                             <label>Attribute ean</label>
                             <frontend_type>select</frontend_type>
-                            <comment>If your store supports ean, indicate the field name </comment>
+                            <comment>If your store supports ean, indicate the field name</comment>
                             <source_model>hipay/source_attributes</source_model>
                             <sort_order>120</sort_order>
                             <show_in_default>1</show_in_default>
@@ -488,7 +491,9 @@
                         <load_product_ean translate="label comment">
                             <label>Load attribute</label>
                             <frontend_type>select</frontend_type>
-                            <comment>If you activate this option, a product loading is carried out to get ean (please see documentation)</comment>
+                            <comment>If you activate this option, a product loading is carried out to get ean (please
+                                see documentation)
+                            </comment>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>130</sort_order>
                             <show_in_default>1</show_in_default>
@@ -733,6 +738,8 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <backend_model>hipay/system_config_backend_ccValidCredentials</backend_model>
+                            <comment>In order to activate this Payment Method, you have to add a valid 'Api TokenJS Password/Public Key' on the HiPay Entreprise configuration</comment>
                         </active>
                         <title translate="label">
                             <label>Title</label>
@@ -780,9 +787,7 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for
-                                checkout/onepage/success
-                            </comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>27</sort_order>
                             <show_in_default>1</show_in_default>
@@ -791,8 +796,7 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </success_redirect_page>
                         <failure_redirect_page translate="label">
                             <label>Redirect page failure</label>
-                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure
-                            </comment>
+                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>28</sort_order>
                             <show_in_default>1</show_in_default>
@@ -878,34 +882,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </send_fraud_payment_email>
-                        <!-- @deprecated since version 1.2.6 -->
-                        <!-- <allow_split_payment translate="label">
-                            <label>Use Split Payment</label>
-                           <frontend_type>select</frontend_type>
-                           <frontend_model>hipay/adminhtml_system_config_form_field_allowsplitpayment</frontend_model>
-                           <source_model>adminhtml/system_config_source_yesno</source_model>
-                           <sort_order>65</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>0</show_in_store>
-                       </allow_split_payment>
-                        <split_payment_profile translate="label">
-                           <label>Payment Profile</label>
-                           <frontend_type>multiselect</frontend_type>
-                           <source_model>hipay/source_paymentProfile::splitPaymentsToOptionArray</source_model>
-                           <sort_order>66</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>0</show_in_store>
-                       </split_payment_profile>
-                       <min_order_total_split_payment translate="label">
-                           <label>Minimum Order Total for Split Payment</label>
-                           <frontend_type>text</frontend_type>
-                           <sort_order>68</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>1</show_in_store>
-                       </min_order_total_split_payment> -->
                         <allow_use_oneclick translate="label">
                             <label>Use Oneclick</label>
                             <frontend_type>select</frontend_type>
@@ -1043,6 +1019,8 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
+                            <backend_model>hipay/system_config_backend_ccValidCredentials</backend_model>
+                            <comment>In order to activate this Payment Method, you have to add a valid 'Api TokenJS Password/Public Key' on the HiPay Entreprise configuration</comment>
                         </active>
                         <title translate="label">
                             <label>Title</label>
@@ -1099,9 +1077,7 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for
-                                checkout/onepage/success
-                            </comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>27</sort_order>
                             <show_in_default>1</show_in_default>
@@ -1110,8 +1086,7 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </success_redirect_page>
                         <failure_redirect_page translate="label">
                             <label>Redirect page failure</label>
-                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure
-                            </comment>
+                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure</comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>28</sort_order>
                             <show_in_default>1</show_in_default>
@@ -1528,34 +1503,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </send_fraud_payment_email>
-                        <!-- @deprecated since version 1.2.6 -->
-                        <!-- <allow_split_payment translate="label">
-                            <label>Use Split Payment</label>
-                           <frontend_type>select</frontend_type>
-                           <frontend_model>hipay/adminhtml_system_config_form_field_allowsplitpayment</frontend_model>
-                           <source_model>adminhtml/system_config_source_yesno</source_model>
-                           <sort_order>65</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>0</show_in_store>
-                       </allow_split_payment>
-                        <split_payment_profile translate="label">
-                           <label>Payment Profile</label>
-                           <frontend_type>multiselect</frontend_type>
-                           <source_model>hipay/source_paymentProfile::splitPaymentsToOptionArray</source_model>
-                           <sort_order>66</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>0</show_in_store>
-                       </split_payment_profile>
-                        <min_order_total_split_payment translate="label">
-                           <label>Minimum Order Total for Split Payment</label>
-                           <frontend_type>text</frontend_type>
-                           <sort_order>68</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>1</show_in_store>
-                       </min_order_total_split_payment> -->
                         <allow_use_oneclick translate="label">
                             <label>Use Oneclick</label>
                             <frontend_type>select</frontend_type>
@@ -2671,370 +2618,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </is_test_mode>
                     </fields>
                 </hipay_dexia>
-                <!--              	<hipay_cbc translate="label" module="hipay"> -->
-                <!--             		<label>HiPay Enterprise CBC Online</label> -->
-                <!--                     <frontend_type>text</frontend_type> -->
-                <!--                     <sort_order>220</sort_order> -->
-                <!--                     <show_in_default>1</show_in_default> -->
-                <!--                     <show_in_website>1</show_in_website> -->
-                <!--                     <show_in_store>1</show_in_store> -->
-                <!--                     <fields> -->
-                <!-- 	                    <active translate="label"> -->
-                <!-- 	                        <label>Enabled</label> -->
-                <!-- 	                        <frontend_type>select</frontend_type> -->
-                <!-- 	                        <source_model>adminhtml/system_config_source_yesno</source_model> -->
-                <!-- 	                        <sort_order>10</sort_order> -->
-                <!-- 	                        <show_in_default>1</show_in_default> -->
-                <!-- 	                        <show_in_website>1</show_in_website> -->
-                <!-- 	                        <show_in_store>1</show_in_store> -->
-                <!-- 	                    </active> -->
-                <!-- 	                    <title translate="label"> -->
-                <!-- 	                        <label>Title</label> -->
-                <!-- 	                        <frontend_type>text</frontend_type> -->
-                <!-- 	                        <sort_order>20</sort_order> -->
-                <!-- 	                        <show_in_default>1</show_in_default> -->
-                <!-- 	                        <show_in_website>1</show_in_website> -->
-                <!-- 	                        <show_in_store>1</show_in_store> -->
-                <!-- 	                     </title> -->
-                <!--                         <order_status_payment_accepted translate="label"> -->
-                <!--                             <label>Order status when payment accepted</label> -->
-                <!--                             <frontend_type>select</frontend_type> -->
-                <!--                             <source_model>hipay/source_order_status_accepted</source_model> -->
-                <!--                             <sort_order>23</sort_order> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>0</show_in_store> -->
-                <!--                         </order_status_payment_accepted> -->
-                <!--                         <order_status_payment_refused translate="label"> -->
-                <!--                             <label>Order status when payment refused</label> -->
-                <!--                             <frontend_type>select</frontend_type> -->
-                <!--                             <source_model>hipay/source_order_status_refused</source_model> -->
-                <!--                             <sort_order>24</sort_order> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>0</show_in_store> -->
-                <!--                         </order_status_payment_refused> -->
-                <!--                         <order_status_payment_canceled translate="label"> -->
-                <!--                             <label>Order status when payment canceled by customer</label> -->
-                <!--                             <frontend_type>select</frontend_type> -->
-                <!--                             <source_model>hipay/source_order_status_canceled</source_model> -->
-                <!--                             <sort_order>25</sort_order> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>0</show_in_store> -->
-                <!--                         </order_status_payment_canceled> -->
-                <!--                          <hipay_status_validate_order translate="label"> -->
-                <!--                             <label>Hipay status to validate order</label> -->
-                <!--                             <frontend_type>select</frontend_type> -->
-                <!--                             <source_model>hipay/source_order_hipayStatusValidate</source_model> -->
-                <!--                             <sort_order>26</sort_order> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>0</show_in_store> -->
-                <!--                         </hipay_status_validate_order> -->
-                <!--                          <pending_redirect_page translate="label"> -->
-                <!--                             <label>Redirect page pending status</label> -->
-                <!--                             <comment>Page to redirect when transaction is in pending status</comment> -->
-                <!--                             <frontend_type>select</frontend_type> -->
-                <!--                             <source_model>hipay/source_pendingredirect</source_model> -->
-                <!--                             <sort_order>27</sort_order> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>0</show_in_store> -->
-                <!--                         </pending_redirect_page> -->
-                <!--                         <css_url translate="label coment"> -->
-                <!--                         	<label>Css Url</label> -->
-                <!--                         	<comment>Important, HTTPS protocol is required</comment> -->
-                <!-- 	                        <frontend_type>text</frontend_type> -->
-                <!-- 	                        <sort_order>30</sort_order> -->
-                <!-- 	                        <show_in_default>1</show_in_default> -->
-                <!-- 	                        <show_in_website>1</show_in_website> -->
-                <!-- 	                        <show_in_store>1</show_in_store> -->
-                <!--                         </css_url> -->
-                <!--                         <template translate="label"> -->
-                <!--                         	<label>Page payment template</label> -->
-                <!--                             <frontend_type>select</frontend_type> -->
-                <!--                             <source_model>hipay/source_template</source_model> -->
-                <!--                             <sort_order>35</sort_order> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>0</show_in_store> -->
-                <!--                         </template> -->
-                <!--                          <re_add_to_cart translate="label comment"> -->
-                <!--                         	<label>Add product to cart</label> -->
-                <!--                         	<comment>Fill cart when payment canceled or refused</comment> -->
-                <!--                             <frontend_type>select</frontend_type> -->
-                <!--                             <source_model>adminhtml/system_config_source_yesno</source_model> -->
-                <!--                             <sort_order>95</sort_order> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>0</show_in_store> -->
-                <!--                         </re_add_to_cart> -->
-                <!--                         <cancel_pending_order translate="label comment"> -->
-                <!--                          	<label>Cancel pending order</label> -->
-                <!--                         	<comment>Cancel orders stayed in pending because customer not validated payment</comment> -->
-                <!--                             <frontend_type>select</frontend_type> -->
-                <!--                             <source_model>adminhtml/system_config_source_yesno</source_model> -->
-                <!--                             <sort_order>97</sort_order> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>0</show_in_store> -->
-                <!--                          </cancel_pending_order> -->
-                <!--                          <send_fraud_payment_email translate="label"> -->
-                <!-- 	                        <label>Send fraud payment email</label> -->
-                <!-- 	                        <frontend_type>select</frontend_type> -->
-                <!-- 	                        <source_model>adminhtml/system_config_source_yesno</source_model> -->
-                <!-- 	                        <sort_order>99</sort_order> -->
-                <!-- 	                        <show_in_default>1</show_in_default> -->
-                <!-- 	                        <show_in_website>1</show_in_website> -->
-                <!-- 	                        <show_in_store>1</show_in_store> -->
-                <!-- 	                    </send_fraud_payment_email> -->
-                <!--                          <allowspecific translate="label"> -->
-                <!--                             <label>Payment from applicable countries</label> -->
-                <!--                             <frontend_type>allowspecific</frontend_type> -->
-                <!--                             <sort_order>100</sort_order> -->
-                <!--                             <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>1</show_in_store> -->
-                <!--                         </allowspecific> -->
-                <!--                         <specificcountry translate="label"> -->
-                <!--                             <label>Payment from Specific countries</label> -->
-                <!--                             <frontend_type>multiselect</frontend_type> -->
-                <!--                             <sort_order>110</sort_order> -->
-                <!--                             <source_model>adminhtml/system_config_source_country</source_model> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>1</show_in_store> -->
-                <!--                         </specificcountry> -->
-                <!--                         <min_order_total translate="label"> -->
-                <!--                             <label>Minimum Order Total</label> -->
-                <!--                             <frontend_type>text</frontend_type> -->
-                <!--                             <sort_order>120</sort_order> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>1</show_in_store> -->
-                <!--                         </min_order_total> -->
-                <!--                         <max_order_total translate="label"> -->
-                <!--                             <label>Maximum Order Total</label> -->
-                <!--                             <frontend_type>text</frontend_type> -->
-                <!--                             <sort_order>121</sort_order> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>1</show_in_store> -->
-                <!--                         </max_order_total> -->
-                <!--                         <sort_order translate="label"> -->
-                <!--                             <label>Sort Order</label> -->
-                <!--                             <frontend_type>text</frontend_type> -->
-                <!--                             <sort_order>130</sort_order> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>1</show_in_store> -->
-                <!--                         </sort_order> -->
-                <!--                         <debug translate="label"> -->
-                <!--                         	<label>Enable debug log</label> -->
-                <!--                         	<comment></comment> -->
-                <!--                             <frontend_type>select</frontend_type> -->
-                <!--                             <source_model>adminhtml/system_config_source_yesno</source_model> -->
-                <!--                             <sort_order>150</sort_order> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>0</show_in_store> -->
-                <!--                         </debug> -->
-                <!-- 	                      <is_test_mode translate="label comment"> -->
-                <!--                         	<label>Enable test mode</label> -->
-                <!--                         	<comment></comment> -->
-                <!--                             <frontend_type>select</frontend_type> -->
-                <!--                             <source_model>adminhtml/system_config_source_yesno</source_model> -->
-                <!--                             <sort_order>200</sort_order> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>1</show_in_store> -->
-                <!--                         </is_test_mode> -->
-                <!--                       </fields>  -->
-                <!--              	</hipay_cbc> -->
-                <!--              	<hipay_kbc translate="label" module="hipay"> -->
-                <!--             		<label>HiPay Enterprise KBC Online</label> -->
-                <!--                     <frontend_type>text</frontend_type> -->
-                <!--                     <sort_order>220</sort_order> -->
-                <!--                     <show_in_default>1</show_in_default> -->
-                <!--                     <show_in_website>1</show_in_website> -->
-                <!--                     <show_in_store>1</show_in_store> -->
-                <!--                     <fields> -->
-                <!-- 	                    <active translate="label"> -->
-                <!-- 	                        <label>Enabled</label> -->
-                <!-- 	                        <frontend_type>select</frontend_type> -->
-                <!-- 	                        <source_model>adminhtml/system_config_source_yesno</source_model> -->
-                <!-- 	                        <sort_order>10</sort_order> -->
-                <!-- 	                        <show_in_default>1</show_in_default> -->
-                <!-- 	                        <show_in_website>1</show_in_website> -->
-                <!-- 	                        <show_in_store>1</show_in_store> -->
-                <!-- 	                    </active> -->
-                <!-- 	                    <title translate="label"> -->
-                <!-- 	                        <label>Title</label> -->
-                <!-- 	                        <frontend_type>text</frontend_type> -->
-                <!-- 	                        <sort_order>20</sort_order> -->
-                <!-- 	                        <show_in_default>1</show_in_default> -->
-                <!-- 	                        <show_in_website>1</show_in_website> -->
-                <!-- 	                        <show_in_store>1</show_in_store> -->
-                <!-- 	                     </title> -->
-                <!--                         <order_status_payment_accepted translate="label"> -->
-                <!--                             <label>Order status when payment accepted</label> -->
-                <!--                             <frontend_type>select</frontend_type> -->
-                <!--                             <source_model>hipay/source_order_status_accepted</source_model> -->
-                <!--                             <sort_order>23</sort_order> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>0</show_in_store> -->
-                <!--                         </order_status_payment_accepted> -->
-                <!--                         <order_status_payment_refused translate="label"> -->
-                <!--                             <label>Order status when payment refused</label> -->
-                <!--                             <frontend_type>select</frontend_type> -->
-                <!--                             <source_model>hipay/source_order_status_refused</source_model> -->
-                <!--                             <sort_order>24</sort_order> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>0</show_in_store> -->
-                <!--                         </order_status_payment_refused> -->
-                <!--                         <order_status_payment_canceled translate="label"> -->
-                <!--                             <label>Order status when payment canceled by customer</label> -->
-                <!--                             <frontend_type>select</frontend_type> -->
-                <!--                             <source_model>hipay/source_order_status_canceled</source_model> -->
-                <!--                             <sort_order>25</sort_order> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>0</show_in_store> -->
-                <!--                         </order_status_payment_canceled> -->
-                <!--                          <hipay_status_validate_order translate="label"> -->
-                <!--                             <label>Hipay status to validate order</label> -->
-                <!--                             <frontend_type>select</frontend_type> -->
-                <!--                             <source_model>hipay/source_order_hipayStatusValidate</source_model> -->
-                <!--                             <sort_order>26</sort_order> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>0</show_in_store> -->
-                <!--                         </hipay_status_validate_order> -->
-                <!--                          <pending_redirect_page translate="label"> -->
-                <!--                             <label>Redirect page pending status</label> -->
-                <!--                             <comment>Page to redirect when transaction is in pending status</comment> -->
-                <!--                             <frontend_type>select</frontend_type> -->
-                <!--                             <source_model>hipay/source_pendingredirect</source_model> -->
-                <!--                             <sort_order>27</sort_order> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>0</show_in_store> -->
-                <!--                         </pending_redirect_page> -->
-                <!--                         <css_url translate="label coment"> -->
-                <!--                         	<label>Css Url</label> -->
-                <!--                         	<comment>Important, HTTPS protocol is required</comment> -->
-                <!-- 	                        <frontend_type>text</frontend_type> -->
-                <!-- 	                        <sort_order>30</sort_order> -->
-                <!-- 	                        <show_in_default>1</show_in_default> -->
-                <!-- 	                        <show_in_website>1</show_in_website> -->
-                <!-- 	                        <show_in_store>1</show_in_store> -->
-                <!--                         </css_url> -->
-                <!--                         <template translate="label"> -->
-                <!--                         	<label>Page payment template</label> -->
-                <!--                             <frontend_type>select</frontend_type> -->
-                <!--                             <source_model>hipay/source_template</source_model> -->
-                <!--                             <sort_order>35</sort_order> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>0</show_in_store> -->
-                <!--                         </template> -->
-                <!--                          <re_add_to_cart translate="label comment"> -->
-                <!--                         	<label>Add product to cart</label> -->
-                <!--                         	<comment>Fill cart when payment canceled or refused</comment> -->
-                <!--                             <frontend_type>select</frontend_type> -->
-                <!--                             <source_model>adminhtml/system_config_source_yesno</source_model> -->
-                <!--                             <sort_order>95</sort_order> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>0</show_in_store> -->
-                <!--                         </re_add_to_cart> -->
-                <!--                         <cancel_pending_order translate="label comment"> -->
-                <!--                          	<label>Cancel pending order</label> -->
-                <!--                         	<comment>Cancel orders stayed in pending because customer not validated payment</comment> -->
-                <!--                             <frontend_type>select</frontend_type> -->
-                <!--                             <source_model>adminhtml/system_config_source_yesno</source_model> -->
-                <!--                             <sort_order>97</sort_order> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>0</show_in_store> -->
-                <!--                          </cancel_pending_order> -->
-                <!--                          <send_fraud_payment_email translate="label"> -->
-                <!-- 	                        <label>Send fraud payment email</label> -->
-                <!-- 	                        <frontend_type>select</frontend_type> -->
-                <!-- 	                        <source_model>adminhtml/system_config_source_yesno</source_model> -->
-                <!-- 	                        <sort_order>99</sort_order> -->
-                <!-- 	                        <show_in_default>1</show_in_default> -->
-                <!-- 	                        <show_in_website>1</show_in_website> -->
-                <!-- 	                        <show_in_store>1</show_in_store> -->
-                <!-- 	                    </send_fraud_payment_email> -->
-                <!--                          <allowspecific translate="label"> -->
-                <!--                             <label>Payment from applicable countries</label> -->
-                <!--                             <frontend_type>allowspecific</frontend_type> -->
-                <!--                             <sort_order>100</sort_order> -->
-                <!--                             <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>1</show_in_store> -->
-                <!--                         </allowspecific> -->
-                <!--                         <specificcountry translate="label"> -->
-                <!--                             <label>Payment from Specific countries</label> -->
-                <!--                             <frontend_type>multiselect</frontend_type> -->
-                <!--                             <sort_order>110</sort_order> -->
-                <!--                             <source_model>adminhtml/system_config_source_country</source_model> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>1</show_in_store> -->
-                <!--                         </specificcountry> -->
-                <!--                         <min_order_total translate="label"> -->
-                <!--                             <label>Minimum Order Total</label> -->
-                <!--                             <frontend_type>text</frontend_type> -->
-                <!--                             <sort_order>120</sort_order> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>1</show_in_store> -->
-                <!--                         </min_order_total> -->
-                <!--                         <max_order_total translate="label"> -->
-                <!--                             <label>Maximum Order Total</label> -->
-                <!--                             <frontend_type>text</frontend_type> -->
-                <!--                             <sort_order>121</sort_order> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>1</show_in_store> -->
-                <!--                         </max_order_total> -->
-                <!--                         <sort_order translate="label"> -->
-                <!--                             <label>Sort Order</label> -->
-                <!--                             <frontend_type>text</frontend_type> -->
-                <!--                             <sort_order>130</sort_order> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>1</show_in_store> -->
-                <!--                         </sort_order> -->
-                <!--                         <debug translate="label"> -->
-                <!--                         	<label>Enable debug log</label> -->
-                <!--                         	<comment></comment> -->
-                <!--                             <frontend_type>select</frontend_type> -->
-                <!--                             <source_model>adminhtml/system_config_source_yesno</source_model> -->
-                <!--                             <sort_order>150</sort_order> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>0</show_in_store> -->
-                <!--                         </debug> -->
-                <!-- 	                      <is_test_mode translate="label comment"> -->
-                <!--                         	<label>Enable test mode</label> -->
-                <!--                         	<comment></comment> -->
-                <!--                             <frontend_type>select</frontend_type> -->
-                <!--                             <source_model>adminhtml/system_config_source_yesno</source_model> -->
-                <!--                             <sort_order>200</sort_order> -->
-                <!--                             <show_in_default>1</show_in_default> -->
-                <!--                             <show_in_website>1</show_in_website> -->
-                <!--                             <show_in_store>1</show_in_store> -->
-                <!--                         </is_test_mode> -->
-                <!--                       </fields>  -->
-                <!--              	</hipay_kbc> -->
                 <hipay_giropay translate="label" module="hipay">
                     <label>HiPay Enterprise Giropay</label>
                     <frontend_type>text</frontend_type>
@@ -4677,8 +4260,8 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </is_test_mode>
-                      </fields> 
-             	</hipay_paypalapi>
+                    </fields>
+                </hipay_paypalapi>
                 <hipay_sdd translate="label" module="hipay">
                     <label>HiPay Enterprise SEPA Direct Debit</label>
                     <frontend_type>text</frontend_type>
@@ -4687,23 +4270,23 @@ From this information, an estimated (estimated) delivery day is calculated and s
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
-	                    <active translate="label">
-	                        <label>Enabled</label>
-	                        <frontend_type>select</frontend_type>
-	                        <source_model>adminhtml/system_config_source_yesno</source_model>
-	                        <sort_order>10</sort_order>
-	                        <show_in_default>1</show_in_default>
-	                        <show_in_website>1</show_in_website>
-	                        <show_in_store>1</show_in_store>
-	                    </active>
-	                    <title translate="label">
-	                        <label>Title</label>
-	                        <frontend_type>text</frontend_type>
-	                        <sort_order>20</sort_order>
-	                        <show_in_default>1</show_in_default>
-	                        <show_in_website>1</show_in_website>
-	                        <show_in_store>1</show_in_store>
-	                     </title>
+                        <active translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                        <title translate="label">
+                            <label>Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>
                         <order_status_payment_accepted translate="label">
                             <label>Order status when payment accepted</label>
                             <frontend_type>select</frontend_type>
@@ -4731,7 +4314,7 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </order_status_payment_canceled>
-                         <hipay_status_validate_order translate="label">
+                        <hipay_status_validate_order translate="label">
                             <label>Hipay status to validate order</label>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_order_hipayStatusValidate</source_model>
@@ -4742,14 +4325,16 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </success_redirect_page>
-                         <pending_redirect_page translate="label">
+                        <pending_redirect_page translate="label">
                             <label>Redirect page pending status</label>
                             <comment>Page to redirect when transaction is in pending status</comment>
                             <frontend_type>select</frontend_type>
@@ -4759,9 +4344,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </pending_redirect_page>
-                         <re_add_to_cart translate="label comment">
-                        	<label>Add product to cart</label>
-                        	<comment>Fill cart when payment canceled or refused</comment>
+                        <re_add_to_cart translate="label comment">
+                            <label>Add product to cart</label>
+                            <comment>Fill cart when payment canceled or refused</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>95</sort_order>
@@ -4770,25 +4355,25 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_store>0</show_in_store>
                         </re_add_to_cart>
                         <cancel_pending_order translate="label comment">
-                         	<label>Cancel pending order</label>
-                        	<comment>Cancel orders stayed in pending because customer not validated payment</comment>
+                            <label>Cancel pending order</label>
+                            <comment>Cancel orders stayed in pending because customer not validated payment</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>97</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
-                         </cancel_pending_order>
-                         <send_fraud_payment_email translate="label">
-	                        <label>Send fraud payment email</label>
-	                        <frontend_type>select</frontend_type>
-	                        <source_model>adminhtml/system_config_source_yesno</source_model>
-	                        <sort_order>99</sort_order>
-	                        <show_in_default>1</show_in_default>
-	                        <show_in_website>1</show_in_website>
-	                        <show_in_store>1</show_in_store>
-	                    </send_fraud_payment_email>
-                         <allowspecific translate="label">
+                        </cancel_pending_order>
+                        <send_fraud_payment_email translate="label">
+                            <label>Send fraud payment email</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>99</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </send_fraud_payment_email>
+                        <allowspecific translate="label">
                             <label>Payment from applicable countries</label>
                             <frontend_type>allowspecific</frontend_type>
                             <sort_order>100</sort_order>
@@ -4840,8 +4425,8 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_store>0</show_in_store>
                         </electronic_signature>
                         <debug translate="label">
-                        	<label>Enable debug log</label>
-                        	<comment></comment>
+                            <label>Enable debug log</label>
+                            <comment></comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>150</sort_order>
@@ -4849,9 +4434,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </debug>
-	                      <is_test_mode translate="label comment">
-                        	<label>Enable test mode</label>
-                        	<comment></comment>
+                        <is_test_mode translate="label comment">
+                            <label>Enable test mode</label>
+                            <comment></comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>200</sort_order>
@@ -4859,10 +4444,10 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </is_test_mode>
-                      </fields>
-             	</hipay_sdd>
+                    </fields>
+                </hipay_sdd>
                 <hipay_postfinancecardapi translate="label" module="hipay">
-            		<label>HiPay Fullservice PostFinance Card</label>
+                    <label>HiPay Fullservice PostFinance Card</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>147</sort_order>
                     <show_in_default>1</show_in_default>
@@ -4885,7 +4470,7 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                         </title>
+                        </title>
                         <order_status_payment_accepted translate="label">
                             <label>Order status when payment accepted</label>
                             <frontend_type>select</frontend_type>
@@ -4913,7 +4498,7 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </order_status_payment_canceled>
-                         <hipay_status_validate_order translate="label">
+                        <hipay_status_validate_order translate="label">
                             <label>Hipay status to validate order</label>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_order_hipayStatusValidate</source_model>
@@ -4962,17 +4547,17 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </send_fraud_payment_email>
-                         <re_add_to_cart translate="label comment">
-                        	<label>Add product to cart</label>
-                        	<comment>Fill cart when payment canceled or refused</comment>
+                        <re_add_to_cart translate="label comment">
+                            <label>Add product to cart</label>
+                            <comment>Fill cart when payment canceled or refused</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>95</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
-                         </re_add_to_cart>
-                         <cancel_pending_order translate="label comment">
+                        </re_add_to_cart>
+                        <cancel_pending_order translate="label comment">
                             <label>Cancel pending order</label>
                             <comment>Cancel orders stayed in pending because customer not validated payment</comment>
                             <frontend_type>select</frontend_type>
@@ -4981,7 +4566,7 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
-                         </cancel_pending_order>
+                        </cancel_pending_order>
                         <delay_cancel_pending_order translate="label">
                             <label>Delay before cancel order</label>
                             <comment>In Hours</comment>
@@ -5000,7 +4585,7 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </send_fraud_payment_email>
-                         <allowspecific translate="label">
+                        <allowspecific translate="label">
                             <label>Payment from applicable countries</label>
                             <frontend_type>allowspecific</frontend_type>
                             <sort_order>100</sort_order>
@@ -5043,8 +4628,8 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_store>1</show_in_store>
                         </sort_order>
                         <debug>
-                        	<label>Enable debug log</label>
-                        	<comment></comment>
+                            <label>Enable debug log</label>
+                            <comment></comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>150</sort_order>
@@ -5052,9 +4637,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </debug>
-	                      <is_test_mode translate="label comment">
-                        	<label>Enable test mode</label>
-                        	<comment></comment>
+                        <is_test_mode translate="label comment">
+                            <label>Enable test mode</label>
+                            <comment></comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>200</sort_order>
@@ -5062,7 +4647,7 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </is_test_mode>
-                      </fields> 
+                    </fields>
                 </hipay_postfinancecardapi>
                 <hipay_boleto translate="label" module="hipay">
                     <label>HiPay Enterprise Boleto</label>
@@ -5127,7 +4712,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -5249,34 +4836,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </send_fraud_payment_email>
-                        <!-- @deprecated since version 1.2.6 -->
-                        <!-- <allow_split_payment translate="label">
-                            <label>Use Split Payment</label>
-                           <frontend_type>select</frontend_type>
-                           <frontend_model>hipay/adminhtml_system_config_form_field_allowsplitpayment</frontend_model>
-                           <source_model>adminhtml/system_config_source_yesno</source_model>
-                           <sort_order>65</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>0</show_in_store>
-                       </allow_split_payment>
-                        <split_payment_profile translate="label">
-                           <label>Payment Profile</label>
-                           <frontend_type>multiselect</frontend_type>
-                           <source_model>hipay/source_paymentProfile::splitPaymentsToOptionArray</source_model>
-                           <sort_order>66</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>0</show_in_store>
-                       </split_payment_profile>
-                        <min_order_total_split_payment translate="label">
-                           <label>Minimum Order Total for Split Payment</label>
-                           <frontend_type>text</frontend_type>
-                           <sort_order>68</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>1</show_in_store>
-                       </min_order_total_split_payment> -->
                         <allow_use_oneclick translate="label">
                             <label>Use Oneclick</label>
                             <frontend_type>select</frontend_type>
@@ -5461,7 +5020,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -5583,34 +5144,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </send_fraud_payment_email>
-                        <!-- @deprecated since version 1.2.6 -->
-                        <!-- <allow_split_payment translate="label">
-                            <label>Use Split Payment</label>
-                           <frontend_type>select</frontend_type>
-                           <frontend_model>hipay/adminhtml_system_config_form_field_allowsplitpayment</frontend_model>
-                           <source_model>adminhtml/system_config_source_yesno</source_model>
-                           <sort_order>65</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>0</show_in_store>
-                       </allow_split_payment>
-                        <split_payment_profile translate="label">
-                           <label>Payment Profile</label>
-                           <frontend_type>multiselect</frontend_type>
-                           <source_model>hipay/source_paymentProfile::splitPaymentsToOptionArray</source_model>
-                           <sort_order>66</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>0</show_in_store>
-                       </split_payment_profile>
-                        <min_order_total_split_payment translate="label">
-                           <label>Minimum Order Total for Split Payment</label>
-                           <frontend_type>text</frontend_type>
-                           <sort_order>68</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>1</show_in_store>
-                       </min_order_total_split_payment> -->
                         <allow_use_oneclick translate="label">
                             <label>Use Oneclick</label>
                             <frontend_type>select</frontend_type>
@@ -5733,7 +5266,7 @@ From this information, an estimated (estimated) delivery day is calculated and s
                     </fields>
                 </hipay_itau>
                 <hipay_postfinanceefinanceapi translate="label" module="hipay">
-            		<label>HiPay Enterprise PostFinance E-Finance</label>
+                    <label>HiPay Enterprise PostFinance E-Finance</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>241</sort_order>
                     <show_in_default>1</show_in_default>
@@ -5824,9 +5357,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </pending_redirect_page>
-                         <re_add_to_cart translate="label comment">
-                        	<label>Add product to cart</label>
-                        	<comment>Fill cart when payment canceled or refused</comment>
+                        <re_add_to_cart translate="label comment">
+                            <label>Add product to cart</label>
+                            <comment>Fill cart when payment canceled or refused</comment>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>95</sort_order>
@@ -5933,8 +5466,8 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </is_test_mode>
-                      </fields> 
-             	</hipay_postfinanceefinanceapi>
+                    </fields>
+                </hipay_postfinanceefinanceapi>
                 <hipay_klarna translate="label" module="hipay">
                     <label>HiPay Klarna Invoice</label>
                     <frontend_type>text</frontend_type>
@@ -6264,7 +5797,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -6386,34 +5921,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </send_fraud_payment_email>
-                        <!-- @deprecated since version 1.2.6 -->
-                        <!-- <allow_split_payment translate="label">
-                            <label>Use Split Payment</label>
-                           <frontend_type>select</frontend_type>
-                           <frontend_model>hipay/adminhtml_system_config_form_field_allowsplitpayment</frontend_model>
-                           <source_model>adminhtml/system_config_source_yesno</source_model>
-                           <sort_order>65</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>0</show_in_store>
-                       </allow_split_payment>
-                        <split_payment_profile translate="label">
-                           <label>Payment Profile</label>
-                           <frontend_type>multiselect</frontend_type>
-                           <source_model>hipay/source_paymentProfile::splitPaymentsToOptionArray</source_model>
-                           <sort_order>66</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>0</show_in_store>
-                       </split_payment_profile>
-                        <min_order_total_split_payment translate="label">
-                           <label>Minimum Order Total for Split Payment</label>
-                           <frontend_type>text</frontend_type>
-                           <sort_order>68</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>1</show_in_store>
-                       </min_order_total_split_payment> -->
                         <allow_use_oneclick translate="label">
                             <label>Use Oneclick</label>
                             <frontend_type>select</frontend_type>
@@ -6598,7 +6105,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -6720,34 +6229,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </send_fraud_payment_email>
-                        <!-- @deprecated since version 1.2.6 -->
-                        <!-- <allow_split_payment translate="label">
-                            <label>Use Split Payment</label>
-                           <frontend_type>select</frontend_type>
-                           <frontend_model>hipay/adminhtml_system_config_form_field_allowsplitpayment</frontend_model>
-                           <source_model>adminhtml/system_config_source_yesno</source_model>
-                           <sort_order>65</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>0</show_in_store>
-                       </allow_split_payment>
-                        <split_payment_profile translate="label">
-                           <label>Payment Profile</label>
-                           <frontend_type>multiselect</frontend_type>
-                           <source_model>hipay/source_paymentProfile::splitPaymentsToOptionArray</source_model>
-                           <sort_order>66</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>0</show_in_store>
-                       </split_payment_profile>
-                        <min_order_total_split_payment translate="label">
-                           <label>Minimum Order Total for Split Payment</label>
-                           <frontend_type>text</frontend_type>
-                           <sort_order>68</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>1</show_in_store>
-                       </min_order_total_split_payment> -->
                         <allow_use_oneclick translate="label">
                             <label>Use Oneclick</label>
                             <frontend_type>select</frontend_type>
@@ -6932,7 +6413,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -7054,34 +6537,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </send_fraud_payment_email>
-                        <!-- @deprecated since version 1.2.6 -->
-                        <!-- <allow_split_payment translate="label">
-                            <label>Use Split Payment</label>
-                           <frontend_type>select</frontend_type>
-                           <frontend_model>hipay/adminhtml_system_config_form_field_allowsplitpayment</frontend_model>
-                           <source_model>adminhtml/system_config_source_yesno</source_model>
-                           <sort_order>65</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>0</show_in_store>
-                       </allow_split_payment>
-                        <split_payment_profile translate="label">
-                           <label>Payment Profile</label>
-                           <frontend_type>multiselect</frontend_type>
-                           <source_model>hipay/source_paymentProfile::splitPaymentsToOptionArray</source_model>
-                           <sort_order>66</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>0</show_in_store>
-                       </split_payment_profile>
-                        <min_order_total_split_payment translate="label">
-                           <label>Minimum Order Total for Split Payment</label>
-                           <frontend_type>text</frontend_type>
-                           <sort_order>68</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>1</show_in_store>
-                       </min_order_total_split_payment> -->
                         <allow_use_oneclick translate="label">
                             <label>Use Oneclick</label>
                             <frontend_type>select</frontend_type>
@@ -7266,7 +6721,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -7388,34 +6845,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </send_fraud_payment_email>
-                        <!-- @deprecated since version 1.2.6 -->
-                        <!-- <allow_split_payment translate="label">
-                            <label>Use Split Payment</label>
-                           <frontend_type>select</frontend_type>
-                           <frontend_model>hipay/adminhtml_system_config_form_field_allowsplitpayment</frontend_model>
-                           <source_model>adminhtml/system_config_source_yesno</source_model>
-                           <sort_order>65</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>0</show_in_store>
-                       </allow_split_payment>
-                        <split_payment_profile translate="label">
-                           <label>Payment Profile</label>
-                           <frontend_type>multiselect</frontend_type>
-                           <source_model>hipay/source_paymentProfile::splitPaymentsToOptionArray</source_model>
-                           <sort_order>66</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>0</show_in_store>
-                       </split_payment_profile>
-                        <min_order_total_split_payment translate="label">
-                           <label>Minimum Order Total for Split Payment</label>
-                           <frontend_type>text</frontend_type>
-                           <sort_order>68</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>1</show_in_store>
-                       </min_order_total_split_payment> -->
                         <allow_use_oneclick translate="label">
                             <label>Use Oneclick</label>
                             <frontend_type>select</frontend_type>
@@ -7600,7 +7029,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -7722,34 +7153,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </send_fraud_payment_email>
-                        <!-- @deprecated since version 1.2.6 -->
-                        <!-- <allow_split_payment translate="label">
-                            <label>Use Split Payment</label>
-                           <frontend_type>select</frontend_type>
-                           <frontend_model>hipay/adminhtml_system_config_form_field_allowsplitpayment</frontend_model>
-                           <source_model>adminhtml/system_config_source_yesno</source_model>
-                           <sort_order>65</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>0</show_in_store>
-                       </allow_split_payment>
-                        <split_payment_profile translate="label">
-                           <label>Payment Profile</label>
-                           <frontend_type>multiselect</frontend_type>
-                           <source_model>hipay/source_paymentProfile::splitPaymentsToOptionArray</source_model>
-                           <sort_order>66</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>0</show_in_store>
-                       </split_payment_profile>
-                        <min_order_total_split_payment translate="label">
-                           <label>Minimum Order Total for Split Payment</label>
-                           <frontend_type>text</frontend_type>
-                           <sort_order>68</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>1</show_in_store>
-                       </min_order_total_split_payment> -->
                         <allow_use_oneclick translate="label">
                             <label>Use Oneclick</label>
                             <frontend_type>select</frontend_type>
@@ -7871,339 +7274,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </is_test_mode>
                     </fields>
                 </hipay_caixa>
-                <!--<hipay_discover translate="label" module="hipay">
-            		<label>Discover</label>
-                    <frontend_type>text</frontend_type>
-                    <sort_order>247</sort_order>
-                    <show_in_default>1</show_in_default>
-                    <show_in_website>1</show_in_website>
-                    <show_in_store>1</show_in_store>
-                    <fields>
-	                    <active translate="label">
-	                        <label>Enabled</label>
-	                        <frontend_type>select</frontend_type>
-	                        <source_model>adminhtml/system_config_source_yesno</source_model>
-	                        <sort_order>10</sort_order>
-	                        <show_in_default>1</show_in_default>
-	                        <show_in_website>1</show_in_website>
-	                        <show_in_store>1</show_in_store>
-	                    </active>
-	                    <title translate="label">
-	                        <label>Title</label>
-	                        <frontend_type>text</frontend_type>
-	                        <sort_order>20</sort_order>
-	                        <show_in_default>1</show_in_default>
-	                        <show_in_website>1</show_in_website>
-	                        <show_in_store>1</show_in_store>
-	                     </title>
-                        <order_status_payment_accepted translate="label">
-                            <label>Order status when payment accepted</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>hipay/source_order_status_accepted</source_model>
-                            <sort_order>23</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </order_status_payment_accepted>
-                        <order_status_payment_refused translate="label">
-                            <label>Order status when payment refused</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>hipay/source_order_status_refused</source_model>
-                            <sort_order>24</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </order_status_payment_refused>
-                        <order_status_payment_canceled translate="label">
-                            <label>Order status when payment canceled by customer</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>hipay/source_order_status_canceled</source_model>
-                            <sort_order>25</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </order_status_payment_canceled>
-                         <hipay_status_validate_order translate="label">
-                            <label>Hipay status to validate order</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>hipay/source_order_hipayStatusValidate</source_model>
-                            <sort_order>26</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </hipay_status_validate_order>
-                        <success_redirect_page translate="label">
-                            <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>26</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </success_redirect_page>
-                         <pending_redirect_page translate="label">
-                            <label>Redirect page pending status</label>
-                            <comment>Page to redirect when transaction is in pending status</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>hipay/source_pendingredirect</source_model>
-                            <sort_order>27</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </pending_redirect_page>
-                         <payment_action translate="label">
-	                        <label>Payment Action</label>
-	                        <frontend_type>select</frontend_type>
-	                        <source_model>hipay/source_paymentAction</source_model>
-	                        <sort_order>28</sort_order>
-	                        <show_in_default>1</show_in_default>
-	                        <show_in_website>1</show_in_website>
-	                         <show_in_store>0</show_in_store>
-	                      </payment_action>
-                        <css_url translate="label coment">
-                        	<label>Css Url</label>
-                        	<comment>Important, HTTPS protocol is required</comment>
-	                        <frontend_type>text</frontend_type>
-	                        <sort_order>30</sort_order>
-	                        <show_in_default>1</show_in_default>
-	                        <show_in_website>1</show_in_website>
-	                        <show_in_store>1</show_in_store>
-                        </css_url>
-                        <template translate="label">
-                        	<label>Page payment template</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>hipay/source_template</source_model>
-                            <sort_order>35</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </template>
-                        <display_iframe translate="label">
-                        	<label>Display hosted page in Iframe</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>36</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </display_iframe>
-                        <iframe_width translate="label">
-                        	<label>iFrame Width</label>
-                        	<frontend_type>text</frontend_type>
-	                        <sort_order>37</sort_order>
-	                        <show_in_default>1</show_in_default>
-	                        <show_in_website>1</show_in_website>
-	                        <show_in_store>1</show_in_store>
-                        </iframe_width>
-                        <iframe_height translate="label">
-                        	<label>iFrame Height</label>
-                        	<frontend_type>text</frontend_type>
-	                        <sort_order>38</sort_order>
-	                        <show_in_default>1</show_in_default>
-	                        <show_in_website>1</show_in_website>
-	                        <show_in_store>1</show_in_store>
-                        </iframe_height>
-                        <iframe_style translate="label">
-                        	<label>iFrame Style</label>
-                        	<frontend_type>text</frontend_type>show_in_website
-	                        <sort_order>39</sort_order>
-	                        <show_in_default>1</show_in_default>
-	                        <show_in_website>1</show_in_website>
-	                        <show_in_store>1</show_in_store>
-                        </iframe_style>
-                        <iframe_wrapper_style translate="label">
-                        	<label>Wrapper iFrame Style</label>
-                        	<frontend_type>text</frontend_type>
-	                        <sort_order>39</sort_order>
-	                        <show_in_default>1</show_in_default>
-	                        <show_in_website>1</show_in_website>
-	                        <show_in_store>1</show_in_store>
-                        </iframe_wrapper_style>
-                        <display_selector translate="label">
-                        	<label>Display card selector</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>40</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </display_selector>
-                        <use_3d_secure translate="label">
-                        	 <label>Use 3D Secure</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>hipay/source_3ds</source_model>
-                            <sort_order>60</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </use_3d_secure>
-                        <config_3ds_rules translate="label comment">
-                        	<label>Rules 3D Secure</label>
-                        	<comment>Configure Rules to activate 3D Secure</comment>
-                            <frontend_model>hipay/adminhtml_system_config_form_field_3dsRule</frontend_model>
-                            <backend_model>hipay/rule_config</backend_model>
-                            <sort_order>61</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </config_3ds_rules>
-                        <send_fraud_payment_email translate="label">
-	                        <label>Send fraud payment email</label>
-	                        <frontend_type>select</frontend_type>
-	                        <source_model>adminhtml/system_config_source_yesno</source_model>
-	                        <sort_order>63</sort_order>
-	                        <show_in_default>1</show_in_default>
-	                        <show_in_website>1</show_in_website>
-	                        <show_in_store>1</show_in_store>
-	                    </send_fraud_payment_email>
-                         <allow_split_payment translate="label">
-                        	 <label>Use Split Payment</label>
-                            <frontend_type>select</frontend_type>
-                            <frontend_model>hipay/adminhtml_system_config_form_field_allowsplitpayment</frontend_model>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>65</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </allow_split_payment>
-                         <split_payment_profile translate="label">
-                        	<label>Payment Profile</label>
-                            <frontend_type>multiselect</frontend_type>
-                            <source_model>hipay/source_paymentProfile::splitPaymentsToOptionArray</source_model>
-                            <sort_order>66</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </split_payment_profile>
-                         <min_order_total_split_payment translate="label">
-                            <label>Minimum Order Total for Split Payment</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>68</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </min_order_total_split_payment>
-                       <allow_use_oneclick translate="label">
-                        	 <label>Use Oneclick</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>70</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </allow_use_oneclick>
-                        <filter_oneclick translate="label comment">
-                        	<label>Rules Oneclick</label>
-                        	<comment>Configure Rules to activate oneclick</comment>
-                            <frontend_model>hipay/adminhtml_system_config_form_field_3dsRule</frontend_model>
-                            <backend_model>hipay/rule_config</backend_model>
-                            <sort_order>80</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </filter_oneclick>
-                         <re_add_to_cart translate="label comment">
-                        	<label>Add product to cart</label>
-                        	<comment>Fill cart when payment canceled or refused</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>95</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </re_add_to_cart>
-                        <cancel_pending_order translate="label comment">
-                         	<label>Cancel pending order</label>
-                        	<comment>Cancel orders stayed in pending because customer not validated payment</comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>97</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                         </cancel_pending_order>
-                         <send_fraud_payment_email translate="label">
-	                        <label>Send fraud payment email</label>
-	                        <frontend_type>select</frontend_type>
-	                        <source_model>adminhtml/system_config_source_yesno</source_model>
-	                        <sort_order>99</sort_order>
-	                        <show_in_default>1</show_in_default>
-	                        <show_in_website>1</show_in_website>
-	                        <show_in_store>1</show_in_store>
-	                    </send_fraud_payment_email>
-                         <allowspecific translate="label">
-                            <label>Payment from applicable countries</label>
-                            <frontend_type>allowspecific</frontend_type>
-                            <sort_order>100</sort_order>
-                            <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </allowspecific>
-                        <specificcountry translate="label">
-                            <label>Payment from Specific countries</label>
-                            <frontend_type>multiselect</frontend_type>
-                            <sort_order>110</sort_order>
-                            <source_model>adminhtml/system_config_source_country</source_model>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </specificcountry>
-                        <currency translate="label">
-                            <label>Accepted Currency</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_currency</source_model>
-                            <sort_order>111</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </currency>
-                        <min_order_total translate="label">
-                            <label>Minimum Order Total</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>120</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </min_order_total>
-                        <max_order_total translate="label">
-                            <label>Maximum Order Total</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>121</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </max_order_total>
-                        <sort_order translate="label">
-                            <label>Sort Order</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>130</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </sort_order>
-                        <debug translate="label">
-                        	<label>Enable debug log</label>
-                        	<comment></comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>150</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </debug>
-	                      <is_test_mode translate="label comment">
-                        	<label>Enable test mode</label>
-                        	<comment></comment>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>200</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </is_test_mode>
-                      </fields>
-             	</hipay_discover>  -->
                 <hipay_oxxo translate="label" module="hipay">
                     <label>HiPay Enterprise Oxxo</label>
                     <frontend_type>text</frontend_type>
@@ -8267,7 +7337,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -8389,34 +7461,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </send_fraud_payment_email>
-                        <!-- @deprecated since version 1.2.6 -->
-                        <!-- <allow_split_payment translate="label">
-                            <label>Use Split Payment</label>
-                           <frontend_type>select</frontend_type>
-                           <frontend_model>hipay/adminhtml_system_config_form_field_allowsplitpayment</frontend_model>
-                           <source_model>adminhtml/system_config_source_yesno</source_model>
-                           <sort_order>65</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>0</show_in_store>
-                       </allow_split_payment>
-                        <split_payment_profile translate="label">
-                           <label>Payment Profile</label>
-                           <frontend_type>multiselect</frontend_type>
-                           <source_model>hipay/source_paymentProfile::splitPaymentsToOptionArray</source_model>
-                           <sort_order>66</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>0</show_in_store>
-                       </split_payment_profile>
-                        <min_order_total_split_payment translate="label">
-                           <label>Minimum Order Total for Split Payment</label>
-                           <frontend_type>text</frontend_type>
-                           <sort_order>68</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>1</show_in_store>
-                       </min_order_total_split_payment> -->
                         <allow_use_oneclick translate="label">
                             <label>Use Oneclick</label>
                             <frontend_type>select</frontend_type>
@@ -8601,7 +7645,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -8723,34 +7769,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </send_fraud_payment_email>
-                        <!-- @deprecated since version 1.2.6 -->
-                        <!-- <allow_split_payment translate="label">
-                            <label>Use Split Payment</label>
-                           <frontend_type>select</frontend_type>
-                           <frontend_model>hipay/adminhtml_system_config_form_field_allowsplitpayment</frontend_model>
-                           <source_model>adminhtml/system_config_source_yesno</source_model>
-                           <sort_order>65</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>0</show_in_store>
-                       </allow_split_payment>
-                        <split_payment_profile translate="label">
-                           <label>Payment Profile</label>
-                           <frontend_type>multiselect</frontend_type>
-                           <source_model>hipay/source_paymentProfile::splitPaymentsToOptionArray</source_model>
-                           <sort_order>66</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>0</show_in_store>
-                       </split_payment_profile>
-                        <min_order_total_split_payment translate="label">
-                           <label>Minimum Order Total for Split Payment</label>
-                           <frontend_type>text</frontend_type>
-                           <sort_order>68</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>1</show_in_store>
-                       </min_order_total_split_payment> -->
                         <allow_use_oneclick translate="label">
                             <label>Use Oneclick</label>
                             <frontend_type>select</frontend_type>
@@ -8935,7 +7953,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -9057,34 +8077,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </send_fraud_payment_email>
-                        <!-- @deprecated since version 1.2.6 -->
-                        <!-- <allow_split_payment translate="label">
-                            <label>Use Split Payment</label>
-                           <frontend_type>select</frontend_type>
-                           <frontend_model>hipay/adminhtml_system_config_form_field_allowsplitpayment</frontend_model>
-                           <source_model>adminhtml/system_config_source_yesno</source_model>
-                           <sort_order>65</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>0</show_in_store>
-                       </allow_split_payment>
-                        <split_payment_profile translate="label">
-                           <label>Payment Profile</label>
-                           <frontend_type>multiselect</frontend_type>
-                           <source_model>hipay/source_paymentProfile::splitPaymentsToOptionArray</source_model>
-                           <sort_order>66</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>0</show_in_store>
-                       </split_payment_profile>
-                        <min_order_total_split_payment translate="label">
-                           <label>Minimum Order Total for Split Payment</label>
-                           <frontend_type>text</frontend_type>
-                           <sort_order>68</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>1</show_in_store>
-                       </min_order_total_split_payment> -->
                         <allow_use_oneclick translate="label">
                             <label>Use Oneclick</label>
                             <frontend_type>select</frontend_type>
@@ -9269,7 +8261,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -9391,34 +8385,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </send_fraud_payment_email>
-                        <!-- @deprecated since version 1.2.6 -->
-                        <!-- <allow_split_payment translate="label">
-                            <label>Use Split Payment</label>
-                           <frontend_type>select</frontend_type>
-                           <frontend_model>hipay/adminhtml_system_config_form_field_allowsplitpayment</frontend_model>
-                           <source_model>adminhtml/system_config_source_yesno</source_model>
-                           <sort_order>65</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>0</show_in_store>
-                       </allow_split_payment>
-                        <split_payment_profile translate="label">
-                           <label>Payment Profile</label>
-                           <frontend_type>multiselect</frontend_type>
-                           <source_model>hipay/source_paymentProfile::splitPaymentsToOptionArray</source_model>
-                           <sort_order>66</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>0</show_in_store>
-                       </split_payment_profile>
-                        <min_order_total_split_payment translate="label">
-                           <label>Minimum Order Total for Split Payment</label>
-                           <frontend_type>text</frontend_type>
-                           <sort_order>68</sort_order>
-                           <show_in_default>1</show_in_default>
-                           <show_in_website>1</show_in_website>
-                           <show_in_store>1</show_in_store>
-                       </min_order_total_split_payment> -->
                         <allow_use_oneclick translate="label">
                             <label>Use Oneclick</label>
                             <frontend_type>select</frontend_type>
@@ -9627,7 +8593,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -9861,7 +8829,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -10007,6 +8977,229 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </is_test_mode>
                     </fields>
                 </hipay_facilipay4x>
+                <hipay_oneycreditlong translate="label" module="hipay">
+                    <label>HiPay Enterprise Oney Credit Long</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>280</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <notice_mapping_shipping_method translate="label" module="hipay">
+                            <frontend_model>hipay/adminhtml_system_config_form_field_Notice</frontend_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </notice_mapping_shipping_method>
+                        <notice_mapping_mapping_category translate="label" module="hipay">
+                            <frontend_model>hipay/adminhtml_system_config_form_field_Notice</frontend_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </notice_mapping_mapping_category>
+                        <active translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+                        <title translate="label">
+                            <label>Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>
+                        <order_status_payment_accepted translate="label">
+                            <label>Order status when payment accepted</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>hipay/source_order_status_accepted</source_model>
+                            <sort_order>23</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </order_status_payment_accepted>
+                        <order_status_payment_refused translate="label">
+                            <label>Order status when payment refused</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>hipay/source_order_status_refused</source_model>
+                            <sort_order>24</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </order_status_payment_refused>
+                        <order_status_payment_canceled translate="label">
+                            <label>Order status when payment canceled by customer</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>hipay/source_order_status_canceled</source_model>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </order_status_payment_canceled>
+                        <hipay_status_validate_order translate="label">
+                            <label>Hipay status to validate order</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>hipay/source_order_hipayStatusValidate</source_model>
+                            <sort_order>26</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </hipay_status_validate_order>
+                        <success_redirect_page translate="label">
+                            <label>Redirect page success</label>
+                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>26</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </success_redirect_page>
+                        <pending_redirect_page translate="label">
+                            <label>Redirect page pending status</label>
+                            <comment>Page to redirect when transaction is in pending status</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>hipay/source_pendingredirect</source_model>
+                            <sort_order>27</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </pending_redirect_page>
+                        <payment_action translate="label">
+                            <label>Payment Action</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>hipay/source_paymentAction</source_model>
+                            <sort_order>28</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </payment_action>
+                        <send_fraud_payment_email translate="label">
+                            <label>Send fraud payment email</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>63</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </send_fraud_payment_email>
+                        <allow_use_oneclick translate="label">
+                            <label>Use Oneclick</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </allow_use_oneclick>
+                        <re_add_to_cart translate="label comment">
+                            <label>Add product to cart</label>
+                            <comment>Fill cart when payment canceled or refused</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>95</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </re_add_to_cart>
+                        <cancel_pending_order translate="label comment">
+                            <label>Cancel pending order</label>
+                            <comment>Cancel orders stayed in pending because customer not validated payment</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>97</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </cancel_pending_order>
+                        <send_fraud_payment_email translate="label">
+                            <label>Send fraud payment email</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>99</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </send_fraud_payment_email>
+                        <allowspecific translate="label">
+                            <label>Payment from applicable countries</label>
+                            <frontend_type>allowspecific</frontend_type>
+                            <sort_order>100</sort_order>
+                            <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </allowspecific>
+                        <specificcountry translate="label">
+                            <label>Payment from Specific countries</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <sort_order>110</sort_order>
+                            <source_model>adminhtml/system_config_source_country</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </specificcountry>
+                        <currency translate="label">
+                            <label>Accepted Currency</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_currency</source_model>
+                            <sort_order>111</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </currency>
+                        <min_order_total translate="label">
+                            <label>Minimum Order Total</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>120</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </min_order_total>
+                        <max_order_total translate="label">
+                            <label>Maximum Order Total</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>121</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </max_order_total>
+                        <sort_order translate="label">
+                            <label>Sort Order</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>130</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sort_order>
+                        <debug translate="label">
+                            <label>Enable debug log</label>
+                            <comment></comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>150</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </debug>
+                        <is_test_mode translate="label comment">
+                            <label>Enable test mode</label>
+                            <comment></comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </is_test_mode>
+                    </fields>
+                </hipay_oneycreditlong>
                 <hipay_bnpp3x translate="label" module="hipay">
                     <label>BNP Personal Finance 3X</label>
                     <frontend_type>text</frontend_type>
@@ -10070,7 +9263,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -10270,7 +9465,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -10408,6 +9605,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                     </fields>
                 </hipay_bnpp4x>
             </groups>
-		</payment>
-	</sections>
+        </payment>
+    </sections>
 </config>
