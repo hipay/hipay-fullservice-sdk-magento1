@@ -564,20 +564,6 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
                             break;
                         }
 
-                        $this->addTransaction(
-                            $payment,
-                            $gatewayResponse->getTransactionReference(),
-                            Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE,
-                            array('is_transaction_closed' => 0),
-                            array(),
-                            Mage::helper('hipay')->getTransactionMessage(
-                                $payment,
-                                self::OPERATION_SALE,
-                                null,
-                                $amount
-                            )
-                        );
-
                         $message = Mage::helper("hipay")->__('Capture Requested by Hipay.');
 
                         /** @noinspection PhpMethodParametersCountMismatchInspection */
@@ -612,6 +598,20 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
                         if ($order->getStatus() == $this->getConfigData('order_status_payment_accepted')) {
                             break;
                         }
+
+                        $this->addTransaction(
+                            $payment,
+                            $gatewayResponse->getTransactionReference(),
+                            Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE,
+                            array('is_transaction_closed' => 0),
+                            array(),
+                            Mage::helper('hipay')->getTransactionMessage(
+                                $payment,
+                                self::OPERATION_SALE,
+                                null,
+                                $amount
+                            )
+                        );
 
                         /**
                          * If status Capture Requested is configured to validate the order and is a direct capture
