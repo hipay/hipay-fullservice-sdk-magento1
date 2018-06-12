@@ -34,6 +34,7 @@ casper.test.begin('Change Hash Algorithm ' + paymentType + ' with ' + typeCC, fu
 	.then(function() {
 		this.echo("Synchronize Hashing Algorithm", "INFO");
 		this.waitForSelector('button#synchronize_button', function success() {
+			this.click("#hipay_hipay_hash_algorithm-head");
 			var current = this.evaluate(function () {
 				return document.querySelector('select#hipay_hipay_hash_algorithm_test').value;
 			});

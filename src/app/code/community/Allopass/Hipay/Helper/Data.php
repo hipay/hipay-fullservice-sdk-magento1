@@ -316,8 +316,6 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 
             return $item;
         }
-
-
     }
 
     /**
@@ -549,7 +547,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     public function splitPaymentsExists($orderId)
     {
         $collection = Mage::getModel('hipay/splitPayment')->getCollection()->addFieldToFilter('order_id', $orderId);
-        if (!$collection->empty()) {
+        if (!$collection->getSize()) {
             return true;
         }
 
@@ -1374,12 +1372,12 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      * @param $mapping
      * @return string
      */
-    function calculateEstimatedDate($mapping)
+    public function calculateEstimatedDate($mapping)
     {
         if (is_array($mapping)) {
             $today = new \Datetime();
             $daysDelay = $mapping['delay_preparation'] + $mapping['delay_delivery'];
-            $interval = new \DateInterval ("P{$daysDelay}D");
+            $interval = new \DateInterval("P{$daysDelay}D");
             return $today->add($interval)->format("Y-m-d");
         }
 
@@ -1392,7 +1390,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      * @param $mapping array Result of mapping
      * @return null|string JSON
      */
-    function calculateDeliveryMethod($mapping)
+    public function calculateDeliveryMethod($mapping)
     {
         if (is_array($mapping)) {
             $itemsDelivery = Mage::helper('hipay/collection')->getFullItemsDelivery();
