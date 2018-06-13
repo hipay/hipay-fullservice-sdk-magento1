@@ -13,8 +13,7 @@ dependencies:
     - sh bin/docker/generate_dockerfile.sh
 test:
   override:
-    - case $CIRCLE_NODE_INDEX in 0) sh ./bin/docker/init-environment.circle.sh php5.6 ;; 1) sh ./bin/docker/init-environment.circle.sh php7-0 ;;  2) sh ./bin/docker/init-environment.circle.sh php5.6 1.8.0.0 1.6_1.8 ;; esac:
-        parallel: true
+    - sh ./bin/docker/init-environment.circle.sh php7-0
     - sleep 60
     - curl --retry 30 --retry-delay 3 -v $MAGENTO_URL:$PORT_WEB
 

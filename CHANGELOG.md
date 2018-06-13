@@ -1,3 +1,8 @@
+# Version 1.9.1
+
+ - Fix : no transaction reference on 118
+ - Fix : split payment bug
+
 # Version 1.9.0
 
  - Add support for Oney credit long payment method
