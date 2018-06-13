@@ -2,34 +2,35 @@ image: hipay/gitlab-ci-base:jessie
 
 
 stages:
- - build
- - analysis
- - package
- - deploy
- - sync
+  - build
+  - analysis
+  - package
+  - deploy
+  - sync
 
 
 casperjs-part1:
   stage: build
   before_script:
-     - sh bin/docker/generate_dockerfile.sh
-     - sed -i -e "s/{HIPAY_API_USER_TEST\}/$HIPAY_API_USER_TEST/" ./bin/conf/stage/hipay.env.sample
-     - sed -i -e "s/{HIPAY_API_PASSWORD_TEST\}/$HIPAY_API_PASSWORD_TEST/" ./bin/conf/stage/hipay.env.sample
-     - sed -i -e "s/{HIPAY_TOKENJS_PUBLICKEY_TEST\}/$HIPAY_TOKENJS_PUBLICKEY_TEST/" ./bin/conf/stage/hipay.env.sample
-     - sed -i -e "s/{HIPAY_TOKENJS_USERNAME_TEST\}/$HIPAY_TOKENJS_USERNAME_TEST/" ./bin/conf/stage/hipay.env.sample
-     - sed -i -e "s/{HIPAY_SECRET_PASSPHRASE_TEST\}/$HIPAY_SECRET_PASSPHRASE_TEST/" ./bin/conf/stage/hipay.env.sample
-     - sh ./bin/docker/init-environment.sh php5.6
-     - sleep 400
-     - docker-compose -f docker-compose.yml -f docker-compose.stage.yml logs
-     - curl --retry 10 --retry-delay 20 -v http://magento
+    - sh bin/docker/generate_dockerfile.sh
+    - sed -i -e "s/{HIPAY_API_USER_TEST\}/$HIPAY_API_USER_TEST/" ./bin/conf/stage/hipay.env.sample
+    - sed -i -e "s/{HIPAY_API_PASSWORD_TEST\}/$HIPAY_API_PASSWORD_TEST/" ./bin/conf/stage/hipay.env.sample
+    - sed -i -e "s/{HIPAY_TOKENJS_PUBLICKEY_TEST\}/$HIPAY_TOKENJS_PUBLICKEY_TEST/" ./bin/conf/stage/hipay.env.sample
+    - sed -i -e "s/{HIPAY_TOKENJS_USERNAME_TEST\}/$HIPAY_TOKENJS_USERNAME_TEST/" ./bin/conf/stage/hipay.env.sample
+    - sed -i -e "s/{HIPAY_SECRET_PASSPHRASE_TEST\}/$HIPAY_SECRET_PASSPHRASE_TEST/" ./bin/conf/stage/hipay.env.sample
+    - sh ./bin/docker/init-environment.sh php5.6
+    - sleep 400
+    - docker-compose -f docker-compose.yml -f docker-compose.stage.yml logs
+    - curl --retry 10 --retry-delay 20 -v http://magento
   script:
-  - sh bin/tests/casper_run_circle.sh http://magento
+    - sh bin/tests/casper_run_circle.sh http://magento
   tags:
-  - magento1
+    - magento1
   allow_failure: false
   artifacts:
     paths:
     - bin/tests/errors
+    when: always
   after_script:
     - docker-compose -f docker-compose.yml -f docker-compose.stage.yml stop
     - docker-compose -f docker-compose.yml -f docker-compose.stage.yml rm -fv
@@ -42,7 +43,9 @@ sonarqube:
     SONAR_ANALYSIS_MODE: preview
     SONAR_TOKEN: $SONAR_LOGIN
   script:
-  - /usr/bin/sonar-scanner-run.sh
+    - /usr/bin/sonar-scanner-run.sh
+  tags:
+    - magento1
 
 sonarqube-reports:
   stage: analysis
@@ -52,35 +55,43 @@ sonarqube-reports:
     SONAR_ANALYSIS_MODE: "publish"
     SONAR_TOKEN: $SONAR_LOGIN
   script:
-  - unset CI_BUILD_REF && /usr/bin/sonar-scanner-run.sh
+    - unset CI_BUILD_REF && /usr/bin/sonar-scanner-run.sh
+  tags:
+    - magento1
 
 package:
  stage: package
  before_script:
-  - apt-get update
-  - apt-get install -y zip sshpass php5 libapache2-mod-php5
-  - curl -sS https://getcomposer.org/installer | php -- --filename=composer -- --install-dir=/usr/local/bin
+    - apt-get update
+    - apt-get install -y zip sshpass php5 libapache2-mod-php5
+    - curl -sS https://getcomposer.org/installer | php -- --filename=composer -- --install-dir=/usr/local/bin
  script:
-  - echo " Package module $CI_COMMIT_REF_SLUG"
-  - cd src/lib/Hipay && composer install && cd ../../..
-  - rm -Rf ./vendor && cp ./composer.json.dist ./composer.json && composer install &&  sh ./bin/deployment/packaging.sh
-  - mkdir $CI_COMMIT_REF_SLUG
-  - mkdir $CI_COMMIT_REF_SLUG/package
-  - cp ./dist/*.tgz $CI_COMMIT_REF_SLUG/package
-  - ./bin/deployment/deploy_project.sh
+    - echo " Package module $CI_COMMIT_REF_SLUG"
+    - cd src/lib/Hipay && composer install && cd ../../..
+    - rm -Rf ./vendor && cp ./composer.json.dist ./composer.json && composer install &&  sh ./bin/deployment/packaging.sh
+    - mkdir $CI_COMMIT_REF_SLUG
+    - mkdir $CI_COMMIT_REF_SLUG/package
+    - cp ./dist/*.tgz $CI_COMMIT_REF_SLUG/package
+    - ./bin/deployment/deploy_project.sh
+ tags:
+    - magento1
  artifacts:
   paths:
-  - ./dist
+    - ./dist
 
 deploy:
  stage: deploy
+ tags:
+    - magento1
  script:
-  - docker exec deploy.hipay-pos-platform.com /deploy/deploy_project.sh  $CI_PROJECT_NAME $CI_COMMIT_REF_NAME gitlab
+    - docker exec deploy.hipay-pos-platform.com /deploy/deploy_project.sh  $CI_PROJECT_NAME $CI_COMMIT_REF_NAME gitlab
 
 sync:
   stage: sync
+  tags:
+    - magento1
   script:
-  - git clone --mirror https://$GITLAB_USER:$GITLAB_PASSWORD@gitlab.hipay.org/pi-ecommerce/hipay-fullservice-sdk-magento1.git
-  - cd hipay-fullservice-sdk-magento1.git
-  - git push --mirror https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/hipay/hipay-fullservice-sdk-magento1.git
+    - git clone --mirror https://$GITLAB_USER:$GITLAB_PASSWORD@gitlab.hipay.org/pi-ecommerce/hipay-fullservice-sdk-magento1.git
+    - cd hipay-fullservice-sdk-magento1.git
+    - git push --mirror https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/hipay/hipay-fullservice-sdk-magento1.git
   allow_failure: true

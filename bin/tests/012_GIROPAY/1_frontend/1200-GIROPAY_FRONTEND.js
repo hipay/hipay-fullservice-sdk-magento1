@@ -57,8 +57,9 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
                 this.waitForSelector('input[name="weiterButton"]', function success() {
                     this.click('input[name="weiterButton"]');
                     this.waitForSelector('input[name="BezahlButton"]', function success() {
-                        this.sendKeys('input[name="ticket/tan"]', "123456");
-                        this.click('input[name="BezahlButton"]');
+                        this.fillSelectors("form:first-of-type", {
+                            'input[name="ticket/tan"]': "123456"
+                        }, true);
                         test.info("TAN code inserted");
                         this.waitForSelector('input[name="back2MerchantButton"]', function success() {
                             this.click('input[name="back2MerchantButton"]');

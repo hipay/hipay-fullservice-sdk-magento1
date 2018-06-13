@@ -15,16 +15,15 @@ casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paym
 			test.assertExists(x('//div[@id="order_history_block"]/ul/li[contains(., "Notification from Hipay: status: code-' + status + '")][position()=last()]'), "Notification " + status + " captured !");
 			var operation = this.fetchText(x('//div[@id="order_history_block"]/ul/li[contains(., "Notification from Hipay: status: code-' + status + '")][position()=last()]/preceding-sibling::li[position()=1]'));
 			operation = operation.split('\n')[4].split('.')[0].trim();
-			if(status != 118)
-				test.assertNotEquals(operation.indexOf('successful'), -1, "Successful operation !");
-			else
-				test.assertNotEquals(operation.indexOf('accepted'), -1, "Successful operation !");
+			test.assertNotEquals(operation.indexOf('successful'), -1, "Successful operation !");
 		} catch(e) {
-			if(String(e).indexOf('operation') != -1)
+			if(String(e).indexOf('operation') != -1){
 				test.fail("Failure on status operation: '" + operation + "'");
-			else
-				if(status != 117)
+			}else{
+				if(status != 117){
 					test.fail("Failure: Notification " + status + " not exists");
+				}
+			}
 		}
 	};
 
