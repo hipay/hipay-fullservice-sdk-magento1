@@ -36,7 +36,7 @@ if ($this->hasPublicCredentials()):
 
                 var paymentData = Form.serialize(this.form, {hash: true});
                 var method = paymentData["payment[method]"];
-
+                self.safeFormData = paymentData;
 
                 //Process Tokenization if method use API Mode (CC form)
                 if (method.search('hipay_cc') > -1 && paymentData["payment[" + method + "_cc_number]"]) {
@@ -67,6 +67,9 @@ if ($this->hasPublicCredentials()):
 
                             // The card has successfully been tokenized
                             var token = result.token;
+
+                            self.safeFormData["payment[" + method + "_cc_number]"] = result.pan;
+                            self.safeFormData["payment[" + method + "_cc_cid]"] = null;
 
                             //Write token value in input of type hidden
                             $("payment_form_" + method).insert({
@@ -109,7 +112,7 @@ if ($this->hasPublicCredentials()):
                         onComplete: paymentObj.onComplete,
                         onSuccess: paymentObj.onSave,
                         onFailure: checkout.ajaxFailure.bind(checkout),
-                        parameters: Form.serialize(paymentObj.form)
+                        parameters: paymentObj.safeFormData
                     }
                 );
             }
