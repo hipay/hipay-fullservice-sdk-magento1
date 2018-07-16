@@ -1,3 +1,7 @@
+# Version 1.9.2
+
+ - Fix : Modify data send to server
+ 
 # Version 1.9.1
 
  - Fix : no transaction reference on 118
