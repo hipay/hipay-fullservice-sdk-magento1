@@ -37,6 +37,7 @@
  * @method string getPaymentProduct() payment product used to complete the transaction.
  * @method string getPaymentMethod() base currency for this transaction.
  * @method array getFraudScreening() Result of the fraud screening.
+ * @method array getOperation() Operations details.
  *
  * @author      HiPay <support.tpp@hipay.com>
  * @copyright   Copyright (c) 2018 - HiPay

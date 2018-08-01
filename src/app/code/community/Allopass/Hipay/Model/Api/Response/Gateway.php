@@ -114,4 +114,9 @@ class Allopass_Hipay_Model_Api_Response_Gateway extends Allopass_Hipay_Model_Api
         return $this->getData('fraudScreening');
     }
 
+    public function getOperation()
+    {
+        return $this->getData('operation');
+    }
+
 }
