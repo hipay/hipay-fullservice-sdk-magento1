@@ -268,10 +268,10 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
         if ($useOrderCurrency) {
             $currency = $order->getOrderCurrency();
-            $total = round($order->getGrandTotal(),2);
+            $total = round($order->getGrandTotal(), 2);
         } else {
             $currency = Mage::app()->getStore()->getBaseCurrency();
-            $total = round($order->getBaseGrandTotal(),2);
+            $total = round($order->getBaseGrandTotal(), 2);
         }
 
         // Process some logs if debug mode is enabled
@@ -553,7 +553,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
                         $payment->setAmountAuthorized($gatewayResponse->getAuthorizedAmount());
                         $payment->setBaseAmountAuthorized($gatewayResponse->getAuthorizedAmount());
-
+                        $payment->setCcTransId($gatewayResponse->getTransactionReference());
 
                         break;
                     /** @noinspection PhpMissingBreakStatementInspection */
@@ -577,6 +577,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
                         $payment->setAmountAuthorized($gatewayResponse->getAuthorizedAmount());
                         $payment->setBaseAmountAuthorized($gatewayResponse->getAuthorizedAmount());
+                        $payment->setCcTransId($gatewayResponse->getTransactionReference());
 
                         //If status Capture Requested is not configured to validate the order, we break.
                         if (((int)$this->getConfigData('hipay_status_validate_order') == 117) === false) {
@@ -715,7 +716,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
                         $payment->setAmountAuthorized($gatewayResponse->getAuthorizedAmount());
                         $payment->setBaseAmountAuthorized($gatewayResponse->getAuthorizedAmount());
-
+                        $payment->setCcTransId($gatewayResponse->getTransactionReference());
 
                         // Send order confirmation email - TPPMAG1-29
                         if (!$order->getEmailSent() && $order->getCanSendNewEmailFlag()) {
@@ -758,10 +759,6 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
                                 }
                             }
 
-                            $cm_amount_check = round(
-                                $gatewayResponse->getRefundedAmount() - $total_already_refunded,
-                                2
-                            );
                             $status = $order->getStatus();
                             if (round($gatewayResponse->getRefundedAmount(), 2) < round($order->getGrandTotal(), 2)) {
                                 $status = self::STATUS_PARTIAL_REFUND;
@@ -770,7 +767,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
                             /* @var $creditmemo Mage_Sales_Model_Order_Creditmemo */
                             foreach ($order->getCreditmemosCollection() as $creditmemo) {
                                 if ($creditmemo->getState() == Mage_Sales_Model_Order_Creditmemo::STATE_OPEN
-                                    && round($creditmemo->getGrandTotal(), 2) == $cm_amount_check
+                                    && $creditmemo->getTransactionId() == $gatewayResponse->getOperation()["id"]
                                 ) {
                                     $creditmemo->setState(Mage_Sales_Model_Order_Creditmemo::STATE_REFUNDED);
 
@@ -1176,9 +1173,18 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
     {
         parent::refund($payment, $amount);
 
-        $transactionId = $payment->getLastTransId();
+        $transactionId = $payment->getCcTransId();
 
-        $gatewayParams = array('operation' => 'refund', 'amount' => $amount);
+        if($transactionId === null){
+            $transactionId = $payment->getParentTransactionId();
+            $payment->setCcTransId($payment->getParentTransactionId());
+        }
+
+        $incrementTransaction = $this->countByTransactionsType("refund", $payment->getEntityId());
+        $incrementTransaction++;
+        $operationId = $payment->getOrder()->getIncrementId() . "-refund-manual-" . (int)$incrementTransaction;
+
+        $gatewayParams = array('operation' => 'refund', 'amount' => $amount, "operation_id" => $operationId);
 
         if (Mage::helper('hipay')->isSendCartItemsRequired($payment->getCcType())) {
             $gatewayParams['basket'] = Mage::helper('hipay')->getCartInformation(
@@ -1194,6 +1200,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
 
         $this->_debug($gatewayParams);
+
         $gatewayResponse = $request->gatewayRequest($action, $gatewayParams, $payment->getOrder()->getStoreId());
         $this->_debug($gatewayResponse->debug());
 
@@ -1205,7 +1212,9 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
                 /* @var $creditmemo Mage_Sales_Model_Order_Creditmemo */
                 $creditmemo = $payment->getCreditmemo();
                 $creditmemo->setState(Mage_Sales_Model_Order_Creditmemo::STATE_OPEN);//State open = pending state
-
+                $creditmemo->setTransactionId($operationId);
+                $payment->setTransactionId($operationId);
+                $creditmemo->save();
                 break;
             default:
                 Mage::throwException($gatewayResponse->getStatus() . " ==> " . $gatewayResponse->getMessage());
@@ -1213,6 +1222,20 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         }
 
         return $this;
+    }
+
+    public function processCreditmemo($creditmemo, $payment)
+    {
+        return $this;
+    }
+
+    public function countByTransactionsType($transactionType, $paymentId)
+    {
+        $transaction = Mage::getModel('sales/order_payment_transaction')->getCollection()
+            ->addPaymentIdFilter( $paymentId)
+            ->addTxnTypeFilter($transactionType);
+
+        return count($transaction->toArray()["items"]);
     }
 
     /**
@@ -1251,7 +1274,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         );//MANDATORY
         $params['long_description'] = $longDesc;// optional
 
-        $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction', Mage::app()->getStore()->getId());
+        $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction',
+            Mage::app()->getStore()->getId());
 
         if ($useOrderCurrency) {
             $params['currency'] = $payment->getOrder()->getOrderCurrencyCode();

@@ -25,7 +25,7 @@ casperjs-part1:
   script:
     - sh bin/tests/casper_run_circle.sh http://magento
   tags:
-    - magento1
+    - pi-commerce-no-overlay
   allow_failure: false
   artifacts:
     paths:
@@ -45,7 +45,7 @@ sonarqube:
   script:
     - /usr/bin/sonar-scanner-run.sh
   tags:
-    - magento1
+    - pi-commerce-no-overlay
 
 sonarqube-reports:
   stage: analysis
@@ -57,7 +57,7 @@ sonarqube-reports:
   script:
     - unset CI_BUILD_REF && /usr/bin/sonar-scanner-run.sh
   tags:
-    - magento1
+    - pi-commerce-no-overlay
 
 package:
  stage: package
@@ -74,7 +74,7 @@ package:
     - cp ./dist/*.tgz $CI_COMMIT_REF_SLUG/package
     - ./bin/deployment/deploy_project.sh
  tags:
-    - magento1
+    - pi-commerce-no-overlay
  artifacts:
   paths:
     - ./dist
@@ -82,14 +82,14 @@ package:
 deploy:
  stage: deploy
  tags:
-    - magento1
+    - pi-commerce-no-overlay
  script:
     - docker exec deploy.hipay-pos-platform.com /deploy/deploy_project.sh  $CI_PROJECT_NAME $CI_COMMIT_REF_NAME gitlab
 
 sync:
   stage: sync
   tags:
-    - magento1
+    - pi-commerce-no-overlay
   script:
     - git clone --mirror https://$GITLAB_USER:$GITLAB_PASSWORD@gitlab.hipay.org/pi-ecommerce/hipay-fullservice-sdk-magento1.git
     - cd hipay-fullservice-sdk-magento1.git
