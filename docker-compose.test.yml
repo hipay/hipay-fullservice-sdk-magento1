@@ -15,6 +15,8 @@ services:
       outside:
          aliases:
            - ${DOCKER_SERVICE}-${CI_JOB_ID}-web
+    depends_on:
+      - database
     build:
       context: .
       dockerfile: ./bin/docker/images/php5-6/Dockerfile
@@ -31,6 +33,10 @@ services:
     image: mysql:5.7
     env_file:
        - ./bin/docker/conf/test/mysql.env.sample
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
     networks:
       magento:
       outside:

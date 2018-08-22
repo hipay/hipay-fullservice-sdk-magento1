@@ -1,6 +1,6 @@
 # HiPay Enterprise extension for Magento v1
 
-[![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/hipay/hipay-wallet-cashout-mirakl-integration/master/LICENSE.md)
+[![Build Status](https://hook.hipay.org/badge-ci/build/pi-ecommerce/hipay-fullservice-sdk-magento1/master)](https://hook.hipay.org/badge-ci/build/pi-ecommerce/hipay-fullservice-sdk-magento1/master) [![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/hipay/hipay-wallet-cashout-mirakl-integration/master/LICENSE.md)
 
 The **HiPay Enterprise extension for Magento v1** is a library that allows you to **accept payments in your Magento online shop** by leveraging the HiPay Enterprise payment platform.
 
