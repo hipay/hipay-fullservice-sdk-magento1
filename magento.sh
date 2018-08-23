@@ -60,8 +60,8 @@ elif [ "$1" = 'init' ]; then
     if [ -f ./bin/conf/development/hipay.env ]; then
 
 
-        docker-compose stop
-        docker-compose rm -fv
+        docker-compose -f docker-compose.dev.yml stop
+        docker-compose -f docker-compose.dev.yml rm -fv
         sudo rm -Rf data/ log/ web/
         docker-compose -f docker-compose.dev.yml build --no-cache
         docker-compose -f docker-compose.dev.yml up

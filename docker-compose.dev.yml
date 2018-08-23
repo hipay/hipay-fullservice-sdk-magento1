@@ -1,13 +1,13 @@
 web:
   container_name: jira-mg-latest.hipay-pos-platform.com
   build: .
-  dockerfile: ./bin/docker/php5-6/Dockerfile
+  dockerfile: ./bin/docker/images/php5-6/Dockerfile
   ports:
     - "8095:8095"
   env_file:
-    - ./bin/conf/development/hipay.env
-    - ./bin/conf/development/mage.env.sample
-    - ./bin/conf/development/mysql.env.sample
+    - ./bin/docker/conf/development/hipay.env
+    - ./bin/docker/conf/development/mage.env.sample
+    - ./bin/docker/conf/development/mysql.env.sample
   volumes:
     - ./src/app/code/community/Allopass:/var/www/htdocs/app/code/community/Allopass
     - ./src/lib/Hipay:/var/www/htdocs/lib/Hipay
@@ -21,13 +21,14 @@ web:
     - mysql
     - smtp
 mysql:
+  image: mysql:5.7
   ports:
     - "3307:3306"
   env_file:
-    - ./bin/conf/development/mysql.env.sample
+    - ./bin/docker/conf/development/mysql.env.sample
   volumes:
     - ./data/mysql:/var/lib/mysql
-  image: mysql:5.7
+
 smtp:
   image: hipay/mailcatcher:1.0.0
 

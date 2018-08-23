@@ -5,7 +5,10 @@ ENV PHP_VERSION=5.6
 MAINTAINER HIPAY Fullservice <support.tpp@hipay.com>
 
 # INSTALL PHP EXTENSION
-RUN requirements="libpng12-dev libxml2-dev libmcrypt-dev libmcrypt4 libcurl3-dev libfreetype6 libjpeg62-turbo libpng12-dev git zip unzip libmysqlclient15-dev libfreetype6-dev libjpeg62-turbo-dev mysql-client bzip2 ssmtp npm libfontconfig libicu52 libsqlite3-0 vim rsyslog cron" \
+RUN apt-get update \
+    && apt-get install -y curl gnupg \
+    && curl -sL https://deb.nodesource.com/setup_10.x | bash - \
+    && requirements="libpng-dev libxml2-dev libmcrypt-dev libmcrypt4 libcurl3-dev libfreetype6 libjpeg62-turbo git zip unzip default-libmysqlclient-dev libfreetype6-dev libjpeg62-turbo-dev mysql-client bzip2 ssmtp npm libfontconfig libicu57 libsqlite3-0 vim rsyslog cron" \
     && apt-get update && apt-get install -y $requirements && rm -rf /var/lib/apt/lists/* \
     && echo "sendmail_path = /usr/sbin/ssmtp -t" > /usr/local/etc/php/conf.d/sendmail.ini \
     && echo "mailhub=smtp:1025\n UseTLS=NO\n FromLineOverride=YES" > /etc/ssmtp/ssmtp.conf \
@@ -34,20 +37,20 @@ RUN rm -Rf /var/www/htdocs
 RUN rm -Rf /var/lib/mysql
 
 # COPY CONF AND HIPAY MODULE
-COPY ./bin/conf /tmp
+COPY ./bin/docker /tmp
 COPY ./bin/tests /tmp/tests
 COPY ./src /tmp/src
 
 # COPY INSTALLER AND SAMPLE DATA
-COPY ./bin/install/install-magento /usr/local/bin/install-magento
+COPY ./bin/docker/images/install/install-magento /usr/local/bin/install-magento
 RUN chmod +x /usr/local/bin/install-magento
 
-COPY ./bin/sampledata/magento-sample-data-1.9.1.0.tgz /opt/
-COPY ./bin/sampledata/magento-sample-data-1.6.1.0.tar.gz /opt/
+COPY ./bin/docker/images/sampledata/magento-sample-data-1.9.1.0.tgz /opt/
+COPY ./bin/docker/images/sampledata/magento-sample-data-1.6.1.0.tar.gz /opt/
 
-COPY ./bin/install/install-sampledata-1.9 /usr/local/bin/install-sampledata-1.9
+COPY ./bin/docker/images/install/install-sampledata-1.9 /usr/local/bin/install-sampledata-1.9
 RUN chmod +x /usr/local/bin/install-sampledata-1.9
-COPY ./bin/install/install-sampledata-1.6_1.8 /usr/local/bin/install-sampledata-1.6_1.8
+COPY ./bin/docker/images/install/install-sampledata-1.6_1.8 /usr/local/bin/install-sampledata-1.6_1.8
 RUN chmod +x /usr/local/bin/install-sampledata-1.6_1.8
 
 RUN sed -i -e 's/\/var\/www\/html/\/var\/www\/htdocs/' /etc/apache2/sites-available/000-default.conf
@@ -65,4 +68,4 @@ WORKDIR /var/www/htdocs
 ENV MAGENTO_VERSION=1.9.3.8
 ENV SAMPLE_DATA_VERSION=1.9
 
-ENTRYPOINT ["/tmp/entrypoint.sh"]
+ENTRYPOINT ["/tmp/images/entrypoint.sh"]

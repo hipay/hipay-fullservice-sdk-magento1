@@ -3,7 +3,7 @@
 echo $MYSQL_HOST;
 URL_MAGENTO_FULL=$MAGENTO_URL/
 
-if [ "$PORT_WEB" != "80" ] && [ "$ENVIRONMENT" != "production" ];then
+if [ "$PORT_WEB" != "80" ] && [ "$ENVIRONMENT" = "development" ];then
     URL_MAGENTO_FULL=$MAGENTO_URL:$PORT_WEB/
 fi
 

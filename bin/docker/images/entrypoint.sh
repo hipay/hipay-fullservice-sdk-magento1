@@ -4,7 +4,7 @@
 COLOR_SUCCESS='\033[0;32m'
 NC='\033[0m'
 ENV_DEVELOPMENT="development"
-ENV_STAGE="stage"
+ENV_STAGE="test"
 ENV_PROD="production"
 PREFIX_STORE1=$RANDOM
 PREFIX_STORE2=$RANDOM
@@ -101,8 +101,11 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set hipay/hipay_api/api_tokenjs_username_test $HIPAY_TOKENJS_USERNAME_TEST
 
     if [ "$ENVIRONMENT" = "$ENV_PROD" ];then
-        n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set hipay/hipay_hash_algorithm/test 'SHA512'
         n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set hipay/hipay_api/send_notification_url 1
+    fi
+
+    if [ "$ENVIRONMENT" != "$ENV_DEVELOPMENT" ];then
+        n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set hipay/hipay_hash_algorithm/test 'SHA512'
     fi
 
     n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set hipay/hipay_api_moto/api_username_test $HIPAY_API_USER_TEST
@@ -156,7 +159,7 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
         printf "\n"
         echo "XDebug installation : YES "
 
-        cp -f /tmp/$ENVIRONMENT/php/php.ini /usr/local/etc/php/php.ini
+        cp -f /tmp/conf/$ENVIRONMENT/php/php.ini /usr/local/etc/php/php.ini
     else
         printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
         printf "\n${COLOR_SUCCESS}     APPLY CONFIGURATION  $ENVIRONMENT     ${NC}\n"
@@ -167,13 +170,13 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
         n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" dev:log --on --global
         n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" dev:log:db --off
 
-        cp -f /tmp/$ENVIRONMENT/php/php.ini /usr/local/etc/php/php.ini
+        cp -f /tmp/conf/$ENVIRONMENT/php/php.ini /usr/local/etc/php/php.ini
     fi
 
     ################################################################################
     # SEPCIFIC PORT CONFIGURATION
     ################################################################################
-     if [ "$PORT_WEB" != "80" ] && [ "$ENVIRONMENT" != "production" ];then
+     if [ "$PORT_WEB" != "80" ] && [ "$ENVIRONMENT" = "development" ];then
          sed -i -e "s/80/$PORT_WEB/" /etc/apache2/sites-available/000-default.conf
 
          echo "Listen $PORT_WEB" >> /etc/apache2/ports.conf
