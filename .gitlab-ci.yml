@@ -61,7 +61,7 @@ casperjs-part1-1:
     - pi-commerce-no-overlay
   artifacts:
     paths:
-    - bin/tests/errors/
+      - bin/tests/errors/
     when: always
   allow_failure: false
   after_script:
@@ -76,8 +76,8 @@ casperjs-part2-1:
         - pi-commerce-no-overlay
     artifacts:
         paths:
-            - bin/tests/errors/
-    when: always
+          - bin/tests/errors/
+        when: always
     allow_failure: false
     after_script:
        -  bash /tools/clean-job.sh $PROJECT_NAME_TEST-part2 docker-compose.test.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
@@ -91,8 +91,8 @@ casperjs-part3-1:
         - pi-commerce-no-overlay
     artifacts:
         paths:
-            - bin/tests/errors/
-    when: always
+          - bin/tests/errors/
+        when: always
     allow_failure: false
     after_script:
        -  bash /tools/clean-job.sh $PROJECT_NAME_TEST-part3 docker-compose.test.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
@@ -106,8 +106,8 @@ casperjs-part4-1:
         - pi-commerce-no-overlay
     artifacts:
         paths:
-            - bin/tests/errors/
-    when: always
+          - bin/tests/errors/
+        when: always
     allow_failure: false
     after_script:
         -  bash /tools/clean-job.sh $PROJECT_NAME_TEST-part4 docker-compose.test.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
@@ -130,7 +130,7 @@ casperjs-part1-2:
     - pi-commerce-no-overlay
   artifacts:
     paths:
-    - bin/tests/errors/
+      - bin/tests/errors/
     when: always
   allow_failure: false
   after_script:
@@ -144,9 +144,9 @@ casperjs-part2-2:
     tags:
         - pi-commerce-no-overlay
     artifacts:
-        paths:
-            - bin/tests/errors/
-    when: always
+      paths:
+        - bin/tests/errors/
+      when: always
     allow_failure: false
     after_script:
       - bash /tools/clean-job.sh $PROJECT_NAME_TEST-part2 docker-compose.test-php7-0.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
@@ -159,9 +159,9 @@ casperjs-part3-2:
     tags:
         - pi-commerce-no-overlay
     artifacts:
-        paths:
-            - bin/tests/errors/
-    when: always
+      paths:
+        - bin/tests/errors/
+      when: always
     allow_failure: false
     after_script:
       - bash /tools/clean-job.sh $PROJECT_NAME_TEST-part3 docker-compose.test-php7-0.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
@@ -174,9 +174,9 @@ casperjs-part4-2:
     tags:
         - pi-commerce-no-overlay
     artifacts:
-        paths:
-            - bin/tests/errors/
-    when: always
+      paths:
+        - bin/tests/errors/
+      when: always
     allow_failure: false
     after_script:
       - bash /tools/clean-job.sh $PROJECT_NAME_TEST-part4 docker-compose.test-php7-0.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
@@ -248,6 +248,11 @@ deploy2Recette:
  script:
     - echo "Deploy from registry"
       # Substitute env variables which dont exists on the distant machine
+    - sed -i -e "s/{HIPAY_API_USER_TEST\}/$HIPAY_API_USER_RE7/" ./bin/docker/conf/acceptance/hipay.env.sample
+    - sed -i -e "s/{HIPAY_API_PASSWORD_TEST\}/$HIPAY_API_PASSWORD_RE7/" ./bin/docker/conf/acceptance/hipay.env.sample
+    - sed -i -e "s/{HIPAY_TOKENJS_PUBLICKEY_TEST\}/$HIPAY_TOKENJS_PUBLICKEY_RE7/" ./bin/docker/conf/acceptance/hipay.env.sample
+    - sed -i -e "s/{HIPAY_TOKENJS_USERNAME_TEST\}/$HIPAY_TOKENJS_USERNAME_RE7/" ./bin/docker/conf/acceptance/hipay.env.sample
+    - sed -i -e "s/{HIPAY_SECRET_PASSPHRASE_TEST\}/$HIPAY_SECRET_PASSPHRASE_RE7/" ./bin/docker/conf/acceptance/hipay.env.sample
     - sed -i -e "s|\${DOCKER_STACK}|$DOCKER_STACK|g" docker-compose.acceptance.yml
     - sed -i -e "s|\${DOCKER_SERVICE}|$DOCKER_SERVICE|g" docker-compose.acceptance.yml
     - sed -i -e "s|\${CI_COMMIT_REF_SLUG}|$CI_COMMIT_REF_SLUG|g" docker-compose.acceptance.yml

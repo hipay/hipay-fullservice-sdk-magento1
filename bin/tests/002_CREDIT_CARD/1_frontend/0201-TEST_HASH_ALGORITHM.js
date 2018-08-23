@@ -20,7 +20,7 @@ casper.test.begin('Change Hash Algorithm ' + paymentType + ' with ' + typeCC, fu
 	.then(function() {
 		this.echo("Open Integration nav", "INFO");
 		this.waitForUrl(/maccount/, function success() {
-			this.selectHashingAlgorithm("SHA512");
+			this.selectHashingAlgorithm("SHA1");
 		}, function fail() {
 			test.assertUrlMatch(/maccount/, "Dashboard page with account ID exists");
 		});
@@ -39,14 +39,14 @@ casper.test.begin('Change Hash Algorithm ' + paymentType + ' with ' + typeCC, fu
 				return document.querySelector('select#hipay_hipay_hash_algorithm_test').value;
 			});
 			test.info("Initial Hashing Algorithm :" + current);
-			if (current != 'SHA1') {
+			if (current != 'SHA512') {
 				test.fail("Initial value is wrong for Hashing : " + current );
 			}
 			this.thenClick('button#synchronize_button', function() {
 				var newHashingAlgo = this.evaluate(function () {
 					return document.querySelector('select#hipay_hipay_hash_algorithm_test').value;
 				});
-				if (newHashingAlgo != 'SHA512') {
+				if (newHashingAlgo != 'SHA1') {
 					test.fail("Synchronize doesn't work : " + current );
 				} else {
 					test.info("Done");
@@ -91,26 +91,6 @@ casper.test.begin('Change Hash Algorithm ' + paymentType + ' with ' + typeCC, fu
 	})
 	.then(function() {
 		this.selectAccountBackend("OGONE_DEV");
-	})
-	.then(function() {
-		cartID = casper.getOrderId();
-		orderID = casper.getOrderId();
-		this.processNotifications(true,false,true,false,"OGONE_DEV");
-	})
-	.thenOpen(urlBackend, function() {
-		this.logToHipayBackend(loginBackend,passBackend);
-	})
-	.then(function() {
-		this.selectAccountBackend("OGONE_DEV");
-	})
-	/* Open Integration tab */
-	.then(function() {
-		this.echo("Open Integration nav", "INFO");
-		this.waitForUrl(/maccount/, function success() {
-			this.selectHashingAlgorithm("SHA1");
-		}, function fail() {
-			test.assertUrlMatch(/maccount/, "Dashboard page with account ID exists");
-		});
 	})
 	.run(function() {
         test.done();
