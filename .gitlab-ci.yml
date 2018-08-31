@@ -37,9 +37,9 @@ stages:
   - build-test-2
   - test-2
   - clean-stack
-  - build
   - analysis
   - package
+  - build
   - deploy
   - sync
 
@@ -225,7 +225,7 @@ package:
     - rm -Rf ./vendor && cp ./composer.json.dist ./composer.json && composer install &&  sh ./bin/deployment/packaging.sh
     - mkdir $CI_COMMIT_REF_SLUG
     - mkdir $CI_COMMIT_REF_SLUG/package
-    - cp ./dist/*.tgz $CI_COMMIT_REF_SLUG/package
+    - cp ./dist/*.tgz $CI_COMMIT_REF_SLUG/package/Allopass_Hipay-${CI_COMMIT_REF_SLUG}.tgz
     - ./bin/deployment/deploy_project.sh
  tags:
     - pi-commerce-no-overlay
