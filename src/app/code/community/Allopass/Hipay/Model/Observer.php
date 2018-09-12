@@ -142,6 +142,8 @@ class Allopass_Hipay_Model_Observer
             $result['iframeUrl'] = $result['redirect'];
         }
 
+        $result['methodCode'] = $methodInstance->getCode();
+
         $controller->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
 
         return $this;

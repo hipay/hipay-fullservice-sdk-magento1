@@ -145,18 +145,23 @@ $_cards = $this->getCards();
         UpdateDebitAmount<?php echo $_code ?>();
         <?php endif; ?>
 
+        if(Review.prototype.iframeConfig === undefined){
+            Review.prototype.iframeConfig = [];
+        }
+
         <?php $iFrameConfig = $this->getIframeConfig() ?>
 
-        Review.prototype.displayIframe = function (url) {
+        Review.prototype.iframeConfig['<?php echo $_code;?>'] = JSON.parse('<?php echo json_encode($iFrameConfig);?>');
 
 
+        Review.prototype.displayIframe = function (url, code) {
 
             // Create container Iframe
             var hipayIframeWrapper = $('hipay_iframe_wrapper');
             if (hipayIframeWrapper === null) {
                 hipayIframeWrapper = new Element('div', {
                     id: 'hipay_iframe_wrapper',
-                    style: '<?php echo $iFrameConfig['iframe_wrapper_style']?>'
+                    style: Review.prototype.iframeConfig[code].iframe_wrapper_style
                 });
                 $('checkout-review-table-wrapper').insert({after: hipayIframeWrapper});
 
@@ -165,10 +170,10 @@ $_cards = $this->getCards();
             // generate Iframe
             hipayIframeWrapper.appendChild(new Element('iframe', {
                 frameBorder: 0,
-                width: '<?php echo $iFrameConfig['iframe_width']?>',
-                height: '<?php echo $iFrameConfig['iframe_height']?>',
+                width: Review.prototype.iframeConfig[code].iframe_width,
+                height: Review.prototype.iframeConfig[code].iframe_height,
                 src: url,
-                style: '<?php echo $iFrameConfig['iframe_style']?>'
+                style: Review.prototype.iframeConfig[code].iframe_style
             }));
 
         };
@@ -200,7 +205,7 @@ $_cards = $this->getCards();
 
                 if (response.iframeUrl) {
 
-                    this.displayIframe(response.iframeUrl);
+                    this.displayIframe(response.iframeUrl, response.methodCode);
                     return;
                 }
 

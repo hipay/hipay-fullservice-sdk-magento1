@@ -57,7 +57,7 @@ if [ "$1" = '' ] || [ "$1" = '--help' ]; then
     echo "      - notif       : Simulate a notification to Magento server"
     echo ""
 elif [ "$1" = 'init' ]; then
-    if [ -f ./bin/conf/development/hipay.env ]; then
+    if [ -f ./bin/docker/conf/development/hipay.env ]; then
 
 
         docker-compose -f docker-compose.dev.yml stop

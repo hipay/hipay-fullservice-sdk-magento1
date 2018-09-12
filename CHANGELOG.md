@@ -1,3 +1,9 @@
+# Version 1.9.4
+
+ - Remove electronic signature from SDD
+ - [#141](https://github.com/hipay/hipay-fullservice-sdk-magento1/issues/141) Fix issue [#141] : Js iframe config bug 
+ - [#140](https://github.com/hipay/hipay-fullservice-sdk-magento1/issues/140) Fix issue [#140] : Wrong method declaration 
+ 
 # Version 1.9.3
 
  - Fix : Change refund workflow
