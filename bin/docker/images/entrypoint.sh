@@ -99,6 +99,7 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set hipay/hipay_api/api_tokenjs_publickey_test $HIPAY_TOKENJS_PUBLICKEY_TEST
     n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set --encrypt hipay/hipay_api/secret_passphrase_test $HIPAY_SECRET_PASSPHRASE_TEST
     n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set hipay/hipay_api/api_tokenjs_username_test $HIPAY_TOKENJS_USERNAME_TEST
+    n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set payment/hipay_cc/cctypes "VI,MC,AE,CB,SM,BCMC"
 
     if [ "$ENVIRONMENT" = "$ENV_PROD" ];then
         n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set hipay/hipay_api/send_notification_url 1

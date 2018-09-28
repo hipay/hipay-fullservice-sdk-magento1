@@ -218,10 +218,19 @@ $_cards = $this->getCards();
         Validation.creditCartTypes.set('CB', [new RegExp('^4[0-9]{12}([0-9]{3})?$'), new RegExp('^[0-9]{3}$'), true]);
         var ToogleCvn<?php echo $_code ?> = function () {
             var elm = $('<?php echo $_code ?>_cc_type');
-            if (['BCMC'].indexOf(elm.value) != -1) {
+            if (['BCMC'].indexOf(elm.value) !== -1) {
                 $('<?php echo $_code ?>_cc_type_cvv_div').hide();
             } else {
                 $('<?php echo $_code ?>_cc_type_cvv_div').show();
+                if(elm.value === "SM"){
+                    $('<?php echo $_code ?>_cc_cid').removeClassName('required-entry');
+                    $$('#<?php echo $_code ?>_cc_type_cvv_div label')[0].removeClassName('required');
+                    $$('#<?php echo $_code ?>_cc_type_cvv_div label span')[0].hide();
+                }else{
+                    $('<?php echo $_code ?>_cc_cid').addClassName('required-entry');
+                    $$('#<?php echo $_code ?>_cc_type_cvv_div label')[0].addClassName('required');
+                    $$('#<?php echo $_code ?>_cc_type_cvv_div label span')[0].show();
+                }
             }
         };
 
