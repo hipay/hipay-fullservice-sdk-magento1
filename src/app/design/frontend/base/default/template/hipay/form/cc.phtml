@@ -195,7 +195,7 @@ $_typeNationalIdentification = $this->getTypeNationalIdentification();
             <?php echo $this->getChildHtml() ?>
             <?php if ($this->hasVerification()): ?>
                 <li id="<?php echo $_code ?>_cc_type_cvv_div">
-                    <label for="<?php echo $_code ?>_cc_cid" class="required"><em>*</em><?php echo $this->__(
+                    <label for="<?php echo $_code ?>_cc_cid" class="required"><em id="<?php echo $_code ?>_cc_type_cvv_div_required" >*</em><?php echo $this->__(
                             'Card Verification Number'
                         ) ?></label>
                     <div class="input-box">
@@ -324,6 +324,15 @@ $_typeNationalIdentification = $this->getTypeNationalIdentification();
                     $('<?php echo $_code ?>_cc_type_cvv_div').hide();
                 } else {
                     $('<?php echo $_code ?>_cc_type_cvv_div').show();
+                    if(elm.value === "SM"){
+                        $('<?php echo $_code ?>_cc_cid').removeClassName('required-entry');
+                        $$('#<?php echo $_code ?>_cc_type_cvv_div label')[0].removeClassName('required');
+                        $$('#<?php echo $_code ?>_cc_type_cvv_div label em')[0].hide();
+                    }else{
+                        $('<?php echo $_code ?>_cc_cid').addClassName('required-entry');
+                        $$('#<?php echo $_code ?>_cc_type_cvv_div label')[0].addClassName('required');
+                        $$('#<?php echo $_code ?>_cc_type_cvv_div label em')[0].show();
+                    }
                 }
             };
 

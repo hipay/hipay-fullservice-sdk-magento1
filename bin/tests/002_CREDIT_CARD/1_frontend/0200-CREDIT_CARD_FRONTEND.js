@@ -52,6 +52,9 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + currentBrandCC, fu
         if (currentBrandCC == 'visa') {
             casper.testOtherTypeCC(file_path,'mastercard');
         }
+        if (currentBrandCC == 'mastercard') {
+            casper.testOtherTypeCC(file_path,'maestro');
+        }
     })
     .run(function() {
         test.done();
