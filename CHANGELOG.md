@@ -1,3 +1,7 @@
+# Version 1.9.5
+
+ - Fix : unnecessary mandatory CVV for Maestro card
+  
 # Version 1.9.4
 
  - Remove electronic signature from SDD
