@@ -43,7 +43,7 @@ abstract class Allopass_Hipay_Block_Form_Abstract extends Mage_Payment_Block_For
         if (is_null($this->_cards)) {
             $today = new Zend_Date(Mage::app()->getLocale()->storeTimeStamp());
 
-            $currentYear = (int)$today->getYear()->toString("YY");
+            $currentYear = (int)$today->getYear()->toString("Y");
             $currentMonth = (int)$today->getMonth()->toString("MM");
 
             $this->_cards = Mage::getResourceModel('hipay/card_collection')
@@ -55,7 +55,7 @@ abstract class Allopass_Hipay_Block_Form_Abstract extends Mage_Payment_Block_For
                 ->setOrder('is_default', 'desc');
 
             foreach ($this->_cards as $card) {
-                if ($card->ccExpYear == $currentYear && $currentMonth < $card->ccExpMonth) {
+                if ($card->ccExpYear == $currentYear && $card->ccExpMonth < $currentMonth) {
                     $this->_cards->removeItemByKey($card->getId());
                 }
             }
