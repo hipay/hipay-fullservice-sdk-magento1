@@ -1,3 +1,7 @@
+# Version 1.9.6
+
+ - Fix : One click card date filter
+  
 # Version 1.9.5
 
  - Fix : unnecessary mandatory CVV for Maestro card
