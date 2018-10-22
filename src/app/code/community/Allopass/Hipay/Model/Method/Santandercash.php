@@ -23,6 +23,6 @@
 class Allopass_Hipay_Model_Method_Santandercash extends Allopass_Hipay_Model_Method_Astropay
 {
     protected $_code = 'hipay_santandercash';
-
+    protected $_formBlockType = 'hipay/form_cpf';
     protected $_typeIdentification = 'cpn';
 }

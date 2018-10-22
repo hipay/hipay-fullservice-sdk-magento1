@@ -28,4 +28,19 @@ class Allopass_Hipay_Block_Form_Hosted extends Allopass_Hipay_Block_Form_Abstrac
         $this->setTemplate('hipay/form/hosted.phtml');
     }
 
+    protected function _prepareLayout()
+    {
+        parent::_prepareLayout();
+
+        $fingerprint = $this->getLayout()->createBlock('hipay/checkout_fingerprint', 'hipay.checkout.fingerprint');
+        $this->setChild('hipay_fingerprint', $fingerprint);
+
+        $oneclick = $this->getLayout()->createBlock('hipay/checkout_oneclick', 'hipay.checkout.oneclick');
+        $this->setChild('hipay_oneclick', $oneclick);
+
+        $splitpayment = $this->getLayout()->createBlock('hipay/checkout_splitpayment', 'hipay.checkout.splitpayment');
+        $this->setChild('hipay_splitpayment', $splitpayment);
+
+        return $this;
+    }
 }

@@ -23,6 +23,7 @@
 class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 {
     protected $_code = 'hipay_sdd';
+    protected $_formBlockType = 'hipay/form_sdd';
     protected $_canRefund = false;
     protected $_canRefundInvoicePartial = false;
 

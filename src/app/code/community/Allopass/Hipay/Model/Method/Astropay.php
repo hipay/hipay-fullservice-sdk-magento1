@@ -23,7 +23,6 @@
 class Allopass_Hipay_Model_Method_Astropay extends Allopass_Hipay_Model_Method_AbstractOrder
 {
 
-    protected $_formBlockType = 'hipay/form_cc';
     protected $_infoBlockType = 'hipay/info_cc';
 
     /**
