@@ -40,30 +40,37 @@ if ($this->hasPublicCredentials()):
 
                 //Process Tokenization if method use API Mode (CC form)
                 if (method.search('hipay_cc') > -1 && paymentData["payment[" + method + "_cc_number]"]) {
+
+                    var expiryMonth = (paymentData["payment[" + method + "_cc_exp_month]"].length === 1) ?
+                        "0" + paymentData["payment[" + method + "_cc_exp_month]"]
+                        : paymentData["payment[" + method + "_cc_exp_month]"];
+
                     var params = {
-                        card_number: paymentData["payment[" + method + "_cc_number]"],
+                        cardNumber: paymentData["payment[" + method + "_cc_number]"],
                         cvc: paymentData["payment[" + method + "_cc_cid]"],
-                        card_expiry_month: paymentData["payment[" + method + "_cc_exp_month]"],
-                        card_expiry_year: paymentData["payment[" + method + "_cc_exp_year]"],
-                        card_holder: paymentData["payment[" + method + "_cc_owner]"] ? paymentData["payment[" + method + "_cc_owner]"] : '',
-                        multi_use: '0'
+                        expiryMonth: expiryMonth,
+                        expiryYear: paymentData["payment[" + method + "_cc_exp_year]"].slice(-2),
+                        cardHolder: paymentData["payment[" + method + "_cc_owner]"] ? paymentData["payment[" + method + "_cc_owner]"] : '',
+                        multiUse: isOneClick(paymentData, method)
                     };
 
                     var config = <?php echo $this->getConfigJson() ?>;
+                    var tokenizeEnv = 'production';
 
                     if (config.methods[method].is_test_mode == 1) {
-                        HiPay.setTarget('stage'); // default is production/live
+                        tokenizeEnv = 'stage'; // default is production/live
                         config.api_tokenjs_username = config.api_tokenjs_username_test;
                         config.api_tokenjs_publickey = config.api_tokenjs_publickey_test;
-
                     }
 
-                    // These are fake credentials, put your own credentials here (HiPay Enterprise back office > Integration > Security settings and create credentials with public visibility)
-                    HiPay.setCredentials(config.api_tokenjs_username, config.api_tokenjs_publickey);
+                    var hipay = HiPay({
+                        username: config.api_tokenjs_username,
+                        password: config.api_tokenjs_publickey,
+                        environment: tokenizeEnv,
+                        lang: 'en'
+                    });
 
-                    HiPay.create(params,
-
-                        function (result) {
+                    hipay.tokenize(params).then(function (result) {
 
                             // The card has successfully been tokenized
                             var token = result.token;
@@ -82,22 +89,11 @@ if ($this->hasPublicCredentials()):
 
                             savePayment(self);
 
-                        },
-
-                        function (errors) {
-
-                            // An error occurred
-                            if (typeof errors.message != "undefined") {
-                                alert(errors.message.stripTags());
-                            } else {
-                                alert(Translator.translate("An error occurred with the request.").stripTags());
-                            }
+                        }, function (errors) {
+                            alert(Translator.translate("An error occurred with the request.").stripTags());
                         }
                     );
-
-
-                }
-                else {
+                } else {
                     savePayment(this);
                 }
 
@@ -117,7 +113,9 @@ if ($this->hasPublicCredentials()):
                 );
             }
 
+            function isOneClick(paymentData, method) {
+                return method === "hipay_ccxtimes" || typeof paymentData["payment[" + method + "_oneclick]"] !== 'undefined';
+            }
         }
-
     </script>
 <?php endif; ?>

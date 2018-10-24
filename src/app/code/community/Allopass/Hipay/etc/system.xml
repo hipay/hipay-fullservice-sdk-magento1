@@ -201,6 +201,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </fingerprint>
+                        <fingerprint_js_url translate="label comment">
+                            <label>Url of Hipay's javascript for device fingerprint</label>
+                            <comment>Not to be modified. Please read our documentation : https://developer.hipay.com/getting-started/platform-hipay-enterprise/overview/#device-fingerprint-integration</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>120</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </fingerprint_js_url>
                         <debug translate="label comment">
                             <label>Enable debug log</label>
                             <comment></comment>
@@ -223,6 +232,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </send_notification_url>
+                        <sdk_js_url translate="label comment">
+                            <label>Url of Hipay's SDK js</label>
+                            <comment>Not to be modified</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>170</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sdk_js_url>
                     </fields>
                 </hipay_api>
                 <hipay_api_moto>

@@ -23,9 +23,6 @@ $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction',
     <?php if (Mage::getStoreConfig('hipay/hipay_api/fingerprint', Mage::app()->getStore())) : ?>
         <?php echo $this->getChildHtml('hipay_fingerprint'); ?>
     <?php endif; ?>
-    <?php if ($this->oneClickIsAllowed()) : ?>
-        <?php echo $this->getChildHtml('hipay_oneclick'); ?>
-    <?php endif; ?>
     <ul class="form-list" id="card_payment_form_<?php echo $_code ?>">
         <li>
             <?php if (count($this->getCcAvailableTypes()) == 1) : ?>
@@ -130,6 +127,9 @@ $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction',
         <?php endif; ?>
 
     </ul>
+    <?php if ($this->oneClickIsAllowed()) : ?>
+        <?php echo $this->getChildHtml('hipay_oneclick'); ?>
+    <?php endif; ?>
     <div id="<?php echo $_code ?>_debit_amount">
         <?php if ($useOrderCurrency) { ?>
             <?php $this->getQuote()->setBaseCurrencyCode($this->getQuote()->getQuoteCurrencyCode()); ?>
