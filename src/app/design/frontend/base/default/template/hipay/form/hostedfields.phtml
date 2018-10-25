@@ -1,0 +1,163 @@
+<?php
+/**
+ * HiPay Fullservice SDK Magento 1
+ *
+ * 2018 HiPay
+ *
+ * NOTICE OF LICENSE
+ *
+ * @author    HiPay <support.tpp@hipay.com>
+ * @copyright 2018 HiPay
+ * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ */
+?>
+<?php
+/** @var $this Allopass_Hipay_Block_Form_Abstract */
+$_code = $this->getMethodCode();
+$useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction', Mage::app()->getStore());
+?>
+<div id="payment_form_<?php echo $_code ?>" style="display:none;">
+    <?php if (Mage::getStoreConfig('hipay/hipay_api/fingerprint', Mage::app()->getStore())) : ?>
+        <?php echo $this->getChildHtml('hipay_fingerprint'); ?>
+    <?php endif; ?>
+    <div class="form-list" id="card_payment_form_<?php echo $_code ?>">
+        <!--[if IE 9]>
+        <div class="ie9 hipayHF-container" id="hipayHF-container">
+        <![endif]-->
+        <!--[if gt IE 9]><!-->
+        <div class="hipayHF-container" id="hipayHF-container">
+            <!--<![endif]-->
+            <div id="hipayHF-error-message"></div>
+            <div class="hipayHF-row">
+                <div class="hipayHF-field-container">
+                    <div class="hipayHF-field" id="hipayHF-card-holder"></div>
+                    <label class="hipayHF-label"
+                           for="hipayHF-card-holder"><?php echo $this->__('Name on Card') ?></label>
+                    <div class="hipayHF-baseline"></div>
+                </div>
+            </div>
+            <div class="hipayHF-row">
+                <div class="hipayHF-field-container">
+                    <div class="hipayHF-field" id="hipayHF-card-number"></div>
+                    <label class="hipayHF-label"
+                           for="hipayHF-card-number"><?php echo $this->__('Credit Card Number') ?></label>
+                    <div class="hipayHF-baseline"></div>
+                </div>
+            </div>
+            <div class="hipayHF-row">
+                <div class="hipayHF-field-container hipayHF-field-container-half">
+                    <div class="hipayHF-field" id="hipayHF-date-expiry"></div>
+                    <label class="hipayHF-label"
+                           for="hipayHF-date-expiry"><?php echo $this->__('Expiry date') ?></label>
+                    <div class="hipayHF-baseline"></div>
+                </div>
+                <div class="hipayHF-field-container hipayHF-field-container-half">
+                    <div class="hipayHF-field" id="hipayHF-cvc"></div>
+                    <label class="hipayHF-label"
+                           for="hipayHF-cvc"><?php echo $this->__('Card Verification Number') ?></label>
+                    <div class="hipayHF-baseline"></div>
+                </div>
+            </div>
+
+            <div class="hipayHF-elements-container">
+                <div id="hipayHF-help-cvc"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <input type="hidden" value="" id="<?php echo $_code ?>_cc_owner" name="payment[<?php echo $_code ?>_cc_owner]">
+    <input type="hidden" value="" id="<?php echo $_code ?>_cc_number"
+           name="payment[<?php echo $_code ?>_cc_number]">
+    <input type="hidden" value="" id="<?php echo $_code ?>_expiration"
+           name="payment[<?php echo $_code ?>_cc_exp_month]">
+    <input type="hidden" value="" id="<?php echo $_code ?>_expiration_yr"
+           name="payment[<?php echo $_code ?>_cc_exp_year]">
+    <input type="hidden" value="" id="<?php echo $_code ?>_cc_cid" name="payment[<?php echo $_code ?>_cc_cid]">
+    <input type="hidden" value="" id="<?php echo $_code ?>_cc_type" name="payment[<?php echo $_code ?>_cc_type]">
+
+    <?php if ($this->oneClickIsAllowed()) : ?>
+        <?php echo $this->getChildHtml('hipay_oneclick'); ?>
+    <?php endif; ?>
+    <div id="<?php echo $_code ?>_debit_amount">
+        <?php if ($useOrderCurrency) { ?>
+            <?php $this->getQuote()->setBaseCurrencyCode($this->getQuote()->getQuoteCurrencyCode()); ?>
+            <?php echo $this->__(
+                'You will be debited of %s only after submitting order.',
+                Mage::app()->getStore()->getCurrentCurrency()->format(
+                    $this->getQuote()->getGrandTotal(),
+                    array(),
+                    true
+                )
+            ) ?>
+        <?php } else { ?>
+            <?php echo $this->__(
+                'You will be debited of %s only after submitting order.',
+                Mage::app()->getStore()->getBaseCurrency()->format(
+                    $this->getQuote()->getGrandTotal(),
+                    array(),
+                    true
+                )
+            ) ?>
+        <?php } ?>
+    </div>
+    <script type="text/javascript">
+        //<![CDATA[
+
+        var config = <?php echo $this->getConfigJson() ?>;
+        var tokenizeEnv = 'production';
+
+        if (config.testMode == 1) {
+            tokenizeEnv = 'stage'; // default is production/live
+            config.api_tokenjs_username = config.api_tokenjs_username_test;
+            config.api_tokenjs_publickey = config.api_tokenjs_publickey_test;
+        }
+
+        var hipay = HiPay({
+            username: config.api_tokenjs_username,
+            password: config.api_tokenjs_publickey,
+            environment: tokenizeEnv,
+            lang: config.lang
+        });
+
+        var config = {
+            selector: "hipayHF-container",
+            multi_use: (config.isOneClick === '0') ? false : true,
+            fields: {
+                cardHolder: {
+                    selector: "hipayHF-card-holder",
+                    defaultFirstname: config.defaultFirstname,
+                    defaultLastname: config.defaultLastname
+                },
+                cardNumber: {
+                    selector: "hipayHF-card-number"
+                },
+                expiryDate: {
+                    selector: "hipayHF-date-expiry"
+                },
+                cvc: {
+                    selector: "hipayHF-cvc",
+                    helpButton: true,
+                    helpSelector: "hipayHF-help-cvc"
+                }
+            },
+            styles: {
+                base: config.style.base
+            }
+        };
+
+        hipayHF = hipay.create("card", config);
+
+        hipayHF.on("change", function (data) {
+            handleErrorHipayHF(data.valid, data.error);
+        });
+
+        function handleErrorHipayHF(valid, error) {
+            document.getElementById("hipayHF-error-message").innerHTML = error;
+        }
+
+        //]]>
+    </script>
+
+</div>
+

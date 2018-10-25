@@ -85,7 +85,8 @@ class Allopass_Hipay_Block_Checkout_Tokenjs extends Mage_Core_Block_Template
     /**
      * Retrieve config json
      *
-     * @return string
+     * @return mixed
+     * @throws Mage_Core_Model_Store_Exception
      */
     public function getConfigJson()
     {

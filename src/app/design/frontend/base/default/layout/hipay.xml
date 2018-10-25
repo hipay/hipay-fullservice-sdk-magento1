@@ -54,6 +54,10 @@
                 <type>skin_js</type>
                 <name>js/hipay-fingerprint.min.js</name>
             </action>
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>css/hipay.css</name>
+            </action>
             <block type="hipay/checkout_externaljs" name="hipay.external.js"
                    template="hipay/checkout/externaljs.phtml"/>
         </reference>
