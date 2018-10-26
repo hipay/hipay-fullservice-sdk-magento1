@@ -92,8 +92,8 @@ class Allopass_Hipay_Block_Form_Hostedfields extends Allopass_Hipay_Block_Form_A
             "testMode" => $this->getMethod()->getConfigData('is_test_mode'),
             "lang" => Mage::app()->getLocale()->getLocaleCode(),
             "isOneClick" => $this->oneClickIsAllowed(),
-            "defaultLastname" => $this->getCustomer()->getLastname(),
-            "defaultFirstname" => $this->getCustomer()->getFirstname(),
+            "defaultLastname" => $this->getQuote()->getCustomerLastname(),
+            "defaultFirstname" => $this->getQuote()->getCustomerFirstname(),
             "style" => array(
                 "base" => array(
                     "color" => $this->getMethod()->getConfigData('color'),
