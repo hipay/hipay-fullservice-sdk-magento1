@@ -5,7 +5,7 @@
     text-align: center;
 }
 
-#hipayHF-container-hosted-fields {
+#hipayHF-container {
     width: 500px;
     padding: 20px;
     display: inline-block;
@@ -14,21 +14,22 @@
     margin: 10px;
 }
 
-#hipayHF-container-hosted-fields span.icon {
+#hipayHF-container span.icon {
     position: relative;
     top: 0.2em;
     margin-right: 0.2em;
 }
 
 @media screen and (max-width: 768px) {
-    #hipayHF-container-hosted-fields {
+    #hipayHF-container {
         max-width: 500px;
+        width: auto;
         display: block;
     }
 }
 
 @media (min-width: 768px) {
-    #hipayHF-container-hosted-fields .actions-toolbar .primary {
+    #hipayHF-container .actions-toolbar .primary {
         width: 100% !important;
         margin-top: 10px !important;
         float: none !important;
@@ -49,7 +50,6 @@
 #hipayHF-container {
     font-family: 'Roboto', sans-serif;
     background-color: white;
-    width: 365px;
 }
 
 #hipayHF-form {

@@ -20,17 +20,16 @@
  * @license     https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-fullservice-sdk-magento1
  */
-class Allopass_Hipay_Model_Method_CcHostedFields extends Allopass_Hipay_Model_Method_Cc
+class Allopass_Hipay_HostedfieldsController extends Allopass_Hipay_Controller_Payment
 {
-    protected $_canUseInternal = false;
 
-    protected $_code = 'hipay_hostedfields';
-
-    protected $_formBlockType = 'hipay/form_hostedfields';
-
-    public function getOrderPlaceRedirectUrl()
+    /**
+     *
+     * @return Allopass_Hipay_Model_Method_Cc $methodInstance
+     */
+    protected function _getMethodInstance()
     {
-        return Mage::getUrl('hipay/hostedfields/sendRequest', array('_secure' => true));
+        return Mage::getSingleton('hipay/method_ccHostedFields');;
     }
 
 }

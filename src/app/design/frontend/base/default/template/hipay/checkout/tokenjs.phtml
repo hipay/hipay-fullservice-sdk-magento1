@@ -69,8 +69,8 @@ if ($this->hasPublicCredentials()):
                             savePayment(self);
                         },
                         function (error) {
+                            document.getElementById("hipayHF-error-message").innerHTML = error;
                             checkout.setLoadWaiting(false);
-                            alert(Translator.translate("An error occurred with the request.").stripTags());
                         }
                     );
             }
@@ -115,11 +115,11 @@ if ($this->hasPublicCredentials()):
                         self.safeFormData["payment[" + method + "_cc_cid]"] = null;
 
                         replaceForm(Form, result, method);
-
                         savePayment(self);
 
                     }, function (errors) {
-                        alert(Translator.translate("An error occurred with the request.").stripTags());
+                        checkout.setLoadWaiting(false);
+                        alert(Translator.translate("An error has occured, please check the information entered.").stripTags());
                     }
                 );
             }
