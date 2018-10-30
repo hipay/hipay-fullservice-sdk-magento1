@@ -1493,7 +1493,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
         if (($payment->getCcType() === "AE" || $payment->getCcType() === "american-express") && sizeof($names) > 1) {
             $params['firstname'] = $names[0];
-            $params['lastname'] = trim(str_replace($names[0], "", $payment->getCcOwner()));
+            $params['lastname'] = trim(preg_replace('/' . $names[0] . '/', "", $payment->getCcOwner(), 1));
         } else {
             $order = $payment->getOrder();
             $params['firstname'] = $order->getCustomerFirstname();

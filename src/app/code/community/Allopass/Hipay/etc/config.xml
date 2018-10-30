@@ -401,7 +401,6 @@
                 <title>HiPay Enterprise Credit Card</title>
                 <payment_action>authorize_capture</payment_action>
                 <cctypes>VI,MC,AE,SDD</cctypes>
-                <display_card_owner>0</display_card_owner>
                 <useccv>1</useccv>
                 <order_status_payment_accepted>processing</order_status_payment_accepted>
                 <order_status_payment_refused>canceled</order_status_payment_refused>
@@ -429,7 +428,6 @@
                 <title>HiPay Enterprise Credit Card Split Payment</title>
                 <payment_action>authorize_capture</payment_action>
                 <cctypes>VI,MC,AE</cctypes>
-                <display_card_owner>0</display_card_owner>
                 <useccv>1</useccv>
                 <order_status_payment_accepted>processing</order_status_payment_accepted>
                 <order_status_payment_refused>canceled</order_status_payment_refused>
@@ -457,7 +455,6 @@
                 <title>HiPay Enterprise Credit Card Hosted Fields</title>
                 <payment_action>authorize_capture</payment_action>
                 <cctypes>american-express,visa,mastercard</cctypes>
-                <display_card_owner>0</display_card_owner>
                 <useccv>1</useccv>
                 <order_status_payment_accepted>processing</order_status_payment_accepted>
                 <order_status_payment_refused>canceled</order_status_payment_refused>

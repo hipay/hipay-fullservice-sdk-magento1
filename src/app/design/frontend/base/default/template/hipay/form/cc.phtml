@@ -52,24 +52,19 @@ $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction',
                 </div>
             <?php endif; ?>
         </li>
-        <?php if (Mage::getStoreConfigFlag('payment/' . $_code . '/display_card_owner')) : ?>
-            <li>
-                <label for="<?php echo $_code ?>_cc_owner" class="required"><em>*</em><?php echo $this->__(
-                        'Name on Card'
-                    ) ?></label>
-                <div class="input-box">
-                    <input type="text" title="<?php echo $this->__('Name on Card') ?>"
-                           class="input-text required-entry" id="<?php echo $_code ?>_cc_owner"
-                           name="payment[<?php echo $_code ?>_cc_owner]"
-                           value="<?php echo $this->htmlEscape($this->getInfoData('cc_owner')) ?>"/>
-                </div>
-            </li>
-        <?php else: ?>
-            <input type="hidden" id="<?php echo $_code ?>_cc_owner" name="payment[<?php echo $_code ?>_cc_owner]"
-                   value="<?php echo $this->htmlEscape(
-                       $this->getQuote()->getBillingAddress()->getFirstname() . " " . $this->getQuote()->getBillingAddress()->getLastname()
-                   ) ?>"/>
-        <?php endif; ?>
+        <li>
+            <label for="<?php echo $_code ?>_cc_owner" class="required"><em>*</em><?php echo $this->__(
+                    'Name on Card'
+                ) ?></label>
+            <div class="input-box">
+                <input type="text" title="<?php echo $this->__('Name on Card') ?>"
+                       class="input-text required-entry" id="<?php echo $_code ?>_cc_owner"
+                       name="payment[<?php echo $_code ?>_cc_owner]"
+                       value="<?php echo $this->htmlEscape(
+                           $this->getQuote()->getBillingAddress()->getFirstname() . " " . $this->getQuote()->getBillingAddress()->getLastname()
+                       ) ?>"/>
+            </div>
+        </li>
         <li>
             <label for="<?php echo $_code ?>_cc_number" class="required"><em>*</em><?php echo $this->__(
                     'Credit Card Number'
