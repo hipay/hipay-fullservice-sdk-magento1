@@ -20,13 +20,14 @@ $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction',
     <?php if (Mage::getStoreConfig('hipay/hipay_api/fingerprint', Mage::app()->getStore())) : ?>
         <?php echo $this->getChildHtml('hipay_fingerprint'); ?>
     <?php endif; ?>
-    <div class="form-list" id="card_payment_form_<?php echo $_code ?>">
-        <!--[if IE 9]>
-        <div class="ie9 hipayHF-container" id="hipayHF-container">
-        <![endif]-->
-        <!--[if gt IE 9]><!-->
-        <div class="hipayHF-container" id="hipayHF-container">
-            <!--<![endif]-->
+
+    <!--[if IE 9]>
+    <div class="ie9 hipayHF-container" id="hipayHF-container">
+    <![endif]-->
+    <!--[if gt IE 9]><!-->
+    <div class="hipayHF-container" id="hipayHF-container">
+        <!--<![endif]-->
+        <div class="form-list" id="card_payment_form_<?php echo $_code ?>">
             <div class="hipayHF-row">
                 <div class="hipayHF-field-container">
                     <div class="hipayHF-field" id="hipayHF-card-holder"></div>
@@ -63,6 +64,9 @@ $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction',
             </div>
             <div id="hipayHF-error-message"></div>
         </div>
+        <?php if ($this->oneClickIsAllowed()) : ?>
+            <?php echo $this->getChildHtml('hipay_oneclick'); ?>
+        <?php endif; ?>
     </div>
 
     <input type="hidden" value="" id="<?php echo $_code ?>_cc_owner" name="payment[<?php echo $_code ?>_cc_owner]">
@@ -75,9 +79,6 @@ $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction',
     <input type="hidden" value="" id="<?php echo $_code ?>_cc_cid" name="payment[<?php echo $_code ?>_cc_cid]">
     <input type="hidden" value="" id="<?php echo $_code ?>_cc_type" name="payment[<?php echo $_code ?>_cc_type]">
 
-    <?php if ($this->oneClickIsAllowed()) : ?>
-        <?php echo $this->getChildHtml('hipay_oneclick'); ?>
-    <?php endif; ?>
     <div id="<?php echo $_code ?>_debit_amount">
         <?php if ($useOrderCurrency) { ?>
             <?php $this->getQuote()->setBaseCurrencyCode($this->getQuote()->getQuoteCurrencyCode()); ?>

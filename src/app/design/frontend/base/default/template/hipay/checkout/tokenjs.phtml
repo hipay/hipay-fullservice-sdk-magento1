@@ -39,7 +39,7 @@ if ($this->hasPublicCredentials()):
                 //Process Tokenization if method use API Mode (CC form)
                 if (method.search('hipay_cc') > -1 && paymentData["payment[" + method + "_cc_number]"]) {
                     tokenizeDirectPost(paymentData, method, Form);
-                } else if (method.search('hipay_hostedfields') > -1 && hipayHF && !paymentData["payment[" + method + "_use_alias_oneclick"]) {
+                } else if (method.search('hipay_hostedfields') > -1 && hipayHF && paymentData["payment[" + method + "_oneclick]"] !== "use_oneclick") {
                     tokenizeHostedFields(method, Form);
                 } else {
                     savePayment(this);
