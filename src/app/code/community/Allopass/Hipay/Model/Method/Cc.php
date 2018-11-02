@@ -22,7 +22,6 @@
  */
 class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstract
 {
-
     protected $_canReviewPayment = true;
     const STATUS_PENDING_CAPTURE = 'pending_capture';
 

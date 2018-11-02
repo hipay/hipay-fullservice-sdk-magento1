@@ -67,7 +67,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
     protected $_canRefund = true;
     protected $_canRefundInvoicePartial = true;
     protected $_canVoid = true;
-    protected $_canUseInternal = true;
+    protected $_canUseInternal = false;
     protected $_canUseCheckout = true;
     protected $_canUseForMultishipping = false;
     protected $_canSaveCc = false;
@@ -1342,7 +1342,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         /**
          * Redirect urls
          */
-        if ($this->sendMailToCustomer() && $this->getCode() == 'hipay_hosted') {
+        if ($this->sendMailToCustomer() && $this->getCode() == 'hipay_hostedmoto') {
             $paramsMoto['order'] = $payment->getOrder()->getIncrementId();
 
             // MOTO with mail to customer
