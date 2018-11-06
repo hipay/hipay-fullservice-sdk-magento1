@@ -1,3 +1,9 @@
+# Version 1.10.0
+
+ - Add Payment Method Hosted Fields
+ - Migrate to SDKJS V3
+ - Add Payment Method Hosted MO/TO
+ 
 # Version 1.9.6
 
  - Fix : One click card date filter
