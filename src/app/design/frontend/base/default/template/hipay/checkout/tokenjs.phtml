@@ -31,7 +31,6 @@ if ($this->hasPublicCredentials()):
             if (method.search('hipay_cc') > -1 || method.search('hipay_hostedfields') > -1) {
 
                 Form.Element.setValue(method + "_cc_number", "");
-                Form.Element.setValue(method + "_cc_owner", "");
                 Form.Element.setValue(method + "_cc_cid", null);
             }
 
