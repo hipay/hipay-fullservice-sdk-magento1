@@ -1,6 +1,6 @@
 casper.test.begin('Test MOTO Payment With Incorrect Credentials', function(test) {
 	phantom.clearCookies();
-    var paymentType = "HiPay Enterprise Hosted Page";
+    var paymentType = "HiPay Enterprise Hosted Page MO/TO";
         casper.start(baseURL)
             .then(function () {
                 if (this.visible('p[class="bugs"]')) {
@@ -9,7 +9,7 @@ casper.test.begin('Test MOTO Payment With Incorrect Credentials', function(test)
             })
             .thenOpen( baseURL + "admin/", function () {
                 this.logToBackend();
-                method.proceed(test, paymentType, "hosted");
+                method.proceed(test, paymentType, "hostedmoto");
             })
             /* Active MOTO option */
             .then(function () {
@@ -22,7 +22,7 @@ casper.test.begin('Test MOTO Payment With Incorrect Credentials', function(test)
                 });
                 test.info("Initial credential for api_user_name was :" + initialCredential);
                 this.fillFormHipayEnterprise("blabla", true);
-                checkout.proceed(test, paymentType, "hosted");
+                checkout.proceed(test, paymentType, "hostedmoto");
             })
             /* Submit order */
             .then(function () {

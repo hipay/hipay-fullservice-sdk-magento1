@@ -761,11 +761,14 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 
         $pan = isset($paymentMethod['pan']) ? $paymentMethod['pan'] : $response->getData('cardpan');
 
+        $cardHolder = isset($paymentMethod['card_holder']) ? $paymentMethod['card_holder'] : "";
+
         $newCard = Mage::getModel('hipay/card');
         $newCard->setCustomerId($customerId);
         $newCard->setCcToken($token);
         $newCard->setCcNumberEnc($pan);
         $newCard->setCcType($paymentProduct);
+        $newCard->setCcOwner($cardHolder);
         $newCard->setCcStatus(Allopass_Hipay_Model_Card::STATUS_ENABLED);
         $newCard->setName($this->__('Card %s - %s', $paymentProduct, $pan));
 

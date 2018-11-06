@@ -1,0 +1,8 @@
+<?php if ($this->fingerprintEnabled()): ?>
+    <script type="text/javascript" src="<?php echo $this->getFingerPrintJs(); ?>"></script>
+<?php endif; ?>
+
+<?php if ($this->sdkJsNeeded()): ?>
+    <script type="text/javascript" src="<?php echo $this->getSdkJs(); ?>"></script>
+<?php endif; ?>
+

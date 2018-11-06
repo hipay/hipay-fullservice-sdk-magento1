@@ -22,7 +22,6 @@
  */
 class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstract
 {
-
     protected $_canReviewPayment = true;
     const STATUS_PENDING_CAPTURE = 'pending_capture';
 
@@ -120,6 +119,7 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
             $card = Mage::getModel('hipay/card')->load($cardId);
             if ($card->getId() && $card->getCustomerId() == $customer->getId()) {
                 $token = $card->getCcToken();
+                $payment->setCcOwner($card->getCcOwner());
             } else {
                 Mage::throwException(Mage::helper('hipay')->__("Error with your card!"));
             }

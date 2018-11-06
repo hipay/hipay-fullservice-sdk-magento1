@@ -23,6 +23,6 @@
 class Allopass_Hipay_Model_Method_Oxxo extends Allopass_Hipay_Model_Method_Astropay
 {
     protected $_code = 'hipay_oxxo';
-
+    protected $_formBlockType = 'hipay/form_cpn';
     protected $_typeIdentification = 'cpn';
 }

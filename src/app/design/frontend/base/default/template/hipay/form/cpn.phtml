@@ -1,0 +1,34 @@
+<?php
+/** @var $this Allopass_Hipay_Block_Form_Abstract */
+$_code = $this->getMethodCode();
+?>
+<div id="payment_form_<?php echo $_code ?>" style="display:none;">
+    <script type="text/javascript">
+        //<![CDATA[
+        Validation.add('validate-cpn', '<?php echo $this->__(
+            'The CPN format is invalid.'
+        ) ?>', function (v, elm) {
+            return Validation.get('IsEmpty').test(v) || /^[a-zA-Z]{4}\d{6}[a-zA-Z]{6}\d{2}$/i
+                .test(v)
+        });
+        //]]>
+    </script>
+    <?php if (Mage::getStoreConfig('hipay/hipay_api/fingerprint', Mage::app()->getStore())) : ?>
+        <?php echo $this->getChildHtml('hipay_fingerprint'); ?>
+    <?php endif; ?>
+    <ul class="form-list" id="card_payment_form_<?php echo $_code ?>">
+        <li>
+            <label for="<?php echo $_code ?>_national_identification"
+                   class="required"><em>*</em><?php echo $this->__('CPN') ?></label>
+            <div class="input-box">
+                <input type="text" title="<?php echo $this->__('CPN') ?>"
+                       class="input-text required-entry validate-cpn"
+                       oninvalid="this.setCustomValidity('<?php echo $this->__('CPN is incorrect') ?>'')"
+                       oninput="setCustomValidity('')"
+                       pattern="(\d{2}[.]?\d{3}[.]?\d{3}[/]?\d{4}[-]?\d{2})|(\d{3}[.]?\d{3}[.]?\d{3}[-]?\d{2})"
+                       id="<?php echo $_code ?>_national_identification"
+                       name="payment[national_identification_number]"/>
+            </div>
+        </li>
+    </ul>
+</div>

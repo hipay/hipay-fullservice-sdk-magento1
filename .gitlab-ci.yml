@@ -268,6 +268,23 @@ deploy2Recette:
     - bash /tools/deployToDockerMachine.sh -e ./bin/docker/conf/acceptance/hipay.env.sample -e ./bin/docker/conf/acceptance/mysql.env.sample -e ./bin/docker/conf/acceptance/mage.env.sample -s docker-compose.acceptance.yml -n $DOCKER_STACK-$DOCKER_SERVICE-$CI_COMMIT_REF_SLUG
  tags:
     - pi-commerce-no-overlay
+ environment:
+   name: review/${CI_COMMIT_REF_SLUG}
+   url: https://${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}.hipay-pos-platform.com
+   on_stop: stop_review
+ only:
+    - branches
+
+stop_review:
+  stage: deploy
+  variables:
+    GIT_STRATEGY: none
+  script:
+  - docker stack rm $DOCKER_STACK-$DOCKER_SERVICE-$CI_COMMIT_REF_SLUG
+  when: manual
+  environment:
+    name: review/${CI_COMMIT_REF_SLUG}
+    action: stop
 
 sync:
   stage: sync

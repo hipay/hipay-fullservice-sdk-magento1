@@ -20,9 +20,11 @@
  * @license     https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-fullservice-sdk-magento1
  */
-class Allopass_Hipay_Model_Method_Santander extends Allopass_Hipay_Model_Method_Astropay
+class Allopass_Hipay_Block_Checkout_Splitpayment extends Mage_Core_Block_Template
 {
-    protected $_code = 'hipay_santander';
-    protected $_formBlockType = 'hipay/form_cpf';
-    protected $_typeIdentification = 'cpf';
+    protected function _construct()
+    {
+        parent::_construct();
+        $this->setTemplate('hipay/checkout/splitpayment.phtml');
+    }
 }

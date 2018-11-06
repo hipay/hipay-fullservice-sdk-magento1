@@ -5,7 +5,7 @@
  *  To launch test, please pass two arguments URL (BASE URL)  and TYPE_CC ( CB,VI,MC )
  *
  /**********************************************************************************************/
-var paymentType = "HiPay Enterprise Hosted Page",
+var paymentType = "HiPay Enterprise Hosted Page MO/TO",
     currentBrandCC = typeCC;
 
 casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(test) {
@@ -24,11 +24,11 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
     .thenOpen(baseURL + 'admin', function() {
         this.logToBackend();
         configuration.proceedMotoSendMail(test, '0');
-        method.proceed(test, paymentType, "hosted");
+        method.proceed(test, paymentType, "hostedmoto");
 
     },15000)
     .then(function() {
-        checkout.proceed(test, paymentType, "hosted");
+        checkout.proceed(test, paymentType, "hostedmoto");
     })
     .then(function() {
         this.echo("Submitting order...", "INFO");
