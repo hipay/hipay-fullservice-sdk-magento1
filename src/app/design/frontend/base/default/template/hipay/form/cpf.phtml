@@ -1,0 +1,33 @@
+<?php
+/** @var $this Allopass_Hipay_Block_Form_Abstract */
+$_code = $this->getMethodCode();
+?>
+<div id="payment_form_<?php echo $_code ?>" style="display:none;">
+    <script type="text/javascript">
+        //<![CDATA[
+        Validation.add('validate-cpf', '<?php echo $this->__(
+            'The CPF format is invalid.'
+        ) ?>', function (v, elm) {
+            return Validation.get('IsEmpty').test(v) || /(\d{2}[.]?\d{3}[.]?\d{3}[/]?\d{4}[-]?\d{2})|(\d{3}[.]?\d{3}[.]?\d{3}[-]?\d{2})$/i.test(v)
+        });
+        //]]>
+    </script>
+    <?php if (Mage::getStoreConfig('hipay/hipay_api/fingerprint', Mage::app()->getStore())) : ?>
+        <?php echo $this->getChildHtml('hipay_fingerprint'); ?>
+    <?php endif; ?>
+    <ul class="form-list" id="card_payment_form_<?php echo $_code ?>">
+        <li>
+            <label for="<?php echo $_code ?>_national_identification"
+                   class="required"><em>*</em><?php echo $this->__('CPF') ?></label>
+            <div class="input-box">
+                <input type="text" title="<?php echo $this->__('CPF') ?>"
+                       class="input-text required-entry validate-cpf"
+                       oninvalid="this.setCustomValidity('<?php echo $this->__('CPF is incorrect') ?>'')"
+                       oninput="setCustomValidity('')"
+                       pattern="(\d{2}[.]?\d{3}[.]?\d{3}[/]?\d{4}[-]?\d{2})|(\d{3}[.]?\d{3}[.]?\d{3}[-]?\d{2})"
+                       id="<?php echo $_code ?>_national_identification"
+                       name="payment[national_identification_number]"/>
+            </div>
+        </li>
+    </ul>
+</div>

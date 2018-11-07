@@ -20,9 +20,21 @@
  * @license     https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-fullservice-sdk-magento1
  */
-class Allopass_Hipay_Model_Method_Santander extends Allopass_Hipay_Model_Method_Astropay
+class Allopass_Hipay_Block_Form_Cpf extends Allopass_Hipay_Block_Form_Abstract
 {
-    protected $_code = 'hipay_santander';
-    protected $_formBlockType = 'hipay/form_cpf';
-    protected $_typeIdentification = 'cpf';
+    protected function _construct()
+    {
+        parent::_construct();
+        $this->setTemplate('hipay/form/cpf.phtml');
+    }
+
+    protected function _prepareLayout()
+    {
+        parent::_prepareLayout();
+
+        $fingerprint = $this->getLayout()->createBlock('hipay/checkout_fingerprint', 'hipay.checkout.fingerprint');
+        $this->setChild('hipay_fingerprint', $fingerprint);
+
+        return $this;
+    }
 }

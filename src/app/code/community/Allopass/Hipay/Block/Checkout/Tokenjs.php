@@ -30,8 +30,11 @@ class Allopass_Hipay_Block_Checkout_Tokenjs extends Mage_Core_Block_Template
      */
     public function hasPublicCredentials()
     {
-        return ($this->getConfig()->getApiTokenJSUsername() && $this->getConfig()->getApiTokenJSPublickey())
-        || ($this->getConfig()->getApiTokenJSUsernameTest() && $this->getConfig()->getApiTokenJSPublickeyTest());
+        return
+            ($this->getConfig()->getApiTokenJSUsername(Mage::app()->getStore())
+                && $this->getConfig()->getApiTokenJSPublickey(Mage::app()->getStore()))
+            || ($this->getConfig()->getApiTokenJSUsernameTest(Mage::app()->getStore())
+                && $this->getConfig()->getApiTokenJSPublickeyTest(Mage::app()->getStore()));
     }
 
 
@@ -82,15 +85,16 @@ class Allopass_Hipay_Block_Checkout_Tokenjs extends Mage_Core_Block_Template
     /**
      * Retrieve config json
      *
-     * @return string
+     * @return mixed
+     * @throws Mage_Core_Model_Store_Exception
      */
     public function getConfigJson()
     {
         $data = array(
-            "api_tokenjs_username" => $this->getConfig()->getApiTokenJSUsername(),
-            "api_tokenjs_publickey" => $this->getConfig()->getApiTokenJSPublickey(),
-            "api_tokenjs_username_test" => $this->getConfig()->getApiTokenJSUsernameTest(),
-            "api_tokenjs_publickey_test" => $this->getConfig()->getApiTokenJSPublickeyTest(),
+            "api_tokenjs_username" => $this->getConfig()->getApiTokenJSUsername(Mage::app()->getStore()),
+            "api_tokenjs_publickey" => $this->getConfig()->getApiTokenJSPublickey(Mage::app()->getStore()),
+            "api_tokenjs_username_test" => $this->getConfig()->getApiTokenJSUsernameTest(Mage::app()->getStore()),
+            "api_tokenjs_publickey_test" => $this->getConfig()->getApiTokenJSPublickeyTest(Mage::app()->getStore()),
             "methods" => $this->getHipayMethodsData(),
 
         );

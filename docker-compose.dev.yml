@@ -31,4 +31,6 @@ mysql:
 
 smtp:
   image: hipay/mailcatcher:1.0.0
+  ports:
+  - "1095:80"
 

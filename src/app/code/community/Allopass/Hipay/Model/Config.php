@@ -48,6 +48,11 @@ class Allopass_Hipay_Model_Config extends Varien_Object
 
     const DEBUG_MODE = 'debug';
 
+    const FINGERPRINT_URL = 'fingerprint_js_url';
+
+    const FINGERPRINT_ENABLED = 'fingerprint';
+
+    const SDKJS_URL = 'sdk_js_url';
 
     /**
      *  Use as Helper
@@ -184,6 +189,21 @@ class Allopass_Hipay_Model_Config extends Varien_Object
         return $this->getData($key);
     }
 
+    public function isFingerprintEnabled($storeId = null)
+    {
+        return $this->getConfigData(self::FINGERPRINT_ENABLED, $storeId);
+    }
+
+    public function getFingerPrintJsUrl($storeId = null)
+    {
+        return $this->getConfigData(self::FINGERPRINT_URL, $storeId);
+    }
+
+    public function getSdkJsUrl($storeId = null)
+    {
+        return $this->getConfigData(self::SDKJS_URL, $storeId);
+    }
+
     public function getSecretPassphrase($storeId = null)
     {
         return $this->getConfigData(self::SECRET_PASSPHRASE, $storeId);
@@ -252,7 +272,8 @@ class Allopass_Hipay_Model_Config extends Varien_Object
         return $this->getConfigData(self::API_TOKENJS_PUBLICKEY_TEST, $storeId);
     }
 
-    public function publicCredentialsEmpty($storeId = null){
+    public function publicCredentialsEmpty($storeId = null)
+    {
         return empty($this->getApiTokenJSPublickeyTest($storeId)) || empty($this->getApiTokenJSUsernameTest($storeId));
     }
 
@@ -298,6 +319,15 @@ class Allopass_Hipay_Model_Config extends Varien_Object
         return $this->getConfigData(self::DEBUG_MODE, $storeId);
     }
 
+    /**
+     * @param $paymentMethod
+     * @param $storeId
+     * @return mixed
+     */
+    public function isPaymentMethodActivated($paymentMethod, $storeId)
+    {
+        return Mage::getStoreConfig('payment/' . $paymentMethod . '/active', $storeId);
+    }
 
     /**
      * Retrieve array of credit card types

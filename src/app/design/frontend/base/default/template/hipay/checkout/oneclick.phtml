@@ -1,0 +1,85 @@
+<?php
+/** @var $this Allopass_Hipay_Block_Form_Abstract */
+$_code = $this->getParentBlock()->getMethodCode();
+$_cards = $this->getParentBlock()->getCards();
+?>
+<ul class="form-list" id="oneclick_card_payment_form_<?php echo $_code ?>">
+    <li>
+        <?php if (!$this->getParentBlock()->getCustomerHasCard()) : ?>
+            <div class="input-box">
+                <input id="<?php echo $_code ?>_create_alias_oneclick" value="create_oneclick" type="checkbox"
+                       name="payment[<?php echo $_code ?>_oneclick]"/>
+                <label style="float: none;"
+                       for="<?php echo $_code ?>_create_alias_oneclick"><?php echo $this->__(
+                        'Save your card data for a next buy.'
+                    ) ?></label>
+            </div>
+        <?php else : ?>
+            <script type="text/javascript">$('card_payment_form_<?php echo $_code ?>').hide();</script>
+
+            <div class="input-box">
+                <input id="<?php echo $_code ?>_use_alias_oneclick" value="use_oneclick" checked="checked"
+                       type="radio" name="payment[<?php echo $_code ?>_oneclick]"
+                       onclick="$('card_payment_form_<?php echo $_code ?>').hide();
+                                $('<?php echo $_code ?>_oneclick_selected_card').show();
+                               "/>
+                <label style="float: none;" for="<?php echo $_code ?>_use_alias_oneclick"><?php echo $this->__(
+                        'Use my saved card'
+                    ) ?></label>
+            </div>
+
+            <div class="input-box info-card">
+                <select id="<?php echo $_code ?>_oneclick_selected_card"
+                        name="payment[<?php echo $_code ?>_oneclick_card]">
+                    <?php foreach ($_cards as $card): ?>
+                        <option value="<?php echo $card->getId() ?>"><?php echo $card->getName() ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <div class="input-box">
+                <input id="<?php echo $_code ?>_create_alias_oneclick" type="radio"
+                       name="payment[<?php echo $_code ?>_oneclick]" value="create_oneclick"
+                       onclick="$('card_payment_form_<?php echo $_code ?>').show();
+                               $('<?php echo $_code ?>_oneclick_selected_card').hide();"/>
+                <label style="float: none;"
+                       for="<?php echo $_code ?>_create_alias_oneclick"><?php echo $this->__(
+                        'Save new card data'
+                    ) ?></label>
+            </div>
+
+            <div class="input-box">
+                <input id="<?php echo $_code ?>_not_oneclick" type="radio"
+                       name="payment[<?php echo $_code ?>_oneclick]" value="not_oneclick"
+                       onclick="$('card_payment_form_<?php echo $_code ?>').show();
+                               $('<?php echo $_code ?>_oneclick_selected_card').hide();"/>
+                <label style="float: none;" for="<?php echo $_code ?>_not_oneclick"><?php echo $this->__(
+                        'Do not use saved card data'
+                    ) ?></label>
+            </div>
+
+        <?php endif; ?>
+    </li>
+
+</ul>
+<br/>
+<script type="text/javascript">
+    //<![CDATA[
+
+    var ToogleOneclick<?php echo $_code ?> = function () {
+        var elm = $('<?php echo $_code ?>_cc_type');
+        if (['', 'VI', 'MC', 'AE'].indexOf(elm.value) != -1) {
+            $('oneclick_card_payment_form_<?php echo $_code ?>').show();
+        } else {
+            $('<?php echo $_code ?>_create_alias_oneclick').checked = false;
+            $('oneclick_card_payment_form_<?php echo $_code ?>').hide();
+        }
+    };
+
+    Event.observe($('<?php echo $_code ?>_cc_type'), 'change', ToogleOneclick<?php echo $_code ?>);
+    document.observe("dom:loaded", function () {
+        ToogleOneclick<?php echo $_code ?>();
+    });
+
+    //]]>
+</script>

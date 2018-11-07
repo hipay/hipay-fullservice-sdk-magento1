@@ -62,7 +62,7 @@ casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(t
                         }, true);
                         test.info("TAN code inserted");
                         this.waitForSelector('input[name="back2MerchantButton"]', function success() {
-                            this.click('input[name="back2MerchantButton"]');
+                    //        this.click('input[name="back2MerchantButton"]');
                             test.info("Done");
                         }, function fail() {
                             test.assertExists('input[name="back2MerchantButton"]', "Payment Giropay recap page exists");

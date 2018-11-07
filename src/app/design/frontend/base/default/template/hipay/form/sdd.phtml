@@ -1,0 +1,99 @@
+<?php
+$useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction', Mage::app()->getStore());
+$_code = $this->getMethodCode();
+?>
+<div id="payment_form_<?php echo $_code ?>" style="display:none;">
+    <label for="<?php echo $_code ?>_type"><?php echo $this->__('Bankwire method') ?>:</label>
+
+    <?php if (Mage::getStoreConfig('hipay/hipay_api/fingerprint', Mage::app()->getStore())) : ?>
+        <?php echo $this->getChildHtml('hipay_fingerprint'); ?>
+    <?php endif; ?>
+    <ul class="form-list" id="card_payment_form_<?php echo $_code ?>">
+        <li>
+            <label for="<?php echo $_code ?>_gender" class="required"><em>*</em><?php echo $this->__('Gender') ?>
+            </label>
+            <div class="input-box">
+                <select id="<?php echo $_code ?>_gender" name="payment[cc_gender]">
+                    <option value="M" selected><?php echo $this->__('Male') ?></option>
+                    <option value="F"><?php echo $this->__('Female') ?></option>
+                </select>
+            </div>
+        </li>
+        <li>
+            <label for="<?php echo $_code ?>_fullname" class="required"><em>*</em><?php echo $this->__(
+                    'firstname'
+                ) ?></label>
+            <div class="input-box">
+                <input type="text" title="<?php echo $this->__('firstname') ?>" class="input-text "
+                       id="<?php echo $_code ?>_firstname" name="payment[cc_firstname]"
+                       value="<?php echo $this->htmlEscape(
+                           Mage::getSingleton('customer/session')->getCustomer()->getFirstname()
+                       ); ?>"/>
+            </div>
+        </li>
+        <li>
+            <label for="<?php echo $_code ?>_fullname" class="required">
+                <em>*</em><?php echo $this->__('lastname') ?>
+            </label>
+            <div class="input-box">
+                <input type="text" title="<?php echo $this->__('lastname') ?>" class="input-text "
+                       id="<?php echo $_code ?>_lastname" name="payment[cc_lastname]"
+                       value="<?php echo $this->htmlEscape(
+                           Mage::getSingleton('customer/session')->getCustomer()->getLastname()
+                       ); ?>"/>
+            </div>
+        </li>
+        <li>
+            <label for="<?php echo $_code ?>_iban" class="required"><em>*</em><?php echo $this->__('IBAN') ?>
+            </label>
+            <div class="input-box">
+                <input type="text" title="<?php echo $this->__('IBAN') ?>" class="input-text required-entry"
+                       id="<?php echo $_code ?>_iban" name="payment[cc_iban]"
+                       value="<?php echo $this->htmlEscape($this->getInfoData('cc_iban')) ?>"/>
+            </div>
+        </li>
+        <li>
+            <label for="<?php echo $_code ?>_code_bic" class="required"><em>*</em><?php echo $this->__(
+                    'Code BIC'
+                ) ?></label>
+            <div class="input-box">
+                <input type="text" title="<?php echo $this->__('Code BIC') ?>" class="input-text required-entry"
+                       id="<?php echo $_code ?>_code_bic" name="payment[cc_code_bic]"
+                       value="<?php echo $this->htmlEscape($this->getInfoData('cc_code_bic')) ?>"/>
+            </div>
+        </li>
+        <li>
+            <label for="<?php echo $_code ?>_bank_name" class="required"><em>*</em><?php echo $this->__(
+                    'Bank name'
+                ) ?></label>
+            <div class="input-box">
+                <input type="text" title="<?php echo $this->__('Bank name') ?>" class="input-text required-entry"
+                       id="<?php echo $_code ?>_bank_name" name="payment[cc_bank_name]"
+                       value="<?php echo $this->htmlEscape($this->getInfoData('cc_bank_name')) ?>"/>
+            </div>
+        </li>
+    </ul>
+
+    <div id="debit_amount">
+        <?php if ($useOrderCurrency) { ?>
+            <?php $this->getQuote()->setBaseCurrencyCode($this->getQuote()->getQuoteCurrencyCode()); ?>
+            <?php echo $this->__(
+                'You will be debited of %s only after submitting order.',
+                Mage::app()->getStore()->getCurrentCurrency()->format(
+                    $this->getQuote()->getGrandTotal(),
+                    array(),
+                    true
+                )
+            ) ?>
+        <?php } else { ?>
+            <?php echo $this->__(
+                'You will be debited of %s only after submitting order.',
+                Mage::app()->getStore()->getBaseCurrency()->format(
+                    $this->getQuote()->getGrandTotal(),
+                    array(),
+                    true
+                )
+            ) ?>
+        <?php } ?>
+    </div>
+</div>

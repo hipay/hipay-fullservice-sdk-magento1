@@ -67,7 +67,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
     protected $_canRefund = true;
     protected $_canRefundInvoicePartial = true;
     protected $_canVoid = true;
-    protected $_canUseInternal = true;
+    protected $_canUseInternal = false;
     protected $_canUseCheckout = true;
     protected $_canUseForMultishipping = false;
     protected $_canSaveCc = false;
@@ -1175,7 +1175,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
         $transactionId = $payment->getCcTransId();
 
-        if($transactionId === null){
+        if ($transactionId === null) {
             $transactionId = $payment->getParentTransactionId();
             $payment->setCcTransId($payment->getParentTransactionId());
         }
@@ -1232,7 +1232,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
     public function countByTransactionsType($transactionType, $paymentId)
     {
         $transaction = Mage::getModel('sales/order_payment_transaction')->getCollection()
-            ->addPaymentIdFilter( $paymentId)
+            ->addPaymentIdFilter($paymentId)
             ->addTxnTypeFilter($transactionType);
 
         return count($transaction->toArray()["items"]);
@@ -1342,7 +1342,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         /**
          * Redirect urls
          */
-        if ($this->sendMailToCustomer() && $this->getCode() == 'hipay_hosted') {
+        if ($this->sendMailToCustomer() && $this->getCode() == 'hipay_hostedmoto') {
             $paramsMoto['order'] = $payment->getOrder()->getIncrementId();
 
             // MOTO with mail to customer
@@ -1466,8 +1466,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
 
         $params['gender'] = $gender;
-        $params['firstname'] = $order->getCustomerFirstname();
-        $params['lastname'] = $order->getCustomerLastname();
+        $this->getCustomerNames($payment, $params);
+
         $params['recipientinfo'] = $order->getBillingAddress()->getCompany();
         $params['streetaddress'] = $order->getBillingAddress()->getStreet1();
         $params['streetaddress2'] = $order->getBillingAddress()->getStreet2();
@@ -1480,6 +1480,25 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $params['country'] = $order->getBillingAddress()->getCountry();
 
         return $params;
+    }
+
+    /**
+     * @param $payment
+     * @param $params
+     */
+    protected function getCustomerNames($payment, &$params)
+    {
+
+        $names = explode(' ', trim($payment->getCcOwner()));
+
+        if (($payment->getCcType() === "AE" || $payment->getCcType() === "american-express") && sizeof($names) > 1) {
+            $params['firstname'] = $names[0];
+            $params['lastname'] = trim(preg_replace('/' . $names[0] . '/', "", $payment->getCcOwner(), 1));
+        } else {
+            $order = $payment->getOrder();
+            $params['firstname'] = $order->getCustomerFirstname();
+            $params['lastname'] = $order->getCustomerLastname();
+        }
     }
 
     /**
