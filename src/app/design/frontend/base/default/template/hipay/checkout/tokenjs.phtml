@@ -64,20 +64,14 @@ if ($this->hasPublicCredentials()):
             function tokenizeHostedFields(method, Form) {
                 hipayHF.createToken()
                     .then(function (response) {
-                            var brand = "";
-                            if (response.hasOwnProperty("domestic_network")) {
-                                brand = response.domestic_network;
-                            } else {
-                                brand = response.brand;
-                            }
 
                             self.safeFormData["payment[" + method + "_cc_number]"] = response.pan;
                             self.safeFormData["payment[" + method + "_cc_owner]"] = response.card_holder;
-                            self.safeFormData["payment[" + method + "_cc_type]"] = brand.toLowerCase();
+                            self.safeFormData["payment[" + method + "_cc_type]"] = response.payment_product;
                             self.safeFormData["payment[" + method + "_cc_exp_year]"] = response.card_expiry_year;
                             self.safeFormData["payment[" + method + "_cc_exp_month]"] = response.card_expiry_month;
                             self.safeFormData["payment[" + method + "_cc_cid]"] = null;
-                            Form.Element.setValue(method + "_cc_type", brand.toLowerCase());
+                            Form.Element.setValue(method + "_cc_type", response.payment_product);
                             replaceForm(Form, response, method);
 
                             savePayment(self);
