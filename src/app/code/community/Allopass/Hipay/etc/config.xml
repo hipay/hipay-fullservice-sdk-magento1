@@ -450,6 +450,40 @@
                 <use_3d_secure>1</use_3d_secure>
                 <send_fraud_payment_email>0</send_fraud_payment_email>
             </hipay_ccxtimes>
+            <hipay_hostedfieldsxtimes>
+                <active>0</active>
+                <title>HiPay Enterprise Hosted Fields Split Payment</title>
+                <payment_action>authorize_capture</payment_action>
+                <cctypes>american-express,visa,mastercard</cctypes>
+                <useccv>1</useccv>
+                <order_status_payment_accepted>processing</order_status_payment_accepted>
+                <order_status_payment_refused>canceled</order_status_payment_refused>
+                <order_status_payment_canceled>canceled</order_status_payment_canceled>
+                <hipay_status_validate_order>118</hipay_status_validate_order>
+                <pending_redirect_page>hipay/checkout/pending</pending_redirect_page>
+                <allow_use_oneclick>0</allow_use_oneclick>
+                <invoice_create>1</invoice_create>
+                <re_add_to_cart>0</re_add_to_cart>
+                <cancel_pending_order>1</cancel_pending_order>
+                <delay_cancel_pending_order>0.5</delay_cancel_pending_order>
+                <is_test_mode>0</is_test_mode>
+                <debug>0</debug>
+                <model>hipay/method_HostedfieldsXtimes</model>
+                <accept_url>hipay/hostedfieldsxtimes/accept</accept_url>
+                <pending_url>hipay/hostedfieldsxtimes/pending</pending_url>
+                <decline_url>hipay/hostedfieldsxtimes/decline</decline_url>
+                <exception_url>hipay/hostedfieldsxtimes/exception</exception_url>
+                <cancel_url>hipay/hostedfieldsxtimes/cancel</cancel_url>
+                <use_3d_secure>1</use_3d_secure>
+                <send_fraud_payment_email>0</send_fraud_payment_email>
+                <color>#000000</color>
+                <fontFamily>Roboto</fontFamily>
+                <fontSize>15px</fontSize>
+                <fontWeight>400</fontWeight>
+                <placeholderColor></placeholderColor>
+                <caretColor>#00ADE9</caretColor>
+                <iconColor>#00ADE9</iconColor>
+            </hipay_hostedfieldsxtimes>
             <hipay_hostedfields>
                 <active>0</active>
                 <title>HiPay Enterprise Credit Card Hosted Fields</title>
