@@ -547,7 +547,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     public function splitPaymentsExists($orderId)
     {
         $collection = Mage::getModel('hipay/splitPayment')->getCollection()->addFieldToFilter('order_id', $orderId);
-        if (!$collection->getSize()) {
+        if ($collection->getSize() > 0) {
             return true;
         }
 

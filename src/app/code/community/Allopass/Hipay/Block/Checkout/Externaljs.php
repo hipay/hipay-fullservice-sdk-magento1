@@ -40,6 +40,7 @@ class Allopass_Hipay_Block_Checkout_Externaljs extends Mage_Core_Block_Template
     {
         return $this->getConfig()->isPaymentMethodActivated('hipay_cc', Mage::app()->getStore())
             || $this->getConfig()->isPaymentMethodActivated('hipay_ccxtimes', Mage::app()->getStore())
+            || $this->getConfig()->isPaymentMethodActivated('hipay_hostedfieldsxtimes', Mage::app()->getStore())
             || $this->getConfig()->isPaymentMethodActivated('hipay_hostedfields', Mage::app()->getStore());
     }
 
