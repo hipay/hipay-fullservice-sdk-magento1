@@ -119,7 +119,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
             $item['name'] = $order->getDiscountDescription();
             $item['discount'] = 0;
             $item['total_amount'] = 0;
-            $item['quantity'] = '1';
+            $item['quantity'] = 1;
             $item['unit_price'] = '0';
             $item['product_category'] = self::DEFAULT_CATEGORY_CODE;
             $basket[] = $item;
@@ -144,7 +144,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         $item['type'] = Allopass_Hipay_Helper_Data::TYPE_ITEM_BASKET_FEE;
         $item['product_reference'] = $order->getShippingDescription();
         $item['name'] = $order->getShippingDescription();
-        $item['quantity'] = '1';
+        $item['quantity'] = 1;
 
         if (!$useOrderCurrency) {
             $item['unit_price'] = round($order->getBaseShippingAmount(), 3);
@@ -1014,7 +1014,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         if (!empty($data)) {
             return explode(',', $data);
         }
-        
+
         return false;
     }
 
