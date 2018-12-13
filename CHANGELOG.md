@@ -1,3 +1,9 @@
+# Version 1.11.0
+
+ - Add hosted fields split payment method
+ - Get payment product from SDK JS
+ - Fix: Oney payment method
+ 
 # Version 1.10.0
 
  - Add Payment Method Hosted Fields
