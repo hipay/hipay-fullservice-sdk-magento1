@@ -1,7 +1,7 @@
 web:
   container_name: jira-mg-latest.hipay-pos-platform.com
   build: .
-  dockerfile: ./bin/docker/images/php5-6/Dockerfile
+  dockerfile: ./bin/docker/images/php7-1/Dockerfile
   ports:
     - "8095:8095"
   env_file:

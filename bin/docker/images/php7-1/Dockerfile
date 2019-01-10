@@ -1,6 +1,6 @@
-FROM php:5.6-apache
+FROM php:7.1-apache
 
-ENV PHP_VERSION=5.6
+ENV PHP_VERSION=7.1
 
 MAINTAINER HIPAY Fullservice <support.tpp@hipay.com>
 
@@ -65,7 +65,7 @@ RUN curl -O  https://raw.githubusercontent.com/netz98/n98-magerun/master/n98-mag
 
 WORKDIR /var/www/htdocs
 
-ENV MAGENTO_VERSION=1.9.3.8
+ENV MAGENTO_VERSION=1.9.4.0
 ENV SAMPLE_DATA_VERSION=1.9
 
 ENTRYPOINT ["/tmp/images/entrypoint.sh"]

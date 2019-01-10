@@ -47,7 +47,7 @@ build-test:
   stage: build-test-1
   script:
     - sh bin/docker/generate_dockerfile.sh
-    - sh ./bin/docker/init-environment.sh php5.6
+    - sh ./bin/docker/init-environment.sh php7.1
   tags:
     - pi-commerce-no-overlay
   allow_failure: false
@@ -116,7 +116,7 @@ build-test-2:
   stage: build-test-2
   script:
     - sh bin/docker/generate_dockerfile.sh
-    - sh ./bin/docker/init-environment.sh php7-0
+    - sh ./bin/docker/init-environment.sh php5-6
   tags:
     - pi-commerce-no-overlay
   allow_failure: false
@@ -125,7 +125,7 @@ casperjs-part1-2:
   stage: test-2
   <<: *before_template
   script:
-    - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST docker-compose.test-php7-0.yml 0
+    - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST docker-compose.test-php5-6.yml 0
   tags:
     - pi-commerce-no-overlay
   artifacts:
@@ -140,7 +140,7 @@ casperjs-part2-2:
     stage: test-2
     <<: *before_template
     script:
-        - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part2 docker-compose.test-php7-0.yml 1
+        - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part2 docker-compose.test-php5-6.yml 1
     tags:
         - pi-commerce-no-overlay
     artifacts:
@@ -155,7 +155,7 @@ casperjs-part3-2:
     stage: test-2
     <<: *before_template
     script:
-        - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part3 docker-compose.test-php7-0.yml 2
+        - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part3 docker-compose.test-php5-6.yml 2
     tags:
         - pi-commerce-no-overlay
     artifacts:
@@ -170,7 +170,7 @@ casperjs-part4-2:
     stage: test-2
     <<: *before_template
     script:
-        - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part4 docker-compose.test-php7-0.yml 3
+        - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part4 docker-compose.test-php5-6.yml 3
     tags:
         - pi-commerce-no-overlay
     artifacts:
@@ -179,7 +179,7 @@ casperjs-part4-2:
       when: always
     allow_failure: false
     after_script:
-      - bash /tools/clean-job.sh $PROJECT_NAME_TEST-part4 docker-compose.test-php7-0.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
+      - bash /tools/clean-job.sh $PROJECT_NAME_TEST-part4 docker-compose.test-php5-6.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
 
 clean-stack-test:
   stage: clean-stack
@@ -268,6 +268,7 @@ deploy2Recette:
     - bash /tools/deployToDockerMachine.sh -e ./bin/docker/conf/acceptance/hipay.env.sample -e ./bin/docker/conf/acceptance/mysql.env.sample -e ./bin/docker/conf/acceptance/mage.env.sample -s docker-compose.acceptance.yml -n $DOCKER_STACK-$DOCKER_SERVICE-$CI_COMMIT_REF_SLUG
  tags:
     - pi-commerce-no-overlay
+ when: manual
  environment:
    name: review/${CI_COMMIT_REF_SLUG}
    url: https://${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}.hipay-pos-platform.com
