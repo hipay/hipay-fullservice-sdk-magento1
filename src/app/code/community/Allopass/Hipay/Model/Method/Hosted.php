@@ -108,6 +108,10 @@ class Allopass_Hipay_Model_Method_Hosted extends Allopass_Hipay_Model_Method_Abs
                 $gatewayParams['template'] .= '-js';
             }
 
+            if($payment->getAdditionalInformation('create_oneclick')){
+                $gatewayParams['multi_use'] = 1;
+            }
+
             $gatewayParams['display_selector'] = $this->getConfigData('display_selector');
 
             if ($gatewayParams['country'] == 'BE') {
