@@ -1,6 +1,6 @@
-FROM php:5.6-apache
+FROM php:7.1-apache
 
-ENV PHP_VERSION=5.6
+ENV PHP_VERSION=7.1
 
 MAINTAINER HIPAY Fullservice <support.tpp@hipay.com>
 
@@ -15,12 +15,11 @@ RUN apt-get update \
     && docker-php-ext-install pdo_mysql \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install gd \
-    && docker-php-ext-install mcrypt \
     && docker-php-ext-install mbstring \
     && docker-php-ext-install soap \
     && docker-php-ext-install pdo mysqli \
     && curl -sS https://getcomposer.org/installer | php -- --filename=composer -- --install-dir=/usr/local/bin \
-    && requirementsToRemove="libpng12-dev libmcrypt-dev libcurl3-dev libpng12-dev libfreetype6-dev libjpeg62-turbo-dev" \
+    && requirementsToRemove="libpng12-dev libcurl3-dev libpng12-dev libfreetype6-dev libjpeg62-turbo-dev" \
     && apt-get purge --auto-remove -y $requirementsToRemove
 
 # ADD PHANTOM AND CASPER
@@ -65,7 +64,7 @@ RUN curl -O  https://raw.githubusercontent.com/netz98/n98-magerun/master/n98-mag
 
 WORKDIR /var/www/htdocs
 
-ENV MAGENTO_VERSION=1.9.3.8
+ENV MAGENTO_VERSION=1.9.4.0
 ENV SAMPLE_DATA_VERSION=1.9
 
 ENTRYPOINT ["/tmp/images/entrypoint.sh"]
