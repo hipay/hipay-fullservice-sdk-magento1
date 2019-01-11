@@ -32,10 +32,12 @@ variables:
     - sh bin/docker/generate_dockerfile.sh
 
 stages:
-  - build-test-1
-  - test-1
-  - build-test-2
-  - test-2
+  - build-test-php7
+  - test-php7
+  - build-test-5-6
+  - test-php5-6
+  - build-test-php7-2
+  - test-php7-2
   - clean-stack
   - analysis
   - package
@@ -43,17 +45,23 @@ stages:
   - deploy
   - sync
 
+#########################################################################
+###                                PHP 7-1                            ###
+#########################################################################
 build-test:
-  stage: build-test-1
+  stage: build-test-php7
   script:
     - sh bin/docker/generate_dockerfile.sh
     - sh ./bin/docker/init-environment.sh php7.1
   tags:
     - pi-commerce-no-overlay
   allow_failure: false
+  except:
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /skip-tests/
 
 casperjs-part1-1:
-  stage: test-1
+  stage: test-php7
   <<: *before_template
   script:
     - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST docker-compose.test.yml 0
@@ -66,9 +74,12 @@ casperjs-part1-1:
   allow_failure: false
   after_script:
     -  bash /tools/clean-job.sh $PROJECT_NAME_TEST docker-compose.test.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
+  except:
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /skip-tests/
 
 casperjs-part2-1:
-    stage: test-1
+    stage: test-php7
     <<: *before_template
     script:
         - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part2 docker-compose.test.yml 1
@@ -79,11 +90,14 @@ casperjs-part2-1:
           - bin/tests/errors/
         when: always
     allow_failure: false
+    except:
+       variables:
+          - $CI_COMMIT_MESSAGE =~ /skip-tests/
     after_script:
        -  bash /tools/clean-job.sh $PROJECT_NAME_TEST-part2 docker-compose.test.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
 
 casperjs-part3-1:
-    stage: test-1
+    stage: test-php7
     <<: *before_template
     script:
         - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part3 docker-compose.test.yml 2
@@ -94,11 +108,14 @@ casperjs-part3-1:
           - bin/tests/errors/
         when: always
     allow_failure: false
+    except:
+      variables:
+        - $CI_COMMIT_MESSAGE =~ /skip-tests/
     after_script:
        -  bash /tools/clean-job.sh $PROJECT_NAME_TEST-part3 docker-compose.test.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
 
 casperjs-part4-1:
-    stage: test-1
+    stage: test-php7
     <<: *before_template
     script:
         - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part4 docker-compose.test.yml 3
@@ -109,20 +126,29 @@ casperjs-part4-1:
           - bin/tests/errors/
         when: always
     allow_failure: false
+    except:
+      variables:
+        - $CI_COMMIT_MESSAGE =~ /skip-tests/
     after_script:
         -  bash /tools/clean-job.sh $PROJECT_NAME_TEST-part4 docker-compose.test.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
 
-build-test-2:
-  stage: build-test-2
+#########################################################################
+###                                PHP 5-6                            ###
+#########################################################################
+build-test-5-6:
+  stage: build-test-5-6
   script:
     - sh bin/docker/generate_dockerfile.sh
     - sh ./bin/docker/init-environment.sh php5-6
   tags:
     - pi-commerce-no-overlay
   allow_failure: false
+  except:
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /skip-tests/
 
 casperjs-part1-2:
-  stage: test-2
+  stage: test-php5-6
   <<: *before_template
   script:
     - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST docker-compose.test-php5-6.yml 0
@@ -133,11 +159,14 @@ casperjs-part1-2:
       - bin/tests/errors/
     when: always
   allow_failure: false
+  except:
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /skip-tests/
   after_script:
-    - bash /tools/clean-job.sh $PROJECT_NAME_TEST docker-compose.test-php7-0.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
+    - bash /tools/clean-job.sh $PROJECT_NAME_TEST docker-compose.test-php5-6.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
 
 casperjs-part2-2:
-    stage: test-2
+    stage: test-php5-6
     <<: *before_template
     script:
         - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part2 docker-compose.test-php5-6.yml 1
@@ -148,11 +177,14 @@ casperjs-part2-2:
         - bin/tests/errors/
       when: always
     allow_failure: false
+    except:
+      variables:
+        - $CI_COMMIT_MESSAGE =~ /skip-tests/
     after_script:
-      - bash /tools/clean-job.sh $PROJECT_NAME_TEST-part2 docker-compose.test-php7-0.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
+      - bash /tools/clean-job.sh $PROJECT_NAME_TEST-part2 docker-compose.test-php5-6.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
 
 casperjs-part3-2:
-    stage: test-2
+    stage: test-php5-6
     <<: *before_template
     script:
         - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part3 docker-compose.test-php5-6.yml 2
@@ -164,10 +196,13 @@ casperjs-part3-2:
       when: always
     allow_failure: false
     after_script:
-      - bash /tools/clean-job.sh $PROJECT_NAME_TEST-part3 docker-compose.test-php7-0.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
+      - bash /tools/clean-job.sh $PROJECT_NAME_TEST-part3 docker-compose.test-php5-6.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
+    except:
+      variables:
+        - $CI_COMMIT_MESSAGE =~ /skip-tests/
 
 casperjs-part4-2:
-    stage: test-2
+    stage: test-php5-6
     <<: *before_template
     script:
         - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part4 docker-compose.test-php5-6.yml 3
@@ -178,8 +213,99 @@ casperjs-part4-2:
         - bin/tests/errors/
       when: always
     allow_failure: false
+    except:
+      variables:
+        - $CI_COMMIT_MESSAGE =~ /skip-tests/
     after_script:
       - bash /tools/clean-job.sh $PROJECT_NAME_TEST-part4 docker-compose.test-php5-6.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
+
+build-test-php-7-2:
+  stage: build-test-php7-2
+  script:
+    - sh bin/docker/generate_dockerfile.sh
+    - sh ./bin/docker/init-environment.sh php7.2
+  tags:
+    - pi-commerce-no-overlay
+  allow_failure: false
+  except:
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /skip-tests/
+
+
+#########################################################################
+###                                PHP 7-2                            ###
+#########################################################################
+casperjs-part1-3:
+  stage: test-php7-2
+  <<: *before_template
+  script:
+    - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST docker-compose.test-php7-2.yml 0
+  tags:
+    - pi-commerce-no-overlay
+  artifacts:
+    paths:
+      - bin/tests/errors/
+    when: always
+  allow_failure: false
+  except:
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /skip-tests/
+  after_script:
+    -  bash /tools/clean-job.sh $PROJECT_NAME_TEST docker-compose.test-php7-2.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
+
+casperjs-part2-3:
+    stage: test-php7-2
+    <<: *before_template
+    script:
+        - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part2 docker-compose.test-php7-2.yml 1
+    tags:
+        - pi-commerce-no-overlay
+    artifacts:
+        paths:
+          - bin/tests/errors/
+        when: always
+    allow_failure: false
+    except:
+      variables:
+        - $CI_COMMIT_MESSAGE =~ /skip-tests/
+    after_script:
+       -  bash /tools/clean-job.sh $PROJECT_NAME_TEST-part2 docker-compose.test-php7-2.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
+
+casperjs-part3-3:
+    stage: test-php7-2
+    <<: *before_template
+    script:
+        - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part3 docker-compose.test-php7-2.yml 2
+    tags:
+        - pi-commerce-no-overlay
+    artifacts:
+        paths:
+          - bin/tests/errors/
+        when: always
+    allow_failure: false
+    except:
+      variables:
+        - $CI_COMMIT_MESSAGE =~ /skip-tests/
+    after_script:
+       -  bash /tools/clean-job.sh $PROJECT_NAME_TEST-part3 docker-compose.test-php7-2.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
+
+casperjs-part4-3:
+    stage: test-php7-2
+    <<: *before_template
+    script:
+        - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part4 docker-compose.test-php7-2.yml 3
+    tags:
+        - pi-commerce-no-overlay
+    artifacts:
+        paths:
+          - bin/tests/errors/
+        when: always
+    allow_failure: false
+    except:
+      variables:
+        - $CI_COMMIT_MESSAGE =~ /skip-tests/
+    after_script:
+        -  bash /tools/clean-job.sh $PROJECT_NAME_TEST-part4 docker-compose.test-php7-2.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
 
 clean-stack-test:
   stage: clean-stack
@@ -189,6 +315,9 @@ clean-stack-test:
   tags:
     - pi-commerce-no-overlay
   when: always
+  except:
+    variables:
+      - $CI_COMMIT_MESSAGE =~ /skip-tests/
 
 sonarqube:
   stage: analysis
