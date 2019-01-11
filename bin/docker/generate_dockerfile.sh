@@ -8,7 +8,7 @@ cp -f bin/docker/images/php7-1/Dockerfile bin/docker/images/php7-2/Dockerfile
 sed -i -e "s/FROM php:7.1-apache/FROM php:5.6-apache/" bin/docker/images/php5-6/Dockerfile
 sed -i -e "s/PHP_VERSION=7.1/PHP_VERSION=5.6/" bin/docker/images/php5-6/Dockerfile
 
-sed -i -e "s/FROM php:7.1-apache/FROM php:7.2-apache/" bin/docker/images/php5-6/Dockerfile
+sed -i -e "s/FROM php:7.1-apache/FROM php:7.2-apache/" bin/docker/images/php7-2/Dockerfile
 sed -i -e "s/PHP_VERSION=7.1/PHP_VERSION=7.2/" bin/docker/images/php7-2/Dockerfile
 
 # Generate docker_compose

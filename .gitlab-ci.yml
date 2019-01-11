@@ -223,7 +223,7 @@ build-test-php-7-2:
   stage: build-test-php7-2
   script:
     - sh bin/docker/generate_dockerfile.sh
-    - sh ./bin/docker/init-environment.sh php7.2
+    - sh ./bin/docker/init-environment.sh php7-2
   tags:
     - pi-commerce-no-overlay
   allow_failure: false
