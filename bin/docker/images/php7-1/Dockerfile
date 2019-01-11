@@ -8,7 +8,7 @@ MAINTAINER HIPAY Fullservice <support.tpp@hipay.com>
 RUN apt-get update \
     && apt-get install -y curl gnupg \
     && curl -sL https://deb.nodesource.com/setup_10.x | bash - \
-    && requirements="libpng-dev libmcrypt-dev libxml2-dev libmcrypt-dev libmcrypt4 libcurl3-dev libfreetype6 libjpeg62-turbo git zip unzip default-libmysqlclient-dev libfreetype6-dev libjpeg62-turbo-dev mysql-client bzip2 ssmtp npm libfontconfig libicu57 libsqlite3-0 vim rsyslog cron" \
+    && requirements="libpng-dev libxml2-dev libmcrypt-dev libmcrypt4 libcurl3-dev libfreetype6 libjpeg62-turbo git zip unzip default-libmysqlclient-dev libfreetype6-dev libjpeg62-turbo-dev mysql-client bzip2 ssmtp npm libfontconfig libicu57 libsqlite3-0 vim rsyslog cron" \
     && apt-get update && apt-get install -y $requirements && rm -rf /var/lib/apt/lists/* \
     && echo "sendmail_path = /usr/sbin/ssmtp -t" > /usr/local/etc/php/conf.d/sendmail.ini \
     && echo "mailhub=smtp:1025\n UseTLS=NO\n FromLineOverride=YES" > /etc/ssmtp/ssmtp.conf \
@@ -18,9 +18,8 @@ RUN apt-get update \
     && docker-php-ext-install mbstring \
     && docker-php-ext-install soap \
     && docker-php-ext-install pdo mysqli \
-    && pecl install mcrypt-1.0.1 \
     && curl -sS https://getcomposer.org/installer | php -- --filename=composer -- --install-dir=/usr/local/bin \
-    && requirementsToRemove="libpng12-dev libmcrypt-dev libcurl3-dev libpng12-dev libfreetype6-dev libjpeg62-turbo-dev" \
+    && requirementsToRemove="libpng12-dev libcurl3-dev libpng12-dev libfreetype6-dev libjpeg62-turbo-dev" \
     && apt-get purge --auto-remove -y $requirementsToRemove
 
 # ADD PHANTOM AND CASPER
