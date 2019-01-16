@@ -22,7 +22,7 @@ return array(
   'path_output'            => __DIR__.'/dist',
 
   'php_min'                => '5.2.0',
-  'php_max'                => '6.0.0',
+  'php_max'                => '7.2.0',
 
   'extensions'             => array()
 );

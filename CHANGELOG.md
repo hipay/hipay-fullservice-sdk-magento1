@@ -1,3 +1,8 @@
+# Version 1.11.1
+
+ - Fix: Force multi_use on Hpayment request (OneClick)
+ - Fix: Add support for PHP 7
+ 
 # Version 1.11.0
 
  - Add hosted fields split payment method

@@ -1,7 +1,7 @@
 <config>
     <modules>
         <Allopass_Hipay>
-            <version>1.11.0</version>
+            <version>1.11.1</version>
         </Allopass_Hipay>
     </modules>
     <global>
