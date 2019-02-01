@@ -31,33 +31,6 @@ casper.test.begin('Functions', function(test) {
     	    this.echo(Date.now()-start + "ms");
        	start = Date.now();
     });*/
-    
-    /* Fill HiPayCC formular */
-    casper.fillFormPaymentHipayCC = function(type, card) {
-        this.fillSelectors('form#co-payment-form', {
-            'select[name="payment[hipay_cc_cc_type]"]': type,
-            'input[name="payment[hipay_cc_cc_number]"]': card,
-            'select[name="payment[hipay_cc_cc_exp_month]"]': '2',
-            'select[name="payment[hipay_cc_cc_exp_year]"]': '2020',
-            'input[name="payment[hipay_cc_cc_cid]"]': '500'
-        }, false);
-    };
-
-    /* Choose payment method in checkout */
-    casper.choosingPaymentMethod = function(method_hipay) {
-        this.echo("Choosing payment method with" + method_hipay, "INFO");
-        this.waitUntilVisible('#checkout-step-payment', function success() {
-            if (this.visible('p[class="bugs"]')) {
-                this.click('input#p_' + method_hipay);
-            } else {
-                this.click('#dt_' + method_hipay +'>input[name="payment[method]"]');
-            }
-            this.click("div#payment-buttons-container>button");
-            test.info("Done");
-        }, function fail() {
-            test.assertVisible("#checkout-step-payment", "'Payment Information' formular exists");
-        }, 10000);
-    }
 
 	/* Choose first item at home page */
 	casper.selectItemAndOptions = function() {
@@ -209,54 +182,7 @@ casper.test.begin('Functions', function(test) {
             test.assertVisible("#checkout-step-payment", "'Order Review' exists");
         }, 15000);
 	};
-    /* Log to BO TPP */
-    casper.logToBackend = function() {
-        this.echo("Accessing and logging to TPP BackOffice...", "INFO");
-        this.waitForUrl(/login/, function success() {
-            this.fillSelectors('form', {
-                'input[name="email"]': loginBackend,
-                'input[name="password"]': passBackend
-            }, true);
-            if(loginBackend != "" && passBackend != "")
-                test.info("Done");
-            else
-                this.echo("WARNING: No Backend credentials available !", "WARNING");
-        }, function fail() {
-            test.assertUrlMatch(/login/, "Login page exists");
-        },10000);
-    };
-    /* Select account for test from BO TPP */
-    casper.selectAccountBackend = function(name) {
-        this.waitForUrl(/dashboard/, function success() {
-            if(this.exists('div#s2id_dropdown-merchant-input>a')) {
-                this.echo("Selecting sub-account...", "INFO");
-                this.echo('URL match 1');
-                this.thenClick('div#s2id_dropdown-merchant-input>a', function() {
-                    this.sendKeys('input[placeholder="Account name or API credential"]', name);
-                    this.wait(1000, function() {    
-                        this.click(x('//span[contains(., "HIPAY_RE7_' + name + ' -")]'));
-                    });
-                });
-            }
-            else {
-                this.echo("Selecting account "  + name + " with old backend ", "INFO");
-                if(this.exists(x('//td[contains(., "HIPAY_RE7_' + name + '")]/preceding-sibling::td[@class="account-number"]/a'))) {
-                    this.thenClick('div#fs-account-navigation>div>a', function() {
-                        this.thenClick(x('//li/a[text()="Test"]'), function() {
-                            this.thenClick(x('//td[contains(., "HIPAY_RE7")]/i'), function() {
-                                this.click(x('//td[contains(., "HIPAY_RE7_' + name + '")]/preceding-sibling::td[@class="account-number"]/a'));
-                            });
-                        });
-                    });
-                } else {
-                    this.echo('Account is not listed "HIPAY_RE7_' + name + '"', "ERROR");
-                }
-            }
-        }, function fail() {
-            test.assertUrlMatch(/dashboard/, "dashboard page exists");
-        },
-        25000);
-    };
+
 	/* Get order ID, if it exists, after purchase, and set it in variable */
 	casper.setOrderId = function(pending) {
 		if(pending)
@@ -293,19 +219,7 @@ casper.test.begin('Functions', function(test) {
     	    }, 50000);
         }, 50000);
 	};
-    /* Test file again with another card type */
-    casper.testOtherTypeCC = function(file) {
-        casper.then(function() {  
-            if(typeof this.cli.get('type-cc') == "undefined") {
-                if(typeCC == "VISA") {
-                    typeCC = "MasterCard";
-                    phantom.injectJs(pathHeader + file);
-                }
-                else if(typeCC == "MasterCard")
-                    typeCC = "VISA"; // retour du typeCC à la normale --> VISA pour la suite des tests
-            }
-        });
-    };
+
     /* Test file again with another currency */
     casper.testOtherCurrency = function(file) {
         casper.then(function() {
@@ -339,36 +253,59 @@ casper.test.begin('Functions', function(test) {
     };
     /* Configure Device Fingerprint options via formular */
     casper.setDeviceFingerprint = function(state) {
-        this.echo("Accessing Hipay Enterprise menu...", "INFO");
-        this.click(x('//span[text()="Configuration"]'));
-        this.waitForUrl(/admin\/system_config/, function success() {
-            this.click(x('//span[contains(., "HiPay Enterprise")]'));
-            test.info("Done");
-            this.waitForSelector(x('//h3[text()="HiPay Enterprise"]'), function success() {
-                this.echo("Changing 'Device Fingerprint' field...", "INFO");
-                var valueFingerprint = this.evaluate(function() { return document.querySelector('select[name="groups[hipay_api][fields][fingerprint][value]"]').value; });
-                if(valueFingerprint == state)
-                    test.info("Device Fingerprint configuration already done");
-                else {
-                    this.fillSelectors("form#config_edit_form", {
-                        'select[name="groups[hipay_api][fields][fingerprint][value]"]': state
-                    }, false);
-                    this.click(x('//span[text()="Save Config"]'));
-                    this.waitForSelector(x('//span[contains(.,"The configuration has been saved.")]'), function success() {
-                        test.info("Device Fingerprint Configuration done");
-                    }, function fail() {
-                        test.fail('Failed to apply Device Fingerprint Configuration on the system');
-                    }, 15000);
-                }
-            }, function fail() {
-                test.assertExists(x('//h3[text()="HiPay Enterprise"]'), "Hipay Enterprise admin page exists");
-            }, 10000);
-        }, function fail() {
-            test.assertUrlMatch(/admin\/system_config/, "Configuration admin page exists");
-        }, 10000);
+        casper.then(function() {
+            this.gotoMenuHipayEnterprise();
+        }).then(function() {
+            this.echo("Changing 'Device Fingerprint' field...", "INFO");
+            var valueFingerprint = this.evaluate(function() { return document.querySelector('select[name="groups[hipay_api][fields][fingerprint][value]"]').value; });
+            if(valueFingerprint == state)
+                test.info("Device Fingerprint configuration already done");
+            else {
+                this.fillSelectors("form#config_edit_form", {
+                    'select[name="groups[hipay_api][fields][fingerprint][value]"]': state
+                }, false);
+                this.click(x('//span[text()="Save Config"]'));
+                this.waitForSelector(x('//span[contains(.,"The configuration has been saved.")]'), function success() {
+                    test.info("Device Fingerprint Configuration done");
+                }, function fail() {
+                    test.fail('Failed to apply Device Fingerprint Configuration on the system');
+                }, 15000);
+            }
+        })
+    };
+
+    /* Configure Mapping for basket */
+    casper.activeAndFillBasket = function(state) {
+        casper.then(function() {
+            this.gotoMenuHipayEnterprise();
+        }).then(function() {
+            this.echo("Changing 'Send cart items' field...", "INFO");
+            var valueFingerprint = this.evaluate(function() { return document.querySelector('select[name="groups[hipay_basket][fields][activate_basket][value]"]').value; });
+            if(valueFingerprint == state)
+                test.info("Send cart items");
+            else {
+                this.fillSelectors("form#config_edit_form", {
+                    'select[name="groups[hipay_basket][fields][activate_basket][value]"]': "1",
+                    'select[name="groups[hipay_basket][fields][mapping_category][value][4][hipay_category]"]' : "1",
+                    'select[name="groups[hipay_basket][fields][mapping_category][value][5][hipay_category]"]' : "1",
+                    'select[name="groups[hipay_basket][fields][mapping_category][value][6][hipay_category]"]' : "1",
+                    'select[name="groups[hipay_basket][fields][mapping_category][value][7][hipay_category]"]' : "1",
+                    'select[name="groups[hipay_basket][fields][mapping_category][value][8][hipay_category]"]' : "1",
+                    'select[name="groups[hipay_basket][fields][mapping_category][value][9][hipay_category]"]' : "1",
+                    'select[name="groups[hipay_basket][fields][mapping_shipping_method][value][flatrate_flatrate][hipay_delivery_method]"]':"1"
+                }, false);
+
+                this.click(x('//span[text()="Save Config"]'));
+                this.waitForSelector(x('//span[contains(.,"The configuration has been saved.")]'), function success() {
+                    test.info("Send cart items Configuration done");
+                }, function fail() {
+                    test.fail('Failed Send cart items on the system');
+                }, 30000);
+            }
+        })
     };
 
 	casper.echo('Fonctions chargées !', 'INFO');
-	test.info("Based URL: " + headlink);
+	test.info("Based URL: " + baseURL);
     test.done();
 });

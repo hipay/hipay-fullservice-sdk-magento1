@@ -1,0 +1,53 @@
+version: "3.3"
+
+networks:
+  magento:
+    internal: true
+  outside:
+    external: true
+
+services:
+  web:
+    image: ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
+    container_name: mg1-${CI_JOB_ID}_web
+    networks:
+      magento:
+      outside:
+         aliases:
+           - ${DOCKER_SERVICE}-${CI_JOB_ID}-web
+    depends_on:
+      - database
+    build:
+      context: .
+      dockerfile: ./bin/docker/images/php7-1/Dockerfile
+    environment:
+      - SAMPLE_DATA_VERSION=1.9
+      - MAGENTO_VERSION=1.9.4.0
+    env_file:
+      - ./bin/docker/conf/test/hipay.env.sample
+      - ./bin/docker/conf/test/mage.env.sample
+      - ./bin/docker/conf/test/mysql.env.sample
+
+  database:
+    container_name: mg1-${CI_JOB_ID}_database
+    image: mysql:5.7
+    env_file:
+       - ./bin/docker/conf/test/mysql.env.sample
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    networks:
+      magento:
+      outside:
+        aliases:
+          - ${DOCKER_SERVICE}-${CI_JOB_ID}-database
+
+  smtp:
+    container_name: hipay-smtp-mg1-$CI_JOB_ID
+    image: hipay/mailcatcher:1.0.0
+    networks:
+      magento:
+      outside:
+        aliases:
+          - ${DOCKER_SERVICE}-${CI_JOB_ID}-smtp

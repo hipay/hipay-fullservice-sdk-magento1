@@ -1,3 +1,72 @@
+# Version 1.11.1
+
+ - Fix: Force multi_use on Hpayment request (OneClick)
+ - Fix: Add support for PHP 7
+ 
+# Version 1.11.0
+
+ - Add hosted fields split payment method
+ - Get payment product from SDK JS
+ - Fix: Oney payment method
+ 
+# Version 1.10.0
+
+ - Add Payment Method Hosted Fields
+ - Migrate to SDKJS V3
+ - Add Payment Method Hosted MO/TO
+ 
+# Version 1.9.6
+
+ - Fix : One click card date filter
+  
+# Version 1.9.5
+
+ - Fix : unnecessary mandatory CVV for Maestro card
+  
+# Version 1.9.4
+
+ - Remove electronic signature from SDD
+ - [#141](https://github.com/hipay/hipay-fullservice-sdk-magento1/issues/141) Fix issue [#141] : Js iframe config bug 
+ - [#140](https://github.com/hipay/hipay-fullservice-sdk-magento1/issues/140) Fix issue [#140] : Wrong method declaration 
+ 
+# Version 1.9.3
+
+ - Fix : Change refund workflow
+ 
+# Version 1.9.2
+
+ - Fix : Modify data send to server
+ 
+# Version 1.9.1
+
+ - Fix : no transaction reference on 118
+ - Fix : split payment bug
+
+# Version 1.9.0
+
+ - Add support for Oney credit long payment method
+ - Remove tokenization server to server (deprecated)
+ - Improve CI
+
+# Version 1.8.1
+
+ - Add support for order grand total with 4 digits
+
+# Version 1.8.0
+
+ - FIX Configuration per Store without default value doesn't work
+ - Add support for notify_url
+ - Add support for several hashing algorithm for notification
+
+# Version 1.7.10
+
+ - Add Support for Mastercard BIN Range Update
+ 
+# Version 1.7.9
+
+ - Rework stripos during curl call
+ - Payment can be false and no order in response  (@gcann-tbd)
+ 
 # Version 1.7.8
 
  - New payment method support : Bnp Personal Finance 3X and 4X

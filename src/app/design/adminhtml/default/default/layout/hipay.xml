@@ -2,51 +2,60 @@
 <layout version="0.1.0">
 
 
+    <adminhtml_system_config_edit>
+        <reference name="head">
+            <action method="setCanLoadExtJs">
+                <flag>1</flag>
+            </action>
+            <!--  <action method="setCanLoadRulesJs"><flag>1</flag></action> -->
+            <action method="addItem">
+                <type>skin_js</type>
+                <name>hipay/js/rules.js</name>
+            </action>
+            <action method="addCss">
+                <stylesheet>hipay/css/hipay.css</stylesheet>
+            </action>
+        </reference>
+    </adminhtml_system_config_edit>
 
-<adminhtml_system_config_edit>
- 	<reference name="head">
-        <action method="setCanLoadExtJs"><flag>1</flag></action>
-       <!--  <action method="setCanLoadRulesJs"><flag>1</flag></action> -->
-        <action method="addItem"><type>skin_js</type><name>hipay/js/rules.js</name></action>
-		<action method="addCss"><stylesheet>hipay/css/hipay.css</stylesheet></action>
-    </reference>
-</adminhtml_system_config_edit>
+    <adminhtml_paymentprofile_index>
+        <reference name="content">
+            <block type="hipay/adminhtml_paymentProfile" name="paymentProfile.grid.container"></block>
+        </reference>
+    </adminhtml_paymentprofile_index>
 
-<adminhtml_paymentprofile_index>
-	<reference name="content">
-	    <block type="hipay/adminhtml_paymentProfile" name="paymentProfile.grid.container"></block>
-	</reference>
-</adminhtml_paymentprofile_index>
+    <adminhtml_paymentprofile_edit>
+        <reference name="content">
+            <block type="hipay/adminhtml_paymentProfile_edit" name="paymentProfile.edit.container"></block>
+        </reference>
+    </adminhtml_paymentprofile_edit>
 
-<adminhtml_paymentprofile_edit>
-	<reference name="content">
-	    <block type="hipay/adminhtml_paymentProfile_edit" name="paymentProfile.edit.container"></block>
-	</reference>
-</adminhtml_paymentprofile_edit>
+    <adminhtml_splitpayment_index>
+        <reference name="content">
+            <block type="hipay/adminhtml_splitPayment" name="splitPayment.grid.container"></block>
+        </reference>
+    </adminhtml_splitpayment_index>
 
-<adminhtml_splitpayment_index>
-	<reference name="content">
-	    <block type="hipay/adminhtml_splitPayment" name="splitPayment.grid.container"></block>
-	</reference>
-</adminhtml_splitpayment_index>
+    <adminhtml_splitpayment_edit>
+        <reference name="content">
+            <block type="hipay/adminhtml_splitPayment_edit" name="splitPayment.edit.container"></block>
+        </reference>
+    </adminhtml_splitpayment_edit>
 
-<adminhtml_splitpayment_edit>
-	<reference name="content">
-	    <block type="hipay/adminhtml_splitPayment_edit" name="splitPayment.edit.container"></block>
-	</reference>
-</adminhtml_splitpayment_edit>
+    <adminhtml_customer_edit>
+        <reference name="customer_edit_tabs">
+            <block type="hipay/adminhtml_customer_edit_tab_card" name="customer_edit_tab_card"/>
+            <action method="addTab">
+                <name>customer_edit_tab_card</name>
+                <block>customer_edit_tab_card</block>
+            </action>
+        </reference>
+    </adminhtml_customer_edit>
 
-<adminhtml_customer_edit>
-  <reference name="customer_edit_tabs">
-	<block type="hipay/adminhtml_customer_edit_tab_card" name="customer_edit_tab_card" />
-	<action method="addTab"><name>customer_edit_tab_card</name><block>customer_edit_tab_card</block></action>
-  </reference>
-</adminhtml_customer_edit>
-
-<adminhtml_card_edit>
-	<reference name="content">
-	    <block type="hipay/adminhtml_card_edit" name="card.edit.container"></block>
-	</reference>
-</adminhtml_card_edit>
+    <adminhtml_card_edit>
+        <reference name="content">
+            <block type="hipay/adminhtml_card_edit" name="card.edit.container"></block>
+        </reference>
+    </adminhtml_card_edit>
 
 </layout>

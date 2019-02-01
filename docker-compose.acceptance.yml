@@ -1,0 +1,93 @@
+version: "3.3"
+
+networks:
+  traefik_traefik:
+    external: true
+  magento:
+    internal: true
+  outside-pi-overlay:
+    external: true
+
+services:
+  web:
+    image: ${REGISTRY_URL}/${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
+    build:
+      context: .
+      dockerfile: ./bin/docker/images/php7-1/Dockerfile
+    environment:
+      - SAMPLE_DATA_VERSION=1.9
+      - MAGENTO_VERSION=1.9.4.0
+    env_file:
+      - ./bin/docker/conf/acceptance/hipay.env.sample
+      - ./bin/docker/conf/acceptance/mage.env.sample
+      - ./bin/docker/conf/acceptance/mysql.env.sample
+    labels:
+      - "com.hipay.ir.publish=1"
+      - "com.hipay.ir.name=web"
+      - "com.hipay.ir.branch=${CI_COMMIT_REF_SLUG}"
+      - "com.hipay.ir.gitlab.feature.link=${CI_PROJECT_URL}/tree/${CI_COMMIT_REF_NAME}"
+      - "com.hipay.ir.gitlab.org=pi-ecommerce"
+      - "com.hipay.ir.gitlab.project=hipay-fullservice-sdk-magento1"
+      - "com.hipay.ir.admin.url=${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}.hipay-pos-platform.com/admin"
+      - "com.hipay.ir.url=${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}.hipay-pos-platform.com"
+    deploy:
+        labels:
+          - "traefik.frontend.rule=Host:${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}.hipay-pos-platform.com"
+          - "traefik.port=80"
+          - "traefik.docker.network=traefik_traefik"
+        placement:
+          constraints:
+            - node.hostname == docker
+        replicas: 1
+        update_config:
+          parallelism: 2
+          delay: 30s
+        restart_policy:
+          condition: on-failure
+    networks:
+      traefik_traefik:
+      magento:
+      outside-pi-overlay:
+        aliases:
+          - ${DOCKER_SERVICE}-${CI_JOB_ID}-web
+
+  database:
+    image: mysql:5.7
+    env_file:
+       - ./bin/docker/conf/acceptance/mysql.env.sample
+    networks:
+      traefik_traefik:
+      magento:
+      outside-pi-overlay:
+        aliases:
+          - ${DOCKER_SERVICE}-${CI_JOB_ID}-database
+  smtp:
+    image: hipay/mailcatcher:1.0.0
+    deploy:
+        labels:
+          - "traefik.frontend.rule=Host:${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-smtp.hipay-pos-platform.com"
+          - "traefik.port=80"
+          - "traefik.docker.network=traefik_traefik"
+        placement:
+          constraints:
+            - node.hostname == docker
+        replicas: 1
+        update_config:
+          parallelism: 2
+          delay: 30s
+        restart_policy:
+          condition: on-failure
+    labels:
+      - "com.hipay.ir.publish=1"
+      - "com.hipay.ir.name=mail"
+      - "com.hipay.ir.branch=${CI_COMMIT_REF_SLUG}"
+      - "com.hipay.ir.gitlab.feature.link=${CI_PROJECT_URL}/tree/${CI_COMMIT_REF_NAME}"
+      - "com.hipay.ir.gitlab.org=pi-ecommerce"
+      - "com.hipay.ir.gitlab.project=hipay-fullservice-sdk-magento1"
+      - "com.hipay.ir.url=${DOCKER_STACK}-${DOCKER_SERVICE}-${CI_COMMIT_REF_SLUG}-mail.hipay-pos-platform.com"
+    networks:
+      traefik_traefik:
+      magento:
+      outside-pi-overlay:
+        aliases:
+          - ${DOCKER_SERVICE}-${CI_JOB_ID}-smtp

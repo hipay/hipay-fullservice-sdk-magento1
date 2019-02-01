@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-	<modules>
-		<Allopass_Hipay>
-			<active>true</active>
-			<codePool>community</codePool>
-			<depends>
-				<Mage_Sales />
-			</depends>
-		</Allopass_Hipay>
-	</modules>
+    <modules>
+        <Allopass_Hipay>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>
+                <Mage_Sales/>
+            </depends>
+        </Allopass_Hipay>
+    </modules>
 </config>

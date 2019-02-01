@@ -1,6 +1,25 @@
 <?php
 
+/**
+ * HiPay Fullservice SDK Magento 1
+ *
+ * 2018 HiPay
+ *
+ * NOTICE OF LICENSE
+ *
+ * @author    HiPay <support.tpp@hipay.com>
+ * @copyright 2018 HiPay
+ * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ */
 
+/**
+ *
+ *
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-fullservice-sdk-magento1
+ */
 class Allopass_Hipay_Model_Rule_Condition_Product_Subselect
     extends Allopass_Hipay_Model_Rule_Condition_Product_Combine
 {
@@ -11,7 +30,7 @@ class Allopass_Hipay_Model_Rule_Condition_Product_Subselect
             ->setValue(null);
     }
 
-    public function loadArray($arr, $key='conditions')
+    public function loadArray($arr, $key = 'conditions')
     {
         $this->setAttribute($arr['attribute']);
         $this->setOperator($arr['operator']);
@@ -19,20 +38,22 @@ class Allopass_Hipay_Model_Rule_Condition_Product_Subselect
         return $this;
     }
 
-    public function asXml($containerKey='conditions', $itemKey='condition')
+    public function asXml($containerKey = 'conditions', $itemKey = 'condition')
     {
-        $xml = '<attribute>'.$this->getAttribute().'</attribute>'
-            . '<operator>'.$this->getOperator().'</operator>'
+        $xml = '<attribute>' . $this->getAttribute() . '</attribute>'
+            . '<operator>' . $this->getOperator() . '</operator>'
             . parent::asXml($containerKey, $itemKey);
         return $xml;
     }
 
     public function loadAttributeOptions()
     {
-        $this->setAttributeOption(array(
-            'qty'  => Mage::helper('salesrule')->__('total quantity'),
-            'base_row_total'  => Mage::helper('salesrule')->__('total amount'),
-        ));
+        $this->setAttributeOption(
+            array(
+                'qty' => Mage::helper('salesrule')->__('total quantity'),
+                'base_row_total' => Mage::helper('salesrule')->__('total amount'),
+            )
+        );
         return $this;
     }
 
@@ -43,16 +64,18 @@ class Allopass_Hipay_Model_Rule_Condition_Product_Subselect
 
     public function loadOperatorOptions()
     {
-        $this->setOperatorOption(array(
-            '=='  => Mage::helper('rule')->__('is'),
-            '!='  => Mage::helper('rule')->__('is not'),
-            '>='  => Mage::helper('rule')->__('equals or greater than'),
-            '<='  => Mage::helper('rule')->__('equals or less than'),
-            '>'   => Mage::helper('rule')->__('greater than'),
-            '<'   => Mage::helper('rule')->__('less than'),
-            '()'  => Mage::helper('rule')->__('is one of'),
-            '!()' => Mage::helper('rule')->__('is not one of'),
-        ));
+        $this->setOperatorOption(
+            array(
+                '==' => Mage::helper('rule')->__('is'),
+                '!=' => Mage::helper('rule')->__('is not'),
+                '>=' => Mage::helper('rule')->__('equals or greater than'),
+                '<=' => Mage::helper('rule')->__('equals or less than'),
+                '>' => Mage::helper('rule')->__('greater than'),
+                '<' => Mage::helper('rule')->__('less than'),
+                '()' => Mage::helper('rule')->__('is one of'),
+                '!()' => Mage::helper('rule')->__('is not one of'),
+            )
+        );
         return $this;
     }
 
@@ -63,11 +86,18 @@ class Allopass_Hipay_Model_Rule_Condition_Product_Subselect
 
     public function asHtml()
     {
-        $html = $this->getTypeElement()->getHtml().
-        Mage::helper('salesrule')->__("If %s %s %s for a subselection of items in cart matching %s of these conditions:", $this->getAttributeElement()->getHtml(), $this->getOperatorElement()->getHtml(), $this->getValueElement()->getHtml(), $this->getAggregatorElement()->getHtml());
+        $html = $this->getTypeElement()->getHtml() .
+            Mage::helper('salesrule')->__(
+                "If %s %s %s for a subselection of items in cart matching %s of these conditions:",
+                $this->getAttributeElement()->getHtml(),
+                $this->getOperatorElement()->getHtml(),
+                $this->getValueElement()->getHtml(),
+                $this->getAggregatorElement()->getHtml()
+            );
         if ($this->getId() != '1') {
             $html .= $this->getRemoveLinkHtml();
         }
+
         return $html;
     }
 
@@ -79,14 +109,9 @@ class Allopass_Hipay_Model_Rule_Condition_Product_Subselect
      */
     public function validate(Varien_Object $object)
     {
-    	if (!$this->getConditions()) {
+        if (!$this->getConditions()) {
             return false;
         }
-		
-
-//        $value = $this->getValue();
-//        $aggregatorArr = explode('/', $this->getAggregator());
-//        $this->setValue((int)$aggregatorArr[0])->setAggregator($aggregatorArr[1]);
 
         $attr = $this->getAttribute();
         $total = 0;
@@ -95,7 +120,6 @@ class Allopass_Hipay_Model_Rule_Condition_Product_Subselect
                 $total += $item->getData($attr);
             }
         }
-//        $this->setAggregator(join('/', $aggregatorArr))->setValue($value);
 
         return $this->validateAttribute($total);
     }

@@ -1,8 +1,29 @@
 <?php
+
+/**
+ * HiPay Fullservice SDK Magento 1
+ *
+ * 2018 HiPay
+ *
+ * NOTICE OF LICENSE
+ *
+ * @author    HiPay <support.tpp@hipay.com>
+ * @copyright 2018 HiPay
+ * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ */
+
+/**
+ *
+ *
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-fullservice-sdk-magento1
+ */
 class Allopass_Hipay_Model_Rule extends Mage_Rule_Model_Rule
 {
 
-  /**
+    /**
      * Init resource model and id field
      */
     protected function _construct()
@@ -19,10 +40,10 @@ class Allopass_Hipay_Model_Rule extends Mage_Rule_Model_Rule
      */
     public function getConditionsInstance()
     {
-    	return Mage::getModel('hipay/rule_condition_combine')->setPaymentMethodCode($this->_getPaymentMethodCode());
+        return Mage::getModel('hipay/rule_condition_combine')->setPaymentMethodCode($this->_getPaymentMethodCode());
     }
-	
-	/**
+
+    /**
      * Get rule condition product combine model instance
      *
      * @return Mage_SalesRule_Model_Rule_Condition_Product_Combine
@@ -31,19 +52,19 @@ class Allopass_Hipay_Model_Rule extends Mage_Rule_Model_Rule
     {
         return Mage::getModel('hipay/rule_condition_product_combine');
     }
-    
+
     public function getConditions()
     {
-    	parent::getConditions();
-    	
-    	$this->_conditions->setPaymentMethodCode($this->_getPaymentMethodCode());
+        parent::getConditions();
 
-		return $this->_conditions;
+        $this->_conditions->setPaymentMethodCode($this->_getPaymentMethodCode());
+
+        return $this->_conditions;
     }
-    
+
     protected function _getPaymentMethodCode()
     {
-    	return str_replace("/", "_", $this->getConfigPath());
+        return str_replace("/", "_", $this->getConfigPath());
     }
-	
+
 }

@@ -1,40 +1,27 @@
 /**
- * Magento
+ * HiPay Fullservice SDK Magento 1
+ *
+ * 2018 HiPay
  *
  * NOTICE OF LICENSE
  *
- * This source file is subject to the Academic Free License (AFL 3.0)
- * that is bundled with this package in the file LICENSE_AFL.txt.
- * It is also available through the world-wide-web at this URL:
- * http://opensource.org/licenses/afl-3.0.php
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@magentocommerce.com so we can send you a copy immediately.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Magento to newer
- * versions in the future. If you wish to customize Magento for your
- * needs please refer to http://www.magentocommerce.com for more information.
- *
- * @category    Mage
- * @package     Mage_Adminhtml
- * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
- * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ * @author    HiPay <support.tpp@hipay.com>
+ * @copyright 2018 HiPay
+ * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
  */
 
 var VarienRulesForm = new Class.create();
 VarienRulesForm.prototype = {
-    initialize : function (parent, newChildUrl) {
+    initialize: function (parent, newChildUrl) {
         this.parent = $(parent);
-        this.newChildUrl  = newChildUrl;
+        this.newChildUrl = newChildUrl;
         this.shownElement = null;
         this.updateElement = null;
         this.chooserSelectedItems = $H({});
         this.readOnly = false;
 
         var elems = this.parent.getElementsByClassName('rule-param');
-        for (var i=0; i<elems.length; i++) {
+        for (var i = 0; i < elems.length; i++) {
             this.initParam(elems[i]);
         }
     },
@@ -42,17 +29,17 @@ VarienRulesForm.prototype = {
     setReadonly: function (readonly) {
         this.readOnly = readonly;
         var elems = this.parent.getElementsByClassName('rule-param-remove');
-        for (var i=0; i<elems.length; i++) {
+        for (var i = 0; i < elems.length; i++) {
             var element = elems[i];
-                if (this.readOnly) {
-                    element.hide();
-                } else {
-                    element.show();
-                }
+            if (this.readOnly) {
+                element.hide();
+            } else {
+                element.show();
+            }
         }
 
         var elems = this.parent.getElementsByClassName('rule-param-new-child');
-        for (var i=0; i<elems.length; i++) {
+        for (var i = 0; i < elems.length; i++) {
             var element = elems[i];
             if (this.readOnly) {
                 element.hide();
@@ -62,7 +49,7 @@ VarienRulesForm.prototype = {
         }
 
         var elems = this.parent.getElementsByClassName('rule-param');
-        for (var i=0; i<elems.length; i++) {
+        for (var i = 0; i < elems.length; i++) {
             var container = elems[i];
             var label = Element.down(container, '.label');
             if (label) {
@@ -114,16 +101,16 @@ VarienRulesForm.prototype = {
             this.chooserSelectedItems.set(this.updateElement.value, 1);
         } else {
             var values = this.updateElement.value.split(','), s = '';
-            for (i=0; i<values.length; i++) {
+            for (i = 0; i < values.length; i++) {
                 s = values[i].strip();
-                if (s!='') {
-                   this.chooserSelectedItems.set(s,1);
+                if (s != '') {
+                    this.chooserSelectedItems.set(s, 1);
                 }
             }
         }
         new Ajax.Request(chooser.getAttribute('url'), {
             evalScripts: true,
-            parameters: {'form_key': FORM_KEY, 'selected[]':this.chooserSelectedItems.keys() },
+            parameters: {'form_key': FORM_KEY, 'selected[]': this.chooserSelectedItems.keys()},
             onSuccess: function (transport) {
                 if (this._processSuccess(transport)) {
                     $(chooser).update(transport.responseText);
@@ -171,7 +158,7 @@ VarienRulesForm.prototype = {
         if (!chooser) {
             return;
         }
-        if (chooser.style.display=='block') {
+        if (chooser.style.display == 'block') {
             chooser.style.display = 'none';
             this.cleanChooser(container, event);
         } else {
@@ -211,8 +198,8 @@ VarienRulesForm.prototype = {
 
         var elem = Element.down(elemContainer, '.element-value-changer');
         if (elem) {
-           elem.focus();
-           // trying to emulate enter to open dropdown
+            elem.focus();
+            // trying to emulate enter to open dropdown
 //         if (document.createEventObject) {
 //             var event = document.createEventObject();
 //             event.altKey = true;
@@ -237,14 +224,14 @@ VarienRulesForm.prototype = {
             elem = Element.down(container, '.element-value-changer');
             if (elem && elem.options) {
                 var selectedOptions = [];
-                for (i=0; i<elem.options.length; i++) {
+                for (i = 0; i < elem.options.length; i++) {
                     if (elem.options[i].selected) {
                         selectedOptions.push(elem.options[i].text);
                     }
                 }
 
                 var str = selectedOptions.join(', ');
-                label.innerHTML = str!='' ? str : '...';
+                label.innerHTML = str != '' ? str : '...';
 //              if (elem && elem.selectedIndex>=0) {
 //                  var str = elem.options[elem.selectedIndex].text;
 //                  label.innerHTML = str!='' ? str : '...';
@@ -255,10 +242,10 @@ VarienRulesForm.prototype = {
             if (elem) {
                 var str = elem.value.replace(/(^\s+|\s+$)/g, '');
                 elem.value = str;
-                if (str=='') {
+                if (str == '') {
                     str = '...';
-                } else if (str.length>30) {
-                    str = str.substr(0, 30)+'...';
+                } else if (str.length > 30) {
+                    str = str.substr(0, 30) + '...';
                 }
                 label.innerHTML = str.escapeHTML();
             }
@@ -287,7 +274,7 @@ VarienRulesForm.prototype = {
         if (children_inputs.length) {
             children_inputs.each(function (el) {
                 if (el.id.match(/__type$/)) {
-                	var idReplace = el.id.replace(/^.*__.*?([0-9]+)_.*__.*$/, '$1');// modified form clean payment method name
+                    var idReplace = el.id.replace(/^.*__.*?([0-9]+)_.*__.*$/, '$1');// modified form clean payment method name
                     i = 1 * idReplace;
                     max_id = i > max_id ? i : max_id;
                 }
@@ -303,10 +290,10 @@ VarienRulesForm.prototype = {
 
         new Ajax.Request(this.newChildUrl, {
             evalScripts: true,
-            parameters: {form_key: FORM_KEY, type:new_type.replace('/','-'), id:new_id },
+            parameters: {form_key: FORM_KEY, type: new_type.replace('/', '-'), id: new_id},
             onComplete: this.onAddNewChildComplete.bind(this, new_elem),
             onSuccess: function (transport) {
-                if(this._processSuccess(transport)) {
+                if (this._processSuccess(transport)) {
                     $(new_elem).update(transport.responseText);
                 }
             }.bind(this),
@@ -314,13 +301,13 @@ VarienRulesForm.prototype = {
         });
     },
 
-    _processSuccess : function (transport) {
+    _processSuccess: function (transport) {
         if (transport.responseText.isJSON()) {
             var response = transport.responseText.evalJSON()
             if (response.error) {
                 alert(response.message);
             }
-            if(response.ajaxExpired && response.ajaxRedirect) {
+            if (response.ajaxExpired && response.ajaxRedirect) {
                 setLocation(response.ajaxRedirect);
             }
             return false;
@@ -328,7 +315,7 @@ VarienRulesForm.prototype = {
         return true;
     },
 
-    _processFailure : function (transport) {
+    _processFailure: function (transport) {
         location.href = BASE_URL;
     },
 
@@ -339,7 +326,7 @@ VarienRulesForm.prototype = {
 
         $(new_elem).removeClassName('rule-param-wait');
         var elems = new_elem.getElementsByClassName('rule-param');
-        for (var i=0; i<elems.length; i++) {
+        for (var i = 0; i < elems.length; i++) {
             this.initParam(elems[i]);
         }
     },
@@ -355,7 +342,7 @@ VarienRulesForm.prototype = {
 
     chooserGridRowInit: function (grid, row) {
         if (!grid.reloadParams) {
-            grid.reloadParams = {'selected[]':this.chooserSelectedItems.keys()};
+            grid.reloadParams = {'selected[]': this.chooserSelectedItems.keys()};
         }
     },
 
@@ -375,12 +362,12 @@ VarienRulesForm.prototype = {
     chooserGridCheckboxCheck: function (grid, element, checked) {
         if (checked) {
             if (!element.up('th')) {
-                this.chooserSelectedItems.set(element.value,1);
+                this.chooserSelectedItems.set(element.value, 1);
             }
         } else {
             this.chooserSelectedItems.unset(element.value);
         }
-        grid.reloadParams = {'selected[]':this.chooserSelectedItems.keys()};
+        grid.reloadParams = {'selected[]': this.chooserSelectedItems.keys()};
         this.updateElement.value = this.chooserSelectedItems.keys().join(', ');
     }
 }

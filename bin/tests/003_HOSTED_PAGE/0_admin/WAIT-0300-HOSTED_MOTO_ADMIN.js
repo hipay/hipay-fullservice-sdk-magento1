@@ -10,10 +10,10 @@ var paymentType = "HiPay Enterprise Hosted Page";
 casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(test) {
     phantom.clearCookies();
 
-    casper.start(headlink + 'admin')
+    casper.start(baseURL + 'admin')
     .then(function() {
         /* authentification */
-        authentification.proceed(test);
+        this.logToBackend();
         /* configuration */
         configuration.proceedMotoSendMail(test, '1');
         /* payment method activation */

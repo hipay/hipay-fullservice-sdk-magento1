@@ -1,23 +1,26 @@
+var initialCredential,
+    currentBrandCC = typeCC;
+
 casper.test.begin('Test Magento With Device Fingerprint', function(test) {
 	phantom.clearCookies();
     var paymentType = "HiPay Enterprise Credit Card",
         ioBB = "";
 
-    casper.start(headlink)
+    casper.start(baseURL)
     .then(function() {
         if (this.visible('p[class="bugs"]')) {
             test.done();
         }
      })
-    .thenOpen(headlink + "admin/", function () {
-        authentification.proceed(test);
+    .thenOpen(baseURL + "admin/", function () {
+        this.logToBackend();
         method.proceed(test, paymentType, "cc");
     })
     /* Active device fingerprint */
     .then(function() {
         this.setDeviceFingerprint('1');
     })
-    .thenOpen(headlink, function() {
+    .thenOpen(baseURL, function() {
         this.selectItemAndOptions();
     })
     .then(function() {
@@ -36,21 +39,9 @@ casper.test.begin('Test Magento With Device Fingerprint', function(test) {
     .then(function() {
         this.echo("Checking 'ioBB' field inside checkout page...", "INFO");
         this.waitUntilVisible('#checkout-step-payment', function success() {
-            ioBB = this.getElementAttribute('input#ioBB_fingerprint', 'value');
-            test.assert(this.exists('input#ioBB_fingerprint') && ioBB != "", "'ioBB' field is present and not empty !");
-            this.echo("Choosing payment method and filling 'Payment Information' formular with " + typeCC + "...", "INFO");
-            method_hipay="method_hipay_cc";
-            if (this.visible('p[class="bugs"]')) {
-                this.click('input#p_' + method_hipay);
-            } else {
-                this.click('#dt_' + method_hipay +'>input[name="payment[method]"]');
-            }
-            if(typeCC == 'VISA')
-                this.fillFormPaymentHipayCC('VI', cardsNumber[0]);
-            else if(typeCC == 'CB' || typeCC == "MasterCard")
-                this.fillFormPaymentHipayCC('MC', cardsNumber[1]);
-            this.click("div#payment-buttons-container>button");
-            test.info("Done");
+            ioBB = this.getElementAttribute('input.ioBB_fingerprint', 'value');
+            test.assert(this.exists('input.ioBB_fingerprint') && ioBB != "", "'ioBB' field is present and not empty !");
+            this.fillStepPayment();
         }, function fail() {
             test.assertVisible("#checkout-step-payment", "'Payment Information' formular exists");
         }, 10000);
@@ -64,7 +55,7 @@ casper.test.begin('Test Magento With Device Fingerprint', function(test) {
     /* Access to BO TPP */
     .thenOpen(urlBackend, function() {
         orderID = this.getOrderId();
-        this.logToBackend();
+        this.logToHipayBackend(loginBackend,passBackend);
     })
     .then(function() {
         this.selectAccountBackend("OGONE_DEV");

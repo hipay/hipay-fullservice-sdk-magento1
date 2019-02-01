@@ -1,104 +1,170 @@
-<?php if (Mage::getStoreConfig('hipay/hipay_api/fingerprint',Mage::app()->getStore())) : ?>
-	<input type="hidden" id="ioBB" name="payment[device_fingerprint]" value="" />
- <?php endif;?>
+<?php
+/**
+ * HiPay Fullservice SDK Magento 1
+ *
+ * 2018 HiPay
+ *
+ * NOTICE OF LICENSE
+ *
+ * @author    HiPay <support.tpp@hipay.com>
+ * @copyright 2018 HiPay
+ * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ */
+?>
+<?php if (Mage::getStoreConfig('hipay/hipay_api/fingerprint', Mage::app()->getStore())) : ?>
+    <input type="hidden" id="ioBB" name="payment[device_fingerprint]" value=""/>
+<?php endif; ?>
 
-<?php 
+<?php
 /* @var $this Allopass_Hipay_Block_Checkout_Tokenjs */
 
-if($this->hasPublicCredentials()):
+if ($this->hasPublicCredentials()):
 
-?>
-	<script type="text/javascript">
-	
-	//Override save method to generate js token
-	Payment.prototype.save = function(){
+    ?>
+    <script type="text/javascript">
 
-	  var self = this;
-		
-	  if (checkout.loadWaiting!=false) return;
-	  var validator = new Validation(this.form);
-	  if (this.validate() && validator.validate()) {
-		  
-		  checkout.setLoadWaiting('payment');
-	  	
-	      var paymentData = Form.serialize(this.form,{hash:true});
-	      var method = paymentData["payment[method]"];
-	      
-	      
-		  //Process Tokenization if method use API Mode (CC form)
-		  if(method.search('hipay_cc') > -1 && paymentData["payment["+method+"_cc_number]"])
-		  {
-			  var params = {
-					    card_number: paymentData["payment["+method+"_cc_number]"],
-					    cvc: paymentData["payment["+method+"_cc_cid]"],
-					    card_expiry_month: paymentData["payment["+method+"_cc_exp_month]"],
-					    card_expiry_year: paymentData["payment["+method+"_cc_exp_year]"],
-					    card_holder: paymentData["payment["+method+"_cc_owner]"] ? paymentData["payment["+method+"_cc_owner]"] : '',
-					    multi_use: '0'
-					  };
-			 
-			  var config = <?php echo $this->getConfigJson() ?>;	
-			  
-			  if(config.methods[method].is_test_mode==1){  
-			  	HiPay.setTarget('stage'); // default is production/live
-			  	config.api_tokenjs_username = config.api_tokenjs_username_test;
-			  	config.api_tokenjs_publickey = config.api_tokenjs_publickey_test;
-			  	
-			  }
+        Review.prototype.save = Review.prototype.save.wrap(function (parentMethod) {
 
-			  // These are fake credentials, put your own credentials here (HiPay Enterprise back office > Integration > Security settings and create credentials with public visibility)
-			  HiPay.setCredentials(config.api_tokenjs_username, config.api_tokenjs_publickey);
+            var paymentData = Form.serialize(payment.form, {hash: true});
+            var method = paymentData["payment[method]"];
 
-			  HiPay.create(params,
+            if (method.search('hipay_cc') > -1 || method.search('hipay_hostedfields') > -1) {
 
-					    function(result) {
+                Form.Element.setValue(method + "_cc_number", "");
+                Form.Element.setValue(method + "_cc_cid", null);
+            }
 
-					        // The card has successfully been tokenized
-					        var token = result.token;
-					        
-					        //Write token value in input of type hidden
-					        $("payment_form_" + method).insert({
-									bottom: new Element('input',{type:'hidden',name:'payment['+method+'_cc_token]',value:token})
-						        });
-					        
-					        savePayment(self);
+            parentMethod();
+        });
 
-					    }, 
+        //Override save method to generate js token
+        Payment.prototype.save = function () {
 
-					    function (errors) {
+            var self = this;
 
-					      // An error occurred
-					      if (typeof errors.message != "undefined") {
-					    	  alert(errors.message.stripTags());
-					      } else {
-					          alert(Translator.translate("An error occurred with the request.").stripTags());
-					      }
-					    }
-				);
-			
-			  
-		  }
-		  else{
-			 savePayment(this);
-		  }      
-	      
-	  }
+            if (checkout.loadWaiting != false) return;
+            var validator = new Validation(this.form);
+            if (this.validate() && validator.validate()) {
+
+                checkout.setLoadWaiting('payment');
+                var paymentData = Form.serialize(this.form, {hash: true});
+                var method = paymentData["payment[method]"];
+                self.safeFormData = paymentData;
+                //Process Tokenization if method use API Mode (CC form)
+                if (method.search('hipay_cc') > -1 && paymentData["payment[" + method + "_cc_number]"]) {
+                    tokenizeDirectPost(paymentData, method, Form);
+                } else if (method.search('hipay_hostedfields') > -1 && hipayHF && paymentData["payment[" + method + "_oneclick]"] !== "use_oneclick") {
+                    tokenizeHostedFields(method, Form);
+                } else {
+                    savePayment(this);
+                }
+
+            }
+
+            function tokenizeHostedFields(method, Form) {
+                hipayHF.createToken()
+                    .then(function (response) {
+
+                            self.safeFormData["payment[" + method + "_cc_number]"] = response.pan;
+                            self.safeFormData["payment[" + method + "_cc_owner]"] = response.card_holder;
+                            self.safeFormData["payment[" + method + "_cc_type]"] = response.payment_product;
+                            self.safeFormData["payment[" + method + "_cc_exp_year]"] = response.card_expiry_year;
+                            self.safeFormData["payment[" + method + "_cc_exp_month]"] = response.card_expiry_month;
+                            self.safeFormData["payment[" + method + "_cc_cid]"] = null;
+                            Form.Element.setValue(method + "_cc_type", response.payment_product);
+                            replaceForm(Form, response, method);
+
+                            savePayment(self);
+                        },
+                        function (error) {
+                            document.getElementById("hipayHF-error-message").innerHTML = error;
+                            checkout.setLoadWaiting(false);
+                        }
+                    );
+            }
 
 
-	  function savePayment(paymentObj){
-		  var request = new Ajax.Request(
-				  paymentObj.saveUrl,
-		          {
-		              method:'post',
-		              onComplete: paymentObj.onComplete,
-		              onSuccess: paymentObj.onSave,
-		              onFailure: checkout.ajaxFailure.bind(checkout),
-		              parameters: Form.serialize(paymentObj.form)
-		          }
-		      );
-	  }
-		
-	}
-	
-	</script>
-<?php endif;?>
+            function tokenizeDirectPost(paymentData, method, Form) {
+                var expiryMonth = (paymentData["payment[" + method + "_cc_exp_month]"].length === 1) ?
+                    "0" + paymentData["payment[" + method + "_cc_exp_month]"]
+                    : paymentData["payment[" + method + "_cc_exp_month]"];
+
+                var params = {
+                    cardNumber: paymentData["payment[" + method + "_cc_number]"],
+                    cvc: paymentData["payment[" + method + "_cc_cid]"],
+                    expiryMonth: expiryMonth,
+                    expiryYear: paymentData["payment[" + method + "_cc_exp_year]"].slice(-2),
+                    cardHolder: paymentData["payment[" + method + "_cc_owner]"] ? paymentData["payment[" + method + "_cc_owner]"] : '',
+                    multiUse: isOneClick(paymentData, method)
+                };
+
+                var config = <?php echo $this->getConfigJson() ?>;
+                var tokenizeEnv = 'production';
+
+                if (config.methods[method].is_test_mode == 1) {
+                    tokenizeEnv = 'stage'; // default is production/live
+                    config.api_tokenjs_username = config.api_tokenjs_username_test;
+                    config.api_tokenjs_publickey = config.api_tokenjs_publickey_test;
+                }
+
+                var hipay = HiPay({
+                    username: config.api_tokenjs_username,
+                    password: config.api_tokenjs_publickey,
+                    environment: tokenizeEnv,
+                    lang: 'en'
+                });
+
+                hipay.tokenize(params).then(function (result) {
+
+                        // The card has successfully been tokenized
+                        var token = result.token;
+
+                        self.safeFormData["payment[" + method + "_cc_number]"] = result.pan;
+                        self.safeFormData["payment[" + method + "_cc_cid]"] = null;
+
+                        replaceForm(Form, result, method);
+                        savePayment(self);
+
+                    }, function (errors) {
+                        checkout.setLoadWaiting(false);
+                        alert(Translator.translate("An error has occured, please check the information entered.").stripTags());
+                    }
+                );
+            }
+
+            function replaceForm(Form, result, method) {
+
+                Form.Element.setValue(method + "_expiration_yr", result.card_expiry_year);
+                Form.Element.setValue(method + "_expiration", result.card_expiry_month);
+                Form.Element.setValue(method + "_cc_cid", null);
+
+                //Write token value in input of type hidden
+                $("payment_form_" + method).insert({
+                    bottom: new Element('input', {
+                        type: 'hidden',
+                        name: 'payment[' + method + '_cc_token]',
+                        value: result.token
+                    })
+                });
+            }
+
+            function savePayment(paymentObj) {
+                var request = new Ajax.Request(
+                    paymentObj.saveUrl,
+                    {
+                        method: 'post',
+                        onComplete: paymentObj.onComplete,
+                        onSuccess: paymentObj.onSave,
+                        onFailure: checkout.ajaxFailure.bind(checkout),
+                        parameters: paymentObj.safeFormData
+                    }
+                );
+            }
+
+            function isOneClick(paymentData, method) {
+                return method === "hipay_ccxtimes"
+                    || typeof paymentData["payment[" + method + "_oneclick]"] !== 'undefined';
+            }
+        }
+    </script>
+<?php endif; ?>

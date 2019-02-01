@@ -1,0 +1,80 @@
+<?php
+/** @var $this Allopass_Hipay_Block_Form_Abstract */
+$_code = $this->getParentBlock()->getMethodCode();
+?>
+<ul class="form-list" id="splitpayment_card_payment_form_<?php echo $_code ?>">
+    <li>
+        <div class="input-box">
+            <label style="float: none;" for="<?php echo $_code ?>_split_payment"><?php echo $this->__(
+                    'Split your Payment'
+                ) ?></label><br/>
+            <select id="<?php echo $_code ?>_split_payment"
+                    name="payment[<?php echo $_code ?>_split_payment_id]">
+                <!--  <option value=""><?php echo $this->__(
+                    '-- Please select your split payment --'
+                ) ?></option> -->
+                <?php foreach ($this->getParentBlock()->getSplitPaymentProfiles() as $profile) : ?>
+                    <option value="<?php echo $profile->getId() ?>"><?php echo $profile->getName() ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </li>
+</ul>
+<br/>
+<script>
+    var UpdateDebitAmount<?php echo $_code ?> = function () {
+
+        new Ajax.Request('<?php echo Mage::getUrl('hipay/cc/updateDebitAmount', array('_secure' => true)) ?>', {
+            evalScripts: true,
+            parameters: {
+                'payment_profile_id': $('<?php echo $_code ?>_split_payment').value,
+                'method_code': '<?php echo $_code ?>'
+            },
+            onSuccess: function (transport) {
+
+                if (transport.responseText.isJSON()) {
+                    var response = transport.responseText.evalJSON();
+
+                    if (response.error) {
+                        $('<?php echo $_code ?>_debit_amount').innerHTML = response.message;
+                        Validation.add('validate-cc-exp-split', 'Incorrect credit card expiration date.', function (v, elm) {
+                            return true;
+                        });
+
+                    }
+
+                    if (response.success) {
+                        //Add validation for the last debit of split payments
+                        var splitPayment = response.splitPayment;
+                        var dateArr = splitPayment[splitPayment.length - 1]['dateToPay'].split("-");
+
+                        Validation.add('validate-cc-exp-split', 'Incorrect credit card expiration date.', function (v, elm) {
+
+                            var ccExpMonth = v;
+                            var ccExpYear = $(elm.id.substr(0, elm.id.indexOf('_expiration')) + '_expiration_yr').value;
+                            var currentTime = new Date();
+                            var currentMonth = parseInt(dateArr[1]);//currentTime.getMonth() + 1;
+                            var currentYear = parseInt(dateArr[0])//currentTime.getFullYear();
+
+                            if (ccExpMonth < currentMonth && ccExpYear == currentYear) {
+                                return false;
+                            }
+                            return true;
+                        });
+
+                        //Update HTMl
+                        $('<?php echo $_code ?>_debit_amount').innerHTML = response.labelSplitPayment;
+                        decorateTable('split-payment-cc-table')
+
+                    }
+                }
+
+
+            }
+        });
+
+    };
+
+    Event.observe($('<?php echo $_code ?>_split_payment'), 'change', UpdateDebitAmount<?php echo $_code ?>);
+    UpdateDebitAmount<?php echo $_code ?>();
+</script>

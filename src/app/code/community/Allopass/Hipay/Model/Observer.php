@@ -1,19 +1,40 @@
 <?php
+
+/**
+ * HiPay Fullservice SDK Magento 1
+ *
+ * 2018 HiPay
+ *
+ * NOTICE OF LICENSE
+ *
+ * @author    HiPay <support.tpp@hipay.com>
+ * @copyright 2018 HiPay
+ * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ */
+
+/**
+ *
+ *
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-fullservice-sdk-magento1
+ */
 class Allopass_Hipay_Model_Observer
 {
     /**
-    * Cancel orders stayed in pending because customer not validated payment form
-    */
+     * Cancel orders stayed in pending because customer not validated payment form
+     */
     public function cancelOrdersInPending()
     {
         $methodCodes = array();
         //Select only method with cancel orders enabled
-        foreach (Mage::helper('hipay')->getHipayMethods() as $code=>$model) {
-            if (Mage::getStoreConfigFlag('payment/'.$code."/cancel_pending_order")) {
-                $methods[$code] = Mage::getStoreConfig('payment/'.$code."/delay_cancel_pending_order");
+        foreach (Mage::helper('hipay')->getHipayMethods() as $code => $model) {
+            if (Mage::getStoreConfigFlag('payment/' . $code . "/cancel_pending_order")) {
+                $methods[$code] = Mage::getStoreConfig('payment/' . $code . "/delay_cancel_pending_order");
             }
         }
-        
+
         if (count($methods) < 1) {
             return $this;
         }
@@ -22,7 +43,7 @@ class Allopass_Hipay_Model_Observer
         foreach ($methods as $key => $delay) {
             $date = new Zend_Date();
             if (is_numeric($delay)) {
-                $delayMinutes = 60 *  $delay;
+                $delayMinutes = 60 * $delay;
             } else {
                 $delayMinutes = 30;
             }
@@ -31,18 +52,22 @@ class Allopass_Hipay_Model_Observer
             $collection->addFieldToSelect(array('entity_id', 'increment_id', 'store_id', 'state'))
                 ->addFieldToFilter('main_table.state', Mage_Sales_Model_Order::STATE_NEW)
                 ->addFieldToFilter('op.method', array('eq' => $key))
-                ->addAttributeToFilter('created_at',
-                    array('to' => ($date->subMinute($delayMinutes)->toString('Y-MM-dd HH:mm:ss'))))
+                ->addAttributeToFilter(
+                    'created_at',
+                    array('to' => ($date->subMinute($delayMinutes)->toString('Y-MM-dd HH:mm:ss')))
+                )
                 ->join(array('op' => 'sales/order_payment'), 'main_table.entity_id=op.parent_id', array('method'));
 
-          /* @var $order Mage_Sales_Model_Order */
+            /* @var $order Mage_Sales_Model_Order */
 
             if (count($collection) > 1) {
-                Mage::helper('hipay')->debugInternalProcessHipay('##########################################');
-                Mage::helper('hipay')->debugInternalProcessHipay('# Start process "cancelOrdersInPending"');
-                Mage::helper('hipay')->debugInternalProcessHipay(count($collection) . ' orders to cancel ');
-                Mage::helper('hipay')->debugInternalProcessHipay('# Method : ' . $key);
-                Mage::helper('hipay')->debugInternalProcessHipay('# Created at : ' . $date->subMinute($delayMinutes)->toString('Y-MM-dd HH:mm:ss'));
+                Mage::helper('hipay')->debug('##########################################');
+                Mage::helper('hipay')->debug('# Start process "cancelOrdersInPending"');
+                Mage::helper('hipay')->debug(count($collection) . ' orders to cancel ');
+                Mage::helper('hipay')->debug('# Method : ' . $key);
+                Mage::helper('hipay')->debug(
+                    '# Created at : ' . $date->subMinute($delayMinutes)->toString('Y-MM-dd HH:mm:ss')
+                );
             }
 
             foreach ($collection as $order) {
@@ -50,24 +75,30 @@ class Allopass_Hipay_Model_Observer
                     try {
                         $order->cancel();
                         $order
-                            ->addStatusToHistory($order->getStatus(),// keep order status/state
-                                Mage::helper('hipay')->__("Order canceled automatically by cron because order is pending since %d minutes",
-                                    $delayMinutes));
+                            ->addStatusToHistory(
+                                $order->getStatus(),// keep order status/state
+                                Mage::helper('hipay')->__(
+                                    "Order canceled automatically by cron because order is pending since %d minutes",
+                                    $delayMinutes
+                                )
+                            );
 
                         $order->save();
-                        Mage::helper('hipay')->debugInternalProcessHipay('# Order is canceled :' . $order->getIncrementId() );
+                        Mage::helper('hipay')->debug('# Order is canceled :' . $order->getIncrementId());
                     } catch (Exception $e) {
-                        Mage::helper('hipay')->debugInternalProcessHipay('# Error in cancel process for order :' . $order->getIncrementId() .' ' .$e->getMessage() );
+                        Mage::helper('hipay')->debug(
+                            '# Error in cancel process for order :' . $order->getIncrementId() . ' ' . $e->getMessage()
+                        );
                         Mage::logException($e);
                     }
-                }else{
-                    Mage::helper('hipay')->debugInternalProcessHipay('# Order is not cancelable for order : ' . $order->getIncrementId());
+                } else {
+                    Mage::helper('hipay')->debug('# Order is not cancelable for order : ' . $order->getIncrementId());
                 }
             }
 
             if (count($collection) > 1) {
-                Mage::helper('hipay')->debugInternalProcessHipay('# End process "cancelOrdersInPending"');
-                Mage::helper('hipay')->debugInternalProcessHipay('##########################################');
+                Mage::helper('hipay')->debug('# End process "cancelOrdersInPending"');
+                Mage::helper('hipay')->debug('##########################################');
             }
         }
 
@@ -76,7 +107,7 @@ class Allopass_Hipay_Model_Observer
 
     public function manageOrdersInPendingCapture()
     {
-        $methods = array('hipay_cc','hipay_hosted');
+        $methods = array('hipay_cc', 'hipay_hosted');
         /* @var $collection Mage_Sales_Model_Resource_Order_Collection */
         $collection = Mage::getResourceModel('sales/order_collection');
         $collection->addFieldToFilter('status', 'pending_capture');
@@ -97,18 +128,21 @@ class Allopass_Hipay_Model_Observer
         if ($payment->getAdditionalInformation('use_oneclick')) {
             return $this;
         }
+
         /* @var $controller Mage_Checkout_OnepageController */
         $controller = $observer->getControllerAction();
 
         $result = Mage::helper('core')->jsonDecode($controller->getResponse()->getBody());
 
-        //TODO check if payment method is hosted and iframe active and is success
-        $methodInstance =  $payment->getMethodInstance();
+        $methodInstance = $payment->getMethodInstance();
         if ($result['success']
-        && ($methodInstance->getCode() == 'hipay_hosted' ||  $methodInstance->getCode() == 'hipay_hostedxtimes')
-        && $methodInstance->getConfigData('display_iframe')) {
+            && ($methodInstance->getCode() == 'hipay_hosted' || $methodInstance->getCode() == 'hipay_hostedxtimes')
+            && $methodInstance->getConfigData('display_iframe')
+        ) {
             $result['iframeUrl'] = $result['redirect'];
         }
+
+        $result['methodCode'] = $methodInstance->getCode();
 
         $controller->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));
 
@@ -120,15 +154,17 @@ class Allopass_Hipay_Model_Observer
      *
      * @param Mage_Core_Model_Resource_Db_Collection_Abstract
      */
-    private function processSplitPayment($splitPayments){
+    private function processSplitPayment($splitPayments)
+    {
         foreach ($splitPayments as $splitPayment) {
-            $splitInfo =  $splitPayment->getSplitNumber() . ' for order ' . $splitPayment->getOrderId() . ' with amount ' . $splitPayment->getAmountToPay();
+            $splitInfo = $splitPayment->getSplitNumber() . ' for order '
+                . $splitPayment->getOrderId() . ' with amount ' . $splitPayment->getAmountToPay();
             try {
-                Mage::helper('hipay')->debugInternalProcessHipay('# Pay ' . $splitInfo );
+                Mage::helper('hipay')->debug('# Pay ' . $splitInfo);
                 $splitPayment->pay();
-                Mage::helper('hipay')->debugInternalProcessHipay('# Pay Success ' . $splitInfo );
+                Mage::helper('hipay')->debug('# Pay Success ' . $splitInfo);
             } catch (Exception $e) {
-                Mage::helper('hipay')->debugInternalProcessHipay('# Pay Error with ' .  $splitInfo . ' : ' . $e->getMessage());
+                Mage::helper('hipay')->debug('# Pay Error with ' . $splitInfo . ' : ' . $e->getMessage());
                 $splitPayment->sendErrorEmail();
                 Mage::logException($e);
             }
@@ -142,24 +178,24 @@ class Allopass_Hipay_Model_Observer
     public function paySplitPayments()
     {
         $date = new Zend_Date();
-        Mage::helper('hipay')->debugInternalProcessHipay('###################################');
-        Mage::helper('hipay')->debugInternalProcessHipay('# Start process "paySplitPayments"');
+        Mage::helper('hipay')->debug('###################################');
+        Mage::helper('hipay')->debug('# Start process "paySplitPayments"');
 
         $splitPaymentsFailed = Mage::getModel('hipay/splitPayment')->getCollection()
-            ->addFieldToFilter('status', array('eq'=> Allopass_Hipay_Model_SplitPayment::SPLIT_PAYMENT_STATUS_FAILED))
+            ->addFieldToFilter('status', array('eq' => Allopass_Hipay_Model_SplitPayment::SPLIT_PAYMENT_STATUS_FAILED))
             ->addFieldTofilter('attempts', array('lteq' => 3));
-        Mage::helper('hipay')->debugInternalProcessHipay('# ' . count($splitPaymentsFailed) . ' splits in failed to pay ');
+        Mage::helper('hipay')->debug('# ' . count($splitPaymentsFailed) . ' splits in failed to pay ');
         $this->processSplitPayment($splitPaymentsFailed);
 
         $splitPaymentsPending = Mage::getModel('hipay/splitPayment')->getCollection()
-        ->addFieldToFilter('status', array('eq'=> Allopass_Hipay_Model_SplitPayment::SPLIT_PAYMENT_STATUS_PENDING))
-        ->addFieldTofilter('date_to_pay', array('to' => $date->toString('Y-MM-dd 00:00:00')))
-        ->addFieldTofilter('attempts', array('lteq' => 3));
-        Mage::helper('hipay')->debugInternalProcessHipay('# ' . count($splitPaymentsPending) . ' splits in pending to pay ');
+            ->addFieldToFilter('status', array('eq' => Allopass_Hipay_Model_SplitPayment::SPLIT_PAYMENT_STATUS_PENDING))
+            ->addFieldTofilter('date_to_pay', array('to' => $date->toString('Y-MM-dd 00:00:00')))
+            ->addFieldTofilter('attempts', array('lteq' => 3));
+        Mage::helper('hipay')->debug('# ' . count($splitPaymentsPending) . ' splits in pending to pay ');
         $this->processSplitPayment($splitPaymentsPending);
 
-        Mage::helper('hipay')->debugInternalProcessHipay('# End process "paySplitPayments"');
-        Mage::helper('hipay')->debugInternalProcessHipay('###################################');
+        Mage::helper('hipay')->debug('# End process "paySplitPayments"');
+        Mage::helper('hipay')->debug('###################################');
     }
 
     /**
@@ -187,10 +223,13 @@ class Allopass_Hipay_Model_Observer
             if ($order->canReviewPayment()) {
                 $url = $block->getUrl("*/payment/reviewCapturePayment");
                 $message = Mage::helper('sales')->__('Are you sure you want to accept this payment?');
-                $block->addButton('accept_capture_payment', array(
-                'label'     => Mage::helper('hipay')->__('Accept and Capture Payment'),
-                'onclick'   => "confirmSetLocation('{$message}', '{$url}')",
-                ));
+                $block->addButton(
+                    'accept_capture_payment',
+                    array(
+                        'label' => Mage::helper('hipay')->__('Accept and Capture Payment'),
+                        'onclick' => "confirmSetLocation('{$message}', '{$url}')",
+                    )
+                );
             }
         } elseif ($block instanceof Mage_Adminhtml_Block_Sales_Transactions_Detail) {
             $txnId = $block->getTxnIdHtml();
@@ -199,16 +238,18 @@ class Allopass_Hipay_Model_Observer
 
             $order = Mage::getModel('sales/order')->loadByIncrementId(trim($orderIncrementId));
             if ($order->getId() && strpos($order->getPayment()->getMethod(), 'hipay') !== false) {
-                $link = '<a href="https://merchant.hipay-tpp.com//transaction/detail/index/trxid/'.$txnId.'" target="_blank">'.$txnId.'</a>';
+                $link = '<a href="https://merchant.hipay-tpp.com//transaction/detail/index/trxid/'
+                    . $txnId . '" target="_blank">' . $txnId . '</a>';
                 $block->setTxnIdHtml($link);
             }
         }
     }
+
     /**
-    * Disallow refund action in some cases
-    * Used only for layout render
-    * @param Varien_Object $observer
-    */
+     * Disallow refund action in some cases
+     * Used only for layout render
+     * @param Varien_Object $observer
+     */
     public function orderCanRefund($observer)
     {
         /* @var $order Mage_Sales_Model_Order */
@@ -217,23 +258,29 @@ class Allopass_Hipay_Model_Observer
         if ($order->getStatus() == Allopass_Hipay_Model_Method_Abstract::STATUS_CAPTURE_REQUESTED) {
             $order->setForcedCanCreditmemo(false);
             $order->setForcedCanCreditmemoFromHipay(true);
-        } elseif ($order->getPayment() && $order->getPayment()->getMethod() == 'hipay_cc' && strtolower($order->getPayment()->getCcType()) == 'bcmc') {
+        } elseif ($order->getPayment()
+            && $order->getPayment()->getMethod() == 'hipay_cc'
+            && strtolower($order->getPayment()->getCcType()) == 'bcmc'
+        ) {
             $order->setForcedCanCreditmemo(false);
             $order->setForcedCanCreditmemoFromHipay(true);
         } elseif ($order->getPayment() && strpos($order->getPayment()->getMethod(), 'hipay') !== false) {
 
-            //If configuration validate order with status 117 (capture requested) and Notification 118 (Captured) is not received
+            //If configuration validate order with status 117 (capture requested)
+            // and Notification 118 (Captured) is not received
             // we disallow refund
-            if (((int)$order->getPayment()->getMethodInstance()->getConfigData('hipay_status_validate_order') == 117)  === true) {
+            if (((int)$order->getPayment()->getMethodInstance()->getConfigData('hipay_status_validate_order') == 117)) {
                 $histories = Mage::getResourceModel('sales/order_status_history_collection')
-                ->setOrderFilter($order)
-                ->addFieldToFilter('comment',
-                array(
-                // for new order
-                array('like'=>'%code-118%'),
-                // for old order
-                array('like'=>'%: 118 Message: %')
-                ));
+                    ->setOrderFilter($order)
+                    ->addFieldToFilter(
+                        'comment',
+                        array(
+                            // for new order
+                            array('like' => '%code-118%'),
+                            // for old order
+                            array('like' => '%: 118 Message: %')
+                        )
+                    );
 
                 if ($histories->count() < 1) {
                     $order->setForcedCanCreditmemo(false);
@@ -244,10 +291,10 @@ class Allopass_Hipay_Model_Observer
     }
 
     /**
-    * Used to unset ForcedCanCreditmemo attributs from the order
-    * Without restore order status is set to "C"
-    * @param Varien_Object $observer
-    */
+     * Used to unset ForcedCanCreditmemo attributs from the order
+     * Without restore order status is set to "C"
+     * @param Varien_Object $observer
+     */
     public function unsetOrderCanRefund($observer)
     {
         /* @var $order Mage_Sales_Model_Order */
@@ -259,11 +306,21 @@ class Allopass_Hipay_Model_Observer
         }
 
         if ($order->getPayment()->getMethodInstance() &&
-                $order->getPayment()->getMethodInstance() instanceof Allopass_Hipay_Model_Method_Abstract ) {
+            $order->getPayment()->getMethodInstance() instanceof Allopass_Hipay_Model_Method_Abstract
+        ) {
             // Cancel transaction in TPP if state is cancel
             if ($order->getStatus() == Mage_Sales_Model_Order::STATE_CANCELED) {
                 $order->getPayment()->getMethodInstance()->cancelTransaction($order->getPayment());
             }
         }
+    }
+
+    /**
+     * Autoload Hipay SDK Third party
+     */
+    public function autoloadLibrary()
+    {
+        require_once(Mage::getBaseDir('lib') . DS . 'Hipay' . DS . 'hipay-fullservice-sdk-php' . DS . 'autoload.php');
+        return $this;
     }
 }

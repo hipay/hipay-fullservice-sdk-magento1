@@ -1,5 +1,25 @@
 <?php
 
+/**
+ * HiPay Fullservice SDK Magento 1
+ *
+ * 2018 HiPay
+ *
+ * NOTICE OF LICENSE
+ *
+ * @author    HiPay <support.tpp@hipay.com>
+ * @copyright 2018 HiPay
+ * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ */
+
+/**
+ *
+ *
+ * @author      HiPay <support.tpp@hipay.com>
+ * @copyright   Copyright (c) 2018 - HiPay
+ * @license     https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ * @link    https://github.com/hipay/hipay-fullservice-sdk-magento1
+ */
 class Allopass_Hipay_Block_Adminhtml_Field_MappingCategory extends Mage_Adminhtml_Block_System_Config_Form_Field_Array_Abstract
 {
     /**
@@ -83,6 +103,7 @@ class Allopass_Hipay_Block_Adminhtml_Field_MappingCategory extends Mage_Adminhtm
         if (!$this->_labelRenderer) {
             $this->_labelRenderer = $this->getLayout()->createBlock('hipay/adminhtml_field_renderer_label', '');
         }
+
         return $this->_labelRenderer;
     }
 
@@ -95,11 +116,14 @@ class Allopass_Hipay_Block_Adminhtml_Field_MappingCategory extends Mage_Adminhtm
     {
         $options = Mage::helper('hipay/collection')->getItemsCategory();
         if (!$this->_listRenderer) {
-            $this->_listRenderer = $this->getLayout()->createBlock('hipay/adminhtml_field_renderer_list',
+            $this->_listRenderer = $this->getLayout()->createBlock(
+                'hipay/adminhtml_field_renderer_list',
                 '',
-                array('is_render_to_js_template' => true));
+                array('is_render_to_js_template' => true)
+            );
             $this->_listRenderer->setListOptions($options);
         }
+
         return $this->_listRenderer;
     }
 
@@ -112,19 +136,20 @@ class Allopass_Hipay_Block_Adminhtml_Field_MappingCategory extends Mage_Adminhtm
     protected function _getHipayCategoryMapping($codeMagentoCategory)
     {
         $mappingSaved = $this->getElement()->getValue();
-        $id_hipay_category = null;
+        $idHipayCategory = null;
         if (is_array($mappingSaved)) {
             foreach ($mappingSaved as $mapping) {
                 if (is_array($mapping)
                     && array_key_exists('magento_category', $mapping)
                     && $mapping['magento_category'] == $codeMagentoCategory
                 ) {
-                    $id_hipay_category = $mapping['hipay_category'];
+                    $idHipayCategory = $mapping['hipay_category'];
                     break;
                 }
             }
         }
-        return $id_hipay_category;
+        
+        return $idHipayCategory;
     }
 
 

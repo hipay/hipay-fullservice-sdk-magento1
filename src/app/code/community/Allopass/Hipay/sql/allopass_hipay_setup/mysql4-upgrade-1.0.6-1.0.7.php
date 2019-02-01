@@ -1,11 +1,24 @@
 <?php
 
+/**
+ * HiPay Fullservice SDK Magento 1
+ *
+ * 2018 HiPay
+ *
+ * NOTICE OF LICENSE
+ *
+ * @author    HiPay <support.tpp@hipay.com>
+ * @copyright 2018 HiPay
+ * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
+ */
+
 $installer = $this;
 
 
 $installer->startSetup();
 
-$installer->run("
+$installer->run(
+    "
 
 -- DROP TABLE IF EXISTS {$this->getTable('hipay_payment_profile')};
 CREATE TABLE {$this->getTable('hipay_payment_profile')} (
@@ -36,7 +49,6 @@ CREATE TABLE {$this->getTable('hipay_split_payment')} (
 
 "
 );
-
 
 
 $installer->endSetup();

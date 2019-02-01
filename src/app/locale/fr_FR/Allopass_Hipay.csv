@@ -1,175 +1,354 @@
-"HiPay API configuration","Configuration de l'API Hipay"
-"Api username","Identifiant de l'API"
-"Api password","Mot de passe de l'API"
-"Api username test","Identifiant TEST de l'API"
-"Api password test","Mot de passe TEST de l'API"
-"Hipay Credit Card","HiPay Enterprise Carte Bancaire"
-"Enabled","Activé"
-"Title","Titre"
-"Payment Action","Type de paiement"
-"Notification from Hipay:","Notification depuis Hipay:"
-"status","statut"
-"Order %s by %s","Commande %s de %s"
-"amount: %s","montant: %s"
-"failed","échec"
-"successful","succès"
-"Credit Card: xxxx-%s","Carte de crédit: xxxx-%s"
-"Hipay Transaction ID %s","ID de transaction HIPAY %s"
-"Payment authorization error.","Erreur d'autorisation de paiement."
-"Payment capturing error.","Erreur de capture du paiement."
-"Payment accepted by Hipay.","Paiement accepté par Hipay."
-"Waiting for capture transaction ID '%s' of amount %s","En attente de la capture de la transaction '%s' du montant %s"
-"Reason","Raison"
-"Code Credit Card Type Hipay not found!","Code du type de la carte de crédit non trouvé!"
-"Authorization","Autorisation"
-"Sale","Vente"
-"basic","basic"
-"basic2","basic2"
-"Order canceled automatically by cron because order is pending since %d minutes","Commande annulée automatiquement par le cron car elle est en attente depuis %d minutes."
-"--Please Select--","--Votre choix--"
-"Credit Card Number","Numéro de carte bancaire"
-"Credit Card Number: xxxx-%s","<strong>Numéro de carte de paiement :</strong> <span class=""nowrap"">xxxx-%s</span>"
-"Credit Card Type","Type de carte de crédit"
-"Credit Card Type: %s","<strong>Type de carte de paiement :</strong> <span class=""nowrap"">%s</span>"
-"Credit Card Types","Types de cartes de paiement"
-"Month","Mois"
-"Year","Année"
-"Expiration date","Date d'expiration"
-"Expiration Date","Date d'expiration"
-"Card Verification Number","Numéro de vérification"
-"Save your card data for a next buy.","Enregistrez une empreinte de carte bancaire pour un prochain achat."
-"Use my saved card","Sélectionner une de mes cartes pré-enregistrées."
-"Actual card","Carte actuelle"
-"Save new card data","Enregistrer l'empreinte d'une nouvelle carte"
-"Do not use saved card data","Payer directement avec une autre Carte Bancaire."
-"You will be redirected to payment page after submitting order.","Vous serez redirigé vers la page de paiment après la validation de la commande."
-"Order status when payment accepted","Statut de la commande quand le paiement est accepté."
-"Order status when payment refused","Statut de la commande quand le paiement est refusé."
-"Order status when payment canceled by customer","Statut de la commande quand le paiement est annulé par le client."
-"Credit Card Verification","Vérification de la carte de crédit"
-"Use 3D Secure","Activer 3DS"
-"Use Oneclick","Activer le paiement oneclick"
-"Use recurring profile","Activer le profile récurrent"
-"Create invoice when payment accepted","Créer une facture quand le paiement est accepté"
-"Add product to cart","Mettre à jour le panier"
-"Fill cart when payment canceled or refused","Remet à jour le panier quand le paiement est annulé ou refusé."
-"Cancel pending order","Annuler les commandes en attentes"
-"Cancel orders stayed in pending because customer not validated payment","Annule les commandes en attentes depuis 30 minutes."
-"Payment from Applicable Countries","Mode de paiement autorisé pour"
-"Payment from Specific Countries","Mode de paiement autorisé pour les pays spécifiques"
-"Minimum Order Total","Montant mini de commande"
-"Maximum Order Total","Montant maxi de commande"
-"Sort Order","Ordre de tri"
-"Enable debug log","Mode debug"
-"Enable test mode","Mode TEST"
-"Css Url","Css Url"
+HiPay API configuration,Configuration de l'API Hipay
+- Please select one category - ,- Sélectionnez une catégorie -
+- Please select one delivery method - ,- Sélectionnez une méthode de livraison -
+-- Please Select --,-- Votre choix --
+-- Please select your card --,-- Sélectionnez votre carte --
+-- Please select your split payment --,-- Sélectionnez votre mode de paiement --
+--Please Select--,--Votre choix--
+* Required Fields,* Champs requis
+3:00 pm. - 8:00 p.m.,Entre 15H et 20H(inclu)
+8:00 a.m. - 3:00 p.m.,Entre 8H et 15H(inclu)
+8:00 p.m. - 11:59 p.m.,Entre 20H et minuit
+Accept and Capture Payment,Accepter et Capturer le paiement
+Actual card,Carte actuelle
+Add,Ajouter
+Add payment profile,Ajouter un profile de paiement
+Add product to cart,Mettre à jour le panier
+Alias oneclick,Oneclick alias
+Allow Initial Fee Failure,Allow Initial Fee Failure
+Amount to pay,Montant à payer
+amount: %s,montant: %s
+An email with a payment link will be sent to the customer.,Un e-mail avec le lien de paiement va etre envoyé au client
+An error occurred while paid the split payment.,Une erreur est survenue pendant le paiement en plusieurs fois
+An error occurred while saving the card.,Une erreur est survenue pendant l'enregistrement de la carte
+An error occurred while saving the payment profile.,Une erreur est survenue pendant l'enregistrement du profil de paiement
+An error occurred while saving the split payment.,Une erreur est survenue pendant l'enregistrement du split payment
+An exception has occured. Please retry checkout.,Une exception est survenue. Vous pouvez valider votre commande à nouveau.
+Api password,Mot de passe de l'API
+Api password test,Mot de passe TEST de l'API
+Api username,Identifiant de l'API
+Api username test,Identifiant TEST de l'API
+Are you sure you want to accept this payment?,Êtes-vous sûr de vouloir accepter ce paiement?
+Are you sure you want to sync the hashing configuration for notifications ?,Êtes-vous sûr de vouloir synchroniser la configuration de hachage pour les notifications ?
+Attempts,Tentatives
+Authorization,Autorisation
+Auto Bill on Next Cycle,Facturation automatique au prochain cycle
+Back,Retour
+Bank name,Nom de la banque
+"Bank name is not correct, please enter a valid Bank name.","Le nom de la banque n'est pas correct, veuillez renseigner un nom valide"
+Bankwire method,Méthode virement bancaire
+basic,basic
+Billing Amount,Montant de la facturation
+Billing and shipping addresses are differents,Adresses de facturation et de livraison différentes
+Billing Country,Pays de la facturation
+Billing delay,Délai de facturation
+Billing Period Unit,Unité de période de facturation
+Billing Postcode,Code postal de facturation
+Billing Region,Region de facturation
+Billing State/Province,Etat/province de la facturation
+Cancel orders stayed in pending because customer not validated payment,Annule les commandes en attentes depuis 30 minutes.
+Cancel pending order,Annuler les commandes en attentes
+Cannot add the item to shopping cart.,Impossible d'ajouter l'item au panier.
+Cannot create an invoice without products.,Impossible de créer une facture sans produits.
+Cannot retrieve the payment information object instance.,Impossible de retrouver les informations de paiement.
+Cannot save card.,Impossible de sauvegarder la carte.
+Capture,Capture
+Capture Requested,Capture demandée
+Capture Requested by Hipay.,Capture demandée by Hipay.
+Card #,Numéro de carte
+Card %s,Carte %s
+Card %s - %s,Carte %s - %s
+Card Exp. month,Mois exp. carte
+Card Exp. year,Année exp. carte
+Card Hipay,Carte Hipay
+Card name,Nom de la carte
+Card Number,Numéros de la carte
+Card Status,Statut de la carte
+Card token,Jeton de carte
+Card type,Type de carte
+Card type: %s,Type de carte: %s
+Card Verification Number,Numéro de vérification
+"Click <a href=""%s"">here</a> to continue shopping.","Clickez <a href=""%s"">ici</a> pour continuer."
+Code BIC,Code BIC
+"Code BIC is not correct, please enter a valid Code BIC.","Le code BIC n'est pas correcte, veuillez renseigner un code BIC correct."
+Code Credit Card Type Hipay not found!,Code du type de la carte de crédit non trouvé!
+Complete,Complet
+Conditions combination,Conditions combination
+Configure Rules to activate 3D Secure,Configurer les règles d'activation du 3d secure
+CPF,CPF
+CPF is incorrect,CPF n'est pas correct
+CPF is not valid.,CPF n'est pas valide
+CPN,CPN
+CPN is incorrect,CPN n'est pas correct.
+Create invoice when payment accepted,Créer une facture quand le paiement est accepté
+Credit Card Number,Numéro de carte bancaire
+Credit card number mismatch with credit card type.,Les numéros de carte ne concorde pas avec le type de carte.
+Credit Card Number: xxxx-%s,"<strong>Numéro de carte de paiement :</strong> <span class=""nowrap"">xxxx-%s</span>"
+Credit Card Split Payment,Paiement en plusieurs fois par carte bancaire
+Credit Card Type,Type de carte de crédit
+Credit card type is not allowed for this payment method.,Cette carte de crédit n'est pas autorisé pour cette méthode de paiement
+Credit Card Type: %s,"<strong>Type de carte de paiement :</strong> <span class=""nowrap"">%s</span>"
+Credit Card Types,Types de cartes de paiement
+Credit Card Verification,Vérification de la carte de crédit
+Credit Card: xxxx-%s,Carte de crédit: xxxx-%s
+Css Url,Css Url
+Currency,Devise
+Customer Attribute,Attribut du client
+Customer Groups,Groupes client
+Customer ID,Identifiant client
+Customer is guest,Commande en tant qu'invité
+Customers,Clients
+Date to pay,Date de l'échéance
+Day,Jour
+Delay delivery is not a correct value for %s,La valeur %s n'est pas un délai de livraison correct
+Delete,Supprimer
+Delivery delay,Délai de livraison
+Device fingerprint,Device fingerprint
+Disabled,Désactivé
+Display card owner,Afficher le porteur de carte
+Display card owner in card form,Affiche le champs de saisi pour le porteur de carte
+Display card selector,Afficher le sélecteur de carte
+Display hosted page in Iframe,Affiche la page de paiement dans une Iframe
+Do not use saved card data,Payer directement avec une autre Carte Bancaire.
+Edit Card,Editer la Carte
+Enable debug log,Mode debug
+Enable for all transactions,Activé pour toutes les transactions
+Enable for configured 3ds rules,Activé pour les transactions défini par les règles 3DS (ci-dessous)
+Enable test mode,Mode TEST
+Enabled,Activé
+equals or greater than,égal au plus grand que
+equals or less than,égal ou plus petit que
+Error with your card!,Erreur avec votre carte!
+Exp. Date,Date d'exp.
+Exp. Month,Mois d'exp.
+Exp. Year,Année d'exp.
+Expiration date,Date d'expiration
+failed,échec
+Failed to update the payment.,Erreur lors de la mise à jour du paiement.
+Failure page,Page échec
+Female,Femme
+Fill cart when payment canceled or refused,Remet à jour le panier quand le paiement est annulé ou refusé.
+firstname,Prénom
+Firstname is mandatory.,Le prénom est obligatoire.
+Force for all transactions.,Forcer l'activation pour toutes les transactions.
+Force for configured 3ds rules,Forcer l'activation pour les transactions défini par les règles 3DS (ci-dessous)
+FOUND,TROUVE
+Fraud result,Résultat de fraude
+Fraud scoring,Score de fraude
+G.T. (Purchased),G.T. (Purchased)
+Gender,Le genre
+Grand Total,Somme finale
+greater than,plus grand que
+Hashing Algorithm,Algorithme de hachage
+here,ici
+Hipay,HiPay
+HiPay API configuration,HiPay API configuration
+Hipay Card,Carte Hipay
+Hipay cards,cartes Hipay
+HiPay category,catégorie HiPay
+Hipay Credit Card,HiPay Enterprise Carte Bancaire
+Hipay delivery method,Méthode de livraison
+HiPay Enterprise credentials configuration,Configuration des identifiants HiPay
+HiPay Enterprise Credit Card,Carte de crédit API HiPay Enterprise
+HiPay Enterprise Credit Card Split Payment,Carte de crédit paiement en plusieurs fois HiPay Enterprise
+HiPay Enterprise Hosted Page,Carte de crédit Page Hébergée HiPay Enterprise
+HiPay Enterprise Hosted Page Split Payment,Carte de crédit Page Hébergée paiement en plusieurs fois HiPay Enterprise
+Hipay Hosted,HiPay Enterprise Page Hébergée
+Hipay Payment Profiles,Hipay profils de paiement
+Hipay Split Payment,Hipay Split Payment
+HiPay Split Payments,Hipay paiement en plusieurs fois
+Hipay status to validate order,Statut Hipay validant la commande
+Hipay Transaction ID %s,ID de transaction HIPAY %s
+IBAN,IBAN
+"Iban is not correct, please enter a valid Iban.","L'Iban n'est pas correct, veuillez renseigner un iban correct."
+ID,ID
+"If enabled, then the URL of your site is sent during the payment and notifications will be sent to this URL. To use only for multi site.","Si activé, l'URL de votre site est envoyée lors du paiement et les notifications seront envoyées à cette URL. À utiliser uniquement pour les sites multiples."
+"If the hash configuration is different than the one set in your Hipay back office, then the notifications will not work. Check that both values match.","Si la configuration du hachage est différente de celle définie dans votre back-office Hipay, les notifications ne fonctionneront pas. Vérifiez que les deux valeurs correspondent"
+iFrame Height,Hauteur de l'iframe
+iFrame Style,Style de l'iframe
+iFrame Width,Largeur de l'iframe
 "Important, HTTPS protocol is required","Important, le protocole HTTPS est requis."
-"Page payment template","Template de la page de paiement."
-"Display card selector","Afficher le sélecteur de carte"
-"What is this?","Aide ?"
-"Hipay Hosted","HiPay Enterprise Page Hébergée"
-"You will be debited of %s only after submitting order.","Vous serez débité d'un montant de %s uniquement après validation de la commande à la prochaine étape."
-"Pending Capture","En attente de capture"
-"Capture Requested","Capture demandée"
-"Refund Requested","Remboursement demandé"
-"Capture Requested by Hipay.","Capture demandée by Hipay."
-"Payment accepted by Hipay.","Paiement accepté by Hipay."
-"Refund Requested by Hipay.","Remboursement demandé by Hipay."
-"Refund accepted by Hipay.","Remboursement accepté by Hipay."
-"Your payment is in pending.","Votre paiement est en attente de validation."
-"Order #","Commande #"
-"Pending page","Page en attente"
-"Success page","Page succès"
-"Failure page","Page échec"
-"Redirect page pending status","Page de redirection statut en attente"
-"Page to redirect when transaction is in pending status","Page de redirection quand le statut de transaction est en attente"
-"Record your card data for recurring.","Enregistrez une empreinte de carte bancaire pour la récurrence du paiement."
-"Hipay status to validate order","Statut Hipay validant la commande"
-"Display hosted page in Iframe","Affiche la page de paiement dans une Iframe"
-"Configure Rules to activate 3D Secure","Configurer les règles d'activation du 3d secure"
-"Rules 3D Secure","Règles 3d Secure"
-"Enable for all transactions","Activé pour toutes les transactions"
-"Enable for configured 3ds rules","Activé pour les transactions défini par les règles 3DS (ci-dessous)",
-"Disabled","Désactivé"
-"Order Attribute","Attribut de la commande"
-"Customer Attribute","Attribut du client"
-"Order's time","Heure de la commande"
-"Billing Postcode","Code postal de facturation"
-"Billing Region","Region de facturation"
-"Billing State/Province","Etat/province de la facturation "
-"Billing Country","Pays de la facturation"
-"Midnight - 8:00 a.m.","Entre minuit(inclu) et 8H"
-"8:00 a.m. - 3:00 p.m.","Entre 8H et 15H(inclu)"
-"3:00 pm. - 8:00 p.m.","Entre 15H et 20H(inclu)"
-"8:00 p.m. - 11:59 p.m.","Entre 20H et minuit"
-"Orders count","Nombre de commande passées (inclu celle en cours)"
-"Customer is guest","Commande en tant qu'invité"
-"Billing and shipping addresses are differents","Adresses de facturation et de livraison différentes"
-"Sort the list by drag'n/drop credit card type","Vous pouvez choisir l'ordre d'affichage en faisant un glisser/déposer de chaque type de paiement."
-"Split your Payment","Payer en plusieurs fois"
-"-- Please select your split payment --","-- Sélectionnez votre mode de paiement --"
-"Try to enable for all transactions.","Demander l'activation pour toutes les transactions"
-"Try to enable for configured 3ds rules","Demander l'activation pour les transactions défini par les règles 3DS (ci-dessous)"
-"Force for configured 3ds rules","Forcer l'activation pour les transactions défini par les règles 3DS (ci-dessous)"
-"Force for all transactions.","Forcer l'activation pour toutes les transactions."
-"Your next payments:","Vos prochains paiements: "
-"Name on Card","Propriétaire de la carte"
-"Use Split Payment","Activer le paiement en plusieurs fois"
-"Payment Profile","Profile de paiement"
-"Minimum Order Total for Split Payment","Minimum de commande pour les paiements en plusieurs fois"
-"Rules Oneclick","Règle d'activation du oneClick"
-"Send fraud payment email","Envoyer un mail au client an cas de fraude"
-"Display card owner","Afficher le porteur de carte"
-"Display card owner in card form","Affiche le champs de saisi pour le porteur de carte"
-"Split Payment Profiles","Profils de paiement en plusieurs fois"
-"Split payments","Liste des paiements en plusieurs fois"
-"HiPay Split Payments","Hipay paiement en plusieurs fois"
-"Card token","Jeton de carte"
-"Amount to pay","Montant à payer"
-"Date to pay","Date de l'échéance"
-"Attempts","Tentatives"
-"Status","Statut"
-"Pay now","Payer maintenant"
-"Hipay Payment Profiles","Hipay profils de paiement"
-"payment_type","Type de paiement"
-"Add payment profile","Ajouter un profile de paiement"
-"Payment Profile","Profil de paiement"
-"Wrapper iFrame Style","Style du container de l'iframe"
-"iFrame Width","Largeur de l'iframe"
-"iFrame Height","Hauteur de l'iframe"
-"iFrame Style","Style de l'iframe"
-"HiPay Enterprise credentials configuration","HiPay Enterprise credentials configuration"
-"HiPay Enterprise Credit Card","HiPay Enterprise Credit Card API"
-"HiPay Enterprise Hosted Page","HiPay Enterprise Credit Card Hosted Page"
-"HiPay Enterprise Credit Card Split Payment","HiPay Enterprise Credit Card Split Payment"
-"Credit Card Split Payment","Paiement en plusieurs fois par carte bancaire"
-"HiPay Enterprise Hosted Page Split Payment","HiPay Enterprise Hosted Page Split Payment"
-"Bankwire method","Méthode virement bancaire"
-"Gender","Le genre"
-"Male","Homme"
-"Female","Femme"
-"firstname","Prénom"
-"lastname","Nom"
-"Bank name","Nom de la banque"
-"Enable the electronic signature of the mandate","Activer la signature électronique du mandat"
-"Notification ""Refunded"". Refund issued by merchant. Registered notification about refunded amount of %s. Transaction ID: ""%s"". Credit Memo has not been created. Please create offline Credit Memo.","Notification ""Refund"". Remboursement demandé par le marchand. Enregistrement de la notification de remboursement d'un montant de %s. Transaction ID: ""%s"". L'avoir n'a pas été créé. Veuillez créer l'avoir en offline"
+Incorrect credit card expiration date.,Date d'expiration de la carte incorrecte
+Informations,Informations
+Initial Fee,Frais initiaux
+Internal Reference ID,ID de référence interne
+Invalid Credit Card Number,Numéros de carte invalides
+is,est
+Is default,défaut
+is not,n'est pas
+is not one of,n'est pas l'un des
+is one of,est l'un des
+lastname,Nom
+Lastname is mandatory.,Le nom est obligatoire.
+Leave blank if no proxy,Laisser vide si aucun proxy
+less than,moins que
+Magento category,Catégorie Magento
+Magento shipping method,Méthode de livraison Magento
+Male,Homme
+Manage Customers,Gérer les clients
+mappings categories are actually missing.,Le mapping des catégories n'est pas fait.
+mappings delivery method are actually missing.,Le mapping des méthodes de livraison n'est pas fait.
+Maximum Billing Cycles,Cycle maximum de facturation
+Maximum Order Total,Montant maxi de commande
+Maximum Payment Failures,Echec maximum de paiement
+Maximum Trial Billing Cycles,Essai maximum de cycle de facturaion
+Midnight - 8:00 a.m.,Entre minuit(inclu) et 8H
+Minimum Order Total,Montant mini de commande
+Minimum Order Total for Split Payment,Minimum de commande pour les paiements en plusieurs fois
+Month,Mois
+My Payment Cards,Mes cartes de paiement
+N/A,N/A
+Name,Nom
+Name on Card,Propriétaire de la carte
+New card,Nouvelle carte
+New Order Recurring!,Nouveau paiement récurrent!
+New payment profile,Nouveau profil de paiement
+No,Non
+No Cancel Transaction because no transaction number,No Cancel Transaction because no transaction number
+NOT FOUND,PAS TROUVE
 "Notification ""Capture"". Capture issued by merchant. Registered notification about captured amount of %s. Transaction ID: ""%s"". Invoice has not been created. Please create offline Invoice.","Notification ""Capture"". Capture demandée par le marchand. Enregistrement de la notification de capture d'un montant de %s. Transaction ID: ""%s"". La facture n'a pas été créée. Veuillez créer la facture en offline. ( Le montant autorisé amount était %s )"
-"Accept and Capture Payment","Accepter et Capturer le paiement"
-"The Capture was requested.","LA capture a été demandée."
-"You must reload the page to see new status.","Vous devez recharger la page pour voir le nouveau statut."
-"Your payment is declined. Please retry checkout with another payment card.","Votre paiement a été refusé. Veuillez réessayer avec une autre carte bancaire."
-"An exception has occured. Please retry checkout.","Une exception est survenue. Vous pouvez valider votre commande à nouveau."
-"Transaction is in pending notification.","Transaction en attente de validation par notification."
-"Leave blank if no proxy","Laisser vide si aucun proxy"
-"Device fingerprint","Device fingerprint"
-"An email with a payment link will be sent to the customer.","An email with a payment link will be sent to the customer."
-"Please check the configuration","Merci de vérifier la configuration"
-"here","ici"
-"You have to activate and configuring the support of basket before activate the payment method klarna","Vous devez activer et configurer la gestion du panier avant d'activer la méthode de paiement klarna."
-"Please check the configuration","Merci de vérifier la configuration"
-"here","ici"
-"You have to activate and configuring the support of basket before activate the payment method klarna","Vous devez activer et configurer la gestion du panier avant d'activer la méthode de paiement klarna."
-"The CPF format is invalid.","Le format du numéro d'identification est incorrect."
-"The CPN format is invalid.","Le format du numéro d'identification est incorrect."
-"Period of validity of the payment page","Période de validité de la page de paiement"
-"Please check the phone number entered.","Merci de verifier le numéro de téléphone saisi."
+"Notification ""Refunded"". Refund issued by merchant. Registered notification about refunded amount of %s. Transaction ID: ""%s"". Credit Memo has not been created. Please create offline Credit Memo.","Notification ""Refund"". Remboursement demandé par le marchand. Enregistrement de la notification de remboursement d'un montant de %s. Transaction ID: ""%s"". L'avoir n'a pas été créé. Veuillez créer l'avoir en offline"
+Notification from Hipay:,Notification depuis Hipay:
+"Only if payment method is in ""Sale"" mode.","Uniquement si la méthode de paiement est en mode ""Sale"""
+Order #,Commande #
+Order %s by %s,Commande %s de %s
+Order Attribute,Attribut de la commande
+Order canceled automatically by cron because order is pending since %d minutes,Commande annulée automatiquement par le cron car elle est en attente depuis %d minutes.
+Order Id not present (Recurring).,L'id de commanden n'est pas présent (Recurring).
+Order preparation delay,Délai de préparation de la commande
+Order saving error: %s,Order saving error: %s
+Order status when payment accepted,Statut de la commande quand le paiement est accepté.
+Order status when payment canceled by customer,Statut de la commande quand le paiement est annulé par le client.
+Order status when payment refused,Statut de la commande quand le paiement est refusé.
+Order's time,Heure de la commande
+Orders count,Nombre de commande passées (inclu celle en cours)
+Other configuration,Autre configurations
+Page payment template,Template de la page de paiement.
+Page to redirect when transaction is in pending status,Page de redirection quand le statut de transaction est en attente
+"Page to redirect when transaction is successful, leave empty for checkout/onepage/success","Page de redirection quand le statut de transaction est en succés, laissez vide pour checkout/onepage/success"
+Pay now,Payer maintenant
+Payment accepted by Hipay.,Paiement accepté par Hipay.
+Payment Action,Type de paiement
+Payment authorization error.,Erreur d'autorisation de paiement.
+Payment capturing error.,Erreur de capture du paiement.
+Payment error.,Erreur de paiement.
+Payment from Applicable Countries,Mode de paiement autorisé pour
+Payment from Specific Countries,Mode de paiement autorisé pour les pays spécifiques
+Payment Method,Méthode de paiement
+Payment Profile,Profil de paiement
+Payment Reference ID,Id de référence de paiement
+Payment type,Type de paiement
+payment_type,payment_type
+Pending,En attente
+Pending Capture,En attente de capture
+Pending page,Page en attente
+Period of validity of the payment page,Période de validité de la page de paiement
+Please check the configuration,Merci de vérifier la configuration
+Please check the phone number entered.,Merci de verifier le numéro de téléphone saisi.
+Please enter a valid credit card verification number.,Veuillez renseigner un numéro de verification de carte valide.
+Price in order,Prix par ordre
+Profile for ID: %d doesn't exists (Recurring).,Le Profil pour l'ID: %d n'existe pas (Recurring).
+Reason,Raison
+Record your card data for recurring.,Enregistrez une empreinte de carte bancaire pour la récurrence du paiement.
+Recurring Payment,Paiement récurrent
+Redirect page pending status,Page de redirection statut en attente
+Refund accepted by Hipay.,Remboursement accepté by Hipay.
+Refund Requested,Remboursement demandé
+Refund Requested by Hipay.,Remboursement demandé by Hipay.
+Retrieve the hashing configuration for notifications configured in your account.,Récupérer la configuration de hachage pour les notifications configurées dans votre compte
+Row total in order,Row total in order
+Rules 3D Secure,Règles 3d Secure
+Rules Oneclick,Règle d'activation du oneClick
+Sale,Vente
+Save,Sauvegarder
+Save and Continue Edit,Sauvegarder et continuer à éditer
+Save new card data,Enregistrer l'empreinte d'une nouvelle carte
+Save your card data for a next buy.,Enregistrez une empreinte de carte bancaire pour un prochain achat.
+Schedule Description,Schedule Description
+Selected payment type is not allowed for billing country.,Le moyen de paiement n'est pas autorisé pour le pays de facturation.
+Send fraud payment email,Envoyer un mail au client en cas de fraude
+Send Notification url,Envoie de l'url de notification
+Shipping Amount,Montant de la livraison
+Shipping Method,Méthode de livraison
+Sort Order,Ordre de tri
+Sort the list by drag'n/drop credit card type,Vous pouvez choisir l'ordre d'affichage en faisant un glisser/déposer de chaque type de paiement.
+Split number,Split number
+Split Payment,Split Payment
+Split Payment for order %s,Split Payment for order %s
+Split Payment Profiles,Profils de paiement en plusieurs fois
+Split payments,Liste des paiements en plusieurs fois
+Split payments,Split payments
+Split your Payment,Payer en plusieurs fois
+Start Date,Date de début
+status,statut
+Subscriber Name,Subscriber Name
+Subtotal,Subtotal
+Success page,Page succès
+successful,succès
+Switch/Solo/Maestro Issue Number,Switch/Solo/Maestro Issue Number
+Switch/Solo/Maestro Start Date,Switch/Solo/Maestro Start Date
+Synchronize Hashing,Synchroniser la configuration du hachage
+Tax Amount,Tax Amount
+The Capture was requested.,LA capture a été demandée.
+The card has been deleted.,The card has been deleted.
+The CPF format is invalid.,Le format du numéro d'identification est incorrect.
+The CPN format is invalid.,Le format du numéro d'identification est incorrect.
+The hash configuration has been updated with ,La configuration du hashage a été mis à jour avec
+The hash configuration has not been updated. Please check the configuration in the hipay back office.,La configuration de hachage n'a pas été mise à jour. Veuillez vérifier la configuration dans le back-office hipay.
+The hash configuration was already updated with,La configuration était déjà à jour avec
+The number of billing cycles for payment period.,The number of billing cycles for payment period.
+The order does not allow creating an invoice.,The order does not allow creating an invoice.
+The order has been created.,The order has been created.
+The payment has been accepted.,The payment has been accepted.
+The payment profile has been deleted.,The payment profile has been deleted.
+The payment profile has been saved.,The payment profile has been saved.
+The split payment has been paid,The split payment has been paid
+The split payment has been saved.,The split payment has been saved.
+The split payment has NOT been paid,The split payment has NOT been paid
+This card no longer exists.,This card no longer exists.
+This order no longer exists.,This order no longer exists.
+This payment profile no longer exists.,This payment profile no longer exists.
+This split payment no longer exists.,This split payment no longer exists.
+Time to wait between installments in a billing cycle.,Time to wait between installments in a billing cycle.
+Title,Titre
+total amount,total amount
+Total Items Quantity,Total Items Quantity
+total quantity,total quantity
+Total Weight,Total Weight
+Transaction is in pending notification.,Transaction en attente de validation par notification.
+Trial Billing Amount,Trial Billing Amount
+Trial Billing Frequency,Trial Billing Frequency
+Trial Billing Period Unit,Trial Billing Period Unit
+Try to enable for all transactions.,Demander l'activation pour toutes les transactions
+Try to enable for configured 3ds rules,Demander l'activation pour les transactions défini par les règles 3DS (ci-dessous)
+Two Weeks,Two Weeks
+Type,Type
+Unable to find a card to delete.,Unable to find a card to delete.
+Unable to find a payment profile to delete.,Unable to find a payment profile to delete.
+Unit for billing during the subscription period.,Unit for billing during the subscription period.
+Use 3D Secure,Activer 3DS
+Use my saved card,Sélectionner une de mes cartes pré-enregistrées.
+Use Oneclick,Activer le paiement oneclick
+Use order currency for transaction,Utiliser la devise de la commande pour la transaction
+Use recurring profile,Activer le profile récurrent
+Use Split Payment,Activer le paiement en plusieurs fois
+Waiting for capture transaction ID '%s' of amount %s,En attente de la capture de la transaction '%s' du montant %s
+Week,Week
+What is this?,Aide ?
+With fees,With fees
+Without fees,Without fees
+Wrapper iFrame Style,Style du container de l'iframe
+Year,Année
+Yes,Yes
+You have saved no cards.,You have saved no cards.
+You have to activate and configuring the support of basket before activate the payment method klarna,Vous devez activer et configurer la gestion du panier avant d'activer la méthode de paiement klarna.
+You must enter credentials to synchronize your configuration.,Vous devez saisir vos identifiants d'Api pour synchroniser votre configuration.
+You must reload the page to see new status.,Vous devez recharger la page pour voir le nouveau statut.
+You will be debited of %s only after submitting order.,Vous serez débité d'un montant de %s uniquement après validation de la commande à la prochaine étape.
+You will be redirected to payment page after submitting order.,Vous serez redirigé vers la page de paiment après la validation de la commande.
+Your next payments:,Vos prochains paiements:
+Your payment is declined. Please retry checkout with another payment card.,Votre paiement a été refusé. Veuillez réessayer avec une autre carte bancaire.
+Your payment is in pending.,Votre paiement est en attente de validation.
+Your transaction has been approved.,Your transaction has been approved.
+Your transaction has been refused.,Your transaction has been refused.
+"In order to activate this Payment Method, you have to add a valid 'Api TokenJS Password/Public Key' on the HiPay Entreprise configuration","Pour activer cette méthode de paiement, vous devez renseigner des identifiants 'Api TokenJS Password/Public Key' valides dans la configuration du module HiPay Entreprise"

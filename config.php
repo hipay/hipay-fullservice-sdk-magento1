@@ -13,16 +13,16 @@ return array(
   'license'                => 'General Public License (GPL)',
   'channel'                => 'community',
 
-  'author_name'            => 'Kassim Belghait',
-  'author_user'            => 'Sirateck',
-  'author_email'           => 'kassim@sirateck.com',
+  'author_name'            => 'HiPay',
+  'author_user'            => 'HiPay',
+  'author_email'           => 'support.tpp@hipay.com',
 
   'base_dir'               => __DIR__.'/dist',
   'archive_files'          => 'Allopass_Hipay.tar',
   'path_output'            => __DIR__.'/dist',
 
   'php_min'                => '5.2.0',
-  'php_max'                => '6.0.0',
+  'php_max'                => '7.2.0',
 
   'extensions'             => array()
 );
