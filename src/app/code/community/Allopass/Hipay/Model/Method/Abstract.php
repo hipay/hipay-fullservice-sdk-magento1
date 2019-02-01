@@ -171,7 +171,9 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
                         Mage::helper('hipay')->__(
                             'Error in  canceling transaction ID: "%s". %s',
                             $transactionId,
-                            $gatewayResponse->getMessage()
+                            // Can not be here a $gatewayResponse, use $response and here proposal of status
+                            //$gatewayResponse->getMessage()
+                            $response->getStatus()
                         ),
                         false
                     );
