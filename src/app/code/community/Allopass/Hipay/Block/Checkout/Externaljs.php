@@ -29,7 +29,7 @@ class Allopass_Hipay_Block_Checkout_Externaljs extends Mage_Core_Block_Template
      */
     public function fingerprintEnabled()
     {
-        return $this->getConfig()->isFingerprintEnabled(Mage::app()->getStore());
+        return $this->getConfig()->isFingerprintEnabled(Mage::app()->getStore()->getId());
     }
 
     /**
@@ -50,7 +50,7 @@ class Allopass_Hipay_Block_Checkout_Externaljs extends Mage_Core_Block_Template
      */
     public function getFingerPrintJs()
     {
-        return $this->getConfig()->getFingerPrintJsUrl(Mage::app()->getStore());
+        return $this->getConfig()->getFingerPrintJsUrl(Mage::app()->getStore()->getId());
     }
 
     /**
@@ -59,7 +59,7 @@ class Allopass_Hipay_Block_Checkout_Externaljs extends Mage_Core_Block_Template
      */
     public function getSdkJs()
     {
-        return $this->getConfig()->getSdkJsUrl(Mage::app()->getStore());
+        return $this->getConfig()->getSdkJsUrl(Mage::app()->getStore()->getId());
     }
 
     /**
