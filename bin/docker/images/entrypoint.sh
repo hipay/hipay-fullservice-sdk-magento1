@@ -15,6 +15,16 @@ printf "\n${COLOR_SUCCESS}       CHECK MAGENTO INSTALLATION        ${NC}\n"
 printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
  if [ ! -f /var/www/htdocs/index.php ]; then
 
+    if [ "$PHP_VERSION" = 'php7.2' ]; then
+      echo "Install mcrypt from PECL"
+      pecl install mcrypt-1.0.1
+      docker-php-ext-enable mcrypt
+    else
+      echo "Install mcrypt from PHP"
+      docker-php-ext-configure mcrypt
+      docker-php-ext-install mcrypt
+    fi
+
     cp -f /tmp/apache2/mpm_prefork.conf /etc/apache2/mods-available/
 
     printf "\n${COLOR_SUCCESS} MAGENTO IS NOT YET INSTALLED : INSTALLATION IS BEGINNING ${NC}\n"

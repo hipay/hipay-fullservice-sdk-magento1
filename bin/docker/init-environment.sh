@@ -3,7 +3,7 @@
 ################################
 # PHP VERSION
 ################################
-if [ "$1" = 'php5.6' ]; then
+if [ "$1" = 'php7.1' ]; then
   PHP_VERSION=''
 else
   PHP_VERSION=-$1
@@ -31,7 +31,7 @@ if [ "$3" != '' ]; then
     docker-compose  -p $PROJECT_NAME_TEST -f docker-compose.test-magento18.yml build
     docker-compose  -p $PROJECT_NAME_TEST -f docker-compose.test-magento18.yml up -d
 else
-  echo "Build and start Magnto latest and PHP : $PHP_VERSION "
+  echo "Build and start Magento latest and PHP : $PHP_VERSION "
   docker-compose   -p $PROJECT_NAME_TEST -f docker-compose.test$PHP_VERSION.yml build 
 fi
 

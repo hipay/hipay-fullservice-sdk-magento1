@@ -19,10 +19,10 @@ services:
       - database
     build:
       context: .
-      dockerfile: ./bin/docker/images/php5-6/Dockerfile
+      dockerfile: ./bin/docker/images/php7-1/Dockerfile
     environment:
       - SAMPLE_DATA_VERSION=1.9
-      - MAGENTO_VERSION=1.9.3.8
+      - MAGENTO_VERSION=1.9.4.0
     env_file:
       - ./bin/docker/conf/test/hipay.env.sample
       - ./bin/docker/conf/test/mage.env.sample

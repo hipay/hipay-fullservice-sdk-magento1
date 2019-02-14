@@ -1,3 +1,20 @@
+# Version 1.11.2
+
+ - Fix: PHP Error with cancel order
+ - Fix: PHP version for magento connect 
+ - Fix: Error with getInternalConfig 
+
+# Version 1.11.1
+
+ - Fix: Force multi_use on Hpayment request (OneClick)
+ - Fix: Add support for PHP 7
+ 
+# Version 1.11.0
+
+ - Add hosted fields split payment method
+ - Get payment product from SDK JS
+ - Fix: Oney payment method
+ 
 # Version 1.10.0
 
  - Add Payment Method Hosted Fields

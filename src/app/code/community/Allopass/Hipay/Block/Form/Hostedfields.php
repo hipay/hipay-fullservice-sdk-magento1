@@ -38,6 +38,9 @@ class Allopass_Hipay_Block_Form_Hostedfields extends Allopass_Hipay_Block_Form_A
         $oneclick = $this->getLayout()->createBlock('hipay/checkout_oneclick', 'hipay.hf.checkout.oneclick');
         $this->setChild('hipay_oneclick', $oneclick);
 
+        $splitpayment = $this->getLayout()->createBlock('hipay/checkout_splitpayment', 'hipay.checkout.splitpayment');
+        $this->setChild('hipay_splitpayment', $splitpayment);
+
         return $this;
     }
 

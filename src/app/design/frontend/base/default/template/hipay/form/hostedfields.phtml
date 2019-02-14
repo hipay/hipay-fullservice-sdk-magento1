@@ -17,6 +17,9 @@ $_code = $this->getMethodCode();
 $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction', Mage::app()->getStore());
 ?>
 <div id="payment_form_<?php echo $_code ?>" style="display:none;">
+    <?php if ($this->allowSplitPayment()) : ?>
+        <?php echo $this->getChildHtml('hipay_splitpayment'); ?>
+    <?php endif; ?>
     <?php if (Mage::getStoreConfig('hipay/hipay_api/fingerprint', Mage::app()->getStore())) : ?>
         <?php echo $this->getChildHtml('hipay_fingerprint'); ?>
     <?php endif; ?>
@@ -106,6 +109,12 @@ $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction',
 
         var config = <?php echo $this->getConfigJson() ?>;
         var tokenizeEnv = 'production';
+        var multiUse = false;
+        var hfMethodCode = "<?php echo $_code ?>";
+
+        if(config.isOneClick !== '0' || hfMethodCode === "hipay_hostedfieldsxtimes"){
+            multiUse = true;
+        }
 
         if (config.testMode == 1) {
             tokenizeEnv = 'stage'; // default is production/live
@@ -122,7 +131,7 @@ $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction',
 
         var config = {
             selector: "hipayHF-container",
-            multi_use: (config.isOneClick === '0') ? false : true,
+            multi_use: multiUse,
             fields: {
                 cardHolder: {
                     selector: "hipayHF-card-holder",
