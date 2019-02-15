@@ -77,7 +77,7 @@ casperjs-part1-1:
   except:
     variables:
       - $CI_COMMIT_MESSAGE =~ /skip-tests/
-  retry: 3
+  retry: 2
 
 casperjs-part2-1:
     stage: test-php7
@@ -96,7 +96,7 @@ casperjs-part2-1:
           - $CI_COMMIT_MESSAGE =~ /skip-tests/
     after_script:
        -  bash /tools/clean-job.sh $PROJECT_NAME_TEST-part2 docker-compose.test.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
-    retry: 3
+    retry: 2
 
 casperjs-part3-1:
     stage: test-php7
@@ -115,7 +115,7 @@ casperjs-part3-1:
         - $CI_COMMIT_MESSAGE =~ /skip-tests/
     after_script:
        -  bash /tools/clean-job.sh $PROJECT_NAME_TEST-part3 docker-compose.test.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
-    retry: 3
+    retry: 2
 
 casperjs-part4-1:
     stage: test-php7
@@ -134,7 +134,7 @@ casperjs-part4-1:
         - $CI_COMMIT_MESSAGE =~ /skip-tests/
     after_script:
         -  bash /tools/clean-job.sh $PROJECT_NAME_TEST-part4 docker-compose.test.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
-    retry: 3
+    retry: 2
 
 #########################################################################
 ###                                PHP 5-6                            ###
@@ -168,7 +168,7 @@ casperjs-part1-2:
       - $CI_COMMIT_MESSAGE =~ /skip-tests/
   after_script:
     - bash /tools/clean-job.sh $PROJECT_NAME_TEST docker-compose.test-php5-6.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
-  retry: 3
+  retry: 2
 
 casperjs-part2-2:
     stage: test-php5-6
@@ -187,7 +187,7 @@ casperjs-part2-2:
         - $CI_COMMIT_MESSAGE =~ /skip-tests/
     after_script:
       - bash /tools/clean-job.sh $PROJECT_NAME_TEST-part2 docker-compose.test-php5-6.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
-    retry: 3
+    retry: 2
 
 casperjs-part3-2:
     stage: test-php5-6
@@ -206,7 +206,7 @@ casperjs-part3-2:
     except:
       variables:
         - $CI_COMMIT_MESSAGE =~ /skip-tests/
-    retry: 3
+    retry: 2
 
 casperjs-part4-2:
     stage: test-php5-6
@@ -225,7 +225,7 @@ casperjs-part4-2:
         - $CI_COMMIT_MESSAGE =~ /skip-tests/
     after_script:
       - bash /tools/clean-job.sh $PROJECT_NAME_TEST-part4 docker-compose.test-php5-6.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
-    retry: 3
+    retry: 2
 
 build-test-php-7-2:
   stage: build-test-php7-2
@@ -260,7 +260,7 @@ casperjs-part1-3:
       - $CI_COMMIT_MESSAGE =~ /skip-tests/
   after_script:
     -  bash /tools/clean-job.sh $PROJECT_NAME_TEST docker-compose.test-php7-2.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
-  retry: 3
+  retry: 2
 
 casperjs-part2-3:
     stage: test-php7-2
@@ -279,7 +279,7 @@ casperjs-part2-3:
         - $CI_COMMIT_MESSAGE =~ /skip-tests/
     after_script:
        -  bash /tools/clean-job.sh $PROJECT_NAME_TEST-part2 docker-compose.test-php7-2.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
-    retry: 3
+    retry: 2
 
 casperjs-part3-3:
     stage: test-php7-2
@@ -298,7 +298,7 @@ casperjs-part3-3:
         - $CI_COMMIT_MESSAGE =~ /skip-tests/
     after_script:
        -  bash /tools/clean-job.sh $PROJECT_NAME_TEST-part3 docker-compose.test-php7-2.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
-    retry: 3
+    retry: 2
 
 casperjs-part4-3:
     stage: test-php7-2
@@ -317,7 +317,7 @@ casperjs-part4-3:
         - $CI_COMMIT_MESSAGE =~ /skip-tests/
     after_script:
         -  bash /tools/clean-job.sh $PROJECT_NAME_TEST-part4 docker-compose.test-php7-2.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
-    retry: 3
+    retry: 2
 
 clean-stack-test:
   stage: clean-stack
