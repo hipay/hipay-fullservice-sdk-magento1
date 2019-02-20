@@ -1,3 +1,9 @@
+# Version 1.11.2
+
+ - Fix: PHP Error with cancel order
+ - Fix: PHP version for magento connect 
+ - Fix: Error with getInternalConfig 
+
 # Version 1.11.1
 
  - Fix: Force multi_use on Hpayment request (OneClick)

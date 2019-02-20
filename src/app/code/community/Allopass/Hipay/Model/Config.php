@@ -85,11 +85,15 @@ class Allopass_Hipay_Model_Config extends Varien_Object
      *
      * @param    string $key context key
      * @param    string $key Var path key
-     * @param    int $storeId Store View Id
+     * @param    int|Mage_Core_Model_Store $storeId Store View Id
      * @return      mixed
      */
     private function getInternalConfig($key_api, $key, $storeId)
     {
+        if ($storeId instanceof Mage_Core_Model_Store){
+            $storeId = $storeId->getId();
+        }
+
         $index = 'hipay' . $key_api . $key . $storeId;
         if (!$this->hasData($index)) {
             $value = Mage::getStoreConfig('hipay/' . $key_api . '/' . $key, $storeId);
