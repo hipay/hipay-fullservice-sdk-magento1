@@ -1,6 +1,6 @@
 {
   "require": {
-    "hipay/hipay-fullservice-sdk-php": "^1.10.0"
+    "hipay/hipay-fullservice-sdk-php": "^2.0.0"
   },
   "config": {
     "vendor-dir": "hipay-fullservice-sdk-php"
