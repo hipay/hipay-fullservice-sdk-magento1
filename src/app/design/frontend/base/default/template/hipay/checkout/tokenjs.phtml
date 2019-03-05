@@ -62,7 +62,7 @@ if ($this->hasPublicCredentials()):
             }
 
             function tokenizeHostedFields(method, Form) {
-                hipayHF.createToken()
+                hipayHF.getPaymentData()
                     .then(function (response) {
 
                             self.safeFormData["payment[" + method + "_cc_number]"] = response.pan;
@@ -76,8 +76,17 @@ if ($this->hasPublicCredentials()):
 
                             savePayment(self);
                         },
-                        function (error) {
-                            document.getElementById("hipayHF-error-message").innerHTML = error;
+                        function (errors) {
+                            for (var error in errors) {
+                                var domElement = document.querySelector(
+                                    "[data-hipay-id='hipay-card-field-error-" + errors[error].field + "']"
+                                );
+
+                                // If DOM element add error inside
+                                if (domElement) {
+                                    domElement.innerText = errors[error].error;
+                                }
+                            }
                             checkout.setLoadWaiting(false);
                         }
                     );
