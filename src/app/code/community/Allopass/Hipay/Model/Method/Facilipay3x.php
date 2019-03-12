@@ -20,7 +20,7 @@
  * @license     https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-fullservice-sdk-magento1
  */
-class Allopass_Hipay_Model_Method_Facilipay3x extends Allopass_Hipay_Model_Method_AbstractOrder
+class Allopass_Hipay_Model_Method_Facilipay3x extends Allopass_Hipay_Model_Method_AbstractOrderApi
 {
     protected $_code = 'hipay_facilipay3x';
     protected $_formBlockType = 'hipay/form_hosted';

@@ -20,7 +20,7 @@
  * @license     https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-fullservice-sdk-magento1
  */
-class Allopass_Hipay_Model_Method_Astropay extends Allopass_Hipay_Model_Method_AbstractOrder
+class Allopass_Hipay_Model_Method_Astropay extends Allopass_Hipay_Model_Method_AbstractOrderApi
 {
 
     protected $_infoBlockType = 'hipay/info_cc';
@@ -55,21 +55,11 @@ class Allopass_Hipay_Model_Method_Astropay extends Allopass_Hipay_Model_Method_A
     public function validate()
     {
         /**
-         * to validate payment method is allowed for billing country or not
+         * To validate payment method is allowed for billing country or not
          */
+        parent::validate();
+
         $paymentInfo = $this->getInfoInstance();
-
-        if ($paymentInfo instanceof Mage_Sales_Model_Order_Payment) {
-            $billingCountry = $paymentInfo->getOrder()->getBillingAddress()->getCountryId();
-        } else {
-            $billingCountry = $paymentInfo->getQuote()->getBillingAddress()->getCountryId();
-        }
-
-        if (!$this->canUseForCountry($billingCountry)) {
-            Mage::throwException(
-                Mage::helper('payment')->__('Selected payment type is not allowed for billing country.')
-            );
-        }
 
         // Validate CPF format 
         if ($this->_typeIdentification == 'cpf') {

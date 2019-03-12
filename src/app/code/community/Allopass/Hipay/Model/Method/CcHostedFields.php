@@ -28,9 +28,4 @@ class Allopass_Hipay_Model_Method_CcHostedFields extends Allopass_Hipay_Model_Me
 
     protected $_formBlockType = 'hipay/form_hostedfields';
 
-    public function getOrderPlaceRedirectUrl()
-    {
-        return Mage::getUrl('hipay/hostedfields/sendRequest', array('_secure' => true));
-    }
-
 }

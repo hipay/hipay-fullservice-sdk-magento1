@@ -74,6 +74,14 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
     protected $_canReviewPayment = false;
 
     /**
+     * @return string
+     */
+    public function getOrderPlaceRedirectUrl()
+    {
+        return Mage::getUrl(str_replace("_", "/", $this->getCode()) . '/sendRequest', array('_secure' => true));
+    }
+
+    /**
      * Fields that should be replaced in debug with '***'
      *
      * @var array
@@ -1582,17 +1590,6 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         }
 
         return false;
-    }
-
-    protected function getCcTypeHipay($ccTypeMagento)
-    {
-        $ccTypes = Mage::getSingleton('hipay/config')->getCcTypesHipay();
-
-        if (isset($ccTypes[$ccTypeMagento])) {
-            return $ccTypes[$ccTypeMagento];
-        } else { //Maybe it's already hipay code, we return it directly
-            return $ccTypeMagento;
-        }
     }
 
     /**
