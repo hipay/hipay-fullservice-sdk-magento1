@@ -58,12 +58,6 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
         return $this;
     }
 
-    public function getOrderPlaceRedirectUrl()
-    {
-
-        return Mage::getUrl('hipay/sdd/sendRequest', array('_secure' => true));
-
-    }
 
     public function place($payment, $amount)
     {

@@ -25,5 +25,4 @@ class Allopass_Hipay_Model_Method_Aura extends Allopass_Hipay_Model_Method_Astro
     protected $_code = 'hipay_aura';
     protected $_formBlockType = 'hipay/form_cpf';
     protected $_typeIdentification = 'cpf';
-
 }

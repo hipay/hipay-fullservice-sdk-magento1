@@ -20,7 +20,7 @@
  * @license     https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-fullservice-sdk-magento1
  */
-class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstract
+class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_AbstractOrderApi
 {
     protected $_canReviewPayment = true;
     const STATUS_PENDING_CAPTURE = 'pending_capture';
@@ -94,12 +94,6 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
         return $instance;
     }
 
-    public function getOrderPlaceRedirectUrl()
-    {
-        return Mage::getUrl('hipay/cc/sendRequest', array('_secure' => true));
-    }
-
-
     public function initialize($paymentAction, $stateObject)
     {
         /* @var $payment Mage_Sales_Model_Order_Payment */
@@ -153,15 +147,11 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
 
     public function place($payment, $amount)
     {
-
         $order = $payment->getOrder();
         $customer = Mage::getModel('customer/customer')->load($order->getCustomerId());
-
         $request = Mage::getModel('hipay/api_request', array($this));
 
-
         $payment->setAmount($amount);
-
         $token = $payment->getAdditionalInformation('token');
         $gatewayParams = $this->getGatewayParams($payment, $amount, $token);
 
@@ -199,32 +189,18 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
     }
 
     /**
-     *  Some payments method need product code with fees or no fees
-     *
-     * @return string|bool
+     * @param $ccTypeMagento
+     * @return mixed
      */
-    private function getPaymentProductFees()
+    public function getCcTypeHipay($ccTypeMagento)
     {
-        $paymentFees = $this->getConfigData('payment_product_fees');
-        if (!empty($paymentFees)) {
-            return $paymentFees;
+        $ccTypes = Mage::getSingleton('hipay/config')->getCcTypesHipay();
+
+        if (isset($ccTypes[$ccTypeMagento])) {
+            return $ccTypes[$ccTypeMagento];
+        } else { //Maybe it's already hipay code, we return it directly
+            return $ccTypeMagento;
         }
-
-        return false;
-    }
-
-    /**
-     *  Return payment product
-     *
-     *  If Payment requires specified option ( With Fees or without Fees return it otherwhise normal payment product)
-     *
-     * @return string
-     */
-    private function getSpecifiedPaymentProduct($payment)
-    {
-        return ($this->getPaymentProductFees()) ? $this->getPaymentProductFees() : $this->getCcTypeHipay(
-            $payment->getCcType()
-        );
     }
 
     /**
@@ -306,7 +282,8 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
     public function isAvailable($quote = null)
     {
         return $this->getConfigData('cctypes', ($quote ? $quote->getStoreId() : null))
-            && !$this->getHiPayConfig()->publicCredentialsEmpty(($quote ? $quote->getStoreId() : null))
+            && !$this->getHiPayConfig()->arePublicCredentialsEmpty(($quote ? $quote->getStoreId() : null),
+                $this->getConfigData("is_test_mode"))
             && parent::isAvailable($quote);
     }
 
