@@ -1,3 +1,6 @@
+# Version 1.11.3
+  - Fix: Error verifying public credentials
+
 # Version 1.11.2
 
  - Fix: PHP Error with cancel order
