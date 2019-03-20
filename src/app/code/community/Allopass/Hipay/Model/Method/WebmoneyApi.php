@@ -20,7 +20,7 @@
  * @license     https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-fullservice-sdk-magento1
  */
-class Allopass_Hipay_Model_Method_WebmoneyApi extends Allopass_Hipay_Model_Method_AbstractOrder
+class Allopass_Hipay_Model_Method_WebmoneyApi extends Allopass_Hipay_Model_Method_AbstractOrderApi
 {
     protected $_code = 'hipay_webmoneyapi';
 

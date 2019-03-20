@@ -31,11 +31,7 @@ class Allopass_Hipay_Model_Method_Hosted extends Allopass_Hipay_Model_Method_Abs
     protected $_infoBlockType = 'hipay/info_hosted';
 
 
-    public function getOrderPlaceRedirectUrl()
-    {
 
-        return Mage::getUrl(str_replace("_", "/", $this->getCode()) . '/sendRequest', array('_secure' => true));
-    }
 
     /**
      * Assign data to info model instance
