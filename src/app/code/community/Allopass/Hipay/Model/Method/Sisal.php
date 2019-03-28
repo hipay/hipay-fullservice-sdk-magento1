@@ -24,6 +24,8 @@ class Allopass_Hipay_Model_Method_Sisal extends Allopass_Hipay_Model_Method_Host
 {
     protected $_code = 'hipay_sisal';
 
+    protected $_canCapture = false;
+    protected $_canCapturePartial = false;
     protected $_canRefund = false;
     protected $_canRefundInvoicePartial = false;
 }

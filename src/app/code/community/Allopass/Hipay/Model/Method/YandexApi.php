@@ -24,6 +24,8 @@ class Allopass_Hipay_Model_Method_YandexApi extends Allopass_Hipay_Model_Method_
 {
     protected $_code = 'hipay_yandexapi';
 
+    protected $_canCapture = false;
+    protected $_canCapturePartial = false;
     protected $_canRefund = false;
     protected $_canRefundInvoicePartial = false;
 }
