@@ -1534,7 +1534,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @return bool
      */
-    public function synchronizeSecuritySettings($request, $storeId, $scope, $session)
+    public function synchronizeSecuritySettings($request, $storeId, $scope, $session= null)
     {
         $gatewayResponse = $request->gatewayRequest(
             Allopass_Hipay_Model_Api_Request::GATEWAY_SECURITY_SETTINGS,
