@@ -65,6 +65,7 @@ casperjs-part1-1:
   <<: *before_template
   script:
     - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST docker-compose.test.yml 0
+  retry: 2
   tags:
     - pi-commerce-no-overlay
   artifacts:
@@ -83,6 +84,7 @@ casperjs-part2-1:
     <<: *before_template
     script:
         - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part2 docker-compose.test.yml 1
+    retry: 2
     tags:
         - pi-commerce-no-overlay
     artifacts:
@@ -101,6 +103,7 @@ casperjs-part3-1:
     <<: *before_template
     script:
         - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part3 docker-compose.test.yml 2
+    retry: 2
     tags:
         - pi-commerce-no-overlay
     artifacts:
@@ -119,6 +122,7 @@ casperjs-part4-1:
     <<: *before_template
     script:
         - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part4 docker-compose.test.yml 3
+    retry: 2
     tags:
         - pi-commerce-no-overlay
     artifacts:
@@ -152,6 +156,7 @@ casperjs-part1-2:
   <<: *before_template
   script:
     - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST docker-compose.test-php5-6.yml 0
+  retry: 2
   tags:
     - pi-commerce-no-overlay
   artifacts:
@@ -170,6 +175,7 @@ casperjs-part2-2:
     <<: *before_template
     script:
         - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part2 docker-compose.test-php5-6.yml 1
+    retry: 2
     tags:
         - pi-commerce-no-overlay
     artifacts:
@@ -188,6 +194,7 @@ casperjs-part3-2:
     <<: *before_template
     script:
         - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part3 docker-compose.test-php5-6.yml 2
+    retry: 2
     tags:
         - pi-commerce-no-overlay
     artifacts:
@@ -206,6 +213,7 @@ casperjs-part4-2:
     <<: *before_template
     script:
         - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part4 docker-compose.test-php5-6.yml 3
+    retry: 2
     tags:
         - pi-commerce-no-overlay
     artifacts:
@@ -240,6 +248,7 @@ casperjs-part1-3:
   <<: *before_template
   script:
     - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST docker-compose.test-php7-2.yml 0
+  retry: 2
   tags:
     - pi-commerce-no-overlay
   artifacts:
@@ -258,6 +267,7 @@ casperjs-part2-3:
     <<: *before_template
     script:
         - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part2 docker-compose.test-php7-2.yml 1
+    retry: 2
     tags:
         - pi-commerce-no-overlay
     artifacts:
@@ -276,6 +286,7 @@ casperjs-part3-3:
     <<: *before_template
     script:
         - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part3 docker-compose.test-php7-2.yml 2
+    retry: 2
     tags:
         - pi-commerce-no-overlay
     artifacts:
@@ -294,6 +305,7 @@ casperjs-part4-3:
     <<: *before_template
     script:
         - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part4 docker-compose.test-php7-2.yml 3
+    retry: 2
     tags:
         - pi-commerce-no-overlay
     artifacts:
@@ -328,6 +340,7 @@ sonarqube:
     SONAR_TOKEN: $SONAR_LOGIN
   script:
     - /usr/bin/sonar-scanner-run.sh
+  retry: 2
   tags:
     - pi-commerce-no-overlay
 
@@ -340,6 +353,7 @@ sonarqube-reports:
     SONAR_TOKEN: $SONAR_LOGIN
   script:
     - unset CI_BUILD_REF && /usr/bin/sonar-scanner-run.sh
+  retry: 2
   tags:
     - pi-commerce-no-overlay
 

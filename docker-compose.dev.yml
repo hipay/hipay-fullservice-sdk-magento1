@@ -19,7 +19,7 @@ web:
     - ./log:/var/www/htdocs/var/log
   links:
     - mysql
-    - smtp
+#    - smtp
 mysql:
   image: mysql:5.7
   ports:
@@ -29,8 +29,8 @@ mysql:
   volumes:
     - ./data/mysql:/var/lib/mysql
 
-smtp:
-  image: hipay/mailcatcher:1.0.0
-  ports:
-  - "1095:80"
+#smtp:
+#  image: hipay/mailcatcher:1.0.0
+#  ports:
+#  - "1095:80"
 
