@@ -1,6 +1,10 @@
 /**
  *  HOSTED FIELDS
  */
+.hipay-field-error {
+    line-height: 11px !important;
+}
+
 .hosted-fields-form {
     text-align: center;
 }

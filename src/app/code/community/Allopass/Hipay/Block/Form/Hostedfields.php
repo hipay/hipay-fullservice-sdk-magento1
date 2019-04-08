@@ -93,7 +93,7 @@ class Allopass_Hipay_Block_Form_Hostedfields extends Allopass_Hipay_Block_Form_A
             "api_tokenjs_username_test" => $this->getConfig()->getApiTokenJSUsernameTest(Mage::app()->getStore()),
             "api_tokenjs_publickey_test" => $this->getConfig()->getApiTokenJSPublickeyTest(Mage::app()->getStore()),
             "testMode" => $this->getMethod()->getConfigData('is_test_mode'),
-            "lang" => Mage::app()->getLocale()->getLocaleCode(),
+            "lang" => substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2),
             "isOneClick" => $this->oneClickIsAllowed(),
             "defaultLastname" => $this->getQuote()->getCustomerLastname(),
             "defaultFirstname" => $this->getQuote()->getCustomerFirstname(),

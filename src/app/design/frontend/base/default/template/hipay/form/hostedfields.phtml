@@ -37,6 +37,7 @@ $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction',
                     <label class="hipayHF-label"
                            for="hipayHF-card-holder"><?php echo $this->__('Name on Card') ?></label>
                     <div class="hipayHF-baseline"></div>
+                    <div class="hipay-field-error" data-hipay-id='hipay-card-field-error-cardHolder'></div>
                 </div>
             </div>
             <div class="hipayHF-row">
@@ -45,6 +46,7 @@ $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction',
                     <label class="hipayHF-label"
                            for="hipayHF-card-number"><?php echo $this->__('Credit Card Number') ?></label>
                     <div class="hipayHF-baseline"></div>
+                    <div class="hipay-field-error" data-hipay-id='hipay-card-field-error-cardNumber'></div>
                 </div>
             </div>
             <div class="hipayHF-row">
@@ -53,12 +55,14 @@ $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction',
                     <label class="hipayHF-label"
                            for="hipayHF-date-expiry"><?php echo $this->__('Expiry date') ?></label>
                     <div class="hipayHF-baseline"></div>
+                    <div class="hipay-field-error" data-hipay-id='hipay-card-field-error-expiryDate'></div>
                 </div>
                 <div class="hipayHF-field-container hipayHF-field-container-half">
                     <div class="hipayHF-field" id="hipayHF-cvc"></div>
                     <label class="hipayHF-label"
                            for="hipayHF-cvc"><?php echo $this->__('Card Verification Number') ?></label>
                     <div class="hipayHF-baseline"></div>
+                    <div class="hipay-field-error" data-hipay-id='hipay-card-field-error-cvc'></div>
                 </div>
             </div>
 
@@ -157,8 +161,44 @@ $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction',
 
         hipayHF = hipay.create("card", config);
 
-        hipayHF.on("change", function (data) {
-            handleErrorHipayHF(data.valid, data.error);
+        hipay.injectBaseStylesheet();
+
+        hipayHF.on("blur", function (data) {
+            // Get error container
+            var domElement = document.querySelector(
+                "[data-hipay-id='hipay-card-field-error-" + data.element + "']"
+            );
+
+            // Finish function if no error DOM element
+            if (!domElement) {
+                return;
+            }
+
+            // If not valid & not empty add error
+            if (!data.validity.valid && !data.validity.empty) {
+                domElement.innerText = data.validity.error;
+            } else {
+                domElement.innerText = '';
+            }
+        });
+
+        hipayHF.on("inputChange", function (data) {
+            // Get error container
+            var domElement = document.querySelector(
+                "[data-hipay-id='hipay-card-field-error-" + data.element + "']"
+            );
+
+            // Finish function if no error DOM element
+            if (!domElement) {
+                return;
+            }
+
+            // If not valid & not potentiallyValid add error (input is focused)
+            if (!data.validity.valid && !data.validity.potentiallyValid) {
+                domElement.innerText = data.validity.error;
+            } else {
+                domElement.innerText = '';
+            }
         });
 
         function handleErrorHipayHF(valid, error) {
