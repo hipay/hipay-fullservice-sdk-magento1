@@ -23,4 +23,8 @@
 class Allopass_Hipay_Model_Method_Przelewy24 extends Allopass_Hipay_Model_Method_Hosted
 {
     protected $_code = 'hipay_przelewy24';
+    protected $_canCapture = true;
+    protected $_canCapturePartial = false;
+    protected $_canRefund = true;
+    protected $_canRefundInvoicePartial = true;
 }

@@ -24,6 +24,8 @@ class Allopass_Hipay_Model_Method_Webmoney extends Allopass_Hipay_Model_Method_H
 {
     protected $_code = 'hipay_webmoney';
 
+    protected $_canCapture = false;
+    protected $_canCapturePartial = false;
     protected $_canRefund = false;
     protected $_canRefundInvoicePartial = false;
 }

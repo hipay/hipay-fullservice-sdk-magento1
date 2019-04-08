@@ -24,6 +24,10 @@ class Allopass_Hipay_Model_Method_Astropay extends Allopass_Hipay_Model_Method_A
 {
 
     protected $_infoBlockType = 'hipay/info_cc';
+    protected $_canCapture = false;
+    protected $_canCapturePartial = false;
+    protected $_canRefund = false;
+    protected $_canRefundInvoicePartial = false;
 
     /**
      * Assign data to info model instance

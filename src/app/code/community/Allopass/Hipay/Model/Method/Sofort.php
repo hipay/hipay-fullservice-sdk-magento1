@@ -23,4 +23,8 @@
 class Allopass_Hipay_Model_Method_Sofort extends Allopass_Hipay_Model_Method_Hosted
 {
     protected $_code = 'hipay_sofort';
+    protected $_canCapture = false;
+    protected $_canCapturePartial = false;
+    protected $_canRefund = true;
+    protected $_canRefundInvoicePartial = true;
 }

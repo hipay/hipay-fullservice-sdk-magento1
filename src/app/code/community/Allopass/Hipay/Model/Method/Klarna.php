@@ -23,7 +23,9 @@
 class Allopass_Hipay_Model_Method_Klarna extends Allopass_Hipay_Model_Method_Hosted
 {
     protected $_code = 'hipay_klarna';
-    protected $_canRefund = false;
+    protected $_canCapture = true;
+    protected $_canCapturePartial = false;
+    protected $_canRefund = true;
     protected $_canRefundInvoicePartial = false;
 
     const PAYMENT_PRODUCT = 'klarnainvoice';

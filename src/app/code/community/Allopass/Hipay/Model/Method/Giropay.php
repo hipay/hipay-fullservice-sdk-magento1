@@ -24,6 +24,8 @@ class Allopass_Hipay_Model_Method_Giropay extends Allopass_Hipay_Model_Method_Ho
 {
     protected $_code = 'hipay_giropay';
 
+    protected $_canCapture = false;
+    protected $_canCapturePartial = false;
     protected $_canRefund = false;
     protected $_canRefundInvoicePartial = false;
 

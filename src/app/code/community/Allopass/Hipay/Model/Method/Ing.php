@@ -24,6 +24,8 @@ class Allopass_Hipay_Model_Method_Ing extends Allopass_Hipay_Model_Method_Hosted
 {
     protected $_code = 'hipay_ing';
 
+    protected $_canCapture = false;
+    protected $_canCapturePartial = false;
     protected $_canRefund = false;
     protected $_canRefundInvoicePartial = false;
 }
