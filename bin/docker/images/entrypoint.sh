@@ -119,9 +119,9 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
         n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set hipay/hipay_hash_algorithm/test 'SHA512'
     fi
 
-    n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set hipay/hipay_api_moto/api_username_test $HIPAY_API_USER_TEST
-    n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set --encrypt hipay/hipay_api_moto/api_password_test $HIPAY_API_PASSWORD_TEST
-    n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set --encrypt hipay/hipay_api_moto/secret_passphrase_test $HIPAY_SECRET_PASSPHRASE_TEST
+    n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set hipay/hipay_api_moto/api_username_test $HIPAY_API_USER_TEST_MOTO
+    n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set --encrypt hipay/hipay_api_moto/api_password_test $HIPAY_API_PASSWORD_TEST_MOTO
+    n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set --encrypt hipay/hipay_api_moto/secret_passphrase_test $HIPAY_SECRET_PASSPHRASE_TEST_MOTO
 
     printf "\n"
     echo " YOUR CREDENTIALS ARE : "

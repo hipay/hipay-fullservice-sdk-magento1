@@ -220,20 +220,12 @@ class Allopass_Hipay_Model_Config extends Varien_Object
 
     public function getSecretPassphraseMoto($storeId = null)
     {
-        if ($this->getConfigDataMoto(self::SECRET_PASSPHRASE, $storeId)) {
-            return $this->getConfigDataMoto(self::SECRET_PASSPHRASE, $storeId);
-        }
-
-        return $this->getConfigData(self::SECRET_PASSPHRASE, $storeId);
+        return $this->getConfigDataMoto(self::SECRET_PASSPHRASE, $storeId);
     }
 
     public function getSecretPassphraseTestMoto($storeId = null)
     {
-        if ($this->getConfigDataMoto(self::SECRET_PASSPHRASE_TEST, $storeId)) {
-            return $this->getConfigDataMoto(self::SECRET_PASSPHRASE_TEST, $storeId);
-        }
-
-        return $this->getConfigData(self::SECRET_PASSPHRASE_TEST, $storeId);
+        return $this->getConfigDataMoto(self::SECRET_PASSPHRASE_TEST, $storeId);
     }
 
     public function getApiUsername($storeId = null)
