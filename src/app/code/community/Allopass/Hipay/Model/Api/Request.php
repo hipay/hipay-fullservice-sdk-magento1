@@ -319,7 +319,8 @@ class Allopass_Hipay_Model_Api_Request
      * @param string $action
      * @param array $params
      * @param int $storeId
-     * @param string $environment
+     * @param string $payment
+     *
      * @return Allopass_Hipay_Model_Response_Abstract
      */
     public function gatewayRequest(
@@ -327,13 +328,21 @@ class Allopass_Hipay_Model_Api_Request
         $params,
         $storeId = null,
         $typeResponse = self::TYPE_RESPONSE_GATEWAY,
-        $environment = null
+        $payment = null
     ) {
         $this->setStoreId($storeId);
         $uri = $this->getGatewayApiEndpoint($storeId) . $action;
 
+        if (preg_match('/maintenance/', $uri) && $payment != null ) {
+            $isMoto = $payment->getAdditionalInformation('isMoto');
+            $this->_environment =  $isMoto ? ScopeConfig::PRODUCTION_MOTO : ScopeConfig::PRODUCTION;
+            if ($this->isTestMode()) {
+                $this->_environment =  $isMoto ? ScopeConfig::TEST_MOTO : ScopeConfig::TEST;
+            }
+        }
+
         /* @var $response Allopass_Hipay_Model_Api_Response_Gateway */
-        $response = $this->_request($uri, $params, $this->getMethodHttp($action), $storeId, true, $environment);
+        $response = $this->_request($uri, $params, $this->getMethodHttp($action), $storeId, true);
 
         switch ($typeResponse) {
             case self::TYPE_RESPONSE_GATEWAY:
