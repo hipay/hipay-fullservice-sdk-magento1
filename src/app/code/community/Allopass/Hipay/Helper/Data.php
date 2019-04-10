@@ -565,15 +565,14 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     {
         $storeId = $order->getStore()->getId();
         $environment = $isMoto ? ScopeConfig::PRODUCTION_MOTO : ScopeConfig::PRODUCTION;
-        $passphrase = $isMoto ? $this->getConfig()->getSecretPassphraseMoto($storeId)
-            : $this->getConfig()->getSecretPassphrase($storeId);
+        $secretMoto = $this->getConfig()->getSecretPassphraseMoto($storeId);
+        $secretMotoTest = $this->getConfig()->getSecretPassphraseTestMoto($storeId);
+        $passphrase = $isMoto && $secretMoto ? $secretMoto : $this->getConfig()->getSecretPassphrase($storeId);
         if ($order !== null) {
             if ($order->getId()) {
                 $method = $order->getPayment()->getMethodInstance();
                 if ($method->getConfigData('is_test_mode')) {
-                    $passphrase = $isMoto ? $this->getConfig()->getSecretPassphraseTestMoto(
-                        $storeId
-                    ) : $this->getConfig()->getSecretPassphraseTest($storeId);
+                    $passphrase = $isMoto && $secretMotoTest ? $secretMotoTest: $this->getConfig()->getSecretPassphraseTest($storeId);
                     $environment = $isMoto ? ScopeConfig::TEST_MOTO : ScopeConfig::TEST;
                 }
             }
