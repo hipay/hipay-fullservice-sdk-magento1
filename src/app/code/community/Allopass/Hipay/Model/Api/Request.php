@@ -11,7 +11,7 @@
  * @copyright 2018 HiPay
  * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
  */
-
+require_once(dirname(__FILE__) . '/../../Helper/Enum/ScopeConfig.php');
 /**
  *
  *
@@ -44,8 +44,6 @@ class Allopass_Hipay_Model_Api_Request
 
     protected $_storeId = null;
 
-    protected $_useMotoCredentials = false;
-
     protected $_environment = null;
 
     public function __construct($methodInstance)
@@ -58,13 +56,6 @@ class Allopass_Hipay_Model_Api_Request
         return $this->_methodInstance;
     }
 
-    /**
-     * @return bool
-     */
-    public function getUseMotoCredentials()
-    {
-        return $this->_useMotoCredentials;
-    }
 
     /**
      *
@@ -81,17 +72,13 @@ class Allopass_Hipay_Model_Api_Request
      */
     protected function getApiUsername($storeId = null)
     {
-        $this->_useMotoCredentials = false;
-
         if ($this->getMethodInstance() && $this->getMethodInstance()->isAdmin()) {
             if ($this->isTestMode()) {
                 if ($this->getConfig()->getApiUsernameTestMoto($storeId)) {
-                    $this->_useMotoCredentials = true;
                     return $this->getConfig()->getApiUsernameTestMoto($storeId);
                 }
             } else {
                 if ($this->getConfig()->getApiUsernameMoto($storeId)) {
-                    $this->_useMotoCredentials = true;
                     return $this->getConfig()->getApiUsernameMoto($storeId);
                 }
             }
@@ -226,12 +213,16 @@ class Allopass_Hipay_Model_Api_Request
                     $apiPassword = $this->getConfig()->getApiPasswordTest($this->getStoreId());
                     break;
                 case ScopeConfig::PRODUCTION_MOTO:
-                    $apiUsername = $this->getConfig()->getApiUsernameMoto($this->getStoreId());
-                    $apiPassword = $this->getConfig()->getApiPasswordMoto($this->getStoreId());
+                    $apiUsername = $this->getConfig()->getApiUsernameMoto($this->getStoreId()) ?
+                        $this->getConfig()->getApiUsernameMoto($this->getStoreId()) : $this->getConfig()->getApiUsername($this->getStoreId());
+                    $apiPassword = $this->getConfig()->getApiPasswordMoto($this->getStoreId()) ?
+                        $this->getConfig()->getApiPasswordMoto($this->getStoreId()) : $this->getConfig()->getApiPassword($this->getStoreId()) ;
                     break;
                 case ScopeConfig::TEST_MOTO:
-                    $apiUsername = $this->getConfig()->getApiUsernameTestMoto($this->getStoreId());
-                    $apiPassword = $this->getConfig()->getApiPasswordTestMoto($this->getStoreId());
+                    $apiUsername = $this->getConfig()->getApiUsernameTestMoto($this->getStoreId()) ?
+                        $this->getConfig()->getApiUsernameTestMoto($this->getStoreId()) : $this->getConfig()->getApiUsernameTest($this->getStoreId()) ;
+                    $apiPassword = $this->getConfig()->getApiPasswordTestMoto($this->getStoreId()) ?
+                        $this->getConfig()->getApiPasswordTestMoto($this->getStoreId())  : $this->getConfig()->getApiPasswordTest($this->getStoreId());
                     break;
             }
         } else {
