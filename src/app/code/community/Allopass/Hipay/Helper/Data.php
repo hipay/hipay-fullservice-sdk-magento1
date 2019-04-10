@@ -564,16 +564,16 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     public function checkSignature($signature, $fromNotification = false, $order = null, $isMoto = false)
     {
         $storeId = $order->getStore()->getId();
-        $environment = $isMoto ? ScopeConfig::PRODUCTION_MOTO : ScopeConfig::PRODUCTION;
         $secretMoto = $this->getConfig()->getSecretPassphraseMoto($storeId);
         $secretMotoTest = $this->getConfig()->getSecretPassphraseTestMoto($storeId);
         $passphrase = $isMoto && $secretMoto ? $secretMoto : $this->getConfig()->getSecretPassphrase($storeId);
+        $environment = $isMoto && $secretMoto  ? ScopeConfig::PRODUCTION_MOTO : ScopeConfig::PRODUCTION;
         if ($order !== null) {
             if ($order->getId()) {
                 $method = $order->getPayment()->getMethodInstance();
                 if ($method->getConfigData('is_test_mode')) {
                     $passphrase = $isMoto && $secretMotoTest ? $secretMotoTest: $this->getConfig()->getSecretPassphraseTest($storeId);
-                    $environment = $isMoto ? ScopeConfig::TEST_MOTO : ScopeConfig::TEST;
+                    $environment = $isMoto && $secretMotoTest  ? ScopeConfig::TEST_MOTO : ScopeConfig::TEST;
                 }
             }
         }
