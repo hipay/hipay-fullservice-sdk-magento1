@@ -1395,7 +1395,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         }
 
         if ($this->getConfig("send_notification_url", Mage::app()->getStore()->getId())) {
-            $params['notify_url'] = Mage::getUrl("*/notify/index");
+            $params['notify_url'] = Mage::getUrl("hipay/notify/index");
         }
 
         $params = $this->getCustomerParams($payment, $params);
