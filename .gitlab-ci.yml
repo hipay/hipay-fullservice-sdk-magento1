@@ -385,6 +385,9 @@ deploy2Recette:
     - sed -i -e "s/{HIPAY_TOKENJS_PUBLICKEY_TEST\}/$HIPAY_TOKENJS_PUBLICKEY_RE7/" ./bin/docker/conf/acceptance/hipay.env.sample
     - sed -i -e "s/{HIPAY_TOKENJS_USERNAME_TEST\}/$HIPAY_TOKENJS_USERNAME_RE7/" ./bin/docker/conf/acceptance/hipay.env.sample
     - sed -i -e "s/{HIPAY_SECRET_PASSPHRASE_TEST\}/$HIPAY_SECRET_PASSPHRASE_RE7/" ./bin/docker/conf/acceptance/hipay.env.sample
+    - sed -i -e "s/{HIPAY_API_USER_TEST_MOTO\}/$HIPAY_API_USER_TEST/" ./bin/docker/conf/acceptance/hipay.env.sample
+    - sed -i -e "s/{HIPAY_API_PASSWORD_TEST_MOTO\}/$HIPAY_API_PASSWORD_TEST/" ./bin/docker/conf/acceptance/hipay.env.sample
+    - sed -i -e "s/{HIPAY_SECRET_PASSPHRASE_TEST_MOTO\}/$HIPAY_SECRET_PASSPHRASE_TEST/" ./bin/docker/conf/acceptance/hipay.env.sample
     - sed -i -e "s|\${DOCKER_STACK}|$DOCKER_STACK|g" docker-compose.acceptance.yml
     - sed -i -e "s|\${DOCKER_SERVICE}|$DOCKER_SERVICE|g" docker-compose.acceptance.yml
     - sed -i -e "s|\${CI_COMMIT_REF_SLUG}|$CI_COMMIT_REF_SLUG|g" docker-compose.acceptance.yml
