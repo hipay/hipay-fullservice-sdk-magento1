@@ -1,4 +1,4 @@
-FROM php:7.1-apache
+FROM hipay/php:7.1-apache
 
 ENV PHP_VERSION=7.1
 
