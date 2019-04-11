@@ -123,7 +123,7 @@ casperjs-part4-1:
     script:
         - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part4 docker-compose.test.yml 3
     tags:
-        - pi-commerce-no-overlay
+        - test-ubuntu
     artifacts:
         paths:
           - bin/tests/errors/

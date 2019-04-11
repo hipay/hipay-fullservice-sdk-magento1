@@ -38,12 +38,3 @@ services:
       outside:
         aliases:
           - ${DOCKER_SERVICE}-${CI_JOB_ID}-database
-
-  smtp:
-    container_name: hipay-smtp-mg1-$CI_JOB_ID
-    image: hipay/mailcatcher:1.0.0
-    networks:
-      magento:
-      outside:
-        aliases:
-          - ${DOCKER_SERVICE}-${CI_JOB_ID}-smtp
