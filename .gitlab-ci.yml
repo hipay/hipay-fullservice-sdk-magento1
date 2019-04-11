@@ -68,6 +68,7 @@ casperjs-part1-1:
   <<: *before_template
   script:
     - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST docker-compose.test.yml 0
+  retry: 2
   tags:
     - test-ubuntu
   artifacts:
@@ -86,6 +87,7 @@ casperjs-part2-1:
     <<: *before_template
     script:
         - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part2 docker-compose.test.yml 1
+    retry: 2
     tags:
         - test-ubuntu
     artifacts:
@@ -104,6 +106,7 @@ casperjs-part3-1:
     <<: *before_template
     script:
         - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part3 docker-compose.test.yml 2
+    retry: 2
     tags:
         - test-ubuntu
     artifacts:
@@ -122,6 +125,7 @@ casperjs-part4-1:
     <<: *before_template
     script:
         - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part4 docker-compose.test.yml 3
+    retry: 2
     tags:
         - test-ubuntu
     artifacts:
