@@ -1,3 +1,8 @@
+# Version 1.11.4
+  - Fix: Moto credentials with maintenance operation
+  - Update payment method configuration (capture & refund) 
+  - Add error message on field
+  
 # Version 1.11.3
   - Fix: Error verifying public credentials
 
