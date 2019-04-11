@@ -316,7 +316,7 @@ clean-stack-test:
     - echo "Clean stack test"
   <<: *after_template
   tags:
-    - pi-commerce-no-overlay
+    - test-ubuntu
   when: always
   except:
     variables:
