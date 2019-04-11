@@ -24,6 +24,8 @@ class Allopass_Hipay_Model_Method_Qiwi extends Allopass_Hipay_Model_Method_Hoste
 {
     protected $_code = 'hipay_qiwi';
 
+    protected $_canCapture = false;
+    protected $_canCapturePartial = false;
     protected $_canRefund = false;
     protected $_canRefundInvoicePartial = false;
 }

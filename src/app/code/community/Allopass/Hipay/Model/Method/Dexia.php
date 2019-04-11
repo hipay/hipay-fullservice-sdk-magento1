@@ -24,6 +24,8 @@ class Allopass_Hipay_Model_Method_Dexia extends Allopass_Hipay_Model_Method_Abst
 {
     protected $_code = 'hipay_dexia';
 
+    protected $_canCapture = false;
+    protected $_canCapturePartial = false;
     protected $_canRefund = false;
     protected $_canRefundInvoicePartial = false;
 

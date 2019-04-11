@@ -23,6 +23,11 @@
 class Allopass_Hipay_Model_Method_Bnpp extends Allopass_Hipay_Model_Method_AbstractOrderApi
 {
 
+    protected $_canCapture = false;
+    protected $_canCapturePartial = false;
+    protected $_canRefund = true;
+    protected $_canRefundInvoicePartial = true;
+
     /**
      * Validate payment method information object
      *

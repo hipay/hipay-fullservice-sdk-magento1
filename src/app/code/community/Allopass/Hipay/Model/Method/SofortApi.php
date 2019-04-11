@@ -23,4 +23,8 @@
 class Allopass_Hipay_Model_Method_SofortApi extends Allopass_Hipay_Model_Method_AbstractOrderApi
 {
     protected $_code = 'hipay_sofortapi';
+    protected $_canCapture = false;
+    protected $_canCapturePartial = false;
+    protected $_canRefund = true;
+    protected $_canRefundInvoicePartial = true;
 }

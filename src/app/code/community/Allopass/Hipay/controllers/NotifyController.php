@@ -85,6 +85,7 @@ class Allopass_Hipay_NotifyController extends Mage_Core_Controller_Front_Action
         // Get store ID and validate Signature
         $storeId = $order->getStore()->getId();
         $isMoto = $response->getEci() == 1 ? true : false;
+        $order->getPayment()->setAdditionalInformation('isMoto', $isMoto);
         Mage::app()->init($storeId, 'store');
 
         if (!$this->_validateSignature($order, $isMoto)) {
