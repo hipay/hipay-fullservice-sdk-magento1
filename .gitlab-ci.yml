@@ -57,7 +57,7 @@ build-test:
     - sh bin/docker/generate_dockerfile.sh
     - sh ./bin/docker/init-environment.sh php7.1
   tags:
-    - test-ubuntu
+    - pi-commerce-no-overlay
   allow_failure: false
   except:
     variables:
@@ -70,7 +70,7 @@ casperjs-part1-1:
     - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST docker-compose.test.yml 0
   retry: 2
   tags:
-    - test-ubuntu
+    - pi-commerce-no-overlay
   artifacts:
     paths:
       - bin/tests/errors/
@@ -89,7 +89,7 @@ casperjs-part2-1:
         - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part2 docker-compose.test.yml 1
     retry: 2
     tags:
-        - test-ubuntu
+        - pi-commerce-no-overlay
     artifacts:
         paths:
           - bin/tests/errors/
@@ -108,7 +108,7 @@ casperjs-part3-1:
         - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part3 docker-compose.test.yml 2
     retry: 2
     tags:
-        - test-ubuntu
+        - pi-commerce-no-overlay
     artifacts:
         paths:
           - bin/tests/errors/
@@ -127,7 +127,7 @@ casperjs-part4-1:
         - sh ./bin/gitlab/run-tests.sh $PROJECT_NAME_TEST-part4 docker-compose.test.yml 3
     retry: 2
     tags:
-        - test-ubuntu
+        - pi-commerce-no-overlay
     artifacts:
         paths:
           - bin/tests/errors/
