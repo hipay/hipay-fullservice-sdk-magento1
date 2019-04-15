@@ -11,7 +11,7 @@ RUN apt-get update \
     && requirements="libpng-dev libxml2-dev libmcrypt-dev libmcrypt4 libcurl3-dev libfreetype6 libjpeg62-turbo git zip unzip default-libmysqlclient-dev libfreetype6-dev libjpeg62-turbo-dev mysql-client bzip2 ssmtp npm libfontconfig libicu57 libsqlite3-0 vim rsyslog cron" \
     && apt-get update && apt-get install -y $requirements && rm -rf /var/lib/apt/lists/* \
     && echo "sendmail_path = /usr/sbin/ssmtp -t" > /usr/local/etc/php/conf.d/sendmail.ini \
-    && echo "mailhub=smtp:1025\n UseTLS=NO\n FromLineOverride=YES" > /etc/ssmtp/ssmtp.conf \
+    && echo "mailhub=common-smtp:1025\n UseTLS=NO\n FromLineOverride=YES" > /etc/ssmtp/ssmtp.conf \
     && docker-php-ext-install pdo_mysql \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install gd \
