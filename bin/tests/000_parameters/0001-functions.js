@@ -32,6 +32,24 @@ casper.test.begin('Functions', function(test) {
        	start = Date.now();
     });*/
 
+    /* Check status notification from Magento server on the order */
+    casper.checkNotifMagento = function(status) {
+        try {
+            test.assertExists(x('//div[@id="order_history_block"]/ul/li[contains(., "Notification from Hipay: status: code-' + status + '")][position()=last()]'), "Notification " + status + " captured !");
+            var operation = this.fetchText(x('//div[@id="order_history_block"]/ul/li[contains(., "Notification from Hipay: status: code-' + status + '")][position()=last()]/preceding-sibling::li[position()=1]'));
+            operation = operation.split('\n')[4].split('.')[0].trim();
+            test.assertNotEquals(operation.indexOf('successful'), -1, "Successful operation !");
+        } catch(e) {
+            if(String(e).indexOf('operation') != -1){
+                test.fail("Failure on status operation: '" + operation + "'");
+            }else{
+                if(status != 117){
+                    test.fail("Failure: Notification " + status + " not exists");
+                }
+            }
+        }
+    };
+
 	/* Choose first item at home page */
 	casper.selectItemAndOptions = function() {
         this.echo("Selecting item and its options...", "INFO");
@@ -134,6 +152,9 @@ casper.test.begin('Functions', function(test) {
                     test.comment("French Address");
                     break;
                 case "BR":
+                    test.comment("Brazilian Address");
+                    break;
+                case "IT":
                     test.comment("Brazilian Address");
                     break;
                 default:

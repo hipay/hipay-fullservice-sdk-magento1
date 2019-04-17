@@ -1,25 +1,55 @@
-var paymentType = "HiPay Enterprise Credit Card";
+/**********************************************************************************************
+ *
+ *                       VALIDATION TEST METHOD : MyBank
+ *
+ *  To launch test, please pass two arguments URL (BASE URL)  and TYPE_CC ( CB,VI,MC )
+ *
+ /**********************************************************************************************/
 
-casper.test.begin('Send Notification to Magento from TPP BackOffice via ' + paymentType + ' with ' + typeCC, function (test) {
+var paymentType = "HiPay Enterprise MyBank";
+
+casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function (test) {
     phantom.clearCookies();
+
     var data = "",
         hash = "",
         output = "",
         notif117 = true,
         reload = false,
-        orderID = casper.getOrderId(); // Get order ID from previous order or from command line parameter
+        orderID = casper.getOrderId();
 
-    /* Open URL to BackOffice HiPay TPP */
-    casper.start(baseURL)
+    casper.start(baseURL + "admin/")
         .then(function () {
-            this.waitUntilVisible('div.footer', function success() {
-                if (this.exists('p[class="bugs"]')) {
-                    test.done();
-                    this.echo("Test skipped MAGENTO 1.8", "INFO");
-                }
-            }, function fail() {
-                test.assertVisible("div.footer", "'Footer' exists");
-            }, 10000);
+            this.logToBackend();
+            method.proceed(test, paymentType, "mybankapi");
+        })
+        .thenOpen(baseURL, function () {
+            this.selectItemAndOptions();
+        })
+        .then(function () {
+            this.addItemGoCheckout();
+        })
+        .then(function () {
+            this.checkoutMethod();
+        })
+        .then(function () {
+            this.billingInformation('IT');
+        })
+        .then(function () {
+            this.shippingMethod();
+        })
+        .then(function () {
+            this.choosingPaymentMethod('method_hipay_mybankapi');
+        })
+        .then(function () {
+            this.orderReview(paymentType);
+        })
+        /* Fill IDeal formular */
+        .then(function () {
+            this.fillPaymentFormularByPaymentProduct("mybank");
+        })
+        .then(function () {
+            this.orderResult(paymentType);
         })
         .thenOpen(urlBackend, function () {
             this.logToHipayBackend(loginBackend, passBackend);
