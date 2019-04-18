@@ -61,9 +61,3 @@ services:
       outside-pi-overlay:
         aliases:
           - ${DOCKER_SERVICE}-${CI_JOB_ID}-database
-    networks:
-      traefik_traefik:
-      magento:
-      outside-pi-overlay:
-        aliases:
-          - ${DOCKER_SERVICE}-${CI_JOB_ID}-smtp
