@@ -352,3 +352,4 @@ Your payment is in pending.,Your payment is in pending.
 Your transaction has been approved.,Your transaction has been approved.
 Your transaction has been refused.,Your transaction has been refused.
 "In order to activate this Payment Method, you have to add a valid 'Api TokenJS Password/Public Key' on the HiPay Entreprise configuration","In order to activate this Payment Method, you have to add a valid 'Api TokenJS Password/Public Key' on the HiPay Entreprise configuration"
+OPC provided by Oney,OPC provided by Oney

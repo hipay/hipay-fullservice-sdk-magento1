@@ -9635,6 +9635,15 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </title>
+                        <merchant_promotion translate="label">
+                            <label>Merchant Promotion</label>
+                            <comment>OPC provided by Oney</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>21</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </merchant_promotion>
                         <payment_product_fees translate="label comment">
                             <label>Facily Pay fees</label>
                             <comment>Thank you for referring to your contract oney</comment>
@@ -9871,6 +9880,15 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </title>
+                        <merchant_promotion translate="label">
+                            <label>Merchant Promotion</label>
+                            <comment>OPC provided by Oney</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>21</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </merchant_promotion>
                         <payment_product_fees translate="label comment">
                             <label>Facily Pay fees</label>
                             <comment>Thank you for referring to your contract oney</comment>
@@ -10106,6 +10124,15 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </title>
+                        <merchant_promotion translate="label">
+                            <label>Merchant Promotion</label>
+                            <comment>OPC provided by Oney</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>21</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </merchant_promotion>
                         <order_status_payment_accepted translate="label">
                             <label>Order status when payment accepted</label>
                             <frontend_type>select</frontend_type>
