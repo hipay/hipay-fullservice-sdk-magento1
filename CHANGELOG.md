@@ -1,3 +1,6 @@
+# Version 1.12.1
+  - Fix: Add merchant promotion to Oney payment method
+  
 # Version 1.12.0
   - Add MyBank payment method
   
