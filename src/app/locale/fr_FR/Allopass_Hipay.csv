@@ -354,3 +354,7 @@ Your transaction has been approved.,Your transaction has been approved.
 Your transaction has been refused.,Your transaction has been refused.
 "In order to activate this Payment Method, you have to add a valid 'Api TokenJS Password/Public Key' on the HiPay Entreprise configuration","Pour activer cette méthode de paiement, vous devez renseigner des identifiants 'Api TokenJS Password/Public Key' valides dans la configuration du module HiPay Entreprise"
 OPC provided by Oney,OPC fourni par Oney
+"<b>Manual</b>: All transactions will be captured manually either from the Hipay Back office or from your Magento administration dashboard. <br/><b>Automatic</b>: All transactions will be captured automatically.","<b>Manuelle</b>: Toutes les transactions seront capturées manuellement dans votre back office HiPay ou Magento. </br><b>Automatique</b>: Toutes les transactions seront automatiquement capturées."
+"Not applicable for Bancontact / Mister Cash, transaction with this payment method will be automatically captured","Non applicable pour Bancontact / Mister Cash, les transactions réalisées avec cette méthode de paiement seront automatiquement capturées"
+Manual,Manuelle
+Automatic,Automatique

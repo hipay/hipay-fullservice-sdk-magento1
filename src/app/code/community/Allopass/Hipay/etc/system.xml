@@ -203,7 +203,9 @@
                         </fingerprint>
                         <fingerprint_js_url translate="label comment">
                             <label>Url of Hipay's javascript for device fingerprint</label>
-                            <comment>Not to be modified. Please read our documentation : https://developer.hipay.com/getting-started/platform-hipay-enterprise/overview/#device-fingerprint-integration</comment>
+                            <comment>Not to be modified. Please read our documentation :
+                                https://developer.hipay.com/getting-started/platform-hipay-enterprise/overview/#device-fingerprint-integration
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>120</sort_order>
                             <show_in_default>1</show_in_default>
@@ -757,7 +759,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <backend_model>hipay/system_config_backend_ccValidCredentials</backend_model>
-                            <comment>In order to activate this Payment Method, you have to add a valid 'Api TokenJS Password/Public Key' on the HiPay Entreprise configuration</comment>
+                            <comment>In order to activate this Payment Method, you have to add a valid 'Api TokenJS
+                                Password/Public Key' on the HiPay Entreprise configuration
+                            </comment>
                         </active>
                         <title translate="label">
                             <label>Title</label>
@@ -805,7 +809,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>27</sort_order>
                             <show_in_default>1</show_in_default>
@@ -814,7 +820,8 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </success_redirect_page>
                         <failure_redirect_page translate="label">
                             <label>Redirect page failure</label>
-                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure</comment>
+                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>28</sort_order>
                             <show_in_default>1</show_in_default>
@@ -832,7 +839,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_store>0</show_in_store>
                         </pending_redirect_page>
                         <payment_action translate="label">
-                            <label>Payment Action</label>
+                            <label>Capture</label>
+                            <comment>Not applicable for Bancontact / Mister Cash, transaction with this payment method will be automatically captured</comment>
+                            <tooltip><![CDATA[<b>Manual</b>: All transactions will be captured manually either from the Hipay Back office or from your Magento administration dashboard. <br/><b>Automatic</b>: All transactions will be captured automatically.]]></tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_paymentAction</source_model>
                             <sort_order>30</sort_order>
@@ -1028,7 +1037,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <backend_model>hipay/system_config_backend_ccValidCredentials</backend_model>
-                            <comment>In order to activate this Payment Method, you have to add a valid 'Api TokenJS Password/Public Key' on the HiPay Entreprise configuration</comment>
+                            <comment>In order to activate this Payment Method, you have to add a valid 'Api TokenJS
+                                Password/Public Key' on the HiPay Entreprise configuration
+                            </comment>
                         </active>
                         <title translate="label">
                             <label>Title</label>
@@ -1085,7 +1096,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>27</sort_order>
                             <show_in_default>1</show_in_default>
@@ -1094,7 +1107,8 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </success_redirect_page>
                         <failure_redirect_page translate="label">
                             <label>Redirect page failure</label>
-                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure</comment>
+                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>28</sort_order>
                             <show_in_default>1</show_in_default>
@@ -1112,7 +1126,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_store>0</show_in_store>
                         </pending_redirect_page>
                         <payment_action translate="label">
-                            <label>Payment Action</label>
+                            <label>Capture</label>
+                            <comment>Not applicable for Bancontact / Mister Cash, transaction with this payment method will be automatically captured</comment>
+                            <tooltip><![CDATA[<b>Manual</b>: All transactions will be captured manually either from the Hipay Back office or from your Magento administration dashboard. </br><b>Automatic</b>: All transactions will be captured automatically.]]></tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_paymentAction</source_model>
                             <sort_order>30</sort_order>
@@ -1308,7 +1324,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <backend_model>hipay/system_config_backend_ccValidCredentials</backend_model>
-                            <comment>In order to activate this Payment Method, you have to add a valid 'Api TokenJS Password/Public Key' on the HiPay Entreprise configuration</comment>
+                            <comment>In order to activate this Payment Method, you have to add a valid 'Api TokenJS
+                                Password/Public Key' on the HiPay Entreprise configuration
+                            </comment>
                         </active>
                         <title translate="label">
                             <label>Title</label>
@@ -1412,7 +1430,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>27</sort_order>
                             <show_in_default>1</show_in_default>
@@ -1421,7 +1441,8 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </success_redirect_page>
                         <failure_redirect_page translate="label">
                             <label>Redirect page failure</label>
-                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure</comment>
+                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>28</sort_order>
                             <show_in_default>1</show_in_default>
@@ -1439,7 +1460,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_store>0</show_in_store>
                         </pending_redirect_page>
                         <payment_action translate="label">
-                            <label>Payment Action</label>
+                            <label>Capture</label>
+                            <comment>Not applicable for Bancontact / Mister Cash, transaction with this payment method will be automatically captured</comment>
+                            <tooltip><![CDATA[<b>Manual</b>: All transactions will be captured manually either from the Hipay Back office or from your Magento administration dashboard. </br><b>Automatic</b>: All transactions will be captured automatically.]]></tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_paymentAction</source_model>
                             <sort_order>30</sort_order>
@@ -1626,7 +1649,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <backend_model>hipay/system_config_backend_ccValidCredentials</backend_model>
-                            <comment>In order to activate this Payment Method, you have to add a valid 'Api TokenJS Password/Public Key' on the HiPay Entreprise configuration</comment>
+                            <comment>In order to activate this Payment Method, you have to add a valid 'Api TokenJS
+                                Password/Public Key' on the HiPay Entreprise configuration
+                            </comment>
                         </active>
                         <title translate="label">
                             <label>Title</label>
@@ -1739,7 +1764,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>27</sort_order>
                             <show_in_default>1</show_in_default>
@@ -1748,7 +1775,8 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </success_redirect_page>
                         <failure_redirect_page translate="label">
                             <label>Redirect page failure</label>
-                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure</comment>
+                            <comment>Page to redirect when transaction fails, leave empty for checkout/onepage/failure
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>28</sort_order>
                             <show_in_default>1</show_in_default>
@@ -1766,7 +1794,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_store>0</show_in_store>
                         </pending_redirect_page>
                         <payment_action translate="label">
-                            <label>Payment Action</label>
+                            <label>Capture</label>
+                            <comment>Not applicable for Bancontact / Mister Cash, transaction with this payment method will be automatically captured</comment>
+                            <tooltip><![CDATA[<b>Manual</b>: All transactions will be captured manually either from the Hipay Back office or from your Magento administration dashboard. </br><b>Automatic</b>: All transactions will be captured automatically.]]></tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_paymentAction</source_model>
                             <sort_order>30</sort_order>
@@ -2038,7 +2068,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_store>0</show_in_store>
                         </pending_redirect_page>
                         <payment_action translate="label">
-                            <label>Payment Action</label>
+                            <label>Capture</label>
+                            <comment>Not applicable for Bancontact / Mister Cash, transaction with this payment method will be automatically captured</comment>
+                            <tooltip><![CDATA[<b>Manual</b>: All transactions will be captured manually either from the Hipay Back office or from your Magento administration dashboard. </br><b>Automatic</b>: All transactions will be captured automatically.]]></tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_paymentAction</source_model>
                             <sort_order>30</sort_order>
@@ -2347,7 +2379,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_store>0</show_in_store>
                         </hipay_status_validate_order>
                         <payment_action translate="label">
-                            <label>Payment Action</label>
+                            <label>Capture</label>
+                            <comment>Not applicable for Bancontact / Mister Cash, transaction with this payment method will be automatically captured</comment>
+                            <tooltip><![CDATA[<b>Manual</b>: All transactions will be captured manually either from the Hipay Back office or from your Magento administration dashboard. </br><b>Automatic</b>: All transactions will be captured automatically.]]></tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_paymentAction</source_model>
                             <sort_order>30</sort_order>
@@ -2626,7 +2660,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_store>0</show_in_store>
                         </pending_redirect_page>
                         <payment_action translate="label">
-                            <label>Payment Action</label>
+                            <label>Capture</label>
+                            <comment>Not applicable for Bancontact / Mister Cash, transaction with this payment method will be automatically captured</comment>
+                            <tooltip><![CDATA[<b>Manual</b>: All transactions will be captured manually either from the Hipay Back office or from your Magento administration dashboard. </br><b>Automatic</b>: All transactions will be captured automatically.]]></tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_paymentAction</source_model>
                             <sort_order>30</sort_order>
@@ -3931,6 +3967,16 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </is_test_mode>
+                        <payment_action translate="label">
+                            <label>Capture</label>
+                            <tooltip><![CDATA[<b>Manual</b>: All transactions will be captured manually either from the Hipay Back office or from your Magento administration dashboard. </br><b>Automatic</b>: All transactions will be captured automatically.]]></tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>hipay/source_paymentAction</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </payment_action>
                     </fields>
                 </hipay_przelewy24api>
                 <hipay_qiwi translate="label" module="hipay">
@@ -5359,6 +5405,16 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </is_test_mode>
+                        <payment_action translate="label">
+                            <label>Capture</label>
+                            <tooltip><![CDATA[<b>Manual</b>: All transactions will be captured manually either from the Hipay Back office or from your Magento administration dashboard. </br><b>Automatic</b>: All transactions will be captured automatically.]]></tooltip>
+                            <frontend_type>select</frontend_type>
+                            <source_model>hipay/source_paymentAction</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </payment_action>
                     </fields>
                 </hipay_paypalapi>
                 <hipay_sdd translate="label" module="hipay">
@@ -5821,15 +5877,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </pending_redirect_page>
-                        <payment_action translate="label">
-                            <label>Payment Action</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>hipay/source_paymentAction</source_model>
-                            <sort_order>28</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </payment_action>
                         <css_url translate="label coment">
                             <label>Css Url</label>
                             <comment>Important, HTTPS protocol is required</comment>
@@ -6129,15 +6176,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </pending_redirect_page>
-                        <payment_action translate="label">
-                            <label>Payment Action</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>hipay/source_paymentAction</source_model>
-                            <sort_order>28</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </payment_action>
                         <css_url translate="label coment">
                             <label>Css Url</label>
                             <comment>Important, HTTPS protocol is required</comment>
@@ -6658,7 +6696,8 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_store>0</show_in_store>
                         </pending_redirect_page>
                         <payment_action translate="label">
-                            <label>Payment Action</label>
+                            <label>Capture</label>
+                            <tooltip><![CDATA[<b>Manual</b>: All transactions will be captured manually either from the Hipay Back office or from your Magento administration dashboard. </br><b>Automatic</b>: All transactions will be captured automatically.]]></tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_paymentAction</source_model>
                             <sort_order>30</sort_order>
@@ -6906,15 +6945,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </pending_redirect_page>
-                        <payment_action translate="label">
-                            <label>Payment Action</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>hipay/source_paymentAction</source_model>
-                            <sort_order>28</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </payment_action>
                         <css_url translate="label coment">
                             <label>Css Url</label>
                             <comment>Important, HTTPS protocol is required</comment>
@@ -7214,15 +7244,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </pending_redirect_page>
-                        <payment_action translate="label">
-                            <label>Payment Action</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>hipay/source_paymentAction</source_model>
-                            <sort_order>28</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </payment_action>
                         <css_url translate="label coment">
                             <label>Css Url</label>
                             <comment>Important, HTTPS protocol is required</comment>
@@ -7522,15 +7543,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </pending_redirect_page>
-                        <payment_action translate="label">
-                            <label>Payment Action</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>hipay/source_paymentAction</source_model>
-                            <sort_order>28</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </payment_action>
                         <css_url translate="label coment">
                             <label>Css Url</label>
                             <comment>Important, HTTPS protocol is required</comment>
@@ -7830,15 +7842,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </pending_redirect_page>
-                        <payment_action translate="label">
-                            <label>Payment Action</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>hipay/source_paymentAction</source_model>
-                            <sort_order>28</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </payment_action>
                         <css_url translate="label coment">
                             <label>Css Url</label>
                             <comment>Important, HTTPS protocol is required</comment>
@@ -8138,15 +8141,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </pending_redirect_page>
-                        <payment_action translate="label">
-                            <label>Payment Action</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>hipay/source_paymentAction</source_model>
-                            <sort_order>28</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </payment_action>
                         <css_url translate="label coment">
                             <label>Css Url</label>
                             <comment>Important, HTTPS protocol is required</comment>
@@ -8446,15 +8440,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </pending_redirect_page>
-                        <payment_action translate="label">
-                            <label>Payment Action</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>hipay/source_paymentAction</source_model>
-                            <sort_order>28</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </payment_action>
                         <css_url translate="label coment">
                             <label>Css Url</label>
                             <comment>Important, HTTPS protocol is required</comment>
@@ -8754,15 +8739,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </pending_redirect_page>
-                        <payment_action translate="label">
-                            <label>Payment Action</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>hipay/source_paymentAction</source_model>
-                            <sort_order>28</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </payment_action>
                         <css_url translate="label coment">
                             <label>Css Url</label>
                             <comment>Important, HTTPS protocol is required</comment>
@@ -9062,15 +9038,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </pending_redirect_page>
-                        <payment_action translate="label">
-                            <label>Payment Action</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>hipay/source_paymentAction</source_model>
-                            <sort_order>28</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </payment_action>
                         <css_url translate="label coment">
                             <label>Css Url</label>
                             <comment>Important, HTTPS protocol is required</comment>
@@ -9370,15 +9337,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </pending_redirect_page>
-                        <payment_action translate="label">
-                            <label>Payment Action</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>hipay/source_paymentAction</source_model>
-                            <sort_order>28</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </payment_action>
                         <css_url translate="label coment">
                             <label>Css Url</label>
                             <comment>Important, HTTPS protocol is required</comment>
@@ -9712,10 +9670,11 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_store>0</show_in_store>
                         </pending_redirect_page>
                         <payment_action translate="label">
-                            <label>Payment Action</label>
+                            <label>Capture</label>
+                            <tooltip><![CDATA[<b>Manual</b>: All transactions will be captured manually either from the Hipay Back office or from your Magento administration dashboard. </br><b>Automatic</b>: All transactions will be captured automatically.]]></tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_paymentAction</source_model>
-                            <sort_order>28</sort_order>
+                            <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -9957,10 +9916,11 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_store>0</show_in_store>
                         </pending_redirect_page>
                         <payment_action translate="label">
-                            <label>Payment Action</label>
+                            <label>Capture</label>
+                            <tooltip><![CDATA[<b>Manual</b>: All transactions will be captured manually either from the Hipay Back office or from your Magento administration dashboard. </br><b>Automatic</b>: All transactions will be captured automatically.]]></tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_paymentAction</source_model>
-                            <sort_order>28</sort_order>
+                            <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -10171,7 +10131,9 @@ From this information, an estimated (estimated) delivery day is calculated and s
                         </hipay_status_validate_order>
                         <success_redirect_page translate="label">
                             <label>Redirect page success</label>
-                            <comment>Page to redirect when transaction is successful, leave empty for checkout/onepage/success</comment>
+                            <comment>Page to redirect when transaction is successful, leave empty for
+                                checkout/onepage/success
+                            </comment>
                             <frontend_type>text</frontend_type>
                             <sort_order>26</sort_order>
                             <show_in_default>1</show_in_default>
@@ -10189,10 +10151,12 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_store>0</show_in_store>
                         </pending_redirect_page>
                         <payment_action translate="label">
-                            <label>Payment Action</label>
+                            <label>Capture</label>
+                            <comment>Not applicable for Bancontact / Mister Cash, transaction with this payment method will be automatically captured</comment>
+                            <tooltip><![CDATA[<b>Manual</b>: All transactions will be captured manually either from the Hipay Back office or from your Magento administration dashboard. </br><b>Automatic</b>: All transactions will be captured automatically.]]></tooltip>
                             <frontend_type>select</frontend_type>
                             <source_model>hipay/source_paymentAction</source_model>
-                            <sort_order>28</sort_order>
+                            <sort_order>30</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -10399,15 +10363,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </pending_redirect_page>
-                        <payment_action translate="label">
-                            <label>Payment Action</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>hipay/source_paymentAction</source_model>
-                            <sort_order>28</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </payment_action>
                         <send_fraud_payment_email translate="label">
                             <label>Send fraud payment email</label>
                             <frontend_type>select</frontend_type>
@@ -10601,15 +10556,6 @@ From this information, an estimated (estimated) delivery day is calculated and s
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </pending_redirect_page>
-                        <payment_action translate="label">
-                            <label>Payment Action</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>hipay/source_paymentAction</source_model>
-                            <sort_order>28</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </payment_action>
                         <send_fraud_payment_email translate="label">
                             <label>Send fraud payment email</label>
                             <frontend_type>select</frontend_type>
