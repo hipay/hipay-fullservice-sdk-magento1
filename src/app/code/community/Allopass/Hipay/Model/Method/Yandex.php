@@ -1,5 +1,4 @@
 <?php
-
 /**
  * HiPay Fullservice SDK Magento 1
  *
@@ -20,7 +19,7 @@
  * @license     https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-fullservice-sdk-magento1
  */
-class Allopass_Hipay_Model_Method_Yandex extends Allopass_Hipay_Model_Method_Hosted
+class Allopass_Hipay_Model_Method_Yandex extends Allopass_Hipay_Model_Method_HostedAbstract
 {
     protected $_code = 'hipay_yandex';
 

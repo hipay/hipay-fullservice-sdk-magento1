@@ -184,7 +184,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      * @param $quantity
      * @return mixed
      */
-    private function returnUnitPrice($product, $quantity)
+    public function returnUnitPrice($product, $quantity)
     {
         $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction', Mage::app()->getStore());
 
@@ -438,27 +438,36 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
                 $j = $i - 1;
                 $todayClone = clone $todayDate;
                 switch ($periodUnit) {
-                    case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_MONTH: {
-                        $dateToPay = $todayClone->addMonth($periodFrequency + $j)->getDate()->toString('yyyy-MM-dd');
-                        break;
-                    }
-                    case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_DAY: {
-                        $dateToPay = $todayClone->addDay($periodFrequency + $j)->getDate()->toString('yyyy-MM-dd');
+                    case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_MONTH:
+                        {
+                            $dateToPay = $todayClone->addMonth($periodFrequency + $j)->getDate()->toString(
+                                'yyyy-MM-dd'
+                            );
+                            break;
+                        }
+                    case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_DAY:
+                        {
+                            $dateToPay = $todayClone->addDay($periodFrequency + $j)->getDate()->toString('yyyy-MM-dd');
 
-                        break;
-                    }
-                    case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_SEMI_MONTH: {
-                        $dateToPay = $todayClone->addDay(15 + $periodFrequency + $j)->getDate()->toString('yyyy-MM-dd');
-                        break;
-                    }
-                    case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_WEEK: {
-                        $dateToPay = $todayClone->addWeek($periodFrequency + $j)->getDate()->toString('yyyy-MM-dd');
-                        break;
-                    }
-                    case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_YEAR: {
-                        $dateToPay = $todayClone->addYear($periodFrequency + $j)->getDate()->toString('yyyy-MM-dd');
-                        break;
-                    }
+                            break;
+                        }
+                    case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_SEMI_MONTH:
+                        {
+                            $dateToPay = $todayClone->addDay(15 + $periodFrequency + $j)->getDate()->toString(
+                                'yyyy-MM-dd'
+                            );
+                            break;
+                        }
+                    case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_WEEK:
+                        {
+                            $dateToPay = $todayClone->addWeek($periodFrequency + $j)->getDate()->toString('yyyy-MM-dd');
+                            break;
+                        }
+                    case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_YEAR:
+                        {
+                            $dateToPay = $todayClone->addYear($periodFrequency + $j)->getDate()->toString('yyyy-MM-dd');
+                            break;
+                        }
                 }
 
                 $amountToPay = $i == 0 ? ($part + $fmod) : $part;
@@ -567,13 +576,14 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         $secretMoto = $this->getConfig()->getSecretPassphraseMoto($storeId);
         $secretMotoTest = $this->getConfig()->getSecretPassphraseTestMoto($storeId);
         $passphrase = $isMoto && $secretMoto ? $secretMoto : $this->getConfig()->getSecretPassphrase($storeId);
-        $environment = $isMoto && $secretMoto  ? ScopeConfig::PRODUCTION_MOTO : ScopeConfig::PRODUCTION;
+        $environment = $isMoto && $secretMoto ? ScopeConfig::PRODUCTION_MOTO : ScopeConfig::PRODUCTION;
         if ($order !== null) {
             if ($order->getId()) {
                 $method = $order->getPayment()->getMethodInstance();
                 if ($method->getConfigData('is_test_mode')) {
-                    $passphrase = $isMoto && $secretMotoTest ? $secretMotoTest: $this->getConfig()->getSecretPassphraseTest($storeId);
-                    $environment = $isMoto && $secretMotoTest  ? ScopeConfig::TEST_MOTO : ScopeConfig::TEST;
+                    $passphrase = $isMoto && $secretMotoTest ? $secretMotoTest : $this->getConfig(
+                    )->getSecretPassphraseTest($storeId);
+                    $environment = $isMoto && $secretMotoTest ? ScopeConfig::TEST_MOTO : ScopeConfig::TEST;
                 }
             }
         }
@@ -732,8 +742,8 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     protected function _cardTokenExist($ccToken, $customer_id = 0)
     {
         $cards = Mage::getResourceModel('hipay/card_collection')
-            ->addFieldToSelect('card_id')
-            ->addFieldToFilter('cc_token', $ccToken);
+                     ->addFieldToSelect('card_id')
+                     ->addFieldToFilter('cc_token', $ccToken);
 
         if ($customer_id > 0) {
             $cards->addFieldToFilter('customer_id', $customer_id);
@@ -977,24 +987,24 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 
         foreach ($sendTo as $recipient) {
             $mailTemplate->setDesignConfig(array('area' => 'frontend', 'store' => $order->getStoreId()))
-                ->sendTransactional(
-                    $template,
-                    Mage::getStoreConfig('hipay/' . $email_key . '/identity', $order->getStoreId()),
-                    $recipient['email'],
-                    $recipient['name'],
-                    array(
-                        'reason' => $message,
-                        'dateAndTime' => Mage::app()->getLocale()->date(),
-                        'customer' => $order->getCustomerFirstname() . ' ' . $order->getCustomerLastname(),
-                        'customerEmail' => $order->getCustomerEmail(),
-                        'billingAddress' => $order->getBillingAddress(),
-                        'shippingAddress' => $order->getShippingAddress(),
-                        'shippingMethod' => Mage::getStoreConfig('carriers/' . $shippingMethod . '/title'),
-                        'paymentMethod' => Mage::getStoreConfig('payment/' . $paymentMethod . '/title'),
-                        'items' => nl2br($items),
-                        'total' => $total
-                    )
-                );
+                         ->sendTransactional(
+                             $template,
+                             Mage::getStoreConfig('hipay/' . $email_key . '/identity', $order->getStoreId()),
+                             $recipient['email'],
+                             $recipient['name'],
+                             array(
+                                 'reason' => $message,
+                                 'dateAndTime' => Mage::app()->getLocale()->date(),
+                                 'customer' => $order->getCustomerFirstname() . ' ' . $order->getCustomerLastname(),
+                                 'customerEmail' => $order->getCustomerEmail(),
+                                 'billingAddress' => $order->getBillingAddress(),
+                                 'shippingAddress' => $order->getShippingAddress(),
+                                 'shippingMethod' => Mage::getStoreConfig('carriers/' . $shippingMethod . '/title'),
+                                 'paymentMethod' => Mage::getStoreConfig('payment/' . $paymentMethod . '/title'),
+                                 'items' => nl2br($items),
+                                 'total' => $total
+                             )
+                         );
         }
 
         $translate->setTranslateInline(true);
@@ -1217,24 +1227,24 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 
         foreach ($sendTo as $recipient) {
             $mailTemplate->setDesignConfig(array('area' => 'frontend', 'store' => $order->getStoreId()))
-                ->sendTransactional(
-                    $template,
-                    Mage::getStoreConfig('hipay/' . $email_key . '/identity', $order->getStoreId()),
-                    $recipient['email'],
-                    $recipient['name'],
-                    array(
-                        'redirectUrl' => $paymentInfo->getAdditionalInformation('redirectUrl'),
-                        'dateAndTime' => Mage::app()->getLocale()->date(),
-                        'customer' => $order->getCustomerFirstname() . ' ' . $order->getCustomerLastname(),
-                        'customerEmail' => $order->getCustomerEmail(),
-                        'billingAddress' => $order->getBillingAddress(),
-                        'shippingAddress' => $order->getShippingAddress(),
-                        'shippingMethod' => Mage::getStoreConfig('carriers/' . $shippingMethod . '/title'),
-                        'paymentMethod' => Mage::getStoreConfig('payment/' . $paymentMethod . '/title'),
-                        'items' => nl2br($items),
-                        'total' => $total
-                    )
-                );
+                         ->sendTransactional(
+                             $template,
+                             Mage::getStoreConfig('hipay/' . $email_key . '/identity', $order->getStoreId()),
+                             $recipient['email'],
+                             $recipient['name'],
+                             array(
+                                 'redirectUrl' => $paymentInfo->getAdditionalInformation('redirectUrl'),
+                                 'dateAndTime' => Mage::app()->getLocale()->date(),
+                                 'customer' => $order->getCustomerFirstname() . ' ' . $order->getCustomerLastname(),
+                                 'customerEmail' => $order->getCustomerEmail(),
+                                 'billingAddress' => $order->getBillingAddress(),
+                                 'shippingAddress' => $order->getShippingAddress(),
+                                 'shippingMethod' => Mage::getStoreConfig('carriers/' . $shippingMethod . '/title'),
+                                 'paymentMethod' => Mage::getStoreConfig('payment/' . $paymentMethod . '/title'),
+                                 'items' => nl2br($items),
+                                 'total' => $total
+                             )
+                         );
         }
 
         $translate->setTranslateInline(true);
@@ -1266,10 +1276,10 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         $options = array();
         $storeId = Mage::getSingleton('adminhtml/config_data')->getStore();
         $categories = Mage::getModel('catalog/category')
-            ->getCollection()
-            ->addAttributeToFilter('level', 2)
-            ->addAttributeToSelect('name')
-            ->addAttributeToSelect('id');
+                          ->getCollection()
+                          ->addAttributeToFilter('level', 2)
+                          ->addAttributeToSelect('name')
+                          ->addAttributeToSelect('id');
 
         if ($storeId && !empty($storeId)) {
             $rootCategoryId = Mage::app()->getStore($storeId)->getRootCategoryId();
@@ -1392,7 +1402,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      * @param $mapping array Result of mapping
      * @return null|string JSON
      */
-    public function calculateDeliveryMethod($mapping)
+    public function getMappingShippingMethod($mapping)
     {
         if (is_array($mapping)) {
             $itemsDelivery = Mage::helper('hipay/collection')->getFullItemsDelivery();
@@ -1427,19 +1437,16 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     *  Check if send cart items is required or of option is activated
+     * Check if send cart items is required or of option is activated
      *
-     * @param $product_code
-     * @return boolean
+     * @param $productCode
+     * @return bool
+     * @throws Mage_Core_Model_Store_Exception
      */
-    public function isSendCartItemsRequired($product_code)
+    public function isSendCartItemsRequired($productCode)
     {
-        if ($this->isCartItemsRequired($product_code) ||
-            (Mage::getStoreConfigFlag('hipay/hipay_basket/activate_basket', Mage::app()->getStore()))
-        ) {
-            return true;
-        }
-        return false;
+        return $this->isCartItemsRequired($productCode) ||
+            (Mage::getStoreConfigFlag('hipay/hipay_basket/activate_basket', Mage::app()->getStore()));
     }
 
     /**
@@ -1450,7 +1457,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function isDeliveryMethodAndCartItemsRequired($product_code)
     {
-        return in_array($product_code, array('3xcb', '3xcb-no-fees', '4xcb-no-fees', '4xcb','credit-long'));
+        return in_array($product_code, array('3xcb', '3xcb-no-fees', '4xcb-no-fees', '4xcb', 'credit-long'));
     }
 
     /**
@@ -1461,7 +1468,10 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function isCartItemsRequired($product_code)
     {
-        return in_array($product_code, array('klarnainvoice', '3xcb', '3xcb-no-fees', '4xcb-no-fees', '4xcb', 'credit-long'));
+        return in_array(
+            $product_code,
+            array('klarnainvoice', '3xcb', '3xcb-no-fees', '4xcb-no-fees', '4xcb', 'credit-long')
+        );
     }
 
     /**
@@ -1533,7 +1543,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @return bool
      */
-    public function synchronizeSecuritySettings($request, $storeId, $scope, $session= null)
+    public function synchronizeSecuritySettings($request, $storeId, $scope, $session = null)
     {
         $gatewayResponse = $request->gatewayRequest(
             Allopass_Hipay_Model_Api_Request::GATEWAY_SECURITY_SETTINGS,
