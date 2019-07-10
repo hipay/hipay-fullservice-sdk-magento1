@@ -12,6 +12,8 @@
  * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
  */
 
+use HiPay\Fullservice\Enum\Transaction\TransactionState;
+
 /**
  *
  *
@@ -47,39 +49,55 @@ class Allopass_Hipay_Model_Method_AbstractOrderApi extends Allopass_Hipay_Model_
     }
 
     /**
-     * @param $ccTypeMagento
-     * @return mixed
-     */
-    protected function getCcTypeHipay($ccTypeMagento)
-    {
-        return $ccTypeMagento;
-    }
-
-
-    /**
      * @param $payment
      * @param $amount
      * @return bool|string
      */
     public function place($payment, $amount)
     {
-        $request = Mage::getModel('hipay/api_request', array($this));
-
-        $payment->setAmount($amount);
-
-        $gatewayParams = $this->getGatewayParams($payment, $amount, "");
-        $gatewayParams['operation'] = $this->getOperation();
-        $gatewayParams['payment_product'] = $this->getSpecifiedPaymentProduct($payment);
-        $this->_debug($gatewayParams);
-
-        $gatewayResponse = $request->gatewayRequest(
-            Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_ORDER,
-            $gatewayParams,
-            $payment->getOrder()->getStoreId()
+        $request = Mage::getModel(
+            'hipay/api_api',
+            array(
+                "paymentMethod" => $this,
+                "payment" => $payment,
+                "amount" => $amount
+            )
         );
 
-        $this->_debug($gatewayResponse->debug());
-        return $this->processResponseToRedirect($gatewayResponse, $payment, $amount);
+        $response = $request->requestDirectPost(
+            $this->getSpecifiedPaymentProduct($payment),
+            $this->getPaymentMethodFormatter($payment),
+            $payment->getAdditionalInformation('device_fingerprint'),
+            $this->getAdditionalParameters($payment)
+        );
+
+        $order = $payment->getOrder();
+        $urlAdmin = Mage::getUrl('adminhtml/sales_order/index');
+        if (Mage::getSingleton('admin/session')->isAllowed('sales/order/actions/view')) {
+            $urlAdmin = Mage::getUrl('adminhtml/sales_order/view', array('order_id' => $order->getId()));
+        }
+
+//        $this->_debug($gatewayResponse->debug());
+
+        switch ($response->getState()) {
+            case TransactionState::COMPLETED:
+                return $this->isAdmin() ? $urlAdmin : Mage::helper('hipay')->getCheckoutSuccessPage($payment);
+            case TransactionState::PENDING:
+                $this->reAddToCart($order);
+                return $this->isAdmin() ? $urlAdmin : Mage::getUrl($this->getConfigData('pending_redirect_page'));
+            case TransactionState::FORWARDING:
+                $payment->setIsTransactionPending(1);
+                $order->save();
+                return $response->getForwardUrl();
+            case TransactionState::DECLINED:
+                $this->reAddToCart($order);
+                return $this->isAdmin() ? $urlAdmin : Mage::getUrl('checkout/onepage/failure');
+            case TransactionState::ERROR:
+            default:
+                $this->reAddToCart($order);
+                $this->_getCheckout()->setErrorMessage($this->getDefaultExceptionMessage());
+                return $this->isAdmin() ? $urlAdmin : Mage::getUrl('checkout/onepage/failure');
+        }
     }
 
     /**
@@ -91,9 +109,16 @@ class Allopass_Hipay_Model_Method_AbstractOrderApi extends Allopass_Hipay_Model_
      */
     public function getSpecifiedPaymentProduct($payment)
     {
-        return ($this->getPaymentProductFees()) ? $this->getPaymentProductFees() : $this->getCcTypeHipay(
-            $payment->getCcType()
-        );
+        return $payment->getCcType();
     }
 
+    public function getPaymentMethodFormatter($payment)
+    {
+        return null;
+    }
+
+    public function getAdditionalParameters($payment)
+    {
+        return null;
+    }
 }

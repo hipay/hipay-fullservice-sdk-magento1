@@ -90,7 +90,7 @@ class Allopass_Hipay_Model_Config extends Varien_Object
      */
     private function getInternalConfig($key_api, $key, $storeId)
     {
-        if ($storeId instanceof Mage_Core_Model_Store){
+        if ($storeId instanceof Mage_Core_Model_Store) {
             $storeId = $storeId->getId();
         }
 
@@ -271,7 +271,8 @@ class Allopass_Hipay_Model_Config extends Varien_Object
     public function arePublicCredentialsEmpty($storeId = null, $isTestMode = true)
     {
         if ($isTestMode) {
-            return empty($this->getApiTokenJSPublickeyTest($storeId)) || empty($this->getApiTokenJSUsernameTest($storeId));
+            return empty($this->getApiTokenJSPublickeyTest($storeId)) ||
+                empty($this->getApiTokenJSUsernameTest($storeId));
         } else {
             return empty($this->getApiTokenJSPublickey($storeId)) || empty($this->getApiTokenJSUsername($storeId));
         }
@@ -305,6 +306,45 @@ class Allopass_Hipay_Model_Config extends Varien_Object
     public function getApiPasswordTestMoto($storeId = null)
     {
         return $this->getConfigDataMoto(self::API_PASSWORD_TEST, $storeId);
+    }
+
+    public function getApiCredentialsTestMoto($storeId = null)
+    {
+        return array(
+            "username" => $this->getApiUsernameTestMoto($storeId),
+            "password" => $this->getApiPasswordTestMoto($storeId)
+        );
+    }
+
+    public function getApiCredentialsMoto($storeId = null)
+    {
+        return array(
+            "username" => $this->getApiUsernameMoto($storeId),
+            "password" => $this->getApiPasswordMoto($storeId)
+        );
+    }
+
+    public function getApiCredentialsTest($storeId = null)
+    {
+        return array(
+            "username" => $this->getApiUsernameTest($storeId),
+            "password" => $this->getApiPasswordTest($storeId)
+        );
+    }
+
+    public function getApiCredentials($storeId = null)
+    {
+        return array(
+            "username" => $this->getApiUsername($storeId),
+            "password" => $this->getApiPassword($storeId)
+        );
+    }
+
+    public function isApiCredentialsMotoEmpty($test = false, $storeId = null)
+    {
+        $credentials = ($test) ? $this->getApiCredentialsTestMoto($storeId) : $this->getApiCredentialsMoto($storeId);
+
+        return $credentials["username"] && $credentials["password"];
     }
 
     /**

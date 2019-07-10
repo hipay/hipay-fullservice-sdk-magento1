@@ -1,5 +1,4 @@
 <?php
-
 /**
  * HiPay Fullservice SDK Magento 1
  *
@@ -11,6 +10,8 @@
  * @copyright 2018 HiPay
  * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
  */
+
+use HiPay\Fullservice\Enum\Transaction\TransactionState;
 
 /**
  *
@@ -63,15 +64,15 @@ class Allopass_Hipay_Model_SplitPayment extends Mage_Core_Model_Abstract
         }
 
         try {
-            $state = $this->getMethodInstance()->paySplitPayment($this);
-            switch ($state) {
-                case Allopass_Hipay_Model_Method_Abstract::STATE_COMPLETED:
-                case Allopass_Hipay_Model_Method_Abstract::STATE_FORWARDING:
-                case Allopass_Hipay_Model_Method_Abstract::STATE_PENDING:
+            $response = $this->getMethodInstance()->paySplitPayment($this);
+            switch ($response->getState()) {
+                case TransactionState::COMPLETED:
+                case TransactionState::PENDING:
+                case TransactionState::FORWARDING:
                     $this->setStatus(self::SPLIT_PAYMENT_STATUS_COMPLETE);
                     break;
-                case Allopass_Hipay_Model_Method_Abstract::STATE_DECLINED:
-                case Allopass_Hipay_Model_Method_Abstract::STATE_ERROR:
+                case TransactionState::DECLINED:
+                case TransactionState::ERROR:
                 default:
                     $this->setStatus(self::SPLIT_PAYMENT_STATUS_FAILED);
                     $this->sendErrorEmail();
@@ -122,7 +123,7 @@ class Allopass_Hipay_Model_SplitPayment extends Mage_Core_Model_Abstract
     public function canPay()
     {
         return $this->getStatus() == self::SPLIT_PAYMENT_STATUS_FAILED
-        || $this->getStatus() == self::SPLIT_PAYMENT_STATUS_PENDING;
+            || $this->getStatus() == self::SPLIT_PAYMENT_STATUS_PENDING;
     }
 
 

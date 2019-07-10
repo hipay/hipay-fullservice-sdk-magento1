@@ -123,11 +123,11 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $token = $data->getData($this->getCode() . '_cc_token');
 
         $info->setAdditionalInformation('create_oneclick', $oneclickMode == "create_oneclick" ? 1 : 0)
-            ->setAdditionalInformation('use_oneclick', $oneclickMode == "use_oneclick" ? 1 : 0)
-            ->setAdditionalInformation('selected_oneclick_card', $oneclickCard == "" ? 0 : $oneclickCard)
-            ->setAdditionalInformation('split_payment_id', $splitPaymentId != "" ? $splitPaymentId : 0)
-            ->setAdditionalInformation('token', $token != "" ? $token : "")
-            ->setAdditionalInformation('device_fingerprint', $data->getData('device_fingerprint'));
+             ->setAdditionalInformation('use_oneclick', $oneclickMode == "use_oneclick" ? 1 : 0)
+             ->setAdditionalInformation('selected_oneclick_card', $oneclickCard == "" ? 0 : $oneclickCard)
+             ->setAdditionalInformation('split_payment_id', $splitPaymentId != "" ? $splitPaymentId : 0)
+             ->setAdditionalInformation('token', $token != "" ? $token : "")
+             ->setAdditionalInformation('device_fingerprint', $data->getData('device_fingerprint'));
     }
 
     /**
@@ -214,11 +214,13 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $request = Mage::getModel('hipay/api_request', array($this));
         $uri = Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_MAINTENANCE . $transactionId;
 
-        $gatewayResponse = $request->gatewayRequest($uri,
+        $gatewayResponse = $request->gatewayRequest(
+            $uri,
             $gatewayParams,
             $payment->getOrder()->getStoreId(),
             $request::TYPE_RESPONSE_GATEWAY,
-            $payment);
+            $payment
+        );
 
         $this->_debug($gatewayResponse->debug());
         $receiver = Mage::getModel('customer/customer')->load($payment->getOrder()->getCustomerId());
@@ -248,11 +250,13 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $request = Mage::getModel('hipay/api_request', array($this));
         $uri = Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_MAINTENANCE . $transactionId;
 
-        $gatewayResponse = $request->gatewayRequest($uri,
+        $gatewayResponse = $request->gatewayRequest(
+            $uri,
             $gatewayParams,
             $payment->getOrder()->getStoreId(),
             $request::TYPE_RESPONSE_GATEWAY,
-            $payment);
+            $payment
+        );
 
         $this->_debug($gatewayResponse->debug());
 
@@ -644,8 +648,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
                              * and no 117 in history - execute treatment alse break
                              */
                             $histories = Mage::getResourceModel('sales/order_status_history_collection')
-                                ->setOrderFilter($order)
-                                ->addFieldToFilter('comment', array('like' => '%code-117%'));
+                                             ->setOrderFilter($order)
+                                             ->addFieldToFilter('comment', array('like' => '%code-117%'));
                             if ($histories->count() > 0) {
                                 break;
                             }
@@ -828,7 +832,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
                             $isRefundFinal = $gatewayResponse->getRefundedAmount() == $order->getGrandTotal();
                             $payment->setIsTransactionClosed($isRefundFinal)
-                                ->registerRefundNotification($amount);
+                                    ->registerRefundNotification($amount);
                             $order->addStatusHistoryComment($comment, false);
 
                             $creditmemo = $payment->getCreatedCreditmemo();
@@ -840,8 +844,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
                                         $creditmemo->getIncrementId()
                                     )
                                 )
-                                    ->setIsCustomerNotified(true)
-                                    ->save();
+                                      ->setIsCustomerNotified(true)
+                                      ->save();
                             }
                         }
                         break;
@@ -860,8 +864,10 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
                             $gatewayResponse->getPaymentProduct(),
                             array('visa', 'american-express', 'mastercard', 'cb')
                         )
-                        && ((int)$gatewayResponse->getEci() == 9 || $payment->getAdditionalInformation('create_oneclick'))
-                        && !$order->isNominal()
+                        &&
+                        ((int)$gatewayResponse->getEci() == 9 || $payment->getAdditionalInformation('create_oneclick'))
+                        &&
+                        !$order->isNominal()
                     ) { //Recurring E-commerce
 
                         if ($customer->getId()) {
@@ -1158,6 +1164,29 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         return true;
     }
 
+    protected function getDefaultExceptionMessage()
+    {
+        $defaultExceptionMessage = Mage::helper('hipay')->__('Payment error.');
+
+        switch ($this->getConfigPaymentAction()) {
+            case Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE:
+                $defaultExceptionMessage = Mage::helper('hipay')->__('Payment authorization error.');
+                break;
+            case Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE_CAPTURE:
+                $defaultExceptionMessage = Mage::helper('hipay')->__('Payment capturing error.');
+                break;
+        }
+
+        return $defaultExceptionMessage;
+    }
+
+    protected function reAddToCart($order)
+    {
+        if ($this->getConfigData('re_add_to_cart')) {
+            $this->getHelper()->reAddToCart($order->getIncrementId());
+        }
+    }
+
     /**
      *
      * @return Allopass_Hipay_Helper_Data|Mage_Core_Helper_Abstract
@@ -1219,11 +1248,13 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
         $this->_debug($gatewayParams);
 
-        $gatewayResponse = $request->gatewayRequest($action,
+        $gatewayResponse = $request->gatewayRequest(
+            $action,
             $gatewayParams,
             $payment->getOrder()->getStoreId(),
             $request::TYPE_RESPONSE_GATEWAY,
-            $payment);
+            $payment
+        );
 
         $this->_debug($gatewayResponse->debug());
 
@@ -1255,8 +1286,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
     public function countByTransactionsType($transactionType, $paymentId)
     {
         $transaction = Mage::getModel('sales/order_payment_transaction')->getCollection()
-            ->addPaymentIdFilter($paymentId)
-            ->addTxnTypeFilter($transactionType);
+                           ->addPaymentIdFilter($paymentId)
+                           ->addTxnTypeFilter($transactionType);
 
         return count($transaction->toArray()["items"]);
     }
@@ -1279,7 +1310,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         if (($profile = $payment->getAdditionalInformation('split_payment_id'))) {
             //Check if this order is already split
             $spCollection = Mage::getModel('hipay/splitPayment')->getCollection()
-                ->addFieldToFilter('order_id', $payment->getOrder()->getId());
+                                ->addFieldToFilter('order_id', $payment->getOrder()->getId());
 
             if (!$spCollection->count()) {
                 $longDesc = Mage::helper('hipay')->__('Split payment');
@@ -1297,8 +1328,10 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         );//MANDATORY
         $params['long_description'] = $longDesc;// optional
 
-        $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction',
-            Mage::app()->getStore()->getId());
+        $useOrderCurrency = Mage::getStoreConfig(
+            'hipay/hipay_api/currency_transaction',
+            Mage::app()->getStore()->getId()
+        );
 
         if ($useOrderCurrency) {
             $params['currency'] = $payment->getOrder()->getOrderCurrencyCode();
@@ -1336,7 +1369,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
         $params['http_accept'] = "*/*";
         $params['http_user_agent'] = Mage::helper('core/http')->getHttpUserAgent();
-        $params['language'] = Mage::app()->getLocale()->getLocaleCode();//strpos(Mage::app()->getLocale()->getLocaleCode(), "fr") !== false ? "fr_FR" : 'en';
+        $params['language'] = Mage::app()->getLocale()->getLocaleCode(
+        );//strpos(Mage::app()->getLocale()->getLocaleCode(), "fr") !== false ? "fr_FR" : 'en';
 
         /**
          * Parameters specific to the payment product
@@ -1453,7 +1487,9 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
     protected function getCustomerParams($payment, $params = array())
     {
         $order = $payment->getOrder();
-        $overrideParams = $payment->getCcType() == 'bnpp-3xcb' || $payment->getCcType() == 'bnpp-4xcb' || $payment->getCcType() == 'credit-long';
+        $overrideParams = $payment->getCcType() == 'bnpp-3xcb' ||
+            $payment->getCcType() == 'bnpp-4xcb' ||
+            $payment->getCcType() == 'credit-long';
         $params['email'] = $order->getCustomerEmail();
         $params['phone'] = $order->getBillingAddress()->getTelephone();
 
@@ -1496,7 +1532,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $params['streetaddress2'] = $order->getBillingAddress()->getStreet2();
         $params['city'] = $order->getBillingAddress()->getCity();
 
-        $params['state'] = $order->getBillingAddress()->getRegionCode() ? $order->getBillingAddress()->getRegionCode() : $order->getBillingAddress()->getCity();
+        $params['state'] = $order->getBillingAddress()->getRegionCode() ? $order->getBillingAddress()->getRegionCode(
+        ) : $order->getBillingAddress()->getCity();
 
         $zipcode = explode('-', $order->getBillingAddress()->getPostcode());
         $params['zipcode'] = $zipcode[0];
@@ -1544,7 +1581,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $params['shipto_streetaddress2'] = $shippingAddress->getStreet2();
         $params['shipto_city'] = $shippingAddress->getCity();
 
-        $params['shipto_state'] = $shippingAddress->getRegionCode() ? $shippingAddress->getRegionCode() : $shippingAddress->getCity();
+        $params['shipto_state'] = $shippingAddress->getRegionCode() ? $shippingAddress->getRegionCode(
+        ) : $shippingAddress->getCity();
 
         $params['shipto_zipcode'] = $shippingAddress->getPostcode();
         $params['shipto_country'] = $shippingAddress->getCountry();
@@ -1552,59 +1590,6 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
 
         return $params;
-    }
-
-    /**
-     *
-     * @param $splitPayment
-     * @return bool
-     * @internal param Allopass_Hipay_Model_SplitPayment $spiltPayment
-     */
-    public function paySplitPayment($splitPayment)
-    {
-        $request = Mage::getModel('hipay/api_request', array($this));
-
-        $order = Mage::getModel('sales/order')->load($splitPayment->getOrderId());
-        if ($order->getId()) {
-            $gatewayParams = $this->getGatewayParams(
-                $order->getPayment(),
-                $splitPayment->getAmountToPay(),
-                null,
-                $splitPayment->getSplitNumber()
-            );
-
-            //Added because if the same order_id tpp respond "Max Attempts exceed!"
-            $gatewayParams['orderid'] .= $this->generateSplitOrderId($splitPayment);
-
-            $gatewayParams['description'] = Mage::helper('hipay')->__(
-                "Order SPLIT %s by %s",
-                $order->getIncrementId(),
-                $order->getCustomerEmail()
-            );
-            $gatewayParams['eci'] = 9;
-            $gatewayParams['operation'] = self::OPERATION_SALE;
-            $gatewayParams['payment_product'] = $this->getCcTypeHipay($order->getPayment()->getCcType());
-
-            /**
-             * Parameters specific to the payment product
-             */
-            $gatewayParams['cardtoken'] = $splitPayment->getCardToken();
-
-            $gatewayParams['authentication_indicator'] = 0;
-            $this->_debug($gatewayParams);
-
-            $gatewayResponse = $request->gatewayRequest(
-                Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_ORDER,
-                $gatewayParams
-            );
-
-            $this->_debug($gatewayResponse->debug());
-
-
-            return $gatewayResponse->getState();
-        }
-
-        return false;
     }
 
     /**
@@ -1658,11 +1643,13 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         $request = Mage::getModel('hipay/api_request', array($this));
         $uri = Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_MAINTENANCE . $transactionId;
 
-        $gatewayResponse = $request->gatewayRequest($uri,
+        $gatewayResponse = $request->gatewayRequest(
+            $uri,
             $gatewayParams,
             $payment->getOrder()->getStoreId(),
             $request::TYPE_RESPONSE_GATEWAY,
-            $payment);
+            $payment
+        );
 
         $this->_debug($gatewayResponse->debug());
 
@@ -1843,8 +1830,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         if (!$txnId) {
             if ($txnType && $payment->getId()) {
                 $collection = Mage::getModel('sales/order_payment_transaction')->getCollection()
-                    ->addPaymentIdFilter($payment->getId())
-                    ->addTxnTypeFilter($txnType);
+                                  ->addPaymentIdFilter($payment->getId())
+                                  ->addTxnTypeFilter($txnType);
                 foreach ($collection as $txn) {
                     $txn->setOrderPaymentObject($payment);
                     $_transactionsLookup[$txn->getTxnId()] = $txn;
@@ -1857,8 +1844,8 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
             return $_transactionsLookup[$txnId];
         }
         $txn = Mage::getModel('sales/order_payment_transaction')
-            ->setOrderPaymentObject($payment)
-            ->loadByTxnId($txnId);
+                   ->setOrderPaymentObject($payment)
+                   ->loadByTxnId($txnId);
         if ($txn->getId()) {
             $_transactionsLookup[$txnId] = $txn;
         } else {
@@ -1967,14 +1954,18 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
     }
 
     /**
-     * Return an id with informations to TPP
-     *
-     * @param $splitPayment
-     * @return string
+     * @param $ccTypeMagento
+     * @return mixed
      */
-    public function generateSplitOrderId($splitPayment)
+    public function getCcTypeHipay($ccTypeMagento)
     {
-        return "-split-" . $splitPayment->getSplitNumber() . "-" . $splitPayment->getAttempts() . "-" . $splitPayment->getId();
+        $ccTypes = Mage::getSingleton('hipay/config')->getCcTypesHipay();
+
+        if (isset($ccTypes[$ccTypeMagento])) {
+            return $ccTypes[$ccTypeMagento];
+        }
+
+        return $ccTypeMagento;
     }
 
     /**
