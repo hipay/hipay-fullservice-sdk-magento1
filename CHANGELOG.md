@@ -1,3 +1,6 @@
+# Version 1.12.2
+  - Update payment method configuration form
+  
 # Version 1.12.1
   - Fix: Add merchant promotion to Oney payment method
   
