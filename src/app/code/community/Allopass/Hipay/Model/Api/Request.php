@@ -1,5 +1,4 @@
 <?php
-
 /**
  * HiPay Fullservice SDK Magento 1
  *
@@ -11,7 +10,9 @@
  * @copyright 2018 HiPay
  * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
  */
+
 require_once(dirname(__FILE__) . '/../../Helper/Enum/ScopeConfig.php');
+
 /**
  *
  *
@@ -406,4 +407,3 @@ class Allopass_Hipay_Model_Api_Request
         return $this->_environment;
     }
 }
-

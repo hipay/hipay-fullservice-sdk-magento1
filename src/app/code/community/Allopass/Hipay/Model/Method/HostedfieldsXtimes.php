@@ -22,6 +22,8 @@
  */
 class Allopass_Hipay_Model_Method_HostedfieldsXtimes extends Allopass_Hipay_Model_Method_CcHostedFields
 {
+    use Allopass_Hipay_Model_Method_SplitPaymentTrait;
+
     protected $_canUseInternal = false;
 
     protected $_code = 'hipay_hostedfieldsxtimes';

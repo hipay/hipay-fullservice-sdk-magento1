@@ -28,19 +28,12 @@ class Allopass_Hipay_Model_Method_OneyAbstract extends Allopass_Hipay_Model_Meth
 
     /**
      * @param Mage_Sales_Model_Order_Payment $payment
-     * @param $amount
-     * @param null $token
-     * @param null $split_number
-     * @return array
+     * @return array|null
      */
-    public function getGatewayParams($payment, $amount, $token = null, $split_number = null)
+    public function getAdditionalParameters($payment)
     {
-        $params = parent::getGatewayParams(
-            $payment,
-            $amount,
-            $token,
-            $split_number
-        );
+
+        $params = null;
 
         if (!empty($this->getConfigData('merchant_promotion'))) {
             $params["payment_product_parameters"] = json_encode(
@@ -52,5 +45,4 @@ class Allopass_Hipay_Model_Method_OneyAbstract extends Allopass_Hipay_Model_Meth
 
         return $params;
     }
-
 }

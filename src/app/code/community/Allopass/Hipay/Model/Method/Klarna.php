@@ -20,33 +20,11 @@
  * @license     https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-fullservice-sdk-magento1
  */
-class Allopass_Hipay_Model_Method_Klarna extends Allopass_Hipay_Model_Method_Hosted
+class Allopass_Hipay_Model_Method_Klarna extends Allopass_Hipay_Model_Method_HostedAbstract
 {
     protected $_code = 'hipay_klarna';
     protected $_canCapture = true;
     protected $_canCapturePartial = false;
     protected $_canRefund = true;
     protected $_canRefundInvoicePartial = false;
-
-    const PAYMENT_PRODUCT = 'klarnainvoice';
-
-
-    /**
-     * Getting specifics params for payment method klarna
-     *
-     * @param $gatewayParams
-     * @return Array
-     */
-    public function getSpecificsParams($gatewayParams, $payment)
-    {
-        $gatewayParams['payment_product'] = Allopass_Hipay_Model_Method_Klarna::PAYMENT_PRODUCT;
-
-        $params['msisdn'] = $payment->getOrder()->getBillingAddress()->getTelephone();
-
-        // Fake data because it's not default information in MAGENTO
-        $gatewayParams['shipto_house_number'] = '999';
-        unset($gatewayParams['payment_product_category_list']);
-
-        return $gatewayParams;
-    }
 }
