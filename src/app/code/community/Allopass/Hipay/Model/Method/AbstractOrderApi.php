@@ -1,5 +1,4 @@
 <?php
-
 /**
  * HiPay Fullservice SDK Magento 1
  *
@@ -11,8 +10,6 @@
  * @copyright 2018 HiPay
  * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
  */
-
-use HiPay\Fullservice\Enum\Transaction\TransactionState;
 
 /**
  *
@@ -71,33 +68,7 @@ class Allopass_Hipay_Model_Method_AbstractOrderApi extends Allopass_Hipay_Model_
             $this->getAdditionalParameters($payment)
         );
 
-        $order = $payment->getOrder();
-        $urlAdmin = Mage::getUrl('adminhtml/sales_order/index');
-        if (Mage::getSingleton('admin/session')->isAllowed('sales/order/actions/view')) {
-            $urlAdmin = Mage::getUrl('adminhtml/sales_order/view', array('order_id' => $order->getId()));
-        }
-
-//        $this->_debug($gatewayResponse->debug());
-
-        switch ($response->getState()) {
-            case TransactionState::COMPLETED:
-                return $this->isAdmin() ? $urlAdmin : Mage::helper('hipay')->getCheckoutSuccessPage($payment);
-            case TransactionState::PENDING:
-                $this->reAddToCart($order);
-                return $this->isAdmin() ? $urlAdmin : Mage::getUrl($this->getConfigData('pending_redirect_page'));
-            case TransactionState::FORWARDING:
-                $payment->setIsTransactionPending(1);
-                $order->save();
-                return $response->getForwardUrl();
-            case TransactionState::DECLINED:
-                $this->reAddToCart($order);
-                return $this->isAdmin() ? $urlAdmin : Mage::getUrl('checkout/onepage/failure');
-            case TransactionState::ERROR:
-            default:
-                $this->reAddToCart($order);
-                $this->_getCheckout()->setErrorMessage($this->getDefaultExceptionMessage());
-                return $this->isAdmin() ? $urlAdmin : Mage::getUrl('checkout/onepage/failure');
-        }
+        return $this->handleApiResponse($response, $payment);
     }
 
     /**

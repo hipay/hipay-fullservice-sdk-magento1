@@ -47,6 +47,23 @@ class Allopass_Hipay_Model_Api_Formatter_Request_DirectPost extends Allopass_Hip
         $order->payment_product = $this->_paymentProduct;
         $order->device_fingerprint = $this->_deviceFingerprint;
         $order->paymentMethod = $this->_paymentMethodFormatter;
-//        $this->getCustomerNames($order);
+        $this->getCustomerNames($order);
+    }
+
+    /**
+     * @param $order
+     */
+    protected function getCustomerNames(&$order)
+    {
+
+        $names = explode(' ', trim($this->_payment->getCcOwner()));
+
+        if (
+            ($this->_payment->getCcType() === "AE" || $this->_payment->getCcType() === "american-express")
+            && count($names) > 1
+        ) {
+            $order->firstname = $names[0];
+            $order->lastname = trim(preg_replace('/' . $names[0] . '/', "", $this->_payment->getCcOwner(), 1));
+        }
     }
 }

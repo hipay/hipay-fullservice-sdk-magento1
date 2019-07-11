@@ -21,7 +21,23 @@
  */
 class Allopass_Hipay_Model_Method_Hosted extends Allopass_Hipay_Model_Method_HostedAbstract
 {
+    use Allopass_Hipay_Model_Method_OneClickTrait;
+
     protected $_code = 'hipay_hosted';
+
+    /**
+     * @param $payment
+     * @param $amount
+     * @return bool|string
+     */
+    public function place($payment, $amount)
+    {
+        if ($this->isOneClick($payment)) {
+            return $this->payOneClick($payment, $amount);
+        }
+
+        return parent::place($payment, $amount);
+    }
 
     public function getPaymentProductList($payment)
     {

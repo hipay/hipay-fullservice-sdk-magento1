@@ -72,6 +72,7 @@ if ($this->hasPublicCredentials()):
                             self.safeFormData["payment[" + method + "_cc_exp_month]"] = response.card_expiry_month;
                             self.safeFormData["payment[" + method + "_cc_cid]"] = null;
                             Form.Element.setValue(method + "_cc_type", response.payment_product);
+                            Form.Element.setValue(method + "_cc_owner", response.card_holder);
                             replaceForm(Form, response, method);
 
                             savePayment(self);
