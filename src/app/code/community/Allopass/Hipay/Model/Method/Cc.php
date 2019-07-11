@@ -24,14 +24,31 @@ use HiPay\Fullservice\Gateway\Request\PaymentMethod\CardTokenPaymentMethod;
  */
 class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_AbstractOrderApi
 {
+    use Allopass_Hipay_Model_Method_OneClickTrait;
+
     protected $_canReviewPayment = true;
+
     const STATUS_PENDING_CAPTURE = 'pending_capture';
 
     protected $_code = 'hipay_cc';
 
     protected $_formBlockType = 'hipay/form_cc';
+
     protected $_infoBlockType = 'hipay/info_cc';
 
+    /**
+     * @param $payment
+     * @param $amount
+     * @return bool|string
+     */
+    public function place($payment, $amount)
+    {
+        if ($this->isOneClick($payment)) {
+            return $this->payOneClick($payment, $amount);
+        }
+
+        return parent::place($payment, $amount);
+    }
 
     /**
      * Assign data to info model instance
@@ -170,7 +187,7 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
         $cardTokenRequest = new CardTokenPaymentMethod();
 
         $cardTokenRequest->cardtoken = $payment->getAdditionalInformation('token');
-        $cardTokenRequest->eci = ($this->isOneClick($payment)) ? ECI::RECURRING_ECOMMERCE : ECI::SECURE_ECOMMERCE;
+        $cardTokenRequest->eci = ECI::SECURE_ECOMMERCE;
         $cardTokenRequest->authentication_indicator = Mage::helper('hipay')->is3dSecure(
             $this->getConfigData('use_3d_secure'),
             $this->getConfigData('config_3ds_rules'),
@@ -269,11 +286,6 @@ class Allopass_Hipay_Model_Method_Cc extends Allopass_Hipay_Model_Method_Abstrac
     protected function getHiPayConfig()
     {
         return Mage::getSingleton('hipay/config');
-    }
-
-    protected function isOneClick($payment)
-    {
-        return $payment->getAdditionalInformation('use_oneclick');
     }
 
     protected function getOneClickCardType($payment)
