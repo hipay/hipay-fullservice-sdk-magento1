@@ -102,87 +102,12 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Add item discount in basket
-     *
-     * @param $order
-     * @param $action
-     * @param $basket
-     * @return array
-     */
-    private function processDiscount($order, $action, $basket)
-    {
-        $coupon = $order->getCouponCode();
-        if (!empty($coupon)) {
-            $item = array();
-            $item['type'] = Allopass_Hipay_Helper_Data::TYPE_ITEM_BASKET_DISCOUNT;
-            $item['product_reference'] = $order->getCouponCode();
-            $item['name'] = $order->getDiscountDescription();
-            $item['discount'] = 0;
-            $item['total_amount'] = 0;
-            $item['quantity'] = 1;
-            $item['unit_price'] = '0';
-            $item['product_category'] = self::DEFAULT_CATEGORY_CODE;
-            $basket[] = $item;
-        }
-
-        return $basket;
-    }
-
-    /**
-     * Add item Shipping in basket
-     *
-     * @param $order
-     * @param $action
-     * @param $basket
-     * @return array
-     */
-    private function processShipping($order, $action, $basket)
-    {
-        $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction', Mage::app()->getStore());
-
-        $item = array();
-        $item['type'] = Allopass_Hipay_Helper_Data::TYPE_ITEM_BASKET_FEE;
-        $item['product_reference'] = $order->getShippingDescription();
-        $item['name'] = $order->getShippingDescription();
-        $item['quantity'] = 1;
-
-        if (!$useOrderCurrency) {
-            $item['unit_price'] = round($order->getBaseShippingAmount(), 3);
-            $item['total_amount'] = round($order->getBaseShippingAmount(), 3);
-            if ($order->getBaseShippingAmount() > 0) {
-                $item['tax_rate'] = round(
-                    $order->getBaseShippingTaxAmount() / $order->getBaseShippingAmount() * 100,
-                    2
-                );
-            }
-        } else {
-            $item['unit_price'] = round($order->getShippingAmount(), 3);
-            $item['total_amount'] = round($order->getShippingAmount(), 3);
-            if ($order->getShippingAmount() > 0) {
-                $item['tax_rate'] = round($order->getShippingTaxAmount() / $order->getShippingAmount() * 100, 2);
-            }
-        }
-
-        if ($action == Allopass_Hipay_Helper_Data::STATE_CAPTURE
-            || $action == Allopass_Hipay_Helper_Data::STATE_REFUND
-        ) {
-            $item['product_reference'] = $order->getOrder()->getShippingDescription();
-            $item['name'] = $order->getOrder()->getShippingDescription();
-        }
-
-        $item['product_category'] = self::DEFAULT_CATEGORY_CODE;
-        $basket[] = $item;
-
-
-        return $basket;
-    }
-
-    /**
      * Calculate unit price for one product and quantity
      *
      * @param $product
      * @param $quantity
-     * @return mixed
+     * @return float|int
+     * @throws Mage_Core_Model_Store_Exception
      */
     public function returnUnitPrice($product, $quantity)
     {
@@ -196,216 +121,12 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * Add product in the basket
-     *
-     * @param $product
-     * @param $action
-     * @param null $products
-     * @return array
-     */
-    private function addItem($product, $action, $products = null)
-    {
-        $item = array();
-        $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction', Mage::app()->getStore());
-        $resource = Mage::getSingleton('catalog/product')->getResource();
-
-        // Select base Field according the action
-        switch ($action) {
-            case Allopass_Hipay_Helper_Data::STATE_REFUND:
-                $base_discount = Allopass_Hipay_Helper_Data::FIELD_BASE_DISCOUNT_REFUNDED;
-                $base_hidden_tax = Allopass_Hipay_Helper_Data::FIELD_BASE_TAX_HIDDEN_REFUNDED;
-                break;
-            default:
-                $base_discount = Allopass_Hipay_Helper_Data::FIELD_BASE_DISCOUNT;
-                $base_hidden_tax = Allopass_Hipay_Helper_Data::FIELD_BASE_TAX_HIDDEN;
-        }
-
-        if ($action == Allopass_Hipay_Helper_Data::STATE_CAPTURE
-            || $action == Allopass_Hipay_Helper_Data::STATE_REFUND
-        ) {
-            $item['quantity'] = intval($product->getData('qty'));
-        } else {
-            $item['quantity'] = intval($product->getData('qty_ordered'));
-        }
-
-        $sku = trim($product->getData('sku'));
-        $taxPercent = $product->getData('tax_percent');
-
-        if (!$useOrderCurrency) {
-            $total_amount = $product->getBaseRowTotal()
-                + $product->getBaseTaxAmount()
-                + $product->getBaseHiddenTaxAmount()
-                + $product->getBaseWeeeTaxAppliedRowAmount()
-                - $product->getBaseDiscountAmount();
-        } else {
-            $total_amount = $product->getRowTotal()
-                + $product->getTaxAmount()
-                + $product->getHiddenTaxAmount()
-                + $product->getBaseWeeeTaxAppliedRowAmount()
-                - $product->getDiscountAmount();
-        }
-
-        // Add information in basket only if the product is simple
-        if ($item['quantity'] > 0 && $total_amount > 0) {
-            if ($action == Allopass_Hipay_Helper_Data::STATE_CAPTURE
-                || $action == Allopass_Hipay_Helper_Data::STATE_REFUND
-            ) {
-                // To avoid 0.001 between original authorization and capture
-                foreach ($products as $key => $original) {
-                    if ($product->getSku() == $original->getSku()) {
-                        if ($original->getProductType() == Mage_Catalog_Model_Product_Type::TYPE_BUNDLE
-                            && $original->isChildrenCalculated()
-                        ) {
-                            foreach ($original->getChildren() as $children) {
-                                $unitPrice = $this->returnUnitPrice($children, $item);
-                            }
-                        } else {
-                            $unitPrice = $this->returnUnitPrice($original, $original->getData('qty_ordered'));
-                        }
-                    }
-                }
-            } else {
-                // Don't use unit price in product because we need a better precision
-                $unitPrice = $this->returnUnitPrice($product, $item['quantity']);
-            }
-
-            // if store support EAN ( Please set the attribute on hipay config )
-            if (Mage::getStoreConfig('hipay/hipay_basket/attribute_ean', Mage::app()->getStore())) {
-                $attribute = Mage::getStoreConfig('hipay/hipay_basket/attribute_ean', Mage::app()->getStore());
-
-                if (Mage::getStoreConfig('hipay/hipay_basket/load_product_ean', Mage::app()->getStore())) {
-                    $ean = $resource->getAttributeRawValue(
-                        $product->getProductId(),
-                        $attribute,
-                        Mage::app()->getStore()
-                    );
-                } else {
-                    // The custom attribute have to be present in quote and order
-                    $ean = $product->getData($attribute);
-                }
-            }
-
-            $item['type'] = Allopass_Hipay_Helper_Data::TYPE_ITEM_BASKET_GOOD;
-            $item['tax_rate'] = Mage::app()->getStore()->roundPrice($taxPercent);
-            $item['unit_price'] = round($unitPrice, 3);
-            $item['total_amount'] = $total_amount;
-
-            if (!empty($ean) && $ean != 'null') {
-                $item['european_article_numbering'] = $ean;
-            }
-
-            $item['product_reference'] = $sku;
-            $item['name'] = $product->getName();
-
-            // According the configuration we use this trick to complete the discount with tax hidden
-            $item['discount'] = round($total_amount - ($unitPrice * $item['quantity']), 3);
-
-            // Process an product load if needed
-            $product = Mage::getModel('catalog/product')->load($product->getProductId());
-
-            // Load Mapping Category
-            $categoryIds = $product->getCategoryIds();
-            if (is_array($categoryIds) && !empty($categoryIds)) {
-                if (isset($categoryIds[0]) && $categoryIds[0]) {
-                    $mapping = $this->getMappingCategory($categoryIds[0], Mage::app()->getStore()->getId());
-                    if (is_array($mapping) && array_key_exists('hipay_category', $mapping)) {
-                        $item['product_category'] = (int)$mapping['hipay_category'];
-                    }
-                }
-            }
-
-            return $item;
-        }
-    }
-
-    /**
-     * Return to TPP API basket informations
-     *
-     * @param Mage_Sales_Model_Order $order
-     * @param string $action
-     * @param null $payment (STATE_REFUND | STATE_CAPTURE)
-     * @return string
-     */
-    public function getCartInformation(
-        $order,
-        $action = Allopass_Hipay_Helper_Data::STATE_AUTHORIZATION,
-        $payment = null
-    ) {
-        $basket = array();
-        $products = $order->getAllVisibleItems();
-
-        // =============================================================== //
-        // Add each product in basket
-        // =============================================================== //
-        if ($action == Allopass_Hipay_Helper_Data::STATE_AUTHORIZATION) {
-            $basket = $this->processDiscount($order, $action, $basket);
-
-            $basket = $this->processShipping($order, $action, $basket);
-
-            foreach ($products as $key => $product) {
-                if ($product->getProductType() == Mage_Catalog_Model_Product_Type::TYPE_BUNDLE) {
-                    if ($product->isChildrenCalculated()) {
-                        foreach ($product->getChildren() as $children) {
-                            $basket[] = $this->addItem($children, $action);
-                        }
-                    } else {
-                        $basket[] = $this->addItem($product, $action);
-                    }
-                } else {
-                    $basket[] = $this->addItem($product, $action);
-                }
-            }
-        }
-
-        // Partial capture
-        if ($action == Allopass_Hipay_Helper_Data::STATE_CAPTURE) {
-            if ($order->hasInvoices()) {
-                $invoice = $order->getInvoiceCollection()->getLastItem();
-
-                // =============================================================== //
-                // Add Shipping in basket
-                // =============================================================== //
-                if (count($order->getInvoiceCollection()->getItems()) == 1) {
-                    $basket = $this->processShipping($invoice, $action, $basket);
-                }
-
-                foreach ($invoice->getAllItems() as $product) {
-                    $item = $this->addItem($product, $action, $products);
-                    if ($item) {
-                        $basket[] = $item;
-                    }
-                }
-            }
-        }
-
-        // Refund
-        if ($action == Allopass_Hipay_Helper_Data::STATE_REFUND) {
-            $creditMemo = $payment->getCreditmemo();
-
-            // =============================================================== //
-            // Add Shipping in basket
-            // =============================================================== //
-            if (count($order->getCreditmemosCollection()->getItems()) == 0) {
-                $basket = $this->processShipping($creditMemo, $action, $basket);
-            }
-
-            foreach ($creditMemo->getAllItems() as $product) {
-                $item = $this->addItem($product, $action, $products);
-                if ($item) {
-                    $basket[] = $item;
-                }
-            }
-        }
-
-        return json_encode($basket);
-    }
-
-    /**
-     * @param Allopass_Hipay_Model_PaymentProfile|int $profile
-     * @param float $amount
+     * @param $profile
+     * @param $amount
      * @param int $taxAmount
      * @return array
      * @throws Mage_Core_Exception
+     * @throws Zend_Date_Exception
      */
     public function splitPayment($profile, $amount, $taxAmount = 0)
     {
@@ -486,11 +207,13 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * @param Mage_Sales_Model_Order $order
-     * @param Allopass_Hipay_Model_PaymentProfile|int $profile
+     * @param $order
+     * @param $profile
      * @param $customerId
      * @param $cardToken
      * @throws Mage_Core_Exception
+     * @throws Mage_Core_Model_Store_Exception
+     * @throws Zend_Date_Exception
      */
     public function insertSplitPayment($order, $profile, $customerId, $cardToken)
     {
@@ -546,7 +269,6 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
             }
         }
     }
-
 
     /**
      *
@@ -1531,7 +1253,6 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return intval($time * 3600);
     }
-
 
     /**
      * Update hashing configuration with Hipay back office configuration

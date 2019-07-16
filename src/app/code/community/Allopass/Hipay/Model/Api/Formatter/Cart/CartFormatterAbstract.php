@@ -17,9 +17,8 @@
  * @license     https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-fullservice-sdk-magento1
  */
-class Allopass_Hipay_Model_Api_Formatter_Cart_CartFormatter implements Allopass_Hipay_Model_Api_Formatter_ApiFormatterInterface
+abstract class Allopass_Hipay_Model_Api_Formatter_Cart_CartFormatterAbstract implements Allopass_Hipay_Model_Api_Formatter_ApiFormatterInterface
 {
-
     protected $_paymentMethod;
     protected $_payment;
     protected $_order;
@@ -54,67 +53,19 @@ class Allopass_Hipay_Model_Api_Formatter_Cart_CartFormatter implements Allopass_
      *
      * @param Hipay\Fullservice\Gateway\Model\Cart\Cart $cart
      */
-    public function mapRequest(&$cart)
-    {
+    public abstract function mapRequest(&$cart);
 
-        $products = $this->_order->getAllVisibleItems();
-
-        // Good items
-        foreach ($products as $product) {
-            if ($product->getProductType() == Mage_Catalog_Model_Product_Type::TYPE_BUNDLE) {
-                if ($product->isChildrenCalculated()) {
-                    foreach ($product->getChildren() as $children) {
-                        $item = $this->getGoodItem($children);
-                        $cart->addItem($item);
-                    }
-                } else {
-                    $item = $this->getGoodItem($product);
-                    $cart->addItem($item);
-                }
-            } else {
-                $item = $this->getGoodItem($product);
-                $cart->addItem($item);
-            }
-        }
-
-        // Item Type discount (coupon)
-        if (!empty($this->_order->getCouponCode())) {
-            $itemTypeDiscount = $this->getDiscountItem();
-            $cart->addItem($itemTypeDiscount);
-        }
-
-        // Fees items
-        $item = $this->getFeesItem();
-        if ($item) {
-            $cart->addItem($item);
-        }
-    }
-
-    protected function getGoodItem($product)
+    protected function getGoodItem($product, $qty, $totalAmount)
     {
 
         $item = new HiPay\Fullservice\Gateway\Model\Cart\Item();
 
-        $quantity = (int)$product->getData('qty_ordered');
+        $quantity = (int)$qty;
 
         $productReference = trim($product->getData('sku'));
         $taxRate = Mage::app()->getStore()->roundPrice($product->getData('tax_percent'));
 
-        if ($this->isUseOrderCurrency()) {
-            $totalAmount = $product->getBaseRowTotal()
-                + $product->getBaseTaxAmount()
-                + $product->getBaseHiddenTaxAmount()
-                + $product->getBaseWeeeTaxAppliedRowAmount()
-                - $product->getBaseDiscountAmount();
-        } else {
-            $totalAmount = $product->getRowTotal()
-                + $product->getTaxAmount()
-                + $product->getHiddenTaxAmount()
-                + $product->getBaseWeeeTaxAppliedRowAmount()
-                - $product->getDiscountAmount();
-        }
-
-        if ($quantity <= 0 && $totalAmount <= 0) {
+        if ($quantity <= 0 || $totalAmount <= 0) {
             return null;
         }
 
@@ -187,29 +138,23 @@ class Allopass_Hipay_Model_Api_Formatter_Cart_CartFormatter implements Allopass_
 
     /**
      * create a Fees item from cart informations
-     * @return HiPay\Fullservice\Gateway\Model\Cart\Item
+     *
+     * @param $shippingAmount
+     * @param $taxAmount
+     * @return \HiPay\Fullservice\Gateway\Model\Cart\Item
      */
-    protected function getFeesItem()
+    protected function getFeesItem($shippingAmount, $taxAmount)
     {
 
         $productReference = $this->_order->getShippingDescription();
         $name = $this->_order->getShippingDescription();
-
-        $shippingAmount = $this->_order->getBaseShippingAmount();
-
-        if ($this->isUseOrderCurrency()) {
-            $shippingAmount = $this->_order->getShippingAmount();
-        }
 
         $unitPrice = round($shippingAmount, 3);
 
         $taxRate = 0;
 
         if ($shippingAmount > 0) {
-            $taxRate = round(
-                $shippingAmount / $shippingAmount * 100,
-                2
-            );
+            $taxRate = round($taxAmount / $shippingAmount * 100, 2);
         }
 
         $totalAmount = round($shippingAmount, 3);
@@ -228,14 +173,6 @@ class Allopass_Hipay_Model_Api_Formatter_Cart_CartFormatter implements Allopass_
         $item->setProductCategory(1);
 
         return $item;
-    }
-
-    protected function isMaintenanceRequest()
-    {
-        return in_array(
-            $this->_operation,
-            array(Allopass_Hipay_Helper_Data::STATE_CAPTURE, Allopass_Hipay_Helper_Data::STATE_REFUND)
-        );
     }
 
     protected function isUseOrderCurrency()
@@ -273,5 +210,42 @@ class Allopass_Hipay_Model_Api_Formatter_Cart_CartFormatter implements Allopass_
         }
 
         return null;
+    }
+
+    protected function isBundleChildrenCalculated($product)
+    {
+        return $product->getProductType() == Mage_Catalog_Model_Product_Type::TYPE_BUNDLE &&
+            $product->isChildrenCalculated();
+    }
+
+    protected function getProductTotalAmount($product)
+    {
+        if ($this->isUseOrderCurrency()) {
+            $totalAmount = $product->getBaseRowTotal()
+                + $product->getBaseTaxAmount()
+                + $product->getBaseHiddenTaxAmount()
+                + $product->getBaseWeeeTaxAppliedRowAmount()
+                - $product->getBaseDiscountAmount();
+        } else {
+            $totalAmount = $product->getRowTotal()
+                + $product->getTaxAmount()
+                + $product->getHiddenTaxAmount()
+                + $product->getBaseWeeeTaxAppliedRowAmount()
+                - $product->getDiscountAmount();
+        }
+
+        return $totalAmount;
+    }
+
+    protected function getShippingAmount($orderOrInvoice)
+    {
+        return $this->isUseOrderCurrency() ? $orderOrInvoice->getShippingAmount()
+            : $orderOrInvoice->getBaseShippingAmount();
+    }
+
+    protected function getShippingTaxAmount($orderOrInvoice)
+    {
+        return $this->isUseOrderCurrency() ? $orderOrInvoice->getShippingTaxAmount()
+            : $orderOrInvoice->getBaseShippingTaxAmount();
     }
 }
