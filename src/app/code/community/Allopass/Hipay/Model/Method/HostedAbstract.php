@@ -45,24 +45,6 @@ abstract class Allopass_Hipay_Model_Method_HostedAbstract extends Allopass_Hipay
         return $this;
     }
 
-
-    /**
-     * (non-PHPdoc)
-     * @see Mage_Payment_Model_Method_Abstract::capture()
-     */
-    public function capture(Varien_Object $payment, $amount)
-    {
-        parent::capture($payment, $amount);
-
-        if ($this->isPreauthorizeCapture($payment)) {
-            $this->_preauthorizeCapture($payment, $amount);
-        }
-
-        $payment->setSkipTransactionCreation(true);
-        return $this;
-    }
-
-
     public function place($payment, $amount)
     {
         $request = Mage::getModel(

@@ -86,6 +86,33 @@ class Allopass_Hipay_Model_Api_Api
         return $gatewayClient->requestNewOrder($orderRequest);
     }
 
+    public function requestMaintenance($operation, $transactionReference, $operationId)
+    {
+        $gatewayClient = $this->createGatewayClient();
+
+        $maintenanceFormatter = Mage::getModel(
+            'hipay/api_formatter_request_maintenance',
+            array(
+                "paymentMethod" => $this->_methodInstance,
+                "payment" => $this->_payment,
+                "amount" => $this->_amount,
+                "operation" => $operation,
+                "operationId" => $operationId,
+            )
+        );
+
+        $maintenanceRequest = $maintenanceFormatter->generate();
+
+        //Make a request and return \HiPay\Fullservice\Gateway\Model\Transaction object
+        return $gatewayClient->requestMaintenanceOperation(
+            $operation,
+            $transactionReference,
+            $maintenanceRequest->amount,
+            $operationId,
+            $maintenanceRequest
+        );
+    }
+
     protected function createGatewayClient()
     {
         $proxy = $this->getProxyConfig();

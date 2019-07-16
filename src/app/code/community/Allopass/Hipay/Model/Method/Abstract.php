@@ -12,6 +12,7 @@
  */
 
 use HiPay\Fullservice\Enum\Transaction\TransactionState;
+use HiPay\Fullservice\Enum\Transaction\Operation;
 
 /**
  *
@@ -75,6 +76,13 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
     protected $_canReviewPayment = false;
 
     /**
+     * Fields that should be replaced in debug with '***'
+     *
+     * @var array
+     */
+    protected $_debugReplacePrivateDataKeys = array('token', 'cardtoken', 'card_number', 'cvc');
+
+    /**
      * @return string
      */
     public function getOrderPlaceRedirectUrl()
@@ -82,19 +90,10 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         return Mage::getUrl(str_replace("_", "/", $this->getCode()) . '/sendRequest', array('_secure' => true));
     }
 
-    /**
-     * Fields that should be replaced in debug with '***'
-     *
-     * @var array
-     */
-    protected $_debugReplacePrivateDataKeys = array('token', 'cardtoken', 'card_number', 'cvc');
-
-
     public function isInitializeNeeded()
     {
         return true;
     }
-
 
     protected function getOperation()
     {
@@ -105,7 +104,6 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
                 return self::OPERATION_SALE;
         }
     }
-
 
     public function authorize(Varien_Object $payment, $amount)
     {
@@ -205,33 +203,38 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
     public function acceptPayment(Mage_Payment_Model_Info $payment)
     {
         parent::acceptPayment($payment);
-        $amount = $payment->getAmountAuthorized();
 
-        $transactionId = $payment->getLastTransId();
+        try {
+            $amount = $payment->getAmountAuthorized();
 
-        $gatewayParams = array('operation' => self::OPERATION_MAINTENANCE_ACCEPT_CHALLENGE, 'amount' => $amount);
-        $this->_debug($gatewayParams);
-        /* @var $request Allopass_Hipay_Model_Api_Request */
-        $request = Mage::getModel('hipay/api_request', array($this));
-        $uri = Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_MAINTENANCE . $transactionId;
+            $request = Mage::getModel(
+                'hipay/api_api',
+                array(
+                    "paymentMethod" => $this,
+                    "payment" => $payment,
+                    "amount" => $amount
+                )
+            );
 
-        $gatewayResponse = $request->gatewayRequest(
-            $uri,
-            $gatewayParams,
-            $payment->getOrder()->getStoreId(),
-            $request::TYPE_RESPONSE_GATEWAY,
-            $payment
-        );
+            $transactionId = $payment->getLastTransId();
 
-        $this->_debug($gatewayResponse->debug());
-        $receiver = Mage::getModel('customer/customer')->load($payment->getOrder()->getCustomerId());
-        $message = Mage::helper('hipay')->__('Your transaction has been approved.');
-        $emailKey = "fraud_payment_accept";
-        if ($this->canSendFraudEmail($payment->getOrder()->getStoreId())) {
-            $this->getHelper()->sendFraudPaymentEmail($receiver, $payment->getOrder(), $message, $emailKey);
+            $operationId = $this->getOperationId(Operation::ACCEPT_CHALLENGE, $payment);
+
+            $request->requestMaintenance(Operation::ACCEPT_CHALLENGE, $transactionId, $operationId);
+
+            if ($this->canSendFraudEmail($payment->getOrder()->getStoreId())) {
+                $receiver = Mage::getModel('customer/customer')->load($payment->getOrder()->getCustomerId());
+                $message = Mage::helper('hipay')->__('Your transaction has been approved.');
+                $emailKey = "fraud_payment_accept";
+                $this->getHelper()->sendFraudPaymentEmail($receiver, $payment->getOrder(), $message, $emailKey);
+            }
+
+            $payment->setPreparedMessage(Mage::helper('hipay')->__('Transaction is in pending notification.'));
+        } catch (Exception $e) {
+            Mage::throwException(
+                $e->getCode() . " ==> " . $e->getMessage()
+            );
         }
-
-        $payment->setPreparedMessage(Mage::helper('hipay')->__('Transaction is in pending notification.'));
 
         // Return false because payment is accepted by notification
         return false;
@@ -239,33 +242,38 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
     public function denyPayment(Mage_Payment_Model_Info $payment)
     {
-
         parent::denyPayment($payment);
-        $amount = $payment->getAmountAuthorized();
 
-        $transactionId = $payment->getLastTransId();
+        try {
+            $amount = $payment->getAmountAuthorized();
 
-        $gatewayParams = array('operation' => self::OPERATION_MAINTENANCE_DENY_CHALLENGE, 'amount' => $amount);
-        $this->_debug($gatewayParams);
-        /* @var $request Allopass_Hipay_Model_Api_Request */
-        $request = Mage::getModel('hipay/api_request', array($this));
-        $uri = Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_MAINTENANCE . $transactionId;
+            $request = Mage::getModel(
+                'hipay/api_api',
+                array(
+                    "paymentMethod" => $this,
+                    "payment" => $payment,
+                    "amount" => $amount
+                )
+            );
 
-        $gatewayResponse = $request->gatewayRequest(
-            $uri,
-            $gatewayParams,
-            $payment->getOrder()->getStoreId(),
-            $request::TYPE_RESPONSE_GATEWAY,
-            $payment
-        );
+            $transactionId = $payment->getLastTransId();
 
-        $this->_debug($gatewayResponse->debug());
+            $operationId = $this->getOperationId(Operation::DENY_CHALLENGE, $payment);
 
-        $receiver = Mage::getModel('customer/customer')->load($payment->getOrder()->getCustomerId());
-        $message = Mage::helper('hipay')->__('Your transaction has been refused.');
-        $emailKey = "fraud_payment_deny";
-        if ($this->canSendFraudEmail($payment->getOrder()->getStoreId())) {
-            $this->getHelper()->sendFraudPaymentEmail($receiver, $payment->getOrder(), $message, $emailKey);
+            $request->requestMaintenance(Operation::DENY_CHALLENGE, $transactionId, $operationId);
+
+            if ($this->canSendFraudEmail($payment->getOrder()->getStoreId())) {
+                $receiver = Mage::getModel('customer/customer')->load($payment->getOrder()->getCustomerId());
+                $message = Mage::helper('hipay')->__('Your transaction has been refused.');
+                $emailKey = "fraud_payment_deny";
+                $this->getHelper()->sendFraudPaymentEmail($receiver, $payment->getOrder(), $message, $emailKey);
+            }
+
+            $payment->setPreparedMessage(Mage::helper('hipay')->__('Transaction is in pending notification.'));
+        } catch (Exception $e) {
+            Mage::throwException(
+                $e->getCode() . " ==> " . $e->getMessage()
+            );
         }
 
         return true;
@@ -1216,71 +1224,57 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
     }
 
     /**
-     *
-     * @param Mage_Sales_Model_Order_Payment|Varien_Object $payment
+     * @param Varien_Object $payment
      * @param float $amount
-     * @return $this|Mage_Payment_Model_Abstract @return Mage_Payment_Model_Abstract
+     * @return $this|Mage_Payment_Model_Abstract
+     * @throws Mage_Core_Exception
      */
     public function refund(Varien_Object $payment, $amount)
     {
         parent::refund($payment, $amount);
 
-        $transactionId = $payment->getCcTransId();
+        try {
+            $request = Mage::getModel(
+                'hipay/api_api',
+                array(
+                    "paymentMethod" => $this,
+                    "payment" => $payment,
+                    "amount" => $amount
+                )
+            );
 
-        if ($transactionId === null) {
-            $transactionId = $payment->getParentTransactionId();
-            $payment->setCcTransId($payment->getParentTransactionId());
-        }
+            $transactionId = $payment->getCcTransId();
 
-        $incrementTransaction = $this->countByTransactionsType("refund", $payment->getEntityId());
-        $incrementTransaction++;
-        $operationId = $payment->getOrder()->getIncrementId() . "-refund-manual-" . (int)$incrementTransaction;
+            if ($transactionId === null) {
+                $transactionId = $payment->getParentTransactionId();
+                $payment->setCcTransId($payment->getParentTransactionId());
+            }
 
-        $gatewayParams = array('operation' => 'refund', 'amount' => $amount, "operation_id" => $operationId);
+            $operationId = $this->getOperationId(Operation::REFUND, $payment);
 
-        if (Mage::helper('hipay')->isSendCartItemsRequired($payment->getCcType())) {
-            $gatewayParams['basket'] = Mage::helper('hipay')->getCartInformation(
-                $payment->getOrder(),
-                Allopass_Hipay_Helper_Data::STATE_REFUND,
-                $payment
+            $request->requestMaintenance(Operation::REFUND, $transactionId, $operationId);
+
+            $creditMemo = $payment->getCreditmemo();
+            $creditMemo->setState(Mage_Sales_Model_Order_Creditmemo::STATE_OPEN);//State open = pending state
+            $creditMemo->setTransactionId($operationId);
+            $payment->setTransactionId($operationId);
+            $creditMemo->save();
+        } catch (Exception $e) {
+            Mage::throwException(
+                $e->getCode() . " ==> " . $e->getMessage()
             );
         }
 
-        /* @var $request Allopass_Hipay_Model_Api_Request */
-        $request = Mage::getModel('hipay/api_request', array($this));
-        $action = Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_MAINTENANCE . $transactionId;
-
-
-        $this->_debug($gatewayParams);
-
-        $gatewayResponse = $request->gatewayRequest(
-            $action,
-            $gatewayParams,
-            $payment->getOrder()->getStoreId(),
-            $request::TYPE_RESPONSE_GATEWAY,
-            $payment
-        );
-
-        $this->_debug($gatewayResponse->debug());
-
-        switch ($gatewayResponse->getStatus()) {
-            case "124":
-            case "125":
-            case "126":
-
-                /* @var $creditmemo Mage_Sales_Model_Order_Creditmemo */
-                $creditmemo = $payment->getCreditmemo();
-                $creditmemo->setState(Mage_Sales_Model_Order_Creditmemo::STATE_OPEN);//State open = pending state
-                $creditmemo->setTransactionId($operationId);
-                $payment->setTransactionId($operationId);
-                $creditmemo->save();
-                break;
-            default:
-                Mage::throwException($gatewayResponse->getStatus() . " ==> " . $gatewayResponse->getMessage());
-                break;
-        }
-
         return $this;
+    }
+
+    protected function getOperationId($operation, $payment)
+    {
+        $incrementTransaction = $this->countByTransactionsType($operation, $payment->getEntityId());
+
+        $incrementTransaction++;
+
+        return $payment->getOrder()->getIncrementId() . "-" . $operation . "-manual-" . (int)$incrementTransaction;
     }
 
     public function processCreditmemo($creditmemo, $payment)
@@ -1298,303 +1292,19 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
     }
 
     /**
-     * @param Mage_Sales_Model_Order_Payment $payment
-     * @param $amount
-     * @param string|null $token
-     * @param string $split_number
-     * @return array
+     * (non-PHPdoc)
+     * @see Mage_Payment_Model_Method_Abstract::capture()
      */
-    public function getGatewayParams($payment, $amount, $token = null, $split_number = null)
+    public function capture(Varien_Object $payment, $amount)
     {
-        $params = array();
-        $params['orderid'] = $payment->getOrder()->getIncrementId();
-        $paymentProduct = null;
-        $longDesc = "";
+        parent::capture($payment, $amount);
 
-        $taxAmount = $payment->getOrder()->getTaxAmount();
-        if (($profile = $payment->getAdditionalInformation('split_payment_id'))) {
-            //Check if this order is already split
-            $spCollection = Mage::getModel('hipay/splitPayment')->getCollection()
-                                ->addFieldToFilter('order_id', $payment->getOrder()->getId());
-
-            if (!$spCollection->count()) {
-                $longDesc = Mage::helper('hipay')->__('Split payment');
-                $paymentsSplit = $this->getHelper()->splitPayment((int)$profile, $amount, $taxAmount);
-
-                $amount = $paymentsSplit[0]['amountToPay'];
-                $taxAmount = $paymentsSplit[0]['taxAmountToPay'];
-            }
+        if ($this->isPreauthorizeCapture($payment)) {
+            $this->_preauthorizeCapture($payment, $amount);
         }
 
-        $params['description'] = Mage::helper('hipay')->__(
-            "Order %s by %s",
-            $payment->getOrder()->getIncrementId(),
-            $payment->getOrder()->getCustomerEmail()
-        );//MANDATORY
-        $params['long_description'] = $longDesc;// optional
-
-        $useOrderCurrency = Mage::getStoreConfig(
-            'hipay/hipay_api/currency_transaction',
-            Mage::app()->getStore()->getId()
-        );
-
-        if ($useOrderCurrency) {
-            $params['currency'] = $payment->getOrder()->getOrderCurrencyCode();
-        } else {
-            $params['currency'] = $payment->getOrder()->getBaseCurrencyCode();
-        }
-
-        $params['amount'] = $amount;
-        $params['shipping'] = $payment->getOrder()->getShippingAmount();
-        $params['tax'] = $taxAmount;
-        $params['tax_rate'] = Mage::helper('hipay')->getTaxeRateInformation($payment->getOrder());
-
-        $params['cid'] = $payment->getOrder()->getCustomerId();//CUSTOMER ID
-
-        // Astropay needs National identification number
-        if ($payment->getAdditionalInformation('national_identification_number')) {
-            $params['national_identification_number'] = $payment->getAdditionalInformation(
-                'national_identification_number'
-            );
-        }
-
-        $remoteIp = $payment->getOrder()->getRemoteIp();
-
-        //Check if it's forwarded and in this case, explode and retrieve the first part
-        if ($payment->getOrder()->getXForwardedFor() !== null) {
-            if (strpos($payment->getOrder()->getXForwardedFor(), ",") !== false) {
-                $xfParts = explode(",", $payment->getOrder()->getXForwardedFor());
-                $remoteIp = current($xfParts);
-            } else {
-                $remoteIp = $payment->getOrder()->getXForwardedFor();
-            }
-        }
-
-        $params['ipaddr'] = $remoteIp;
-
-        $params['http_accept'] = "*/*";
-        $params['http_user_agent'] = Mage::helper('core/http')->getHttpUserAgent();
-        $params['language'] = Mage::app()->getLocale()->getLocaleCode(
-        );//strpos(Mage::app()->getLocale()->getLocaleCode(), "fr") !== false ? "fr_FR" : 'en';
-
-        /**
-         * Parameters specific to the payment product
-         */
-        if ($token !== null) {
-            $params['cardtoken'] = $token;
-        }
-
-        $params['authentication_indicator'] = Mage::helper('hipay')->is3dSecure(
-            $this->getConfigData('use_3d_secure'),
-            $this->getConfigData('config_3ds_rules'),
-            $payment
-        );
-
-        $isAdmin = $this->isAdmin();
-
-        /**
-         * Electronic Commerce Indicator
-         */
-        if ($payment->getAdditionalInformation('use_oneclick')) {
-            $params['eci'] = 9; //Recurring E-commerce
-        } elseif ($isAdmin) {
-            $params['eci'] = 1; //MO/TO (Card Not Present). This value prevent from 3ds redirection in Admin payment.
-        }
-
-        /**
-         * Redirect urls
-         */
-        if ($this->sendMailToCustomer() && $this->getCode() == 'hipay_hostedmoto') {
-            $paramsMoto['order'] = $payment->getOrder()->getIncrementId();
-
-            // MOTO with mail to customer
-            $params['accept_url'] = Mage::getUrl($this->getConfigData('accept_url'), $paramsMoto);
-            $params['decline_url'] = Mage::getUrl($this->getConfigData('decline_url'), $paramsMoto);
-            $params['pending_url'] = Mage::getUrl($this->getConfigData('pending_url'), $paramsMoto);
-            $params['exception_url'] = Mage::getUrl($this->getConfigData('exception_url'), $paramsMoto);
-            $params['cancel_url'] = Mage::getUrl($this->getConfigData('cancel_url'), $paramsMoto);
-            $params['moto_url_redirect'] = Mage::helper('adminhtml')->getUrl('*/payment/accept');
-        } else {
-            // MOTO is not activated
-            $params['accept_url'] = $isAdmin ? Mage::helper('adminhtml')->getUrl('*/payment/accept') : Mage::getUrl(
-                $this->getConfigData('accept_url')
-            );
-            $params['decline_url'] = $isAdmin ? Mage::helper('adminhtml')->getUrl('*/payment/decline') : Mage::getUrl(
-                $this->getConfigData('decline_url')
-            );
-            $params['pending_url'] = $isAdmin ? Mage::helper('adminhtml')->getUrl('*/payment/pending') : Mage::getUrl(
-                $this->getConfigData('pending_url')
-            );
-            $params['exception_url'] = $isAdmin ? Mage::helper('adminhtml')->getUrl(
-                '*/payment/exception'
-            ) : Mage::getUrl($this->getConfigData('exception_url'));
-            $params['cancel_url'] = $isAdmin ? Mage::helper('adminhtml')->getUrl('*/payment/cancel') : Mage::getUrl(
-                $this->getConfigData('cancel_url')
-            );
-        }
-
-        if ($this->getConfig("send_notification_url", Mage::app()->getStore()->getId())) {
-            $params['notify_url'] = Mage::getUrl("hipay/notify/index");
-        }
-
-        $params = $this->getCustomerParams($payment, $params);
-        $params = $this->getShippingParams($payment, $params);
-
-        $customDataHipay = Mage::helper('hipay')->getCustomData($payment, $amount, $this, $split_number);
-        // Add custom data for transaction request
-        if (file_exists(Mage::getModuleDir('', 'Allopass_Hipay') . DS . 'Helper' . DS . 'CustomData.php')) {
-            if (class_exists('Allopass_Hipay_Helper_CustomData', true)) {
-                if (method_exists(Mage::helper('hipay/customData'), 'getCustomData')) {
-                    $customData = Mage::helper('hipay/customData')->getCustomData($payment, $amount);
-                    if (is_array($customData)) {
-                        $customDataHipay = array_merge($customData, $customDataHipay);
-                    }
-                }
-            }
-        }
-
-        $params['custom_data'] = json_encode(($customDataHipay));
-
-        // Add device fingerprint for the transaction request (Token of device)
-        $params['device_fingerprint'] = $payment->getAdditionalInformation('device_fingerprint');
-
-        if (Mage::helper('hipay')->isSendCartItemsRequired($payment->getCcType())) {
-            $params['basket'] = Mage::helper('hipay')->getCartInformation(
-                $payment->getOrder(),
-                Allopass_Hipay_Helper_Data::STATE_AUTHORIZATION
-            );
-        }
-
-        // Check if delivery method is required for the payment method
-        if (Mage::helper('hipay')->isDeliveryMethodAndCartItemsRequired($payment->getCcType())) {
-            if ($payment->getOrder()->getShippingMethod() && !$payment->getOrder()->getIsVirtual()) {
-                Mage::helper('hipay')->processDeliveryInformation(
-                    $payment->getOrder()->getShippingMethod(),
-                    Mage::app()->getStore(),
-                    $this,
-                    $params
-                );
-            }
-        }
-
-        // Add Request resource (Informations module and cms)
-        $params['source'] = Mage::helper('hipay')->getRequestSource();
-
-        return $params;
-    }
-
-    /**
-     *
-     * @param Mage_Sales_Model_Order_Payment $payment
-     * @param array $params
-     * @return array $params
-     */
-    protected function getCustomerParams($payment, $params = array())
-    {
-        $order = $payment->getOrder();
-        $overrideParams = $payment->getCcType() == 'bnpp-3xcb' ||
-            $payment->getCcType() == 'bnpp-4xcb' ||
-            $payment->getCcType() == 'credit-long';
-        $params['email'] = $order->getCustomerEmail();
-        $params['phone'] = $order->getBillingAddress()->getTelephone();
-
-        if ($overrideParams) {
-            $params['phone'] = preg_replace('/^(\+33)|(33)/', '0', $params['phone']);
-        }
-
-        if (($dob = $order->getCustomerDob()) != "") {
-            $dob = new Zend_Date($dob);
-            $validator = new Zend_Validate_Date();
-            if ($validator->isValid($dob)) {
-                $params['birthdate'] = $dob->toString('YYYYMMdd');
-            }
-        }
-
-        $gender = $order->getCustomerGender();
-
-        $customer = Mage::getModel('customer/customer');
-        $customer->setData('gender', $gender);
-        $attribute = $customer->getResource()->getAttribute('gender');
-        if ($attribute) {
-            $gender = $attribute->getFrontend()->getValue($customer);
-            $gender = strtoupper(substr($gender, 0, 1));
-        }
-
-
-        if ($gender != "M" && $gender != "F") {
-            $gender = "U";
-            if ($overrideParams) {
-                $gender = "M";
-            }
-        }
-
-
-        $params['gender'] = $gender;
-        $this->getCustomerNames($payment, $params);
-
-        $params['recipientinfo'] = $order->getBillingAddress()->getCompany();
-        $params['streetaddress'] = $order->getBillingAddress()->getStreet1();
-        $params['streetaddress2'] = $order->getBillingAddress()->getStreet2();
-        $params['city'] = $order->getBillingAddress()->getCity();
-
-        $params['state'] = $order->getBillingAddress()->getRegionCode() ? $order->getBillingAddress()->getRegionCode(
-        ) : $order->getBillingAddress()->getCity();
-
-        $zipcode = explode('-', $order->getBillingAddress()->getPostcode());
-        $params['zipcode'] = $zipcode[0];
-        $params['country'] = $order->getBillingAddress()->getCountry();
-
-        return $params;
-    }
-
-    /**
-     * @param $payment
-     * @param $params
-     */
-    protected function getCustomerNames($payment, &$params)
-    {
-
-        $names = explode(' ', trim($payment->getCcOwner()));
-
-        if (($payment->getCcType() === "AE" || $payment->getCcType() === "american-express") && sizeof($names) > 1) {
-            $params['firstname'] = $names[0];
-            $params['lastname'] = trim(preg_replace('/' . $names[0] . '/', "", $payment->getCcOwner(), 1));
-        } else {
-            $order = $payment->getOrder();
-            $params['firstname'] = $order->getCustomerFirstname();
-            $params['lastname'] = $order->getCustomerLastname();
-        }
-    }
-
-    /**
-     *
-     * @param Mage_Sales_Model_Order_Payment $payment
-     * @param array $params
-     * @return array $params
-     */
-    protected function getShippingParams($payment, $params = array())
-    {
-        if ($payment->getOrder()->getIsVirtual()) {
-            return $params;
-        }
-
-        $shippingAddress = $payment->getOrder()->getShippingAddress();
-        $params['shipto_firstname'] = $shippingAddress->getFirstname();
-        $params['shipto_lastname'] = $shippingAddress->getLastname();
-        $params['shipto_recipientinfo'] = $shippingAddress->getCompany();
-        $params['shipto_streetaddress'] = $shippingAddress->getStreet1();
-        $params['shipto_streetaddress2'] = $shippingAddress->getStreet2();
-        $params['shipto_city'] = $shippingAddress->getCity();
-
-        $params['shipto_state'] = $shippingAddress->getRegionCode() ? $shippingAddress->getRegionCode(
-        ) : $shippingAddress->getCity();
-
-        $params['shipto_zipcode'] = $shippingAddress->getPostcode();
-        $params['shipto_country'] = $shippingAddress->getCountry();
-        $params['shipto_msisdn'] = $shippingAddress->getTelephone();
-
-
-        return $params;
+        $payment->setSkipTransactionCreation(true);
+        return $this;
     }
 
     /**
@@ -1625,85 +1335,52 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
     }
 
     /**
-     *
-     * @param Mage_Sales_Model_Order_Payment $payment
-     * @param float $amount
+     * @param $payment
+     * @param $amount
      * @return $this
+     * @throws Mage_Core_Exception
      */
     protected function _preauthorizeCapture($payment, $amount)
     {
-        $transactionId = $payment->getLastTransId();
-
-        $gatewayParams = array('operation' => 'capture', 'amount' => $amount);
-
-        if (Mage::helper('hipay')->isSendCartItemsRequired($payment->getCcType())) {
-            $gatewayParams['basket'] = Mage::helper('hipay')->getCartInformation(
-                $payment->getOrder(),
-                Allopass_Hipay_Helper_Data::STATE_CAPTURE
+        try {
+            $request = Mage::getModel(
+                'hipay/api_api',
+                array(
+                    "paymentMethod" => $this,
+                    "payment" => $payment,
+                    "amount" => $amount
+                )
             );
-        }
 
-        $this->_debug($gatewayParams);
-        /* @var $request Allopass_Hipay_Model_Api_Request */
-        $request = Mage::getModel('hipay/api_request', array($this));
-        $uri = Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_MAINTENANCE . $transactionId;
+            $response = $request->requestMaintenance(
+                Operation::CAPTURE,
+                $payment->getLastTransId(),
+                $this->getOperationId(Operation::REFUND, $payment)
+            );
 
-        $gatewayResponse = $request->gatewayRequest(
-            $uri,
-            $gatewayParams,
-            $payment->getOrder()->getStoreId(),
-            $request::TYPE_RESPONSE_GATEWAY,
-            $payment
-        );
-
-        $this->_debug($gatewayResponse->debug());
-
-        switch ($gatewayResponse->getStatus()) {
-            case "116":
-                $this->addTransaction(
+            $this->addTransaction(
+                $payment,
+                $response->getTransactionReference(),
+                Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE,
+                array('is_transaction_closed' => 0),
+                array(),
+                Mage::helper('hipay')->getTransactionMessage(
                     $payment,
-                    $gatewayResponse->getTransactionReference(),
-                    Mage_Sales_Model_Order_Payment_Transaction::TYPE_AUTH,
-                    array('is_transaction_closed' => 0),
-                    array(),
-                    Mage::helper('hipay')->getTransactionMessage(
-                        $payment,
-                        self::OPERATION_MAINTENANCE_ACCEPT_CHALLENGE,
-                        $gatewayResponse->getTransactionReference(),
-                        $amount
-                    )
-                );
-                $payment->setIsTransactionPending(true);
-                break;
-            case "117": //Capture requested
-            case "118": //Capture
-            case "119": //Partially Capture
-                $this->addTransaction(
-                    $payment,
-                    $gatewayResponse->getTransactionReference(),
-                    Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE,
-                    array('is_transaction_closed' => 0),
-                    array(),
-                    Mage::helper('hipay')->getTransactionMessage(
-                        $payment,
-                        self::OPERATION_MAINTENANCE_CAPTURE,
-                        $gatewayResponse->getTransactionReference(),
-                        $amount
-                    )
-                );
+                    self::OPERATION_MAINTENANCE_CAPTURE,
+                    $response->getTransactionReference(),
+                    $amount
+                )
+            );
 
-                $payment->setIsTransactionPending(true);
-                break;
-            default:
-                Mage::throwException(
-                    $gatewayResponse->getStatus() . " ==> " . $gatewayResponse->getMessage() . " is not processed!"
-                );
-                break;
+            $payment->setIsTransactionPending(true);
+        } catch (Exception $e) {
+            Mage::throwException(
+                $e->getCode() . " ==> " . $e->getMessage()
+            );
         }
 
         return $this;
     }
-
 
     /**
      * Add payment transaction
@@ -1816,8 +1493,10 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
                     }
                 }
             }
+
             return $transaction;
         }
+
         return false;
     }
 
@@ -1872,6 +1551,7 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
         ) {
             return true;
         }
+
         return true;
     }
 
@@ -1898,7 +1578,6 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
     {
         return $order->hasInvoices() && $order->getBaseTotalDue() > 0;
     }
-
 
     /**
      *

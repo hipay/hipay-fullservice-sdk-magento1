@@ -20,8 +20,17 @@
 abstract class Allopass_Hipay_Model_Api_Formatter_ApiFormatterAbstract implements Allopass_Hipay_Model_Api_Formatter_ApiFormatterInterface
 {
 
-    public function __construct()
+    protected $_cartFormatterClass = '';
+
+    protected $_paymentMethod;
+    protected $_payment;
+    protected $_amount;
+
+    public function __construct($args)
     {
+        $this->_paymentMethod = $args["paymentMethod"];
+        $this->_payment = $args["payment"];
+        $this->_amount = $args["amount"];
     }
 
     abstract public function generate();
@@ -65,5 +74,15 @@ abstract class Allopass_Hipay_Model_Api_Formatter_ApiFormatterAbstract implement
         );
 
         return json_encode($source);
+    }
+
+    protected function getBasket($operation = null)
+    {
+        $basket = Mage::getModel(
+            $this->_cartFormatterClass,
+            array("paymentMethod" => $this->_paymentMethod, "payment" => $this->_payment, "operation" => $operation)
+        );
+
+        return $basket->generate();
     }
 }

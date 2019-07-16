@@ -20,18 +20,16 @@
 abstract class Allopass_Hipay_Model_Api_Formatter_Request_OrderRequestAbstract extends Allopass_Hipay_Model_Api_Formatter_ApiFormatterAbstract
 {
 
-    protected $_paymentMethod;
-    protected $_payment;
-    protected $_amount;
+    protected $_cartFormatterClass = 'hipay/api_formatter_cart_cartOrderFormatter';
+
     protected $_splitData;
     protected $_splitNumber;
     protected $_additionalParameters;
 
     public function __construct($args)
     {
-        $this->_paymentMethod = $args["paymentMethod"];
-        $this->_payment = $args["payment"];
-        $this->_amount = $args["amount"];
+        parent::__construct($args);
+
         $this->_splitData = (isset($args["additionalParameters"]["splitPayment"])) ? $args["additionalParameters"]["splitPayment"] : null;
         $this->_splitNumber = ($this->_splitData !== null) ? $this->_splitData["splitNumber"] : null;
         $this->_additionalParameters = $args["additionalParameters"];
@@ -64,11 +62,15 @@ abstract class Allopass_Hipay_Model_Api_Formatter_Request_OrderRequestAbstract e
             $orderRequest->operation = "Authorization";
         }
 
-        $orderRequest->description = substr(Mage::helper('hipay')->__(
-            "Order %s by %s",
-            $this->_payment->getOrder()->getIncrementId(),
-            $this->_payment->getOrder()->getCustomerEmail()
-        ),0,30);
+        $orderRequest->description = substr(
+            Mage::helper('hipay')->__(
+                "Order %s by %s",
+                $this->_payment->getOrder()->getIncrementId(),
+                $this->_payment->getOrder()->getCustomerEmail()
+            ),
+            0,
+            30
+        );
 
         $orderRequest->amount = $this->_amount;
         $orderRequest->tax = $this->_payment->getOrder()->getTaxAmount();
@@ -159,16 +161,6 @@ abstract class Allopass_Hipay_Model_Api_Formatter_Request_OrderRequestAbstract e
         if (isset($this->_additionalParameters["payment_product_parameters"])) {
             $orderRequest->payment_product_parameters = $this->_additionalParameters["payment_product_parameters"];
         }
-    }
-
-    protected function getBasket()
-    {
-        $basket = Mage::getModel(
-            'hipay/api_formatter_cart_cartFormatter',
-            array("paymentMethod" => $this->_paymentMethod, "payment" => $this->_payment)
-        );
-
-        return $basket->generate();
     }
 
     protected function initSplitPayment(&$orderRequest)
