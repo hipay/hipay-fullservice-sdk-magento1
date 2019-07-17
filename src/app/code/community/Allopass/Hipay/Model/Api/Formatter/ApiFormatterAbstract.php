@@ -38,7 +38,7 @@ abstract class Allopass_Hipay_Model_Api_Formatter_ApiFormatterAbstract implement
     /**
      * map order information to request fields
      * (shared information between Hpayment, Iframe, Direct Post and Maintenance )
-     * @param type $request
+     * @param HiPay\Fullservice\Gateway\Request\CommonRequest $request
      */
     public function mapRequest(&$request)
     {

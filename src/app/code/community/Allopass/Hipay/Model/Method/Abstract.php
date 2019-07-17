@@ -137,56 +137,41 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
      */
     public function cancelTransaction(Mage_Payment_Model_Info $payment)
     {
+
+        $request = Mage::getModel(
+            'hipay/api_api',
+            array(
+                "paymentMethod" => $this,
+                "payment" => $payment,
+                "amount" => null
+            )
+        );
+
         $transactionId = $payment->getLastTransId();
         $order = $payment->getOrder();
 
-        $gatewayParams = array('operation' => self::OPERATION_MAINTENANCE_CANCEL);
-
-        /* @var $request Allopass_Hipay_Model_Api_Request */
-        $request = Mage::getModel('hipay/api_request', array($this));
-        $uri = Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_MAINTENANCE . $transactionId;
-
         if ($transactionId) {
-            $gatewayResponse = $request->gatewayRequest(
-                $uri,
-                $gatewayParams,
-                $payment->getOrder()->getStoreId(),
-                $request::TYPE_RESPONSE_GATEWAY,
-                $payment
-            );
+            $operationId = $this->getOperationId(Operation::ACCEPT_CHALLENGE, $payment);
 
-            if (is_a($gatewayResponse, 'Allopass_Hipay_Model_Api_Response_Error')) {
+            try {
+                $request->requestMaintenance(Operation::CANCEL, $transactionId, $operationId);
+
+                $order->addStatusHistoryComment(
+                    Mage::helper('hipay')->__(
+                        'Cancel Transaction ID: "%s".',
+                        $transactionId
+                    ),
+                    false
+                );
+            } catch (Exception $e) {
                 $order->addStatusHistoryComment(
                     Mage::helper('hipay')->__(
                         'Error in  canceling  Transaction ID: "%s". %s',
                         $transactionId,
-                        $gatewayResponse->getMessage()
+                        $e->getMessage()
                     ),
                     false
                 );
-            } else {
-                $response = Mage::getModel('hipay/api_response_gateway', $gatewayResponse);
-
-                if ($response->getStatus() == '115') {
-                    $order->addStatusHistoryComment(
-                        Mage::helper('hipay')->__(
-                            'Cancel Transaction ID: "%s".',
-                            $transactionId
-                        ),
-                        false
-                    );
-                } else {
-                    $order->addStatusHistoryComment(
-                        Mage::helper('hipay')->__(
-                            'Error in  canceling transaction ID: "%s". %s',
-                            $transactionId,
-                            $gatewayResponse->getStatus()
-                        ),
-                        false
-                    );
-                }
-
-                $this->_debug($response->debug());
             }
         } else {
             $order->addStatusHistoryComment(
