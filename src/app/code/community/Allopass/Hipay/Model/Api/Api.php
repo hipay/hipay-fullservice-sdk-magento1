@@ -62,7 +62,7 @@ class Allopass_Hipay_Model_Api_Api
     public function requestDirectPost(
         $paymentProduct,
         $paymentMethodFormatter,
-        $deviceFingerPrint,
+        $deviceFingerprint,
         $additionalParameters
     ) {
         $gatewayClient = $this->createGatewayClient();
@@ -75,7 +75,7 @@ class Allopass_Hipay_Model_Api_Api
                 "amount" => $this->_amount,
                 "paymentProduct" => $paymentProduct,
                 "paymentMethodFormatter" => $paymentMethodFormatter,
-                "deviceFingerPrint" => $deviceFingerPrint,
+                "deviceFingerprint" => $deviceFingerprint,
                 "additionalParameters" => $additionalParameters
             )
         );
