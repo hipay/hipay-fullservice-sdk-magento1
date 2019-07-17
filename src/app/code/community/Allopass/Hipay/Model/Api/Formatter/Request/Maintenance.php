@@ -11,6 +11,8 @@
  * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
  */
 
+use HiPay\Fullservice\Enum\Transaction\Operation;
+
 /**
  * @author      HiPay <support.tpp@hipay.com>
  * @copyright   Copyright (c) 2018 - HiPay
@@ -57,7 +59,9 @@ class Allopass_Hipay_Model_Api_Formatter_Request_Maintenance extends Allopass_Hi
         $maintenance->operation = $this->_operation;
         $maintenance->operation_id = $this->_operationId;
 
-        if (Mage::helper('hipay')->isSendCartItemsRequired($this->_payment->getCcType())) {
+        if (Mage::helper('hipay')->isSendCartItemsRequired($this->_payment->getCcType()) &&
+            ($this->_operation === Operation::REFUND || $this->_operation === Operation::CAPTURE)
+        ) {
             $maintenance->basket = $this->getBasket($this->_operation);
         }
     }

@@ -1185,13 +1185,13 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     /**
      *  Cart Items are mandatory for some payment product
      *
-     * @param string $product_code
+     * @param string $productCode
      * @return boolean
      */
-    public function isCartItemsRequired($product_code)
+    public function isCartItemsRequired($productCode)
     {
         return in_array(
-            $product_code,
+            $productCode,
             array('klarnainvoice', '3xcb', '3xcb-no-fees', '4xcb-no-fees', '4xcb', 'credit-long')
         );
     }
