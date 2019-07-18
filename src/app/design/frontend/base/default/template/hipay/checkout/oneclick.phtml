@@ -80,7 +80,7 @@ $_cards = $this->getParentBlock()->getCards();
         Event.observe($('<?php echo $_code ?>_cc_type'), 'change', ToogleOneclick_<?php echo $_code ?>);
     }
     document.observe("dom:loaded", function () {
-        ToogleOneclick<?php echo $_code ?>();
+        ToogleOneclick_<?php echo $_code ?>();
     });
 
     //]]>
