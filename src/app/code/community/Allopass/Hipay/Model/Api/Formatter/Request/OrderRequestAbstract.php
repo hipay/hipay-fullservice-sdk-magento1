@@ -11,6 +11,8 @@
  * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
  */
 
+use HiPay\Fullservice\Enum\Transaction\ECI;
+
 /**
  * @author      HiPay <support.tpp@hipay.com>
  * @copyright   Copyright (c) 2018 - HiPay
@@ -160,6 +162,11 @@ abstract class Allopass_Hipay_Model_Api_Formatter_Request_OrderRequestAbstract e
 
         if (isset($this->_additionalParameters["payment_product_parameters"])) {
             $orderRequest->payment_product_parameters = $this->_additionalParameters["payment_product_parameters"];
+        }
+
+        if (isset($this->_additionalParameters["isMoto"]) && $this->_additionalParameters["isMoto"]) {
+            // for hosted page MO/TO transaction
+            $orderRequest->eci = ECI::MOTO;
         }
     }
 

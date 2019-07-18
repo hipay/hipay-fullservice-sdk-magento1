@@ -1,5 +1,4 @@
 <?php
-
 /**
  * HiPay Fullservice SDK Magento 1
  *
@@ -15,6 +14,7 @@
 use HiPay\Fullservice\HTTP\Configuration\Configuration;
 use HiPay\Fullservice\HTTP\SimpleHTTPClient;
 use HiPay\Fullservice\Gateway\Client\GatewayClient;
+use HiPay\Fullservice\Request\RequestSerializer;
 
 /**
  *
@@ -55,6 +55,8 @@ class Allopass_Hipay_Model_Api_Api
 
         $orderRequest = $directPostFormatter->generate();
 
+        $this->logRequest($orderRequest);
+
         //Make a request and return \HiPay\Fullservice\Gateway\Model\Transaction object
         return $gatewayClient->requestHostedPaymentPage($orderRequest);
     }
@@ -65,6 +67,7 @@ class Allopass_Hipay_Model_Api_Api
         $deviceFingerprint,
         $additionalParameters
     ) {
+
         $gatewayClient = $this->createGatewayClient();
         //Set data to send to the API
         $directPostFormatter = Mage::getModel(
@@ -81,6 +84,8 @@ class Allopass_Hipay_Model_Api_Api
         );
 
         $orderRequest = $directPostFormatter->generate();
+
+        $this->logRequest($orderRequest);
 
         //Make a request and return \HiPay\Fullservice\Gateway\Model\Transaction object
         return $gatewayClient->requestNewOrder($orderRequest);
@@ -102,6 +107,8 @@ class Allopass_Hipay_Model_Api_Api
         );
 
         $maintenanceRequest = $maintenanceFormatter->generate();
+
+        $this->logRequest($maintenanceRequest);
 
         //Make a request and return \HiPay\Fullservice\Gateway\Model\Transaction object
         return $gatewayClient->requestMaintenanceOperation(
@@ -164,7 +171,7 @@ class Allopass_Hipay_Model_Api_Api
 
     protected function isMoto()
     {
-        return $this->_methodInstance && $this->_methodInstance->isAdmin();
+        return $this->_payment && $this->_payment->getAdditionalInformation("isMoto");
     }
 
     protected function getProxyConfig()
@@ -182,5 +189,11 @@ class Allopass_Hipay_Model_Api_Api
         }
 
         return $proxy;
+    }
+
+    protected function logRequest($orderRequest)
+    {
+        $serializer = new RequestSerializer($orderRequest);
+        $this->_methodInstance->debugData($serializer->toArray());
     }
 }
