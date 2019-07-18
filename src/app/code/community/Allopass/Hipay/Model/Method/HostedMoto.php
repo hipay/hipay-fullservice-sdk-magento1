@@ -26,24 +26,6 @@ class Allopass_Hipay_Model_Method_HostedMoto extends Allopass_Hipay_Model_Method
     protected $_canUseCheckout = false;
     protected $_code = 'hipay_hostedmoto';
 
-    /**
-     * Assign data to info model instance
-     *
-     * @param   mixed $data
-     * @return  Mage_Payment_Model_Info
-     */
-    public function assignData($data)
-    {
-        if (!($data instanceof Varien_Object)) {
-            $data = new Varien_Object($data);
-        }
-
-        $info = $this->getInfoInstance();
-        $this->assignInfoData($info, $data);
-
-        return $this;
-    }
-
     public function place($payment, $amount)
     {
         $payment->setAdditionalInformation("isMoto", true);
