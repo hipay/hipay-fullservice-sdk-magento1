@@ -20,7 +20,7 @@
  * @license     https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-fullservice-sdk-magento1
  */
-class Allopass_Hipay_Model_Method_Discover extends Allopass_Hipay_Model_Method_Hosted
+class Allopass_Hipay_Model_Method_Bnpp3x extends Allopass_Hipay_Model_Method_Bnpp
 {
-    protected $_code = 'hipay_discover';
+    protected $_code = 'hipay_bnpp3x';
 }
