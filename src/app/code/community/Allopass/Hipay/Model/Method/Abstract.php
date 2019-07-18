@@ -154,7 +154,11 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
             $operationId = $this->getOperationId(Operation::ACCEPT_CHALLENGE, $payment);
 
             try {
-                $request->requestMaintenance(Operation::CANCEL, $transactionId, $operationId);
+                $response = $request->requestMaintenance(Operation::CANCEL, $transactionId, $operationId);
+
+                if ($response->getTransactionReference() === null) {
+                    Mage::throwException($response->getMessage());
+                }
 
                 $order->addStatusHistoryComment(
                     Mage::helper('hipay')->__(
@@ -1237,7 +1241,11 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
 
             $operationId = $this->getOperationId(Operation::REFUND, $payment);
 
-            $request->requestMaintenance(Operation::REFUND, $transactionId, $operationId);
+            $response = $request->requestMaintenance(Operation::REFUND, $transactionId, $operationId);
+
+            if ($response->getTransactionReference() === null) {
+                Mage::throwException($response->getMessage());
+            }
 
             $creditMemo = $payment->getCreditmemo();
             $creditMemo->setState(Mage_Sales_Model_Order_Creditmemo::STATE_OPEN);//State open = pending state
@@ -1342,6 +1350,10 @@ abstract class Allopass_Hipay_Model_Method_Abstract extends Mage_Payment_Model_M
                 $payment->getLastTransId(),
                 $this->getOperationId(Operation::REFUND, $payment)
             );
+
+            if ($response->getTransactionReference() === null) {
+                Mage::throwException($response->getMessage());
+            }
 
             $this->addTransaction(
                 $payment,
