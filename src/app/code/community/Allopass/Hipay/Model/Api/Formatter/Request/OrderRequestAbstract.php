@@ -64,14 +64,10 @@ abstract class Allopass_Hipay_Model_Api_Formatter_Request_OrderRequestAbstract e
             $orderRequest->operation = "Authorization";
         }
 
-        $orderRequest->description = substr(
-            Mage::helper('hipay')->__(
-                "Order %s by %s",
-                $this->_payment->getOrder()->getIncrementId(),
-                $this->_payment->getOrder()->getCustomerEmail()
-            ),
-            0,
-            30
+        $orderRequest->description = Mage::helper('hipay')->__(
+            "Order %s by %s",
+            $this->_payment->getOrder()->getIncrementId(),
+            $this->_payment->getOrder()->getCustomerEmail()
         );
 
         $orderRequest->amount = $this->_amount;
