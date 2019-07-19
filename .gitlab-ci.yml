@@ -46,7 +46,6 @@ stages:
   - package
   - build
   - deploy
-  - sync
 
 #########################################################################
 ###                                PHP 7-1                            ###
@@ -435,13 +434,3 @@ stop_review:
   environment:
     name: review/${CI_COMMIT_REF_SLUG}
     action: stop
-
-sync:
-  stage: sync
-  tags:
-    - pi-commerce-no-overlay
-  script:
-    - git clone --mirror https://$GITLAB_USER:$GITLAB_PASSWORD@gitlab.hipay.org/pi-ecommerce/hipay-fullservice-sdk-magento1.git
-    - cd hipay-fullservice-sdk-magento1.git
-    - git push --mirror https://$GITHUB_USER:$GITHUB_PASSWORD@github.com/hipay/hipay-fullservice-sdk-magento1.git
-  allow_failure: true
