@@ -54,6 +54,8 @@ class Allopass_Hipay_Model_Config extends Varien_Object
 
     const SDKJS_URL = 'sdk_js_url';
 
+    const VERSION_INFO = 'version_info';
+
     /**
      *  Use as Helper
      *
@@ -71,11 +73,11 @@ class Allopass_Hipay_Model_Config extends Varien_Object
      *
      * @param $key
      * @param $value
-     * @param null $storeId
+     * @param integer $storeId
      * @param string $scope
      * @return Mage_Core_Store_Config
      */
-    public function setConfigData($key, $value, $storeId = null, $scope = 'default')
+    public function setConfigData($key, $value, $storeId = 0, $scope = 'default')
     {
         return Mage::getConfig()->saveConfig('hipay/hipay_api/' . $key, $value, $scope, $storeId);
     }
@@ -465,5 +467,9 @@ class Allopass_Hipay_Model_Config extends Varien_Object
         } else {
             return -1;
         }
+    }
+
+    public function getVersionInfo(){
+        return json_decode($this->getConfig(self::VERSION_INFO));
     }
 }
