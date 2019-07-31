@@ -22,6 +22,8 @@
  */
 class Allopass_Hipay_Model_Method_CcXtimes extends Allopass_Hipay_Model_Method_Cc
 {
+    use Allopass_Hipay_Model_Method_SplitPaymentTrait;
+
     protected $_canUseInternal = false;
 
     protected $_code = 'hipay_ccxtimes';

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * HiPay Fullservice SDK Magento 1
  *

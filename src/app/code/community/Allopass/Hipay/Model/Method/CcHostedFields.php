@@ -27,5 +27,4 @@ class Allopass_Hipay_Model_Method_CcHostedFields extends Allopass_Hipay_Model_Me
     protected $_code = 'hipay_hostedfields';
 
     protected $_formBlockType = 'hipay/form_hostedfields';
-
 }

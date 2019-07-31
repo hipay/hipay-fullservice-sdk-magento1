@@ -19,11 +19,13 @@
  * @license     https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-fullservice-sdk-magento1
  */
-class Allopass_Hipay_Model_Method_AbstractOrderApi extends Allopass_Hipay_Model_Method_Abstract
+abstract class Allopass_Hipay_Model_Method_HostedAbstract extends Allopass_Hipay_Model_Method_Abstract
 {
+
+    protected $_canReviewPayment = true;
+
     protected $_formBlockType = 'hipay/form_hosted';
     protected $_infoBlockType = 'hipay/info_hosted';
-
 
     /**
      * Assign data to info model instance
@@ -38,18 +40,11 @@ class Allopass_Hipay_Model_Method_AbstractOrderApi extends Allopass_Hipay_Model_
         }
 
         $info = $this->getInfoInstance();
-        $info->setCcType($this->getConfigData('cctypes'));
-
         $this->assignInfoData($info, $data);
 
         return $this;
     }
 
-    /**
-     * @param $payment
-     * @param $amount
-     * @return bool|string
-     */
     public function place($payment, $amount)
     {
         $request = Mage::getModel(
@@ -61,35 +56,16 @@ class Allopass_Hipay_Model_Method_AbstractOrderApi extends Allopass_Hipay_Model_
             )
         );
 
-        $response = $request->requestDirectPost(
-            $this->getSpecifiedPaymentProduct($payment),
-            $this->getPaymentMethodFormatter($payment),
-            $payment->getAdditionalInformation('device_fingerprint'),
+        $response = $request->getHostedPaymentPage(
+            $this->getPaymentProductList($payment),
             $this->getAdditionalParameters($payment)
         );
 
-        return $this->handleApiResponse($response, $payment);
+        return $response->getForwardUrl();
     }
 
-    /**
-     *  Return payment product
-     *
-     *  If Payment requires specified option ( With Fees or without Fees return it otherwhise normal payment product)
-     *
-     * @return string
-     */
-    public function getSpecifiedPaymentProduct($payment)
+    public function getPaymentProductList($payment)
     {
-        return $payment->getCcType();
-    }
-
-    public function getPaymentMethodFormatter($payment)
-    {
-        return null;
-    }
-
-    public function getAdditionalParameters($payment)
-    {
-        return null;
+        return $this->getConfigData('cctypes');
     }
 }

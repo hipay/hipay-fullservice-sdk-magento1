@@ -1,5 +1,4 @@
 <?php
-
 /**
  * HiPay Fullservice SDK Magento 1
  *
@@ -11,6 +10,8 @@
  * @copyright 2018 HiPay
  * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
  */
+
+use HiPay\Fullservice\Gateway\Request\PaymentMethod\AstropayPaymentMethod;
 
 /**
  *
@@ -43,7 +44,7 @@ class Allopass_Hipay_Model_Method_Astropay extends Allopass_Hipay_Model_Method_A
 
         $info = $this->getInfoInstance();
         $info->setCcType($this->getConfigData('cctypes'))
-            ->setAdditionalInformation('national_identification_number', $data["national_identification_number"]);
+             ->setAdditionalInformation('national_identification_number', $data["national_identification_number"]);
 
         $this->assignInfoData($info, $data);
 
@@ -98,5 +99,15 @@ class Allopass_Hipay_Model_Method_Astropay extends Allopass_Hipay_Model_Method_A
     public function getTypeNationalIdentification()
     {
         return $this->_typeIdentification;
+    }
+
+    public function getPaymentMethodFormatter($payment)
+    {
+        $paymentMethod = new AstropayPaymentMethod();
+        $paymentMethod->national_identification_number = $payment->getAdditionalInformation(
+            'national_identification_number'
+        );
+
+        return $paymentMethod;
     }
 }
