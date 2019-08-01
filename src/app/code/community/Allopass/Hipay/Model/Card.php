@@ -26,6 +26,7 @@
  * @method getCcStatus() int
  * @method getCcToken() string
  * @method getIsDefault() bool
+ * @method getCreatedAt() string
  *
  * @author      HiPay <support.tpp@hipay.com>
  * @copyright   Copyright (c) 2018 - HiPay

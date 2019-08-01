@@ -121,14 +121,14 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * @param $profile
-     * @param $amount
-     * @param int $taxAmount
-     * @return array
+     * @param int $profile The split payment profile ID
+     * @param float $amount The order's total amount
+     * @param int $taxAmount The order's tax amount
+     * @param string|integer|Zend_Date|array $baseDate A suitable argument for the Zend_Date constructor, used as base date for the splits. Default is today.
+     * @return array The split payments list, ordered by date to pay
      * @throws Mage_Core_Exception
-     * @throws Zend_Date_Exception
      */
-    public function splitPayment($profile, $amount, $taxAmount = 0)
+    public function splitPayment($profile, $amount, $baseDate = null, $taxAmount = 0)
     {
         $paymentsSplit = array();
 
@@ -142,7 +142,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
             $periodFrequency = (int)$profile->getPeriodFrequency();
             $periodUnit = $profile->getPeriodUnit();
 
-            $todayDate = new Zend_Date();
+            $todayDate = new Zend_Date($baseDate);
 
             if ($maxCycles < 1) {
                 Mage::throwException(
@@ -155,38 +155,37 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 
             $fmod = fmod($amount, $maxCycles);
 
-            for ($i = 0; $i <= ($maxCycles - 1); $i++) {
-                $j = $i - 1;
+            for ($i = 0; $i < $maxCycles; $i++) {
                 $todayClone = clone $todayDate;
                 switch ($periodUnit) {
                     case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_MONTH:
                         {
-                            $dateToPay = $todayClone->addMonth($periodFrequency + $j)->getDate()->toString(
+                            $dateToPay = $todayClone->addMonth($periodFrequency * $i)->getDate()->toString(
                                 'yyyy-MM-dd'
                             );
                             break;
                         }
                     case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_DAY:
                         {
-                            $dateToPay = $todayClone->addDay($periodFrequency + $j)->getDate()->toString('yyyy-MM-dd');
+                            $dateToPay = $todayClone->addDay($periodFrequency * $i)->getDate()->toString('yyyy-MM-dd');
 
                             break;
                         }
                     case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_SEMI_MONTH:
                         {
-                            $dateToPay = $todayClone->addDay(15 + $periodFrequency + $j)->getDate()->toString(
+                            $dateToPay = $todayClone->addDay(15 * $periodFrequency * $i)->getDate()->toString(
                                 'yyyy-MM-dd'
                             );
                             break;
                         }
                     case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_WEEK:
                         {
-                            $dateToPay = $todayClone->addWeek($periodFrequency + $j)->getDate()->toString('yyyy-MM-dd');
+                            $dateToPay = $todayClone->addWeek($periodFrequency * $i)->getDate()->toString('yyyy-MM-dd');
                             break;
                         }
                     case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_YEAR:
                         {
-                            $dateToPay = $todayClone->addYear($periodFrequency + $j)->getDate()->toString('yyyy-MM-dd');
+                            $dateToPay = $todayClone->addYear($periodFrequency * $i)->getDate()->toString('yyyy-MM-dd');
                             break;
                         }
                 }
@@ -207,7 +206,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * @param $order
+     * @param Mage_Sales_Model_Order $order
      * @param $profile
      * @param $customerId
      * @param $cardToken
@@ -231,7 +230,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 
         if (!$this->splitPaymentsExists($order->getId())) {
             $taxAmount = $order->getTaxAmount();
-            $paymentsSplit = $this->splitPayment($profile, $total, $taxAmount);
+            $paymentsSplit = $this->splitPayment($profile, $total, $order->getCreatedAtDate(), $taxAmount);
 
             //remove last element because the first split is already paid
             $numberSplit = 1;
@@ -502,6 +501,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         $newCard->setCcOwner($cardHolder);
         $newCard->setCcStatus(Allopass_Hipay_Model_Card::STATUS_ENABLED);
         $newCard->setName($this->__('Card %s - %s', $paymentProduct, $pan));
+        $newCard->setCreatedAt((new DateTime())->format('Y-m-d'));
 
         if (isset($paymentMethod['card_expiry_month']) && $paymentMethod['card_expiry_year']) {
             $newCard->setCcExpMonth($paymentMethod['card_expiry_month']);
@@ -1320,6 +1320,23 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         }
 
         return $updating;
+    }
+
+    public function getIpAddress($_payment)
+    {
+        $remoteIp = $_payment->getOrder()->getRemoteIp();
+
+        //Check if it's forwarded and in this case, explode and retrieve the first part
+        if ($_payment->getOrder()->getXForwardedFor() !== null) {
+            if (strpos($_payment->getOrder()->getXForwardedFor(), ",") !== false) {
+                $xfParts = explode(",", $_payment->getOrder()->getXForwardedFor());
+                $remoteIp = current($xfParts);
+            } else {
+                $remoteIp = $_payment->getOrder()->getXForwardedFor();
+            }
+        }
+
+        return $remoteIp;
     }
 
     public function readVersionDataFromConf(){

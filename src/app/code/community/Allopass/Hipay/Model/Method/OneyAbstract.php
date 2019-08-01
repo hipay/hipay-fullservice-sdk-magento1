@@ -45,4 +45,33 @@ class Allopass_Hipay_Model_Method_OneyAbstract extends Allopass_Hipay_Model_Meth
 
         return $params;
     }
+
+    /**
+     *  Some payments method need product code with fees or no fees
+     *
+     * @return string|bool
+     */
+    private function getPaymentProductFees()
+    {
+        $paymentFees = $this->getConfigData('payment_product_fees');
+        if (!empty($paymentFees)) {
+            return $paymentFees;
+        }
+
+        return false;
+    }
+
+    /**
+     *  Return payment product
+     *
+     *  If Payment requires specified option ( With Fees or without Fees return it otherwhise normal payment product)
+     *
+     * @return string
+     */
+    public function getSpecifiedPaymentProduct($payment)
+    {
+        return ($this->getPaymentProductFees()) ? $this->getPaymentProductFees() : $this->getCcTypeHipay(
+            $payment->getCcType()
+        );
+    }
 }

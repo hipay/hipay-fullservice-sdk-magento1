@@ -74,7 +74,7 @@ casperjs-part1-1:
     paths:
       - bin/tests/errors/
     when: always
-  allow_failure: false
+  allow_failure: true
   after_script:
     -  bash /tools/clean-job.sh $PROJECT_NAME_TEST docker-compose.test.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
   except:
@@ -93,7 +93,7 @@ casperjs-part2-1:
         paths:
           - bin/tests/errors/
         when: always
-    allow_failure: false
+    allow_failure: true
     except:
        variables:
           - $CI_COMMIT_MESSAGE =~ /skip-tests/
@@ -112,7 +112,7 @@ casperjs-part3-1:
         paths:
           - bin/tests/errors/
         when: always
-    allow_failure: false
+    allow_failure: true
     except:
       variables:
         - $CI_COMMIT_MESSAGE =~ /skip-tests/
@@ -131,12 +131,27 @@ casperjs-part4-1:
         paths:
           - bin/tests/errors/
         when: always
-    allow_failure: false
+    allow_failure: true
     except:
       variables:
         - $CI_COMMIT_MESSAGE =~ /skip-tests/
     after_script:
         -  bash /tools/clean-job.sh $PROJECT_NAME_TEST-part4 docker-compose.test.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
+
+test-cypress-5-1:
+    stage: test-php7
+    <<: *before_template
+    script:
+          - sh ./bin/gitlab/run-cypress-tests.sh $PROJECT_NAME_TEST-part5 docker-compose.test.yml
+    retry: 2
+    tags:
+        - pi-commerce-no-overlay
+    allow_failure: true
+    except:
+      variables:
+          - $CI_COMMIT_MESSAGE =~ /skip-tests/
+    after_script:
+          -  bash /tools/clean-job.sh $PROJECT_NAME_TEST-part5 docker-compose.test.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
 
 #########################################################################
 ###                                PHP 5-6                            ###
@@ -165,7 +180,7 @@ casperjs-part1-2:
     paths:
       - bin/tests/errors/
     when: always
-  allow_failure: false
+  allow_failure: true
   except:
     variables:
       - $CI_COMMIT_MESSAGE =~ /skip-tests/
@@ -184,7 +199,7 @@ casperjs-part2-2:
       paths:
         - bin/tests/errors/
       when: always
-    allow_failure: false
+    allow_failure: true
     except:
       variables:
         - $CI_COMMIT_MESSAGE =~ /skip-tests/
@@ -203,7 +218,7 @@ casperjs-part3-2:
       paths:
         - bin/tests/errors/
       when: always
-    allow_failure: false
+    allow_failure: true
     after_script:
       - bash /tools/clean-job.sh $PROJECT_NAME_TEST-part3 docker-compose.test-php5-6.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
     except:
@@ -222,12 +237,27 @@ casperjs-part4-2:
       paths:
         - bin/tests/errors/
       when: always
-    allow_failure: false
+    allow_failure: true
     except:
       variables:
         - $CI_COMMIT_MESSAGE =~ /skip-tests/
     after_script:
       - bash /tools/clean-job.sh $PROJECT_NAME_TEST-part4 docker-compose.test-php5-6.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
+
+test-cypress-5-2:
+    stage: test-php5-6
+    <<: *before_template
+    script:
+          - sh ./bin/gitlab/run-cypress-tests.sh $PROJECT_NAME_TEST-part5 docker-compose.test.yml
+    retry: 2
+    tags:
+        - pi-commerce-no-overlay
+    allow_failure: true
+    except:
+      variables:
+          - $CI_COMMIT_MESSAGE =~ /skip-tests/
+    after_script:
+          -  bash /tools/clean-job.sh $PROJECT_NAME_TEST-part5 docker-compose.test.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
 
 build-test-php-7-2:
   stage: build-test-php7-2
@@ -257,7 +287,7 @@ casperjs-part1-3:
     paths:
       - bin/tests/errors/
     when: always
-  allow_failure: false
+  allow_failure: true
   except:
     variables:
       - $CI_COMMIT_MESSAGE =~ /skip-tests/
@@ -276,7 +306,7 @@ casperjs-part2-3:
         paths:
           - bin/tests/errors/
         when: always
-    allow_failure: false
+    allow_failure: true
     except:
       variables:
         - $CI_COMMIT_MESSAGE =~ /skip-tests/
@@ -295,7 +325,7 @@ casperjs-part3-3:
         paths:
           - bin/tests/errors/
         when: always
-    allow_failure: false
+    allow_failure: true
     except:
       variables:
         - $CI_COMMIT_MESSAGE =~ /skip-tests/
@@ -314,12 +344,27 @@ casperjs-part4-3:
         paths:
           - bin/tests/errors/
         when: always
-    allow_failure: false
+    allow_failure: true
     except:
       variables:
         - $CI_COMMIT_MESSAGE =~ /skip-tests/
     after_script:
         -  bash /tools/clean-job.sh $PROJECT_NAME_TEST-part4 docker-compose.test-php7-2.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
+
+test-cypress-5-3:
+    stage: test-php7-2
+    <<: *before_template
+    script:
+          - sh ./bin/gitlab/run-cypress-tests.sh $PROJECT_NAME_TEST-part5 docker-compose.test.yml
+    retry: 2
+    tags:
+        - pi-commerce-no-overlay
+    allow_failure: true
+    except:
+      variables:
+          - $CI_COMMIT_MESSAGE =~ /skip-tests/
+    after_script:
+          -  bash /tools/clean-job.sh $PROJECT_NAME_TEST-part5 docker-compose.test.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
 
 clean-stack-test:
   stage: clean-stack
@@ -333,31 +378,31 @@ clean-stack-test:
     variables:
       - $CI_COMMIT_MESSAGE =~ /skip-tests/
 
-sonarqube:
-  stage: analysis
-  image: ciricihq/gitlab-sonar-scanner
-  variables:
-    SONAR_URL: http://172.17.0.1:19000
-    SONAR_ANALYSIS_MODE: preview
-    SONAR_TOKEN: $SONAR_LOGIN
-  script:
-    - /usr/bin/sonar-scanner-run.sh
-  retry: 2
-  tags:
-    - pi-commerce-no-overlay
-
-sonarqube-reports:
-  stage: analysis
-  image: ciricihq/gitlab-sonar-scanner
-  variables:
-    SONAR_URL: http://172.17.0.1:19000
-    SONAR_ANALYSIS_MODE: "publish"
-    SONAR_TOKEN: $SONAR_LOGIN
-  script:
-    - unset CI_BUILD_REF && /usr/bin/sonar-scanner-run.sh
-  retry: 2
-  tags:
-    - pi-commerce-no-overlay
+# sonarqube:
+#   stage: analysis
+#   image: ciricihq/gitlab-sonar-scanner
+#   variables:
+#     SONAR_URL: http://172.17.0.1:19000
+#     SONAR_ANALYSIS_MODE: preview
+#     SONAR_TOKEN: $SONAR_LOGIN
+#   script:
+#     - /usr/bin/sonar-scanner-run.sh
+#   retry: 2
+#   tags:
+#     - pi-commerce-no-overlay
+#
+# sonarqube-reports:
+#   stage: analysis
+#   image: ciricihq/gitlab-sonar-scanner
+#   variables:
+#     SONAR_URL: http://172.17.0.1:19000
+#     SONAR_ANALYSIS_MODE: "publish"
+#     SONAR_TOKEN: $SONAR_LOGIN
+#   script:
+#     - unset CI_BUILD_REF && /usr/bin/sonar-scanner-run.sh
+#   retry: 2
+#   tags:
+#     - pi-commerce-no-overlay
 
 package:
  stage: package

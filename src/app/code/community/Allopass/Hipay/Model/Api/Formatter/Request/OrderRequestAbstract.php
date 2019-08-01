@@ -11,7 +11,9 @@
  * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
  */
 
+use HiPay\Fullservice\Enum\ThreeDSTwo\DeviceChannel;
 use HiPay\Fullservice\Enum\Transaction\ECI;
+require_once(dirname(__FILE__) . '/../../../../Helper/Enum/CardPaymentProduct.php');
 
 /**
  * @author      HiPay <support.tpp@hipay.com>
@@ -53,6 +55,24 @@ abstract class Allopass_Hipay_Model_Api_Formatter_Request_OrderRequestAbstract e
             $this->_amount,
             $this->_splitNumber
         );
+
+        if (in_array(strtolower($this->_paymentMethod->getCode()), CardPaymentProduct::threeDS2Available)) {
+            $orderRequest->browser_info = $this->getBrowserInfo();
+            $orderRequest->previous_auth_info = $this->getPreviousAuthInfo();
+            $orderRequest->merchant_risk_statement = $this->getMerchantRiskStatement();
+            $orderRequest->account_info = $this->getAccountInfo();
+            $orderRequest->recurring_info = $this->getRecurringInfo();
+
+            // If split payment exists, it means we are at least on the second payment of the split
+            $_helper = Mage::helper('hipay');
+            if($_helper->splitPaymentsExists($this->_payment->getOrder()->getId())) {
+                $orderRequest->device_channel = DeviceChannel::THREE_DS_REQUESTOR_INITIATED;
+            } else {
+                $orderRequest->device_channel = DeviceChannel::BROWSER;
+            }
+        }
+
+        Mage::dispatchEvent('hipay_order_before_request', array("OrderRequest" => &$orderRequest, "Cart" => $this->_payment->getOrder()->getAllItems()));
 
         $orderRequest->orderid = $this->_payment->getOrder()->getIncrementId();
 
@@ -141,7 +161,7 @@ abstract class Allopass_Hipay_Model_Api_Formatter_Request_OrderRequestAbstract e
             $orderRequest->customerShippingInfo = $this->getCustomerShippingInfo();
         }
 
-        $orderRequest->ipaddr = $this->getIpAddress();
+        $orderRequest->ipaddr = Mage::helper('hipay')->getIpAddress($this->_payment);
         $orderRequest->language = Mage::app()->getLocale()->getLocaleCode();
         $orderRequest->http_user_agent = Mage::helper('core/http')->getHttpUserAgent();
         $orderRequest->http_accept = "*/*";
@@ -258,20 +278,53 @@ abstract class Allopass_Hipay_Model_Api_Formatter_Request_OrderRequestAbstract e
         return Mage::app()->getStore()->isAdmin();
     }
 
-    protected function getIpAddress()
+    private function getBrowserInfo()
     {
-        $remoteIp = $this->_payment->getOrder()->getRemoteIp();
+        $browserInfo = Mage::getModel(
+            'hipay/api_formatter_threeDS_browserInfoFormatter',
+            array("paymentMethod" => $this->_paymentMethod, "payment" => $this->_payment)
+        );
 
-        //Check if it's forwarded and in this case, explode and retrieve the first part
-        if ($this->_payment->getOrder()->getXForwardedFor() !== null) {
-            if (strpos($this->_payment->getOrder()->getXForwardedFor(), ",") !== false) {
-                $xfParts = explode(",", $this->_payment->getOrder()->getXForwardedFor());
-                $remoteIp = current($xfParts);
-            } else {
-                $remoteIp = $this->_payment->getOrder()->getXForwardedFor();
-            }
-        }
+        return $browserInfo->generate();
+    }
 
-        return $remoteIp;
+    private function getPreviousAuthInfo()
+    {
+        $previousAuthInfo = Mage::getModel(
+            'hipay/api_formatter_threeDS_previousAuthInfoFormatter',
+            array("paymentMethod" => $this->_paymentMethod, "payment" => $this->_payment)
+        );
+
+        return $previousAuthInfo->generate();
+    }
+
+    private function getMerchantRiskStatement()
+    {
+        $merchantRiskStatement = Mage::getModel(
+            'hipay/api_formatter_threeDS_merchantRiskStatementFormatter',
+            array("paymentMethod" => $this->_paymentMethod, "payment" => $this->_payment)
+        );
+
+        return $merchantRiskStatement->generate();
+    }
+
+    private function getAccountInfo()
+    {
+        $accountInfo = Mage::getModel(
+            'hipay/api_formatter_threeDS_accountInfoFormatter',
+            array("paymentMethod" => $this->_paymentMethod, "payment" => $this->_payment)
+        );
+
+        return $accountInfo->generate();
+    }
+
+    private function getRecurringInfo()
+    {
+        $recurringInfo = Mage::getModel(
+            'hipay/api_formatter_threeDS_recurringInfoFormatter',
+            array("paymentMethod" => $this->_paymentMethod, "payment" => $this->_payment)
+        );
+
+        return $recurringInfo->generate();
     }
 }

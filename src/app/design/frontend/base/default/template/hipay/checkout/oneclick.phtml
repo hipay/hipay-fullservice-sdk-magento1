@@ -65,6 +65,14 @@ $_cards = $this->getParentBlock()->getCards();
 <br/>
 <script type="text/javascript">
     //<![CDATA[
+    var hfMethodCode = "<?php echo $_code ?>";
+    var hipay = HiPay({
+        username: "hosted",
+        password: "hosted",
+        environment: 'production',
+        lang: "EN"
+    });
+    document.getElementById(hfMethodCode + "_browser_info").value = JSON.stringify(hipay.getBrowserInfo());
 
     var ToogleOneclick_<?php echo $_code ?> = function () {
         var elm = $('<?php echo $_code ?>_cc_type');
