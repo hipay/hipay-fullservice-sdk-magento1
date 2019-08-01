@@ -147,6 +147,7 @@ $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction',
             ) ?>
         <?php } ?>
     </div>
+    <input type="hidden" value="" id="<?php echo $_code ?>_browser_info" name="payment[<?php echo $_code ?>_browser_info]">
     <script type="text/javascript">
         //<![CDATA[
 
@@ -174,6 +175,29 @@ $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction',
         Event.observe($('<?php echo $_code ?>_cc_type'), 'change', ToogleCvn<?php echo $_code ?>);
         ToogleCvn<?php echo $_code ?>();
 
+        var config = <?php echo $this->getConfigJson() ?>;
+        var tokenizeEnv = 'production';
+        var multiUse = false;
+        var hfMethodCode = "<?php echo $_code ?>";
+
+        if(config.isOneClick !== '0' || hfMethodCode === "hipay_hostedfieldsxtimes"){
+            multiUse = true;
+        }
+
+        if (config.testMode == 1) {
+            tokenizeEnv = 'stage'; // default is production/live
+            config.api_tokenjs_username = config.api_tokenjs_username_test;
+            config.api_tokenjs_publickey = config.api_tokenjs_publickey_test;
+        }
+
+        var hipay = HiPay({
+            username: config.api_tokenjs_username,
+            password: config.api_tokenjs_publickey,
+            environment: tokenizeEnv,
+            lang: config.lang
+        });
+
+        document.getElementById(hfMethodCode + "_browser_info").value = hipay.getBrowserInfo();
         //]]>
     </script>
 

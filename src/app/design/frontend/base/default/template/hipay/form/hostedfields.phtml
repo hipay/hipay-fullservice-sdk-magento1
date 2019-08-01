@@ -86,6 +86,8 @@ $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction',
     <input type="hidden" value="" id="<?php echo $_code ?>_cc_cid" name="payment[<?php echo $_code ?>_cc_cid]">
     <input type="hidden" value="" id="<?php echo $_code ?>_cc_type" name="payment[<?php echo $_code ?>_cc_type]">
 
+    <input type="hidden" value="" id="<?php echo $_code ?>_browser_info" name="payment[<?php echo $_code ?>_browser_info]">
+
     <div id="<?php echo $_code ?>_debit_amount">
         <?php if ($useOrderCurrency) { ?>
             <?php $this->getQuote()->setBaseCurrencyCode($this->getQuote()->getQuoteCurrencyCode()); ?>
@@ -204,6 +206,8 @@ $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction',
         function handleErrorHipayHF(valid, error) {
             document.getElementById("hipayHF-error-message").innerHTML = error;
         }
+
+        document.getElementById(hfMethodCode + "_browser_info").value = hipay.getBrowserInfo();
 
         //]]>
     </script>

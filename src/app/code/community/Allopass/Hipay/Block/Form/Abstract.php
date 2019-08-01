@@ -213,4 +213,47 @@ abstract class Allopass_Hipay_Block_Form_Abstract extends Mage_Payment_Block_For
     {
         return $this->getMethod()->getTypeNationalIdentification();
     }
+
+    /**
+     * Retrieve config json
+     *
+     * @return mixed
+     * @throws Mage_Core_Model_Store_Exception
+     */
+    public function getConfigJson()
+    {
+        $data = array(
+            "api_tokenjs_username" => $this->getConfig()->getApiTokenJSUsername(Mage::app()->getStore()),
+            "api_tokenjs_publickey" => $this->getConfig()->getApiTokenJSPublickey(Mage::app()->getStore()),
+            "api_tokenjs_username_test" => $this->getConfig()->getApiTokenJSUsernameTest(Mage::app()->getStore()),
+            "api_tokenjs_publickey_test" => $this->getConfig()->getApiTokenJSPublickeyTest(Mage::app()->getStore()),
+            "testMode" => $this->getMethod()->getConfigData('is_test_mode'),
+            "lang" => substr(Mage::app()->getLocale()->getLocaleCode(), 0, 2),
+            "isOneClick" => $this->oneClickIsAllowed(),
+            "defaultLastname" => $this->getQuote()->getCustomerLastname(),
+            "defaultFirstname" => $this->getQuote()->getCustomerFirstname(),
+            "style" => array(
+                "base" => array(
+                    "color" => $this->getMethod()->getConfigData('color'),
+                    "fontFamily" => $this->getMethod()->getConfigData('fontFamily'),
+                    "fontSize" => $this->getMethod()->getConfigData('fontSize'),
+                    "fontWeight" => $this->getMethod()->getConfigData('fontWeight'),
+                    "placeholderColor" => $this->getMethod()->getConfigData('placeholderColor'),
+                    "caretColor" => $this->getMethod()->getConfigData('caretColor'),
+                    "iconColor" => $this->getMethod()->getConfigData('iconColor')
+                )
+            )
+        );
+
+        return Mage::helper('core')->jsonEncode($data);
+    }
+
+    /**
+     *
+     * @return Allopass_Hipay_Model_Config
+     */
+    protected function getConfig()
+    {
+        return Mage::getSingleton('hipay/config');
+    }
 }
