@@ -11,6 +11,7 @@
  * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
  */
 
+use HiPay\Fullservice\Enum\ThreeDSTwo\DeviceChannel;
 use HiPay\Fullservice\Enum\Transaction\ECI;
 
 /**
@@ -53,6 +54,14 @@ abstract class Allopass_Hipay_Model_Api_Formatter_Request_OrderRequestAbstract e
             $this->_amount,
             $this->_splitNumber
         );
+
+        //if (in_array(strtolower($this->params["method"]), $this->cardPaymentProduct)) {
+/*            $orderRequest->browser_info = $this->getBrowserInfo();
+            $orderRequest->previous_auth_info = $this->getPreviousAuthInfo();
+            $orderRequest->merchant_risk_statement = $this->getMerchantRiskStatement();*/
+            $orderRequest->account_info = $this->getAccountInfo();
+            $orderRequest->device_channel = DeviceChannel::BROWSER;
+        //}
 
         $orderRequest->orderid = $this->_payment->getOrder()->getIncrementId();
 
@@ -273,5 +282,45 @@ abstract class Allopass_Hipay_Model_Api_Formatter_Request_OrderRequestAbstract e
         }
 
         return $remoteIp;
+    }
+
+    private function getBrowserInfo()
+    {
+        $browserInfo = Mage::getModel(
+            'hipay/api_formatter_threeDS_browserInfoFormatter',
+            array("paymentMethod" => $this->_paymentMethod, "payment" => $this->_payment)
+        );
+
+        return $browserInfo->generate();
+    }
+
+    private function getPreviousAuthInfo()
+    {
+        $previousAuthInfo = Mage::getModel(
+            'hipay/api_formatter_threeDS_previousAuthInfoFormatter',
+            array("paymentMethod" => $this->_paymentMethod, "payment" => $this->_payment)
+        );
+
+        return $previousAuthInfo->generate();
+    }
+
+    private function getMerchantRiskStatement()
+    {
+        $merchantRiskStatement = Mage::getModel(
+            'hipay/api_formatter_threeDS_merchantRiskStatementFormatter',
+            array("paymentMethod" => $this->_paymentMethod, "payment" => $this->_payment)
+        );
+
+        return $merchantRiskStatement->generate();
+    }
+
+    private function getAccountInfo()
+    {
+        $accountInfo = Mage::getModel(
+            'hipay/api_formatter_threeDS_accountInfoFormatter',
+            array("paymentMethod" => $this->_paymentMethod, "payment" => $this->_payment)
+        );
+
+        return $accountInfo->generate();
     }
 }
