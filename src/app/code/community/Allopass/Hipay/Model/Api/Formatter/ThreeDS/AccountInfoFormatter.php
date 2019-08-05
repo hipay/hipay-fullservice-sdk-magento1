@@ -160,6 +160,31 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_AccountInfoFormatter implements
     {
         $info = new \HiPay\Fullservice\Gateway\Model\Request\ThreeDSTwo\AccountInfo\Payment();
 
+        if(!$this->_order->getCustomerIsGuest()) {
+
+            $payments = $this->_order->getPaymentsCollection();
+            $token = null;
+
+            foreach($payments->getItems() as $payment){
+                if($payment->getAdditionalInformation('use_oneclick')){
+                    $token = $payment->getAdditionalInformation('token');
+                }
+            }
+
+            if(!empty($token)) {
+                $cards = Mage::getResourceModel('hipay/card_collection')
+                    ->addFieldToSelect('*')
+                    ->addFieldToFilter('customer_id', Mage::getSingleton('customer/session')->getCustomer()->getId())
+                    ->addFieldToFilter('cc_status', Allopass_Hipay_Model_Card::STATUS_ENABLED)
+                    ->addFieldToFilter('cc_token', $token)
+                    ->setOrder('card_id', 'desc');
+
+                foreach ($cards->getItems() as $card){
+                    $info->enrollment_date = DateTime::createFromFormat("Y-m-d", $card->getCreatedAt())->format("Ymd");
+                }
+            }
+        }
+
         return $info;
     }
 
