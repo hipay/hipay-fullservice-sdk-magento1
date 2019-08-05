@@ -63,6 +63,10 @@ elif [ "$1" = 'init' ]; then
         docker-compose -f docker-compose.dev.yml stop
         docker-compose -f docker-compose.dev.yml rm -fv
         sudo rm -Rf data/ log/ web/
+
+        docker rm $(docker ps -a -q)
+        docker rmi $(docker images -q)
+
         docker-compose -f docker-compose.dev.yml build --no-cache
         docker-compose -f docker-compose.dev.yml up
     else
