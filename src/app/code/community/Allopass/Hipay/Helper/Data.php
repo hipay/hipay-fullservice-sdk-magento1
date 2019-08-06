@@ -502,6 +502,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         $newCard->setCcOwner($cardHolder);
         $newCard->setCcStatus(Allopass_Hipay_Model_Card::STATUS_ENABLED);
         $newCard->setName($this->__('Card %s - %s', $paymentProduct, $pan));
+        $newCard->setCreatedAt((new DateTime())->format('Y-m-d'));
 
         if (isset($paymentMethod['card_expiry_month']) && $paymentMethod['card_expiry_year']) {
             $newCard->setCcExpMonth($paymentMethod['card_expiry_month']);

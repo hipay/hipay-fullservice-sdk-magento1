@@ -220,7 +220,7 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_AccountInfoFormatter implements
                  */
                 $orderAddress = $order->getShippingAddress();
 
-                if($shippingAddress == $orderAddress){
+                if($shippingAddress->getId() == $orderAddress->getId()){
                     $info->shipping_used_date = $order->getCreatedAtFormated('Ymd');
                     break;
                 }
