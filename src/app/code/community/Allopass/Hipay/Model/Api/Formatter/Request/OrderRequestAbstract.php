@@ -58,7 +58,7 @@ abstract class Allopass_Hipay_Model_Api_Formatter_Request_OrderRequestAbstract e
         //if (in_array(strtolower($this->params["method"]), $this->cardPaymentProduct)) {
             $orderRequest->browser_info = $this->getBrowserInfo();
             $orderRequest->previous_auth_info = $this->getPreviousAuthInfo();
-/*            $orderRequest->merchant_risk_statement = $this->getMerchantRiskStatement();*/
+            $orderRequest->merchant_risk_statement = $this->getMerchantRiskStatement();
             $orderRequest->account_info = $this->getAccountInfo();
             $orderRequest->device_channel = DeviceChannel::BROWSER;
         //}
