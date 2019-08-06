@@ -157,7 +157,7 @@ $_code = $this->getMethodCode();
             lang: config.lang
         });
 
-        document.getElementById(hfMethodCode + "_browser_info").value = hipay.getBrowserInfo();
+        document.getElementById(hfMethodCode + "_browser_info").value = JSON.stringify(hipay.getBrowserInfo());
 
         //]]>
     </script>

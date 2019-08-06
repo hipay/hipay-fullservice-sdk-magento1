@@ -211,6 +211,10 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_AccountInfoFormatter implements
                     'state',
                     array('in' => Mage::getSingleton('sales/order_config')->getVisibleOnFrontStates())
                 )
+                ->addAttributeToFilter(
+                    'entity_id',
+                    array('neq' => $this->_order->getId())
+                )
                 ->addAttributeToSort('created_at', 'asc')
                 ->load();
 
