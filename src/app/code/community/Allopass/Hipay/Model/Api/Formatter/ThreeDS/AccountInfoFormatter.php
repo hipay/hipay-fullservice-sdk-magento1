@@ -11,6 +11,8 @@
  * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
  */
 
+use \HiPay\Fullservice\Enum\ThreeDSTwo\NameIndicator;
+
 /**
  * @author      HiPay <support.tpp@hipay.com>
  * @copyright   Copyright (c) 2019 - HiPay
@@ -191,6 +193,47 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_AccountInfoFormatter implements
     private function getShippingInfo()
     {
         $info = new \HiPay\Fullservice\Gateway\Model\Request\ThreeDSTwo\AccountInfo\Shipping();
+
+        if(!$this->_order->getCustomerIsGuest()) {
+            $shippingAddress = $this->_order->getShippingAddress();
+
+            $allOrders = Mage::getResourceModel('sales/order_collection')
+                ->addAttributeToSelect('*')
+                ->addAttributeToFilter(
+                    'customer_id',
+                    Mage::getSingleton('customer/session')->getCustomer()->getId()
+                )
+                ->addAttributeToFilter(
+                    'state',
+                    array('in' => Mage::getSingleton('sales/order_config')->getVisibleOnFrontStates())
+                )
+                ->addAttributeToSort('created_at', 'asc')
+                ->load();
+
+            foreach($allOrders->getItems() as $order) {
+                /**
+                 * @var Mage_Sales_Model_Order $order
+                 */
+                $orderAddress = $order->getShippingAddress();
+
+                if($shippingAddress == $orderAddress){
+                    $info->shipping_used_date = $order->getCreatedAtFormated('Ymd');
+                    break;
+                }
+            }
+
+            $customerHelper = Mage::helper('customer/data');
+            /**
+             * @var Mage_Customer_Model_Customer $customer
+             */
+            $customer = $customerHelper->getCurrentCustomer();
+
+            if(empty($customer->getName()) || strtoupper($customer->getName()) == strtoupper($shippingAddress->getName())){
+                $info->name_indicator = NameIndicator::IDENTICAL;
+            } else {
+                $info->name_indicator = NameIndicator::DIFFERENT;
+            }
+        }
 
         return $info;
     }
