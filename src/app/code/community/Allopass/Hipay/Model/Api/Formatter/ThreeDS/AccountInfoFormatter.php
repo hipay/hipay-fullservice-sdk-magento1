@@ -182,7 +182,11 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_AccountInfoFormatter implements
                     ->setOrder('card_id', 'desc');
 
                 foreach ($cards->getItems() as $card){
-                    $info->enrollment_date = DateTime::createFromFormat("Y-m-d", $card->getCreatedAt())->format("Ymd");
+                    if(!empty($card->getCreatedAt())) {
+                        $info->enrollment_date = DateTime::createFromFormat("Y-m-d", $card->getCreatedAt())->format("Ymd");
+                    } else {
+                        $info->enrollment_date = "";
+                    }
                 }
             }
         }

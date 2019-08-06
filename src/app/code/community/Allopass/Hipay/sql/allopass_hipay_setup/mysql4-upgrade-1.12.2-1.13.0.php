@@ -21,15 +21,7 @@ $installer->startSetup();
 $installer->run(
     "
 
-ALTER TABLE {$this->getTable('hipay_customer_card')} ADD COLUMN `created_at` DATE NOT NULL DEFAULT CURRENT_DATE
-
-"
-);
-
-$installer->run(
-    "
-
-UPDATE {$this->getTable('hipay_customer_card')} SET created_at = CURDATE()
+ALTER TABLE {$this->getTable('hipay_customer_card')} ADD COLUMN `created_at` DATE
 
 "
 );
