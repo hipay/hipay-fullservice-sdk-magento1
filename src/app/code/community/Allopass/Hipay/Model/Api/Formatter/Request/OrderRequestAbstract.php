@@ -13,6 +13,7 @@
 
 use HiPay\Fullservice\Enum\ThreeDSTwo\DeviceChannel;
 use HiPay\Fullservice\Enum\Transaction\ECI;
+require_once(dirname(__FILE__) . '/../../../../Helper/Enum/CardPaymentProduct.php');
 
 /**
  * @author      HiPay <support.tpp@hipay.com>
@@ -55,13 +56,21 @@ abstract class Allopass_Hipay_Model_Api_Formatter_Request_OrderRequestAbstract e
             $this->_splitNumber
         );
 
-        //if (in_array(strtolower($this->params["method"]), $this->cardPaymentProduct)) {
+        if (in_array(strtolower($this->_paymentMethod->getCode()), CardPaymentProduct::threeDS2Available)) {
             $orderRequest->browser_info = $this->getBrowserInfo();
             $orderRequest->previous_auth_info = $this->getPreviousAuthInfo();
             $orderRequest->merchant_risk_statement = $this->getMerchantRiskStatement();
             $orderRequest->account_info = $this->getAccountInfo();
-            $orderRequest->device_channel = DeviceChannel::BROWSER;
-        //}
+            $orderRequest->recurring_info = $this->getRecurringInfo();
+
+            // If split payment exists, it means we are at least on the second payment of the split
+            $_helper = Mage::helper('hipay');
+            if($_helper->splitPaymentsExists($this->_payment->getOrder()->getId())) {
+                $orderRequest->device_channel = DeviceChannel::THREE_DS_REQUESTOR_INITIATED;
+            } else {
+                $orderRequest->device_channel = DeviceChannel::BROWSER;
+            }
+        }
 
         $orderRequest->orderid = $this->_payment->getOrder()->getIncrementId();
 
@@ -322,5 +331,15 @@ abstract class Allopass_Hipay_Model_Api_Formatter_Request_OrderRequestAbstract e
         );
 
         return $accountInfo->generate();
+    }
+
+    private function getRecurringInfo()
+    {
+        $recurringInfo = Mage::getModel(
+            'hipay/api_formatter_threeDS_recurringInfoFormatter',
+            array("paymentMethod" => $this->_paymentMethod, "payment" => $this->_payment)
+        );
+
+        return $recurringInfo->generate();
     }
 }

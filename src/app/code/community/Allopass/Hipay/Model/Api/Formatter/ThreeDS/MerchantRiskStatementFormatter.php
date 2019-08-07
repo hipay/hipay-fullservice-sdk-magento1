@@ -83,7 +83,7 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_MerchantRiskStatementFormatter 
             /**
              * @var Mage_Sales_Model_Order_Item $item
              */
-            if(!$item->getProduct()->isInStock()){
+            if($item->getStatusId() == Mage_Sales_Model_Order_Item::STATUS_BACKORDERED){
                 return PurchaseIndicator::FUTURE_AVAILABILITY;
             }
         }

@@ -10,6 +10,7 @@
  * @copyright 2019 HiPay
  * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
  */
+
 /**
  *
  * @author      HiPay <support.tpp@hipay.com>
@@ -19,11 +20,19 @@
  */
 class CardPaymentProduct
 {
-    const VISA = 'visa';
-    const CB = 'cb';
-    const MASTERCARD = 'mastercard';
-    const AMERICAN_EXPRESS = 'american-express';
-    const MAESTRO = 'maestro';
-    const BCMC = 'bcmc';
-    const HOSTED = 'credit_card';
+    const CC = 'hipay_cc';
+    const CC_SPLIT_PAYMENT = 'hipay_ccxtimes';
+    const CC_HOSTED = 'hipay_hosted';
+    const CC_HOSTED_SPLIT_PAYMENT = 'hipay_hostedxtimes';
+    const CC_HOSTED_FIELDS = 'hipay_hostedfields';
+    const CC_HOSTED_FIELDS_SPLIT_PAYMENT = 'hipay_hostedfieldsxtimes';
+
+    const threeDS2Available = array(
+        self::CC,
+        self::CC_SPLIT_PAYMENT,
+        self::CC_HOSTED,
+        self::CC_HOSTED_SPLIT_PAYMENT,
+        self::CC_HOSTED_FIELDS,
+        self::CC_HOSTED_FIELDS_SPLIT_PAYMENT
+    );
 }
