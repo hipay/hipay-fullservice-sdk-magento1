@@ -72,6 +72,8 @@ abstract class Allopass_Hipay_Model_Api_Formatter_Request_OrderRequestAbstract e
             }
         }
 
+        Mage::dispatchEvent('hipay_order_before_request', array("OrderRequest" => &$orderRequest, "Cart" => $this->_payment->getOrder()->getAllItems()));
+
         $orderRequest->orderid = $this->_payment->getOrder()->getIncrementId();
 
         if ($this->_paymentMethod->getConfigData('payment_action') !==
