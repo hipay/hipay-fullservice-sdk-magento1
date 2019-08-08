@@ -66,7 +66,6 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_BrowserInfoFormatter implements
             $browserInfo->screen_width = isset($rawBrowserInfo->screen_width) ? $rawBrowserInfo->screen_width : null;
             $browserInfo->timezone = isset($rawBrowserInfo->timezone) ? $rawBrowserInfo->timezone : null;
             $browserInfo->http_user_agent = isset($rawBrowserInfo->http_user_agent) ? $rawBrowserInfo->http_user_agent : null;
-            $browserInfo->device_fingerprint = $this->_payment->getAdditionalInformation('device_fingerprint');
         } else {
             $browserInfo->javascript_enabled = false;
         }
