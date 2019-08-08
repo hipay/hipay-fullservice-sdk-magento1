@@ -206,9 +206,6 @@ $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction',
         function handleErrorHipayHF(valid, error) {
             document.getElementById("hipayHF-error-message").innerHTML = error;
         }
-
-        document.getElementById(hfMethodCode + "_browser_info").value = JSON.stringify(hipay.getBrowserInfo());
-
         //]]>
     </script>
 
