@@ -51,7 +51,12 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_RecurringInfoFormatter implemen
      */
     public function mapRequest(&$recurringInfo)
     {
-        if(!empty($this->_payment->getAdditionalInformation('split_payment_id'))) {
+        /**
+         * @var Allopass_Hipay_Helper_Data $_helper
+         */
+        $_helper = Mage::helper('hipay');
+
+        if($_helper->splitPaymentsExists($this->_order->getId())) {
             /**
              * @var Allopass_Hipay_Model_Resource_PaymentProfile_Collection $profileCollection
              */
@@ -65,38 +70,47 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_RecurringInfoFormatter implemen
 
             if ($profileCollection->count() > 0) {
                 $profile = $profileCollection->getFirstItem();
-                $recurringInfo->frequency = $profile->getPeriodMaxCycles();
-            }
 
-
-            /**
-             * @var Allopass_Hipay_Helper_Data $_helper
-             */
-            $_helper = Mage::helper('hipay');
-
-            if($_helper->splitPaymentsExists($this->_order->getId())) {
-                $collection = Mage::getModel('hipay/splitPayment')
-                    ->getCollection()
-                    ->addFieldToFilter('order_id', $this->_order->getId())
-                    ->addFieldToSort('date_to_pay', 'desc');
-
-                $splitPayment = $collection->getFirstItem();
-
-                $lastDateToPay = DateTime::createFromFormat('Y-m-d', $splitPayment->getDateToPay());
-            } else {
-                $amount = floatval($this->_payment->getData('amount_ordered'));
-                $splitPayment = $_helper->splitPayment(intval($this->_payment->getAdditionalInformation('split_payment_id')),
-                    $amount);
-
-                $lastDateToPay = new DateTime();
-                foreach($splitPayment as $aPayment){
-                    $dateToPay = DateTime::createFromFormat('Y-m-d', $aPayment['dateToPay']);
-
-                    if($dateToPay > $lastDateToPay){
-                        $lastDateToPay = $dateToPay;
-                    }
+                $frequency = 0;
+                switch ($profile->getPeriodUnit()) {
+                    case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_MONTH:
+                        {
+                            $frequency = 28 * $profile->getPeriodFrequency();
+                            break;
+                        }
+                    case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_DAY:
+                        {
+                            $frequency = $profile->getPeriodFrequency();
+                            break;
+                        }
+                    case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_SEMI_MONTH:
+                        {
+                            $frequency = 14 * $profile->getPeriodFrequency();
+                            break;
+                        }
+                    case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_WEEK:
+                        {
+                            $frequency = 7 * $profile->getPeriodFrequency();
+                            break;
+                        }
+                    case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_YEAR:
+                        {
+                            $frequency = 365 * $profile->getPeriodFrequency();
+                            break;
+                        }
                 }
+
+                $recurringInfo->frequency = $frequency;
             }
+
+            $collection = Mage::getModel('hipay/splitPayment')
+                ->getCollection()
+                ->addFieldToFilter('order_id', $this->_order->getId())
+                ->addFieldToSort('date_to_pay', 'desc');
+
+            $splitPayment = $collection->getFirstItem();
+
+            $lastDateToPay = DateTime::createFromFormat('Y-m-d', $splitPayment->getDateToPay());
 
             $recurringInfo->expiration_date = $lastDateToPay->format('Ymd');
         }

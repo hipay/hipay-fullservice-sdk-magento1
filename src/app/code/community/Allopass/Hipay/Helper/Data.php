@@ -1323,6 +1323,23 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
         return $updating;
     }
 
+    public function getIpAddress($_payment)
+    {
+        $remoteIp = $_payment->getOrder()->getRemoteIp();
+
+        //Check if it's forwarded and in this case, explode and retrieve the first part
+        if ($_payment->getOrder()->getXForwardedFor() !== null) {
+            if (strpos($_payment->getOrder()->getXForwardedFor(), ",") !== false) {
+                $xfParts = explode(",", $_payment->getOrder()->getXForwardedFor());
+                $remoteIp = current($xfParts);
+            } else {
+                $remoteIp = $_payment->getOrder()->getXForwardedFor();
+            }
+        }
+
+        return $remoteIp;
+    }
+
     public function readVersionDataFromConf(){
         $config = Mage::getSingleton('hipay/config');
         $info = $config->getVersionInfo();

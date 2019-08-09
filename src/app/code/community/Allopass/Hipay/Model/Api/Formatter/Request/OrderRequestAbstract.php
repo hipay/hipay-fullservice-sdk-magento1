@@ -161,7 +161,7 @@ abstract class Allopass_Hipay_Model_Api_Formatter_Request_OrderRequestAbstract e
             $orderRequest->customerShippingInfo = $this->getCustomerShippingInfo();
         }
 
-        $orderRequest->ipaddr = $this->getIpAddress();
+        $orderRequest->ipaddr = Mage::helper('hipay')->getIpAddress($this->_payment);
         $orderRequest->language = Mage::app()->getLocale()->getLocaleCode();
         $orderRequest->http_user_agent = Mage::helper('core/http')->getHttpUserAgent();
         $orderRequest->http_accept = "*/*";
@@ -276,23 +276,6 @@ abstract class Allopass_Hipay_Model_Api_Formatter_Request_OrderRequestAbstract e
     protected function isAdmin()
     {
         return Mage::app()->getStore()->isAdmin();
-    }
-
-    protected function getIpAddress()
-    {
-        $remoteIp = $this->_payment->getOrder()->getRemoteIp();
-
-        //Check if it's forwarded and in this case, explode and retrieve the first part
-        if ($this->_payment->getOrder()->getXForwardedFor() !== null) {
-            if (strpos($this->_payment->getOrder()->getXForwardedFor(), ",") !== false) {
-                $xfParts = explode(",", $this->_payment->getOrder()->getXForwardedFor());
-                $remoteIp = current($xfParts);
-            } else {
-                $remoteIp = $this->_payment->getOrder()->getXForwardedFor();
-            }
-        }
-
-        return $remoteIp;
     }
 
     private function getBrowserInfo()
