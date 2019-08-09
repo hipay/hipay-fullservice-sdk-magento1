@@ -216,6 +216,15 @@ else
     printf "\n${COLOR_SUCCESS}  => MAGENTO IS ALREADY INSTALLED IN THE CONTAINER ${NC}\n"
 fi
 
+if [ "$ENVIRONMENT" = "$ENV_DEVELOPMENT" ] || [ "$ENVIRONMENT" = "$ENV_STAGE" ] ;then
+
+    printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+    printf "\n${COLOR_SUCCESS}      Apply htaccess for logs ${NC}\n"
+    printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+
+    echo -e "Order deny,allow\nAllow from all" > /var/www/htdocs/var/.htaccess
+fi
+
 chown -R www-data:www-data /var/www/htdocs
 
 ################################################################################

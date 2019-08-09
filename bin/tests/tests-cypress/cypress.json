@@ -1,0 +1,27 @@
+{
+  "baseUrl": "http://localhost:8095",
+  "chromeWebSecurity": false,
+  "viewportWidth": 1280,
+  "viewportHeight": 720,
+  "defaultCommandTimeout": 12000,
+  "watchForFileChanges": false,
+  "video": false,
+  "env": {
+    "completeProviderPayment": true,
+    "skipProviderPage": [
+      "belfius",
+      "banamex",
+      "aura",
+      "banco-do-brasil",
+      "bbva-bancomer",
+      "boleto-bancario",
+      "bradesco",
+      "caixa",
+      "itau",
+      "oxxo",
+      "santander-cash",
+      "santander-home-banking",
+      "oney"
+    ]
+  }
+}
