@@ -106,11 +106,11 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_RecurringInfoFormatter implemen
             $collection = Mage::getModel('hipay/splitPayment')
                 ->getCollection()
                 ->addFieldToFilter('order_id', $this->_order->getId())
-                ->addFieldToSort('date_to_pay', 'desc');
+                ->addOrder('date_to_pay', 'desc');
 
             $splitPayment = $collection->getFirstItem();
 
-            $lastDateToPay = DateTime::createFromFormat('Y-m-d', $splitPayment->getDateToPay());
+            $lastDateToPay = DateTime::createFromFormat('Y-m-d H:i:s', $splitPayment->getDateToPay());
 
             $recurringInfo->expiration_date = $lastDateToPay->format('Ymd');
         }

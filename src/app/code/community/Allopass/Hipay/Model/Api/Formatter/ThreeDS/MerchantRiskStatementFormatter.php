@@ -105,7 +105,7 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_MerchantRiskStatementFormatter 
                 ->addAttributeToSelect('*')
                 ->addAttributeToFilter(
                     'customer_id',
-                    Mage::getSingleton('customer/session')->getCustomer()->getId()
+                    $this->_order->getCustomerId()
                 )
                 ->addAttributeToFilter(
                     'state',
@@ -196,7 +196,7 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_MerchantRiskStatementFormatter 
                         ->addAttributeToSelect('*')
                         ->addAttributeToFilter(
                             'customer_id',
-                            Mage::getSingleton('customer/session')->getCustomer()->getId()
+                            $this->_order->getCustomerId()
                         )
                         ->addAttributeToFilter(
                             'state',

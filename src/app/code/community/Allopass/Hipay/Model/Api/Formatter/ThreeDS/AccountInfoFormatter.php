@@ -63,12 +63,11 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_AccountInfoFormatter implements
     {
         $info = new \HiPay\Fullservice\Gateway\Model\Request\ThreeDSTwo\AccountInfo\Customer();
         if(!$this->_order->getCustomerIsGuest()){
-            $customerHelper = Mage::helper('customer/data');
-
             /**
              * @var Mage_Customer_Model_Customer $customer
              */
-            $customer = $customerHelper->getCurrentCustomer();
+            $customer = new Mage_Customer_Model_Customer();
+            $customer->load($this->_order->getCustomerId());
             $creationDate = new DateTime('@'.$customer->getCreatedAtTimestamp());
             $updateDate = DateTime::createFromFormat('Y-m-d H:i:s', $customer->getUpdatedAt());
 
@@ -97,7 +96,7 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_AccountInfoFormatter implements
                 ->addAttributeToSelect('*')
                 ->addAttributeToFilter(
                     'customer_id',
-                    Mage::getSingleton('customer/session')->getCustomer()->getId()
+                    $this->_order->getCustomerId()
                 )
                 ->addAttributeToFilter(
                     'state',
@@ -176,7 +175,7 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_AccountInfoFormatter implements
             if(!empty($token)) {
                 $cards = Mage::getResourceModel('hipay/card_collection')
                     ->addFieldToSelect('*')
-                    ->addFieldToFilter('customer_id', Mage::getSingleton('customer/session')->getCustomer()->getId())
+                    ->addFieldToFilter('customer_id', $this->_order->getCustomerId())
                     ->addFieldToFilter('cc_status', Allopass_Hipay_Model_Card::STATUS_ENABLED)
                     ->addFieldToFilter('cc_token', $token)
                     ->setOrder('card_id', 'desc');
@@ -205,7 +204,7 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_AccountInfoFormatter implements
                 ->addAttributeToSelect('*')
                 ->addAttributeToFilter(
                     'customer_id',
-                    Mage::getSingleton('customer/session')->getCustomer()->getId()
+                    $this->_order->getCustomerId()
                 )
                 ->addAttributeToFilter(
                     'state',
@@ -236,11 +235,11 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_AccountInfoFormatter implements
                 }
             }
 
-            $customerHelper = Mage::helper('customer/data');
             /**
              * @var Mage_Customer_Model_Customer $customer
              */
-            $customer = $customerHelper->getCurrentCustomer();
+            $customer = new Mage_Customer_Model_Customer();
+            $customer->load($this->_order->getCustomerId());
 
             if(!$shippingAddress ||
                 empty($shippingAddress->getName()) ||
