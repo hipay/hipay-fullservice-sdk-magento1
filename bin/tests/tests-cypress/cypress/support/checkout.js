@@ -78,9 +78,7 @@ Cypress.Commands.add("checkoutAsGuest", () => {
 Cypress.Commands.add("fillBillingForm", (loggedIn, country) => {
     cy.server();
     cy.route('POST', '/checkout/onepage/saveBilling/').as('saveBilling');
-    cy.route('POST', '/checkout/onepage/getAdditional/').as('getAdditional');
     cy.route('GET', '/checkout/onepage/progress/?prevStep=billing').as('progressBilling');
-    cy.route('GET', '/checkout/onepage/progress/?prevStep=shipping').as('progressShipping');
 
     let customerFixture = "customerFR";
 
@@ -93,23 +91,21 @@ Cypress.Commands.add("fillBillingForm", (loggedIn, country) => {
         cy.get('#billing\\:lastname').clear().type(customer.lastName);
 
         if(!loggedIn) {
-            cy.get('#billing\\:email').type(customer.email);
+            cy.get('#billing\\:email').clear().type(customer.email);
         }
 
-        cy.get('#billing\\:street1').type(customer.streetAddress + "1");
-        cy.get('#billing\\:city').type(customer.city);
-        cy.get('#billing\\:postcode').type(customer.zipCode);
+        cy.get('#billing\\:street1').clear().type(customer.streetAddress + "1");
+        cy.get('#billing\\:city').clear().type(customer.city);
+        cy.get('#billing\\:postcode').clear().type(customer.zipCode);
         cy.get('#billing\\:country_id').select(customer.country, {force: true});
         if (customer.state !== undefined) {
             cy.get('#billing\\:region_id').select(customer.state, {force: true});
         }
-        cy.get('#billing\\:telephone').type(customer.phone, {force: true});
+        cy.get('#billing\\:telephone').clear().type(customer.phone, {force: true});
         cy.get('button[onclick="billing.save()"]').click();
 
         cy.wait('@saveBilling');
-        cy.wait('@getAdditional');
         cy.wait('@progressBilling');
-        cy.wait('@progressShipping');
     });
 });
 
@@ -128,21 +124,20 @@ Cypress.Commands.add("fillShippingForm", (loggedIn, country) => {
     }
 
     cy.fixture(customerFixture).then((customer) => {
-        cy.get('#shipping\\:firstname').type(customer.firstName);
-        cy.get('#shipping\\:lastname').type(customer.lastName);
+        cy.get('#shipping\\:firstname').clear().type(customer.firstName);
+        cy.get('#shipping\\:lastname').clear().type(customer.lastName);
         if(!loggedIn) {
-            cy.get('#shipping\\:email').type(customer.email);
+            cy.get('#shipping\\:email').clear().type(customer.email);
         }
 
-        cy.get('#shipping\\:street1').type(customer.streetAddress);
-        cy.get('#shipping\\:city').type(customer.city);
-        cy.get('#shipping\\:postcode').type(customer.zipCode);
+        cy.get('#shipping\\:street1').clear().type(customer.streetAddress);
+        cy.get('#shipping\\:city').clear().type(customer.city);
+        cy.get('#shipping\\:postcode').clear().type(customer.zipCode);
         cy.get('#shipping\\:country_id').select(customer.country, {force: true});
         if (customer.state !== undefined) {
             cy.get('#shipping\\:region_id').select(customer.state, {force: true});
         }
-        cy.get('#shipping\\:telephone').type(customer.phone, {force: true});
-        cy.get('#shipping\\:same_as_billing').click();
+        cy.get('#shipping\\:telephone').clear().type(customer.phone, {force: true});
         cy.get('button[onclick="shipping.save()"]').click();
 
         cy.wait('@saveShipping');

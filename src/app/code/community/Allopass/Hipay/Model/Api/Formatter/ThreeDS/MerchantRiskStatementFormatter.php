@@ -153,9 +153,11 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_MerchantRiskStatementFormatter 
                     return ReorderIndicator::REORDERED;
                 }
             }
+
+            return ReorderIndicator::FIRST_TIME_ORDERED;
         }
 
-        return ReorderIndicator::FIRST_TIME_ORDERED;
+        return null;
 
     }
 
@@ -186,7 +188,7 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_MerchantRiskStatementFormatter 
                 $this->_order->getShippingAddress()->getFax() == $this->_order->getBillingAddress()->getFax()){
                 return ShippingIndicator::SHIP_TO_CARDHOLDER_BILLING_ADDRESS;
             } else {
-                if(!$this->_order->getCustomerIsGuest()){
+                if($this->_order->getCustomerIsGuest()){
                     return ShippingIndicator::SHIP_TO_DIFFERENT_ADDRESS;
                 } else {
                     $foundAddress = false;

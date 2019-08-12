@@ -222,10 +222,16 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_AccountInfoFormatter implements
                 /**
                  * @var Mage_Sales_Model_Order $order
                  */
-                $orderAddress = $order->getShippingAddress();
-
-                if($shippingAddress->getId() == $orderAddress->getId()){
-                    $info->shipping_used_date = $order->getCreatedAtFormated('Ymd');
+                if ($this->_order->getShippingAddress()->getName() == $order->getShippingAddress()->getName() &&
+                    $this->_order->getShippingAddress()->getCompany() == $order->getShippingAddress()->getCompany() &&
+                    $this->_order->getShippingAddress()->getStreetFull() == $order->getShippingAddress()->getStreetFull() &&
+                    $this->_order->getShippingAddress()->getCity() == $order->getShippingAddress()->getCity() &&
+                    $this->_order->getShippingAddress()->getRegion() == $order->getShippingAddress()->getRegion() &&
+                    $this->_order->getShippingAddress()->getPostcode() == $order->getShippingAddress()->getPostcode() &&
+                    $this->_order->getShippingAddress()->getCountryId() == $order->getShippingAddress()->getCountryId() &&
+                    $this->_order->getShippingAddress()->getTelephone() == $order->getShippingAddress()->getTelephone() &&
+                    $this->_order->getShippingAddress()->getFax() == $order->getShippingAddress()->getFax()) {
+                    $info->shipping_used_date = DateTime::createFromFormat('Y-m-d H:i:s', $order->getCreatedAt())->format('Ymd');
                     break;
                 }
             }
@@ -236,11 +242,16 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_AccountInfoFormatter implements
              */
             $customer = $customerHelper->getCurrentCustomer();
 
-            if(empty($customer->getName()) || strtoupper($customer->getName()) == strtoupper($shippingAddress->getName())){
+            if(!$shippingAddress ||
+                empty($shippingAddress->getName()) ||
+                empty($customer->getName()) ||
+                strtoupper($customer->getName()) == strtoupper($shippingAddress->getName())){
                 $info->name_indicator = NameIndicator::IDENTICAL;
             } else {
                 $info->name_indicator = NameIndicator::DIFFERENT;
             }
+        } else {
+            $info->name_indicator = NameIndicator::IDENTICAL;
         }
 
         return $info;

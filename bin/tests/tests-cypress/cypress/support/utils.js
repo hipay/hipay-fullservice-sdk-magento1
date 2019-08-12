@@ -31,9 +31,11 @@ function jsonParseDeep(json) {
             obj = "";
         }
 
-        for (let prop in obj) {
-            if (obj.hasOwnProperty(prop)) {
-                obj[prop] = jsonParseDeep(obj[prop]);
+        if (typeof obj === 'object') {
+            for (let prop in obj) {
+                if (obj.hasOwnProperty(prop)) {
+                    obj[prop] = jsonParseDeep(obj[prop]);
+                }
             }
         }
 
