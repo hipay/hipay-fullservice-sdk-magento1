@@ -25,6 +25,14 @@ Cypress.Commands.add("goToHipayModulePaymentMethodAdmin", () => {
     cy.get('span').contains('Payment Methods').click({force:true});
 });
 
+Cypress.Commands.add("goToHipaySplitPaymentProfileAdmin", () => {
+    cy.get('span').contains('Split Payment Profiles').click({force:true});
+});
+
+Cypress.Commands.add("goToHipaySplitPaymentAdmin", () => {
+    cy.get('span').contains('Split payments').click({force:true});
+});
+
 Cypress.Commands.add("resetProductionConfigForm", () => {
     cy.get('#hipay_hipay_api-head').click();
     cy.get('#hipay_hipay_api_api_username').clear({force: true});
@@ -50,6 +58,7 @@ Cypress.Commands.add("activatePaymentMethods", (method) => {
         }
 
         cy.get('#payment_hipay_' + method + '_active').select("Yes");
+        cy.get('#payment_hipay_' + method + '_debug').select("Yes");
         cy.get('#payment_hipay_' + method + '_is_test_mode').select("Yes");
         cy.get('.content-header-floating *[title="Save Config"]').click();
 
@@ -67,6 +76,35 @@ Cypress.Commands.add("activateOneClick", (method) => {
         cy.get('.content-header-floating *[title="Save Config"]').click();
 
         cy.get('.success-msg').contains('The configuration has been saved');
+    });
+});
+
+Cypress.Commands.add("selectPaymentProfile", (method, profile) => {
+    cy.get('#payment_hipay_' + method + '_active').then(($selectActive) => {
+        if(!$selectActive.is(":visible")) {
+            cy.get('#payment_hipay_' + method + '-head').click();
+        }
+
+        cy.get('#payment_hipay_' + method + '_split_payment_profile').select(profile);
+        cy.get('.content-header-floating *[title="Save Config"]').click();
+
+        cy.get('.success-msg').contains('The configuration has been saved');
+    });
+});
+
+Cypress.Commands.add("createPaymentProfile", (profileName, unit, delay, maxCycles) => {
+    cy.get('body').then(($body) => {
+        if(!$body.find(':contains("' + profileName + '")').length) {
+            cy.get('.content-header-floating *[title="Add payment profile"]').click({force:true});
+
+            cy.get('#name').clear().type(profileName);
+            cy.get('#period_unit').select(unit);
+            cy.get('#period_frequency').clear().type(delay);
+            cy.get('#period_max_cycles').clear().type(maxCycles);
+
+            cy.get('.content-header-floating *[title="Save"]').click({force:true});
+            cy.get('.success-msg').contains('The payment profile has been saved.');
+        }
     });
 });
 
