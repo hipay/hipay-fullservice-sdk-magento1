@@ -155,38 +155,37 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 
             $fmod = fmod($amount, $maxCycles);
 
-            for ($i = 0; $i <= ($maxCycles - 1); $i++) {
-                $j = $i - 1;
+            for ($i = 0; $i < $maxCycles; $i++) {
                 $todayClone = clone $todayDate;
                 switch ($periodUnit) {
                     case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_MONTH:
                         {
-                            $dateToPay = $todayClone->addMonth($periodFrequency + $j)->getDate()->toString(
+                            $dateToPay = $todayClone->addMonth($periodFrequency * $i)->getDate()->toString(
                                 'yyyy-MM-dd'
                             );
                             break;
                         }
                     case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_DAY:
                         {
-                            $dateToPay = $todayClone->addDay($periodFrequency + $j)->getDate()->toString('yyyy-MM-dd');
+                            $dateToPay = $todayClone->addDay($periodFrequency * $i)->getDate()->toString('yyyy-MM-dd');
 
                             break;
                         }
                     case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_SEMI_MONTH:
                         {
-                            $dateToPay = $todayClone->addDay(15 + $periodFrequency + $j)->getDate()->toString(
+                            $dateToPay = $todayClone->addDay(15 * $periodFrequency * $i)->getDate()->toString(
                                 'yyyy-MM-dd'
                             );
                             break;
                         }
                     case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_WEEK:
                         {
-                            $dateToPay = $todayClone->addWeek($periodFrequency + $j)->getDate()->toString('yyyy-MM-dd');
+                            $dateToPay = $todayClone->addWeek($periodFrequency * $i)->getDate()->toString('yyyy-MM-dd');
                             break;
                         }
                     case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_YEAR:
                         {
-                            $dateToPay = $todayClone->addYear($periodFrequency + $j)->getDate()->toString('yyyy-MM-dd');
+                            $dateToPay = $todayClone->addYear($periodFrequency * $i)->getDate()->toString('yyyy-MM-dd');
                             break;
                         }
                 }
