@@ -136,7 +136,7 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_MerchantRiskStatementFormatter 
                         /**
                          * @var Mage_Sales_Model_Order_Item $aComparingItem
                          */
-                        if ($aCurrentItem->getProductId() === $aComparingItem->getProductId()
+                        if ($aCurrentItem->getSku() === $aComparingItem->getSku()
                             && $aCurrentItem->getQtyOrdered() === $aComparingItem->getQtyOrdered()) {
                             $found = true;
                             unset($comparingItems[$compareKey]);
