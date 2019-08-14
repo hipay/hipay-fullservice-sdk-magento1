@@ -74,7 +74,7 @@ casperjs-part1-1:
     paths:
       - bin/tests/errors/
     when: always
-  allow_failure: false
+  allow_failure: true
   after_script:
     -  bash /tools/clean-job.sh $PROJECT_NAME_TEST docker-compose.test.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
   except:
@@ -93,7 +93,7 @@ casperjs-part2-1:
         paths:
           - bin/tests/errors/
         when: always
-    allow_failure: false
+    allow_failure: true
     except:
        variables:
           - $CI_COMMIT_MESSAGE =~ /skip-tests/
@@ -112,7 +112,7 @@ casperjs-part3-1:
         paths:
           - bin/tests/errors/
         when: always
-    allow_failure: false
+    allow_failure: true
     except:
       variables:
         - $CI_COMMIT_MESSAGE =~ /skip-tests/
@@ -131,7 +131,7 @@ casperjs-part4-1:
         paths:
           - bin/tests/errors/
         when: always
-    allow_failure: false
+    allow_failure: true
     except:
       variables:
         - $CI_COMMIT_MESSAGE =~ /skip-tests/
@@ -165,7 +165,7 @@ casperjs-part1-2:
     paths:
       - bin/tests/errors/
     when: always
-  allow_failure: false
+  allow_failure: true
   except:
     variables:
       - $CI_COMMIT_MESSAGE =~ /skip-tests/
@@ -184,7 +184,7 @@ casperjs-part2-2:
       paths:
         - bin/tests/errors/
       when: always
-    allow_failure: false
+    allow_failure: true
     except:
       variables:
         - $CI_COMMIT_MESSAGE =~ /skip-tests/
@@ -203,7 +203,7 @@ casperjs-part3-2:
       paths:
         - bin/tests/errors/
       when: always
-    allow_failure: false
+    allow_failure: true
     after_script:
       - bash /tools/clean-job.sh $PROJECT_NAME_TEST-part3 docker-compose.test-php5-6.yml magento ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
     except:
@@ -222,7 +222,7 @@ casperjs-part4-2:
       paths:
         - bin/tests/errors/
       when: always
-    allow_failure: false
+    allow_failure: true
     except:
       variables:
         - $CI_COMMIT_MESSAGE =~ /skip-tests/
@@ -257,7 +257,7 @@ casperjs-part1-3:
     paths:
       - bin/tests/errors/
     when: always
-  allow_failure: false
+  allow_failure: true
   except:
     variables:
       - $CI_COMMIT_MESSAGE =~ /skip-tests/
@@ -276,7 +276,7 @@ casperjs-part2-3:
         paths:
           - bin/tests/errors/
         when: always
-    allow_failure: false
+    allow_failure: true
     except:
       variables:
         - $CI_COMMIT_MESSAGE =~ /skip-tests/
@@ -295,7 +295,7 @@ casperjs-part3-3:
         paths:
           - bin/tests/errors/
         when: always
-    allow_failure: false
+    allow_failure: true
     except:
       variables:
         - $CI_COMMIT_MESSAGE =~ /skip-tests/
@@ -314,7 +314,7 @@ casperjs-part4-3:
         paths:
           - bin/tests/errors/
         when: always
-    allow_failure: false
+    allow_failure: true
     except:
       variables:
         - $CI_COMMIT_MESSAGE =~ /skip-tests/
