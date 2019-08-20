@@ -58,7 +58,7 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_BrowserInfoFormatter implements
         $rawBrowserInfo = json_decode($this->_payment->getAdditionalInformation('browser_info'));
 
         if($rawBrowserInfo !== false) {
-            $browserInfo->javascript_enabled = true;
+            $browserInfo->javascript_enabled = isset($rawBrowserInfo->javascript_enabled) ? $rawBrowserInfo->javascript_enabled : null;
 
             $browserInfo->java_enabled = isset($rawBrowserInfo->java_enabled) ? $rawBrowserInfo->java_enabled : null;
             $browserInfo->language = isset($rawBrowserInfo->language) ? $rawBrowserInfo->language : null;
