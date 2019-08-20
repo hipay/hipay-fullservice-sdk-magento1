@@ -112,7 +112,7 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_RecurringInfoFormatter implemen
 
             $lastDateToPay = DateTime::createFromFormat('Y-m-d H:i:s', $splitPayment->getDateToPay());
 
-            $recurringInfo->expiration_date = $lastDateToPay->format('Ymd');
+            $recurringInfo->expiration_date = (int)($lastDateToPay->format('Ymd'));
         }
     }
 }

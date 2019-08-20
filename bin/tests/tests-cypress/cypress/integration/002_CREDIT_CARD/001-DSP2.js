@@ -16,8 +16,8 @@ describe('DSP2 field population', function () {
         cy.deleteClients();
         cy.adminLogOut();
 
-        cy.selectShirtItem(5);
-        cy.selectMugItem(3);
+        cy.selectShirtItem(2);
+        cy.selectMugItem(1);
         cy.selectVirtualItem(2);
 
         cy.signIn();
@@ -102,8 +102,8 @@ describe('DSP2 field population', function () {
         cy.deleteClients();
         cy.adminLogOut();
 
-        cy.selectShirtItem(5);
-        cy.selectMugItem(3);
+        cy.selectShirtItem(2);
+        cy.selectMugItem(1);
         cy.selectVirtualItem(2);
 
         cy.signIn();
@@ -260,8 +260,8 @@ describe('DSP2 field population', function () {
         cy.deleteClients();
         cy.adminLogOut();
 
-        cy.selectShirtItem(5);
-        cy.selectMugItem(3);
+        cy.selectShirtItem(2);
+        cy.selectMugItem(1);
         cy.goToCart();
 
         cy.checkoutAsGuest();
@@ -338,7 +338,7 @@ describe('DSP2 field population', function () {
         cy.deleteClients();
         cy.adminLogOut();
 
-        cy.selectVirtualItem(2);
+        cy.selectVirtualItem(30);
 
         cy.signIn();
 
@@ -423,8 +423,8 @@ describe('DSP2 field population', function () {
         cy.activatePaymentMethods('ccxtimes');
         cy.selectPaymentProfile('ccxtimes', 'cypressProfile');
 
-        cy.selectShirtItem(5);
-        cy.selectMugItem(3);
+        cy.selectShirtItem(2);
+        cy.selectMugItem(1);
         cy.selectVirtualItem(2);
 
         cy.signIn();

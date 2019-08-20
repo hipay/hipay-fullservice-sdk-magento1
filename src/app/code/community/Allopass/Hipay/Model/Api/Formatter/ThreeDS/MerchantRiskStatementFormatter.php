@@ -59,7 +59,6 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_MerchantRiskStatementFormatter 
         $merchantRiskStatement->email_delivery_address = $this->getEmailDeliveryAdress();
         $merchantRiskStatement->delivery_time_frame = !empty($merchantRiskStatement->email_delivery_address) ? DeliveryTimeFrame::ELECTRONIC_DELIVERY : DeliveryTimeFrame::OVERNIGHT_SHIPPING;
         $merchantRiskStatement->purchase_indicator = $this->getPurchaseIndicator();
-        $merchantRiskStatement->pre_order_date = $this->getPreOrderDate();
         $merchantRiskStatement->reorder_indicator = $this->getReorderIndicator();
         $merchantRiskStatement->shipping_indicator = $this->getShippingIndicator();
     }
@@ -89,12 +88,6 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_MerchantRiskStatementFormatter 
         }
 
         return PurchaseIndicator::MERCHANDISE_AVAILABLE;
-    }
-
-    private function getPreOrderDate()
-    {
-        // TODO
-        return null;
     }
 
     private function getReorderIndicator()

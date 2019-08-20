@@ -71,8 +71,8 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_AccountInfoFormatter implements
             $creationDate = new DateTime('@'.$customer->getCreatedAtTimestamp());
             $updateDate = DateTime::createFromFormat('Y-m-d H:i:s', $customer->getUpdatedAt());
 
-            $info->opening_account_date = $creationDate->format('Ymd');
-            $info->account_change = $updateDate->format('Ymd');
+            $info->opening_account_date = (int)($creationDate->format('Ymd'));
+            $info->account_change = (int)($updateDate->format('Ymd'));
         }
 
         return $info;
@@ -128,9 +128,9 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_AccountInfoFormatter implements
                 ->load();
 
             // Substracting 1 to remove current order from the count
-            $info->count = $orders6Months->count() -1;
-            $info->payment_attempts_1y = $orders1Year->count() -1;
-            $info->payment_attempts_24h = $orders24Hours->count() -1;
+            $info->count = (int)($orders6Months->count() -1);
+            $info->payment_attempts_1y = (int)($orders1Year->count() -1);
+            $info->payment_attempts_24h = (int)($orders24Hours->count() -1);
 
             $info->card_stored_24h = 0;
 
@@ -182,9 +182,7 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_AccountInfoFormatter implements
 
                 foreach ($cards->getItems() as $card){
                     if(!empty($card->getCreatedAt())) {
-                        $info->enrollment_date = DateTime::createFromFormat("Y-m-d", $card->getCreatedAt())->format("Ymd");
-                    } else {
-                        $info->enrollment_date = "";
+                        $info->enrollment_date = (int)(DateTime::createFromFormat("Y-m-d", $card->getCreatedAt())->format("Ymd"));
                     }
                 }
             }
@@ -230,7 +228,7 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_AccountInfoFormatter implements
                     $this->_order->getShippingAddress()->getCountryId() == $order->getShippingAddress()->getCountryId() &&
                     $this->_order->getShippingAddress()->getTelephone() == $order->getShippingAddress()->getTelephone() &&
                     $this->_order->getShippingAddress()->getFax() == $order->getShippingAddress()->getFax()) {
-                    $info->shipping_used_date = DateTime::createFromFormat('Y-m-d H:i:s', $order->getCreatedAt())->format('Ymd');
+                    $info->shipping_used_date = (int)(DateTime::createFromFormat('Y-m-d H:i:s', $order->getCreatedAt())->format('Ymd'));
                     break;
                 }
             }

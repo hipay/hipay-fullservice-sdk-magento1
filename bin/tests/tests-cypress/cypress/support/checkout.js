@@ -20,7 +20,7 @@ Cypress.Commands.add("selectItemAndGoToCart", (qty) => {
 
 Cypress.Commands.add("selectShirtItem", (qty) => {
     cy.selectItem(
-        '/elizabeth-knit-top-593.html',
+        '/tori-tank-587.html',
         qty
     );
 });
@@ -154,7 +154,7 @@ Cypress.Commands.add("selectShippingForm", (wrappingGift) => {
     cy.route('GET', '/checkout/onepage/progress/?prevStep=shipping_method\n').as('progressShippingMethod');
 
     cy.get('body').then(($body) => {
-        if ($body.find('#s_method_flatrate_flatrate').length) {
+        if ($body.find('#s_method_flatrate_flatrate:visible').length) {
             cy.get('#s_method_flatrate_flatrate').click();
         }
 
