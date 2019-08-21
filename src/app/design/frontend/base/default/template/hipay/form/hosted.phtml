@@ -38,6 +38,7 @@ $_code = $this->getMethodCode();
         </div>
     <?php endif; ?>
     <?php echo $this->__('You will be redirected to payment page after submitting order.') ?>
+    <input type="hidden" value="" id="<?php echo $_code ?>_browser_info" name="payment[<?php echo $_code ?>_browser_info]">
     <script type="text/javascript">
         //<![CDATA[
 

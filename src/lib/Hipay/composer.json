@@ -1,6 +1,6 @@
 {
   "require": {
-    "hipay/hipay-fullservice-sdk-php": "^2.2.1"
+    "hipay/hipay-fullservice-sdk-php": "dev-feature/EC-729"
   },
   "config": {
     "vendor-dir": "hipay-fullservice-sdk-php"
