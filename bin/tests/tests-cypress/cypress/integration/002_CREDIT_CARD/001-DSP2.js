@@ -3,9 +3,10 @@
  *  - Populating DSP2 fields when they should be with the right values
  */
 var utils = require('../../support/utils');
+import cardDatas from '@hipay/hipay-cypress-utils/fixtures/payment-means/card.json';
 describe('DSP2 field population', function () {
     beforeEach(function () {
-        cy.fixture('cards').as("cards");
+        this.cards = cardDatas;
         cy.fixture('notification').as("notification");
         let customerFixture = "customerFR";
         cy.fixture(customerFixture).as("customer");
@@ -31,8 +32,8 @@ describe('DSP2 field population', function () {
 
         cy.get('#hipay_cc_cc_type').select('Visa');
         cy.get('#hipay_cc_cc_number').type(this.cards.visa.ok.cardNumber);
-        cy.get('#hipay_cc_expiration').select(this.cards.visa.ok.expiryMonth);
-        cy.get('#hipay_cc_expiration_yr').select(this.cards.visa.ok.expiryYear);
+        cy.get('#hipay_cc_expiration').select(parseInt(this.cards.visa.ok.expiryMonth).toString());
+        cy.get('#hipay_cc_expiration_yr').select(parseInt(this.cards.visa.ok.expiryYear).toString());
         cy.get('#hipay_cc_cc_cid').type(this.cards.visa.ok.cvc);
 
         cy.get('#payment-buttons-container button').click();
@@ -121,8 +122,8 @@ describe('DSP2 field population', function () {
 
         cy.get('#hipay_cc_cc_type').select('Visa');
         cy.get('#hipay_cc_cc_number').type(this.cards.visa.ok.cardNumber);
-        cy.get('#hipay_cc_expiration').select(this.cards.visa.ok.expiryMonth);
-        cy.get('#hipay_cc_expiration_yr').select(this.cards.visa.ok.expiryYear);
+        cy.get('#hipay_cc_expiration').select(parseInt(this.cards.visa.ok.expiryMonth).toString());
+        cy.get('#hipay_cc_expiration_yr').select(parseInt(this.cards.visa.ok.expiryYear).toString());
         cy.get('#hipay_cc_cc_cid').type(this.cards.visa.ok.cvc);
 
         cy.get('#hipay_cc_create_alias_oneclick').click();
@@ -276,8 +277,8 @@ describe('DSP2 field population', function () {
 
         cy.get('#hipay_cc_cc_type').select('Visa');
         cy.get('#hipay_cc_cc_number').type(this.cards.visa.ok.cardNumber);
-        cy.get('#hipay_cc_expiration').select(this.cards.visa.ok.expiryMonth);
-        cy.get('#hipay_cc_expiration_yr').select(this.cards.visa.ok.expiryYear);
+        cy.get('#hipay_cc_expiration').select(parseInt(this.cards.visa.ok.expiryMonth).toString());
+        cy.get('#hipay_cc_expiration_yr').select(parseInt(this.cards.visa.ok.expiryYear).toString());
         cy.get('#hipay_cc_cc_cid').type(this.cards.visa.ok.cvc);
 
         cy.get('#payment-buttons-container button').click();
@@ -350,8 +351,8 @@ describe('DSP2 field population', function () {
 
         cy.get('#hipay_cc_cc_type').select('Visa');
         cy.get('#hipay_cc_cc_number').type(this.cards.visa.ok.cardNumber);
-        cy.get('#hipay_cc_expiration').select(this.cards.visa.ok.expiryMonth);
-        cy.get('#hipay_cc_expiration_yr').select(this.cards.visa.ok.expiryYear);
+        cy.get('#hipay_cc_expiration').select(parseInt(this.cards.visa.ok.expiryMonth).toString());
+        cy.get('#hipay_cc_expiration_yr').select(parseInt(this.cards.visa.ok.expiryYear).toString());
         cy.get('#hipay_cc_cc_cid').type(this.cards.visa.ok.cvc);
 
         cy.get('#payment-buttons-container button').click();
@@ -438,8 +439,8 @@ describe('DSP2 field population', function () {
 
         cy.get('#hipay_ccxtimes_cc_type').select('Visa');
         cy.get('#hipay_ccxtimes_cc_number').type(this.cards.visa.ok.cardNumber);
-        cy.get('#hipay_ccxtimes_expiration').select(this.cards.visa.ok.expiryMonth);
-        cy.get('#hipay_ccxtimes_expiration_yr').select(this.cards.visa.ok.expiryYear);
+        cy.get('#hipay_ccxtimes_expiration').select(parseInt(this.cards.visa.ok.expiryMonth).toString());
+        cy.get('#hipay_ccxtimes_expiration_yr').select(parseInt(this.cards.visa.ok.expiryYear).toString());
         cy.get('#hipay_ccxtimes_cc_cid').type(this.cards.visa.ok.cvc);
 
         cy.get('#payment-buttons-container button').click();
