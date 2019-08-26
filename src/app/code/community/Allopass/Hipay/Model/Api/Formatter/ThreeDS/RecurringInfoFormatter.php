@@ -47,7 +47,11 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_RecurringInfoFormatter implemen
     }
 
     /**
+    /**
      * @param \HiPay\Fullservice\Gateway\Model\Request\ThreeDSTwo\RecurringInfo $recurringInfo
+     * @return void
+     * @throws Mage_Core_Exception
+     * @throws Zend_Date_Exception
      */
     public function mapRequest(&$recurringInfo)
     {
@@ -56,63 +60,68 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_RecurringInfoFormatter implemen
          */
         $_helper = Mage::helper('hipay');
 
-        if($_helper->splitPaymentsExists($this->_order->getId())) {
-            /**
-             * @var Allopass_Hipay_Model_Resource_PaymentProfile_Collection $profileCollection
-             */
-            $profileCollection = Mage::getResourceModel('hipay/paymentProfile_collection');
-            $profileCollection->addFieldToSelect('*')
-                ->addFieldToFilter(
-                    'profile_id',
-                    $this->_payment->getAdditionalInformation('split_payment_id')
-                )
-                ->load();
+        /**
+         * @var Allopass_Hipay_Model_Resource_PaymentProfile_Collection $profileCollection
+         */
+        $profileCollection = Mage::getResourceModel('hipay/paymentProfile_collection');
+        $profileCollection->addFieldToSelect('*')
+            ->addFieldToFilter(
+                'profile_id',
+                $this->_payment->getAdditionalInformation('split_payment_id')
+            )
+            ->load();
 
-            if ($profileCollection->count() > 0) {
-                $profile = $profileCollection->getFirstItem();
+        if ($profileCollection->count() > 0) {
+            $profile = $profileCollection->getFirstItem();
 
-                $frequency = 0;
-                switch ($profile->getPeriodUnit()) {
-                    case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_MONTH:
-                        {
-                            $frequency = 28 * $profile->getPeriodFrequency();
-                            break;
-                        }
-                    case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_DAY:
-                        {
-                            $frequency = $profile->getPeriodFrequency();
-                            break;
-                        }
-                    case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_SEMI_MONTH:
-                        {
-                            $frequency = 14 * $profile->getPeriodFrequency();
-                            break;
-                        }
-                    case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_WEEK:
-                        {
-                            $frequency = 7 * $profile->getPeriodFrequency();
-                            break;
-                        }
-                    case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_YEAR:
-                        {
-                            $frequency = 365 * $profile->getPeriodFrequency();
-                            break;
-                        }
-                }
-
-                $recurringInfo->frequency = $frequency;
+            $frequency = 0;
+            switch ($profile->getPeriodUnit()) {
+                case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_MONTH:
+                    {
+                        $frequency = 28 * $profile->getPeriodFrequency();
+                        break;
+                    }
+                case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_DAY:
+                    {
+                        $frequency = $profile->getPeriodFrequency();
+                        break;
+                    }
+                case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_SEMI_MONTH:
+                    {
+                        $frequency = 14 * $profile->getPeriodFrequency();
+                        break;
+                    }
+                case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_WEEK:
+                    {
+                        $frequency = 7 * $profile->getPeriodFrequency();
+                        break;
+                    }
+                case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_YEAR:
+                    {
+                        $frequency = 365 * $profile->getPeriodFrequency();
+                        break;
+                    }
             }
 
-            $collection = Mage::getModel('hipay/splitPayment')
-                ->getCollection()
-                ->addFieldToFilter('order_id', $this->_order->getId())
-                ->addOrder('date_to_pay', 'desc');
+            $recurringInfo->frequency = $frequency;
 
-            $splitPayment = $collection->getFirstItem();
+            if ($_helper->splitPaymentsExists($this->_order->getId())) {
+                $collection = Mage::getModel('hipay/splitPayment')
+                    ->getCollection()
+                    ->addFieldToFilter('order_id', $this->_order->getId())
+                    ->addOrder('date_to_pay', 'desc');
 
-            $lastDateToPay = DateTime::createFromFormat('Y-m-d H:i:s', $splitPayment->getDateToPay());
+                $splitPayment = $collection->getFirstItem();
 
-            $recurringInfo->expiration_date = (int)($lastDateToPay->format('Ymd'));
+                $lastDateToPay = DateTime::createFromFormat('Y-m-d H:i:s', $splitPayment->getDateToPay());
+
+                $recurringInfo->expiration_date = (int)($lastDateToPay->format('Ymd'));
+            } else {
+                $splitPaymentArray = $_helper->splitPayment($profile, $this->_payment->getData('amount_ordered'), $this->_order->getCreatedAtDate());
+                $splitPayment = array_pop($splitPaymentArray);
+
+                $recurringInfo->expiration_date = (int)(DateTime::createFromFormat('Y-m-d', $splitPayment['dateToPay'])->format('Ymd'));
+            }
         }
     }
 }

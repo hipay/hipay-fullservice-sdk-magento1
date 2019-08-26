@@ -465,6 +465,11 @@ describe('DSP2 field population', function () {
 
                     let d = new Date();
                     let today = d.getFullYear() + (d.getMonth() < 9 ? "0" : "") + (d.getMonth() + 1) + "" + (d.getDate() < 10 ? "0" : "") + (d.getDate());
+
+                    let expDate = new Date(d.setMonth(d.getMonth()+(23*3)));
+                    let expDateStr = expDate.getFullYear() + (expDate.getMonth() < 9 ? "0" : "") +
+                        (expDate.getMonth() + 1) + "" + (expDate.getDate() < 10 ? "0" : "") + (expDate.getDate());
+
                     // Account info
                     //  -> Customer
                     expect(request.account_info.customer.account_change).to.eq(today, "[account_info.customer.account_change]");
@@ -497,7 +502,8 @@ describe('DSP2 field population', function () {
                     expect(request.browser_info.timezone).to.match(/(.*)/, "[browser_info.timezone]");
 
                     // Recurring info
-                    expect(request.recurring_info).to.eq(undefined, "[recurring_info.frequency]");
+                    expect(request.recurring_info.frequency).to.eq('84', "[recurring_info.frequency]");
+                    expect(request.recurring_info.expiration_date).to.eq(expDateStr, "[recurring_info.expiration_date]");
                 });
             });
         });

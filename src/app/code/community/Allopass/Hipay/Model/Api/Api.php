@@ -129,7 +129,12 @@ class Allopass_Hipay_Model_Api_Api
 
         $env = ($sandbox) ? Configuration::API_ENV_STAGE : Configuration::API_ENV_PRODUCTION;
 
-        $config = new Configuration($credentials["username"], $credentials["password"], $env, null, $proxy);
+        $config = new Configuration(array(
+            "apiUsername" => $credentials["username"],
+            "apiPassword" => $credentials["password"],
+            "apiEnv" => $env,
+            "proxy" => $proxy
+        ));
 
         //Instantiate client provider with configuration object
         $clientProvider = new SimpleHTTPClient($config);

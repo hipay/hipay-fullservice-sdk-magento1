@@ -121,14 +121,14 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * @param $profile
-     * @param $amount
-     * @param int $taxAmount
-     * @return array
+     * @param int $profile The split payment profile ID
+     * @param float $amount The order's total amount
+     * @param int $taxAmount The order's tax amount
+     * @param string|integer|Zend_Date|array $baseDate A suitable argument for the Zend_Date constructor, used as base date for the splits. Default is today.
+     * @return array The split payments list, ordered by date to pay
      * @throws Mage_Core_Exception
-     * @throws Zend_Date_Exception
      */
-    public function splitPayment($profile, $amount, $taxAmount = 0)
+    public function splitPayment($profile, $amount, $baseDate = null, $taxAmount = 0)
     {
         $paymentsSplit = array();
 
@@ -142,7 +142,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
             $periodFrequency = (int)$profile->getPeriodFrequency();
             $periodUnit = $profile->getPeriodUnit();
 
-            $todayDate = new Zend_Date();
+            $todayDate = new Zend_Date($baseDate);
 
             if ($maxCycles < 1) {
                 Mage::throwException(
@@ -206,7 +206,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
     }
 
     /**
-     * @param $order
+     * @param Mage_Sales_Model_Order $order
      * @param $profile
      * @param $customerId
      * @param $cardToken
@@ -230,7 +230,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 
         if (!$this->splitPaymentsExists($order->getId())) {
             $taxAmount = $order->getTaxAmount();
-            $paymentsSplit = $this->splitPayment($profile, $total, $taxAmount);
+            $paymentsSplit = $this->splitPayment($profile, $total, $order->getCreatedAtDate(), $taxAmount);
 
             //remove last element because the first split is already paid
             $numberSplit = 1;
