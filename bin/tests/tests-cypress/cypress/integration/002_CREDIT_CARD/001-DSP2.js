@@ -424,9 +424,9 @@ describe('DSP2 field population', function () {
         cy.activatePaymentMethods('ccxtimes');
         cy.selectPaymentProfile('ccxtimes', 'cypressProfile');
 
-        cy.selectShirtItem(2);
-        cy.selectMugItem(1);
-        cy.selectVirtualItem(2);
+        cy.selectShirtItem(48);
+        cy.selectMugItem(24);
+        cy.selectVirtualItem(48);
 
         cy.signIn();
 
@@ -502,7 +502,7 @@ describe('DSP2 field population', function () {
                     expect(request.browser_info.timezone).to.match(/(.*)/, "[browser_info.timezone]");
 
                     // Recurring info
-                    expect(request.recurring_info.frequency).to.eq('84', "[recurring_info.frequency]");
+                    expect(request.recurring_info.frequency).to.eq(84, "[recurring_info.frequency]");
                     expect(request.recurring_info.expiration_date).to.eq(expDateStr, "[recurring_info.expiration_date]");
                 });
             });
@@ -592,7 +592,7 @@ describe('DSP2 field population', function () {
                     expect(request.browser_info.timezone).to.match(/(.*)/, "[browser_info.timezone]");
 
                     // Recurring info
-                    expect(request.recurring_info.frequency).to.eq('84', "[recurring_info.frequency]");
+                    expect(request.recurring_info.frequency).to.eq(84, "[recurring_info.frequency]");
                     expect(request.recurring_info.expiration_date).to.eq(expDateStr, "[recurring_info.expiration_date]");
                 });
             });

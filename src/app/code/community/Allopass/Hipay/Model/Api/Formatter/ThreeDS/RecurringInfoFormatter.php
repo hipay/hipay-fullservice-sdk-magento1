@@ -83,7 +83,7 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_RecurringInfoFormatter implemen
                     }
                 case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_DAY:
                     {
-                        $frequency = $profile->getPeriodFrequency();
+                        $frequency = 1 * $profile->getPeriodFrequency();
                         break;
                     }
                 case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_SEMI_MONTH:
@@ -103,7 +103,7 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_RecurringInfoFormatter implemen
                     }
             }
 
-            $recurringInfo->frequency = $frequency;
+            $recurringInfo->frequency = (int)$frequency;
 
             if ($_helper->splitPaymentsExists($this->_order->getId())) {
                 $collection = Mage::getModel('hipay/splitPayment')
