@@ -502,7 +502,7 @@ describe('DSP2 field population', function () {
                     expect(request.browser_info.timezone).to.match(/(.*)/, "[browser_info.timezone]");
 
                     // Recurring info
-                    expect(request.recurring_info.frequency).to.eq(84, "[recurring_info.frequency]");
+                    expect(request.recurring_info.frequency).to.eq("84", "[recurring_info.frequency]");
                     expect(request.recurring_info.expiration_date).to.eq(expDateStr, "[recurring_info.expiration_date]");
                 });
             });
@@ -592,7 +592,7 @@ describe('DSP2 field population', function () {
                     expect(request.browser_info.timezone).to.match(/(.*)/, "[browser_info.timezone]");
 
                     // Recurring info
-                    expect(request.recurring_info.frequency).to.eq(84, "[recurring_info.frequency]");
+                    expect(request.recurring_info.frequency).to.eq("84", "[recurring_info.frequency]");
                     expect(request.recurring_info.expiration_date).to.eq(expDateStr, "[recurring_info.expiration_date]");
                 });
             });
