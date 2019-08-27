@@ -45,6 +45,50 @@ setPaypalCredentials() {
     fi
 }
 
+manageComposerForData() {
+    COMPOSER_JSON_FILE="src/lib/Hipay/composer.json"
+
+    if [ ! -f .git/hooks/pre-commit ]
+    then
+        echo "Setting up git pre-commit hook..."
+
+        echo "#!/bin/bash" > .git/hooks/pre-commit
+        echo "COMPOSER_JSON_FILE='"$COMPOSER_JSON_FILE"'" >> .git/hooks/pre-commit
+        echo "git status --porcelain -uno | grep \$COMPOSER_JSON_FILE" >> .git/hooks/pre-commit
+        echo "if [ $? -eq 0 ]" >> .git/hooks/pre-commit
+        echo "then" >> .git/hooks/pre-commit
+        echo "    cp \$COMPOSER_JSON_FILE \$COMPOSER_JSON_FILE.bak" >> .git/hooks/pre-commit
+        echo "    cat \$COMPOSER_JSON_FILE.bak | python -c \"import sys, json; composerObj=json.load(sys.stdin); del composerObj['scripts']; print json.dumps(composerObj, False, True, True, True, None, 2);\" > \$COMPOSER_JSON_FILE" >> .git/hooks/pre-commit
+        echo "    git add \$COMPOSER_JSON_FILE" >> .git/hooks/pre-commit
+        echo "fi" >> .git/hooks/pre-commit
+        echo "exit 0" >> .git/hooks/pre-commit
+
+        chmod 775 .git/hooks/pre-commit
+    fi
+
+    if [ ! -f .git/hooks/post-commit ]
+    then
+        echo "Setting up git post-commit hook..."
+
+        echo "#!/bin/bash" > .git/hooks/post-commit
+        echo "COMPOSER_JSON_FILE='"$COMPOSER_JSON_FILE"'" >> .git/hooks/post-commit
+        echo "if [ -f \$COMPOSER_JSON_FILE.bak ]" >> .git/hooks/post-commit
+        echo "then" >> .git/hooks/post-commit
+        echo "    cp \$COMPOSER_JSON_FILE.bak \$COMPOSER_JSON_FILE" >> .git/hooks/post-commit
+        echo "    rm \$COMPOSER_JSON_FILE.bak" >> .git/hooks/post-commit
+        echo "fi" >> .git/hooks/post-commit
+        echo "exit 0" >> .git/hooks/post-commit
+
+        chmod 775 .git/hooks/post-commit
+    fi
+
+    cp $COMPOSER_JSON_FILE $COMPOSER_JSON_FILE.bak
+    cat $COMPOSER_JSON_FILE.bak | python -c "import sys, json; composerObj=json.load(sys.stdin); composerObj['scripts'] = {'post-install-cmd': ['@managePiDataURLDev'], 'post-update-cmd': ['@managePiDataURLDev'], 'managePiDataURLDev': [\"sed -i 's/stage-data.hipay.com/endpoints-proxy-for-functions-cyz4ot6yrq-ew.a.run.app/g' hipay-fullservice-sdk-php/hipay/hipay-fullservice-sdk-php/lib/HiPay/Fullservice/HTTP/Configuration/Configuration.php\", \"sed -i 's/data.hipay.com/endpoints-proxy-for-functions-cyz4ot6yrq-ew.a.run.app/g' hipay-fullservice-sdk-php/hipay/hipay-fullservice-sdk-php/lib/HiPay/Fullservice/HTTP/Configuration/Configuration.php\"]}; print json.dumps(composerObj, False, True, True, True, None, 2);" > $COMPOSER_JSON_FILE
+    rm $COMPOSER_JSON_FILE.bak
+}
+
+manageComposerForData
+
 if [ "$1" = '' ] || [ "$1" = '--help' ]; then
     echo " ==================================================== "
     echo "                     HIPAY'S HELPER                 "

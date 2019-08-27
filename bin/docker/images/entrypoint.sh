@@ -227,6 +227,13 @@ fi
 
 chown -R www-data:www-data /var/www/htdocs
 
+    printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+    printf "\n${COLOR_SUCCESS}           HOSTS CONGIGURATION           ${NC}\n"
+    printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+    cp /etc/hosts ~/hosts.bak
+    sed -i 's/^127\.0\.0\.1\s*localhost/127.0.0.1    localhost    data.hipay.com/g' ~/hosts.bak
+    cp  ~/hosts.bak /etc/hosts
+
 ################################################################################
 # IF CONTAINER IS KILLED, REMOVE PID
 ################################################################################
