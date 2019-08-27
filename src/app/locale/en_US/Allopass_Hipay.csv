@@ -353,3 +353,6 @@ Your transaction has been approved.,Your transaction has been approved.
 Your transaction has been refused.,Your transaction has been refused.
 "In order to activate this Payment Method, you have to add a valid 'Api TokenJS Password/Public Key' on the HiPay Entreprise configuration","In order to activate this Payment Method, you have to add a valid 'Api TokenJS Password/Public Key' on the HiPay Entreprise configuration"
 OPC provided by Oney,OPC provided by Oney
+"HiPay enterprise %s available!","HiPay enterprise %s available!"
+"We advise you to update the extension if you wish to get the latest fixes and evolutions. To update the extension, please click here : %s","We advise you to update the extension if you wish to get the latest fixes and evolutions. To update the extension, please click here : %s"
+"HiPay enterprise %s available! We advise you to update the extension if you wish to get the latest fixes and evolutions. To update the extension, <a href='%s' target='_blank'>please click here</a>.","HiPay enterprise %s available! We advise you to update the extension if you wish to get the latest fixes and evolutions. To update the extension, <a href='%s' target='_blank'>please click here</a>."

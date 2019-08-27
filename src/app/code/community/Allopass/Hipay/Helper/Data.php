@@ -1321,4 +1321,26 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
 
         return $updating;
     }
+
+    public function readVersionDataFromConf(){
+        $config = Mage::getSingleton('hipay/config');
+        $info = $config->getVersionInfo();
+
+        if(!$info){
+            $info = new stdClass();
+        }
+
+        $info->version = $this->getExtensionVersion();
+
+
+        return $info;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExtensionVersion()
+    {
+        return (string)Mage::getConfig()->getModuleConfig('Allopass_Hipay')->version;
+    }
 }

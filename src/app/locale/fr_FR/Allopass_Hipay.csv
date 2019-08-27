@@ -358,3 +358,6 @@ OPC provided by Oney,OPC fourni par Oney
 "Not applicable for Bancontact / Mister Cash, transaction with this payment method will be automatically captured","Non applicable pour Bancontact / Mister Cash, les transactions réalisées avec cette méthode de paiement seront automatiquement capturées"
 Manual,Manuelle
 Automatic,Automatique
+"HiPay enterprise %s available!","HiPay enterprise %s est disponible !"
+"We advise you to update the extension if you wish to get the latest fixes and evolutions. To update the extension, please click here : %s","Nous vous conseillons d'installer la mise à jour si vous souhaitez disposer des dernières corrections et évolutions. Pour mettre à jour l'extension, cliquez ici : %s"
+"HiPay enterprise %s available! We advise you to update the extension if you wish to get the latest fixes and evolutions. To update the extension, <a href='%s' target='_blank'>please click here</a>.","HiPay enterprise %s est disponible ! Nous vous conseillons d'installer la mise à jour si vous souhaitez disposer des dernières corrections et évolutions. Pour mettre à jour l'extension, <a href='%s' target='_blank'>cliquez ici</a>."

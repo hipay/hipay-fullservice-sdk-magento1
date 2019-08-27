@@ -1,4 +1,4 @@
-FROM php:7.1-apache
+FROM php:7.1-apache-stretch
 
 ENV PHP_VERSION=7.1
 
