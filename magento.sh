@@ -81,10 +81,6 @@ manageComposerForData() {
 
         chmod 775 .git/hooks/post-commit
     fi
-
-    cp $COMPOSER_JSON_FILE $COMPOSER_JSON_FILE.bak
-    cat $COMPOSER_JSON_FILE.bak | python -c "import sys, json; composerObj=json.load(sys.stdin); composerObj['scripts'] = {'post-install-cmd': ['@managePiDataURLDev'], 'post-update-cmd': ['@managePiDataURLDev'], 'managePiDataURLDev': [\"sed -i 's/stage-data.hipay.com/endpoints-proxy-for-functions-cyz4ot6yrq-ew.a.run.app/g' hipay-fullservice-sdk-php/hipay/hipay-fullservice-sdk-php/lib/HiPay/Fullservice/HTTP/Configuration/Configuration.php\", \"sed -i 's/data.hipay.com/endpoints-proxy-for-functions-cyz4ot6yrq-ew.a.run.app/g' hipay-fullservice-sdk-php/hipay/hipay-fullservice-sdk-php/lib/HiPay/Fullservice/HTTP/Configuration/Configuration.php\"]}; print json.dumps(composerObj, False, True, True, True, None, 2);" > $COMPOSER_JSON_FILE
-    rm $COMPOSER_JSON_FILE.bak
 }
 
 manageComposerForData
