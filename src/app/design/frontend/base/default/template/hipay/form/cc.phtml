@@ -174,6 +174,41 @@ $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction',
 
         Event.observe($('<?php echo $_code ?>_cc_type'), 'change', ToogleCvn<?php echo $_code ?>);
         ToogleCvn<?php echo $_code ?>();
+
+        var config = <?php echo $this->getConfigJson() ?>;
+        var tokenizeEnv = 'production';
+        var hfMethodCode = "<?php echo $_code ?>";
+
+        if (config.testMode == 1) {
+            tokenizeEnv = 'stage'; // default is production/live
+            config.api_tokenjs_username = config.api_tokenjs_username_test;
+            config.api_tokenjs_publickey = config.api_tokenjs_publickey_test;
+        }
+
+        var hipay = HiPay({
+            username: config.api_tokenjs_username,
+            password: config.api_tokenjs_publickey,
+            environment: tokenizeEnv,
+            lang: config.lang
+        });
+
+        $("ioBB").value = hipay.getDeviceFingerprint();
+        if (hipay.getDeviceFingerprint() === undefined) {
+            let retryCounter = 0;
+            let interval = setInterval(function timeoutFunc() {
+                retryCounter++;
+                // If global_info init send event
+                if (hipay.getDeviceFingerprint() !== undefined) {
+                    $("ioBB").value = hipay.getDeviceFingerprint();
+                    clearInterval(interval);
+                }
+                // Max retry = 3
+                if (retryCounter > 3) {
+                    clearInterval(interval);
+                }
+            }, 1000);
+        }
+
         //]]>
     </script>
 
