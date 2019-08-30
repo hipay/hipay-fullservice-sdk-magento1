@@ -47,6 +47,14 @@ if ($this->hasPublicCredentials()):
             if (this.validate() && validator.validate()) {
 
                 checkout.setLoadWaiting('payment');
+
+                let realFingerprint = $('realFingerprint');
+                if(realFingerprint){
+                    $$('.ioBB_fingerprint').forEach(function (element) {
+                        element.value = realFingerprint.value;
+                    });
+
+                }
                 var paymentData = Form.serialize(this.form, {hash: true});
                 var method = paymentData["payment[method]"];
                 self.safeFormData = paymentData;
