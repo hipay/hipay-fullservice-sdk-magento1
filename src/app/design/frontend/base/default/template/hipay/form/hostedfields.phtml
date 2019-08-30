@@ -108,6 +108,7 @@ $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction',
             ) ?>
         <?php } ?>
     </div>
+    <input type="hidden" value="" id="<?php echo $_code ?>_browser_info" name="payment[<?php echo $_code ?>_browser_info]">
     <script type="text/javascript">
         //<![CDATA[
 
@@ -203,6 +204,32 @@ $useOrderCurrency = Mage::getStoreConfig('hipay/hipay_api/currency_transaction',
 
         function handleErrorHipayHF(valid, error) {
             document.getElementById("hipayHF-error-message").innerHTML = error;
+        }
+
+        let deviceFingerprintInput = $('realFingerprint');
+        if(deviceFingerprintInput == null) {
+            deviceFingerprintInput = document.createElement('input');
+            deviceFingerprintInput.type = "hidden";
+            deviceFingerprintInput.name = "payment[device_fingerprint]";
+            deviceFingerprintInput.id = "realFingerprint";
+            $("ioBB").name = "payment[device_fingerprint_old]";
+            $("ioBB").parentElement.appendChild(deviceFingerprintInput);
+        }
+        deviceFingerprintInput.value = hipay.getDeviceFingerprint();
+        if (hipay.getDeviceFingerprint() === undefined) {
+            let retryCounter = 0;
+            let interval = setInterval(function timeoutFunc() {
+                retryCounter++;
+                // If global_info init send event
+                if (hipay.getDeviceFingerprint() !== undefined) {
+                    deviceFingerprintInput.value = hipay.getDeviceFingerprint();
+                    clearInterval(interval);
+                }
+                // Max retry = 3
+                if (retryCounter > 3) {
+                    clearInterval(interval);
+                }
+            }, 1000);
         }
 
         //]]>

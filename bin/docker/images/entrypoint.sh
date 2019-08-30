@@ -64,6 +64,11 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     printf "\n${COLOR_SUCCESS}              Install PHP SDK            ${NC}\n"
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     cd /var/www/htdocs/lib/Hipay/
+
+    cp composer.json composer.json.bak
+    cat composer.json.bak | python -c "import sys, json; composerObj=json.load(sys.stdin); composerObj['scripts'] = {'post-install-cmd': ['@managePiDataURLDev'], 'post-update-cmd': ['@managePiDataURLDev'], 'managePiDataURLDev': [\"sed -i 's@https://stage-data.hipay.com@"$PI_DATA_URL"@g' hipay-fullservice-sdk-php/hipay/hipay-fullservice-sdk-php/lib/HiPay/Fullservice/HTTP/Configuration/Configuration.php\", \"sed -i 's@https://data.hipay.com@"$PI_DATA_URL"@g' hipay-fullservice-sdk-php/hipay/hipay-fullservice-sdk-php/lib/HiPay/Fullservice/HTTP/Configuration/Configuration.php\"]}; print json.dumps(composerObj, False, True, True, True, None, 2);" > composer.json
+    rm composer.json.bak
+
     composer install
     cd /tmp
 
@@ -216,7 +221,23 @@ else
     printf "\n${COLOR_SUCCESS}  => MAGENTO IS ALREADY INSTALLED IN THE CONTAINER ${NC}\n"
 fi
 
+if [ "$ENVIRONMENT" = "$ENV_DEVELOPMENT" ] || [ "$ENVIRONMENT" = "$ENV_STAGE" ] ;then
+
+    printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+    printf "\n${COLOR_SUCCESS}      Apply htaccess for logs ${NC}\n"
+    printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+
+    echo -e "Order deny,allow\nAllow from all" > /var/www/htdocs/var/.htaccess
+fi
+
 chown -R www-data:www-data /var/www/htdocs
+
+printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+printf "\n${COLOR_SUCCESS}           HOSTS CONGIGURATION           ${NC}\n"
+printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+cp /etc/hosts ~/hosts.bak
+sed -i 's/^127\.0\.0\.1\s*localhost/127.0.0.1    localhost    data.hipay.com    stage-data.hipay.com/g' ~/hosts.bak
+cp  ~/hosts.bak /etc/hosts
 
 ################################################################################
 # IF CONTAINER IS KILLED, REMOVE PID

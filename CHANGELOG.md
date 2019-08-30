@@ -1,3 +1,8 @@
+# Version 1.13.0
+  - Added DSP2 handling
+  - Add update notification when a new version of the module is available
+  - Fix : Frequency not taken into account when calculating split payment
+
 # Version 1.12.2
   - Update payment method configuration form
   

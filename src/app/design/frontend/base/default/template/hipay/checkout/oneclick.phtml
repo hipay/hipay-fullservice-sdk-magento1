@@ -21,7 +21,7 @@ $_cards = $this->getParentBlock()->getCards();
                 <input id="<?php echo $_code ?>_use_alias_oneclick" value="use_oneclick" checked="checked"
                        type="radio" name="payment[<?php echo $_code ?>_oneclick]"
                        onclick="$('card_payment_form_<?php echo $_code ?>').hide();
-                                $('<?php echo $_code ?>_oneclick_selected_card').show();
+                               $('<?php echo $_code ?>_oneclick_selected_card').show();
                                "/>
                 <label style="float: none;" for="<?php echo $_code ?>_use_alias_oneclick"><?php echo $this->__(
                         'Use my saved card'
@@ -65,8 +65,16 @@ $_cards = $this->getParentBlock()->getCards();
 <br/>
 <script type="text/javascript">
     //<![CDATA[
+    var hfMethodCode = "<?php echo $_code ?>";
+    var hipay = HiPay({
+        username: "hosted",
+        password: "hosted",
+        environment: 'production',
+        lang: "EN"
+    });
+    document.getElementById(hfMethodCode + "_browser_info").value = JSON.stringify(hipay.getBrowserInfo());
 
-    var ToogleOneclick<?php echo $_code ?> = function () {
+    var ToogleOneclick_<?php echo $_code ?> = function () {
         var elm = $('<?php echo $_code ?>_cc_type');
         if (['', 'VI', 'MC', 'AE'].indexOf(elm.value) != -1) {
             $('oneclick_card_payment_form_<?php echo $_code ?>').show();
@@ -76,9 +84,11 @@ $_cards = $this->getParentBlock()->getCards();
         }
     };
 
-    Event.observe($('<?php echo $_code ?>_cc_type'), 'change', ToogleOneclick<?php echo $_code ?>);
+    if ($('<?php echo $_code ?>_cc_type') !== null) {
+        Event.observe($('<?php echo $_code ?>_cc_type'), 'change', ToogleOneclick_<?php echo $_code ?>);
+    }
     document.observe("dom:loaded", function () {
-        ToogleOneclick<?php echo $_code ?>();
+        ToogleOneclick_<?php echo $_code ?>();
     });
 
     //]]>

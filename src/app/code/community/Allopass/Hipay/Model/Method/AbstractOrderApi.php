@@ -1,5 +1,4 @@
 <?php
-
 /**
  * HiPay Fullservice SDK Magento 1
  *
@@ -47,39 +46,29 @@ class Allopass_Hipay_Model_Method_AbstractOrderApi extends Allopass_Hipay_Model_
     }
 
     /**
-     * @param $ccTypeMagento
-     * @return mixed
-     */
-    protected function getCcTypeHipay($ccTypeMagento)
-    {
-        return $ccTypeMagento;
-    }
-
-
-    /**
      * @param $payment
      * @param $amount
      * @return bool|string
      */
     public function place($payment, $amount)
     {
-        $request = Mage::getModel('hipay/api_request', array($this));
-
-        $payment->setAmount($amount);
-
-        $gatewayParams = $this->getGatewayParams($payment, $amount, "");
-        $gatewayParams['operation'] = $this->getOperation();
-        $gatewayParams['payment_product'] = $this->getSpecifiedPaymentProduct($payment);
-        $this->_debug($gatewayParams);
-
-        $gatewayResponse = $request->gatewayRequest(
-            Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_ORDER,
-            $gatewayParams,
-            $payment->getOrder()->getStoreId()
+        $request = Mage::getModel(
+            'hipay/api_api',
+            array(
+                "paymentMethod" => $this,
+                "payment" => $payment,
+                "amount" => $amount
+            )
         );
 
-        $this->_debug($gatewayResponse->debug());
-        return $this->processResponseToRedirect($gatewayResponse, $payment, $amount);
+        $response = $request->requestDirectPost(
+            $this->getSpecifiedPaymentProduct($payment),
+            $this->getPaymentMethodFormatter($payment),
+            $payment->getAdditionalInformation('device_fingerprint'),
+            $this->getAdditionalParameters($payment)
+        );
+
+        return $this->handleApiResponse($response, $payment);
     }
 
     /**
@@ -91,9 +80,16 @@ class Allopass_Hipay_Model_Method_AbstractOrderApi extends Allopass_Hipay_Model_
      */
     public function getSpecifiedPaymentProduct($payment)
     {
-        return ($this->getPaymentProductFees()) ? $this->getPaymentProductFees() : $this->getCcTypeHipay(
-            $payment->getCcType()
-        );
+        return $payment->getCcType();
     }
 
+    public function getPaymentMethodFormatter($payment)
+    {
+        return null;
+    }
+
+    public function getAdditionalParameters($payment)
+    {
+        return null;
+    }
 }

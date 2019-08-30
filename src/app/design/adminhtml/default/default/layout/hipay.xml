@@ -58,4 +58,9 @@
         </reference>
     </adminhtml_card_edit>
 
+    <default>
+        <reference name="notifications">
+            <block type="hipay/adminhtml_system_config_updateNotif" name="hipay_updatenotif" template="hipay/system/config/updatenotif.phtml"/>
+        </reference>
+    </default>
 </layout>

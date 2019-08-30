@@ -28,19 +28,12 @@ class Allopass_Hipay_Model_Method_OneyAbstract extends Allopass_Hipay_Model_Meth
 
     /**
      * @param Mage_Sales_Model_Order_Payment $payment
-     * @param $amount
-     * @param null $token
-     * @param null $split_number
-     * @return array
+     * @return array|null
      */
-    public function getGatewayParams($payment, $amount, $token = null, $split_number = null)
+    public function getAdditionalParameters($payment)
     {
-        $params = parent::getGatewayParams(
-            $payment,
-            $amount,
-            $token,
-            $split_number
-        );
+
+        $params = null;
 
         if (!empty($this->getConfigData('merchant_promotion'))) {
             $params["payment_product_parameters"] = json_encode(
@@ -53,4 +46,32 @@ class Allopass_Hipay_Model_Method_OneyAbstract extends Allopass_Hipay_Model_Meth
         return $params;
     }
 
+    /**
+     *  Some payments method need product code with fees or no fees
+     *
+     * @return string|bool
+     */
+    private function getPaymentProductFees()
+    {
+        $paymentFees = $this->getConfigData('payment_product_fees');
+        if (!empty($paymentFees)) {
+            return $paymentFees;
+        }
+
+        return false;
+    }
+
+    /**
+     *  Return payment product
+     *
+     *  If Payment requires specified option ( With Fees or without Fees return it otherwhise normal payment product)
+     *
+     * @return string
+     */
+    public function getSpecifiedPaymentProduct($payment)
+    {
+        return ($this->getPaymentProductFees()) ? $this->getPaymentProductFees() : $this->getCcTypeHipay(
+            $payment->getCcType()
+        );
+    }
 }

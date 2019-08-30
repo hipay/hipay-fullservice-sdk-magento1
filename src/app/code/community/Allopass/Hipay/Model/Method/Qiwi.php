@@ -20,7 +20,7 @@
  * @license     https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-fullservice-sdk-magento1
  */
-class Allopass_Hipay_Model_Method_Qiwi extends Allopass_Hipay_Model_Method_Hosted
+class Allopass_Hipay_Model_Method_Qiwi extends Allopass_Hipay_Model_Method_HostedAbstract
 {
     protected $_code = 'hipay_qiwi';
 

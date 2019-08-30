@@ -24,6 +24,7 @@ $_code = $this->getMethodCode();
     <?php if ($this->oneClickIsAllowed()) : ?>
         <?php echo $this->getChildHtml('hipay_oneclick'); ?>
     <?php endif; ?>
+    <ul class="form-list" id="card_payment_form_<?php echo $_code ?>"></ul>
     <?php if ($this->allowSplitPayment()) : ?>
         <div id="<?php echo $_code ?>_debit_amount">
             <?php echo $this->__(
@@ -37,6 +38,7 @@ $_code = $this->getMethodCode();
         </div>
     <?php endif; ?>
     <?php echo $this->__('You will be redirected to payment page after submitting order.') ?>
+    <input type="hidden" value="" id="<?php echo $_code ?>_browser_info" name="payment[<?php echo $_code ?>_browser_info]">
     <script type="text/javascript">
         //<![CDATA[
 
@@ -132,8 +134,6 @@ $_code = $this->getMethodCode();
                 }
             }
         };
-
-
         //]]>
     </script>
 </div>

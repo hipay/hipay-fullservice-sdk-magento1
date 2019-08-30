@@ -1,5 +1,4 @@
 <?php
-
 /**
  * HiPay Fullservice SDK Magento 1
  *
@@ -12,6 +11,8 @@
  * @license   https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
  */
 
+use HiPay\Fullservice\Gateway\Request\PaymentMethod\SEPADirectDebitPaymentMethod;
+
 /**
  *
  *
@@ -20,7 +21,7 @@
  * @license     https://github.com/hipay/hipay-fullservice-sdk-magento1/blob/master/LICENSE.md
  * @link    https://github.com/hipay/hipay-fullservice-sdk-magento1
  */
-class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
+class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_AbstractOrderApi
 {
     protected $_code = 'hipay_sdd';
     protected $_formBlockType = 'hipay/form_sdd';
@@ -43,54 +44,31 @@ class Allopass_Hipay_Model_Method_Sdd extends Allopass_Hipay_Model_Method_Cc
 
         $info = $this->getInfoInstance();
         $info->setCcType('SDD')
-            ->setAdditionalInformation('cc_gender', $data->getCcGender())
-            ->setAdditionalInformation('cc_firstname', $data->getCcFirstname())
-            ->setAdditionalInformation('cc_lastname', $data->getCcLastname())
-            ->setAdditionalInformation('cc_iban', $data->getCcIban())
-            ->setAdditionalInformation('cc_code_bic', $data->getCcCodeBic())
-            ->setAdditionalInformation('cc_bank_name', $data->getCcBankName());
+             ->setAdditionalInformation('cc_gender', $data->getCcGender())
+             ->setAdditionalInformation('cc_firstname', $data->getCcFirstname())
+             ->setAdditionalInformation('cc_lastname', $data->getCcLastname())
+             ->setAdditionalInformation('cc_iban', $data->getCcIban())
+             ->setAdditionalInformation('cc_code_bic', $data->getCcCodeBic())
+             ->setAdditionalInformation('cc_bank_name', $data->getCcBankName());
 
         $this->assignInfoData($info, $data);
 
         return $this;
     }
 
-    public function initialize($paymentAction, $stateObject)
+    public function getPaymentMethodFormatter($payment)
     {
-        return $this;
-    }
+        $paymentMethod = new SEPADirectDebitPaymentMethod();
+        $paymentMethod->gender = $payment->getAdditionalInformation('cc_gender');
+        $paymentMethod->firstname = $payment->getAdditionalInformation('cc_firstname');
+        $paymentMethod->lastname = $payment->getAdditionalInformation('cc_lastname');
+        $paymentMethod->bank_name = $payment->getAdditionalInformation('cc_bank_name');
+        $paymentMethod->iban = $payment->getAdditionalInformation('cc_iban');
+        $paymentMethod->issuer_bank_id = $payment->getAdditionalInformation('cc_code_bic');
+        $paymentMethod->recurring_payment = 0;
+        $paymentMethod->authentication_indicator = 0;
 
-
-    public function place($payment, $amount)
-    {
-        $request = Mage::getModel('hipay/api_request', array($this));
-        $payment->setAmount($amount);
-        $token = $payment->getAdditionalInformation('token');
-        $gatewayParams = $this->getGatewayParams($payment, $amount, $token);
-        $gatewayParams['operation'] = $this->getOperation();
-        $paymentProduct = $this->getCcTypeHipay($payment->getCcType());
-
-        $gatewayParams['payment_product'] = $paymentProduct;
-        $gatewayParams['gender'] = $payment->getAdditionalInformation('cc_gender');
-        $gatewayParams['firstname'] = $payment->getAdditionalInformation('cc_firstname');
-        $gatewayParams['lastname'] = $payment->getAdditionalInformation('cc_lastname');
-        $gatewayParams['recurring_payment'] = 0;
-        $gatewayParams['iban'] = $payment->getAdditionalInformation('cc_iban');
-        $gatewayParams['issuer_bank_id'] = $payment->getAdditionalInformation('cc_code_bic');
-        $gatewayParams['bank_name'] = $payment->getAdditionalInformation('cc_bank_name');
-        $gatewayParams['authentication_indicator'] = 0;
-
-        $this->_debug($gatewayParams);
-        $gatewayResponse = $request->gatewayRequest(
-            Allopass_Hipay_Model_Api_Request::GATEWAY_ACTION_ORDER,
-            $gatewayParams,
-            $payment->getOrder()->getStoreId()
-        );
-        $this->_debug($gatewayResponse->debug());
-
-        $redirectUrl = $this->processResponseToRedirect($gatewayResponse, $payment, $amount);
-
-        return $redirectUrl;
+        return $paymentMethod;
     }
 
     /**

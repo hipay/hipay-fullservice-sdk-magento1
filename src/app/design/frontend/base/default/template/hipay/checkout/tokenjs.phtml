@@ -47,6 +47,14 @@ if ($this->hasPublicCredentials()):
             if (this.validate() && validator.validate()) {
 
                 checkout.setLoadWaiting('payment');
+
+                let realFingerprint = $('realFingerprint');
+                if(realFingerprint){
+                    $$('.ioBB_fingerprint').forEach(function (element) {
+                        element.value = realFingerprint.value;
+                    });
+
+                }
                 var paymentData = Form.serialize(this.form, {hash: true});
                 var method = paymentData["payment[method]"];
                 self.safeFormData = paymentData;
@@ -72,6 +80,7 @@ if ($this->hasPublicCredentials()):
                             self.safeFormData["payment[" + method + "_cc_exp_month]"] = response.card_expiry_month;
                             self.safeFormData["payment[" + method + "_cc_cid]"] = null;
                             Form.Element.setValue(method + "_cc_type", response.payment_product);
+                            Form.Element.setValue(method + "_cc_owner", response.card_holder);
                             replaceForm(Form, response, method);
 
                             savePayment(self);
@@ -146,6 +155,7 @@ if ($this->hasPublicCredentials()):
                 Form.Element.setValue(method + "_expiration_yr", result.card_expiry_year);
                 Form.Element.setValue(method + "_expiration", result.card_expiry_month);
                 Form.Element.setValue(method + "_cc_cid", null);
+                Form.Element.setValue(method + "_browser_info", JSON.stringify(result.browser_info));
 
                 //Write token value in input of type hidden
                 $("payment_form_" + method).insert({
