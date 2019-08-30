@@ -247,8 +247,6 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_AccountInfoFormatter implements
             } else {
                 $info->name_indicator = NameIndicator::DIFFERENT;
             }
-        } else {
-            $info->name_indicator = NameIndicator::IDENTICAL;
         }
 
         return $info;

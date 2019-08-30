@@ -57,7 +57,7 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_MerchantRiskStatementFormatter 
     public function mapRequest(&$merchantRiskStatement)
     {
         $merchantRiskStatement->email_delivery_address = $this->getEmailDeliveryAdress();
-        $merchantRiskStatement->delivery_time_frame = !empty($merchantRiskStatement->email_delivery_address) ? DeliveryTimeFrame::ELECTRONIC_DELIVERY : DeliveryTimeFrame::OVERNIGHT_SHIPPING;
+        $merchantRiskStatement->delivery_time_frame = !empty($merchantRiskStatement->email_delivery_address) ? DeliveryTimeFrame::ELECTRONIC_DELIVERY : null;
         $merchantRiskStatement->purchase_indicator = $this->getPurchaseIndicator();
         $merchantRiskStatement->reorder_indicator = $this->getReorderIndicator();
         $merchantRiskStatement->shipping_indicator = $this->getShippingIndicator();

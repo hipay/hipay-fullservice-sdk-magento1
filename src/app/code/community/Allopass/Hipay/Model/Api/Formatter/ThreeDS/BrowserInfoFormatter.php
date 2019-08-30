@@ -51,15 +51,12 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_BrowserInfoFormatter implements
      */
     public function mapRequest(&$browserInfo)
     {
-        $browserInfo->ipaddr = Mage::helper('hipay')->getIpAddress($this->_payment);
-
-        $browserInfo->http_accept = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : null;
-
         $rawBrowserInfo = json_decode($this->_payment->getAdditionalInformation('browser_info'));
 
         if($rawBrowserInfo !== false) {
+            $browserInfo->ipaddr = Mage::helper('hipay')->getIpAddress($this->_payment);
+            $browserInfo->http_accept = isset($_SERVER['HTTP_ACCEPT']) ? $_SERVER['HTTP_ACCEPT'] : null;
             $browserInfo->javascript_enabled = isset($rawBrowserInfo->javascript_enabled) ? $rawBrowserInfo->javascript_enabled : null;
-
             $browserInfo->java_enabled = isset($rawBrowserInfo->java_enabled) ? $rawBrowserInfo->java_enabled : null;
             $browserInfo->language = isset($rawBrowserInfo->language) ? $rawBrowserInfo->language : null;
             $browserInfo->color_depth = isset($rawBrowserInfo->color_depth) ? $rawBrowserInfo->color_depth : null;
