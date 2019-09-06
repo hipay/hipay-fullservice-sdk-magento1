@@ -18,10 +18,10 @@ casper.test.begin('Test MOTO Payment With Incorrect Credentials', function(test)
             /* Set bad credentials inside HiPay Entreprise formular and create order via admin panel */
             .then(function () {
                 initialCredential = this.evaluate(function () {
-                    return document.querySelector('input[name="groups[hipay_api_moto][fields][api_username_test][value]"]').value;
+                    return document.querySelector('input[name="groups[hipay_api][fields][api_username_test][value]"]').value;
                 });
                 test.info("Initial credential for api_user_name was :" + initialCredential);
-                this.fillFormHipayEnterprise("blabla", true);
+                this.fillFormHipayEnterprise("blabla");
                 checkout.proceed(test, paymentType, "hostedmoto");
             })
             /* Submit order */
@@ -41,6 +41,7 @@ casper.test.begin('Test MOTO Payment With Incorrect Credentials', function(test)
                 this.waitForUrl(/admin\/sales_order\/index/, function success() {
                     test.assertHttpStatus(200, "Correct HTTP Status Code 200");
                     test.assertExists('li.error-msg', "Correct response from Magento server !");
+                    test.info("Done");
                 }, function fail() {
                     this.fillFormHipayEnterprise(initialCredential, true);
                     test.assertUrlMatch(/admin\/sales_order\/index/, "Orders admin page exists");
@@ -54,7 +55,7 @@ casper.test.begin('Test MOTO Payment With Incorrect Credentials', function(test)
                     this.click(x('//span[contains(., "HiPay Enterprise")]'));
                     test.info("Done");
                     this.waitForSelector(x('//h3[text()="HiPay Enterprise"]'), function success() {
-                        this.fillFormHipayEnterprise(initialCredential, true);
+                        this.fillFormHipayEnterprise(initialCredential);
                     }, function fail() {
                         test.assertExists(x('//h3[text()="HiPay Enterprise"]'), "Hipay Enterprise admin page exists");
                     }, 10000);
