@@ -1,3 +1,6 @@
+# Version 1.13.1
+  - Fix : undefined index create_oneclick
+  
 # Version 1.13.0
   - Added DSP2 handling
   - Add update notification when a new version of the module is available
