@@ -145,7 +145,7 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_AccountInfoFormatter implements
                         /**
                          * @var Mage_Sales_Model_Order_Payment $payment
                          */
-                        if ($payment->getData('additional_information')['create_oneclick']) {
+                        if ($payment->getAdditionalInformation('create_oneclick')) {
                             $info->card_stored_24h++;
                         }
 
