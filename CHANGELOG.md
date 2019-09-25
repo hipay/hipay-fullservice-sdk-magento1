@@ -1,3 +1,6 @@
+# Version 1.13.2
+  - Fix: Save oneclick cards on 116 and 118 notification
+  
 # Version 1.13.1
   - Fix : undefined index create_oneclick
   
