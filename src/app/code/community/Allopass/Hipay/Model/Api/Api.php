@@ -124,8 +124,8 @@ class Allopass_Hipay_Model_Api_Api
     {
         $proxy = $this->getProxyConfig();
 
-        $sandbox = $this->isTestMode();
-        $credentials = $this->getApiCredentials();
+        $sandbox = $this->isTestMode($this->getStoreId());
+        $credentials = $this->getApiCredentials($this->getStoreId());
 
         $env = ($sandbox) ? Configuration::API_ENV_STAGE : Configuration::API_ENV_PRODUCTION;
 
@@ -146,7 +146,7 @@ class Allopass_Hipay_Model_Api_Api
     protected function getApiCredentials($storeId = null)
     {
         if ($this->isMoto()) {
-            if ($this->isTestMode()) {
+            if ($this->isTestMode($storeId)) {
                 if ($this->getConfig()->isApiCredentialsMotoEmpty(true, $storeId)) {
                     return $this->getConfig()->getApiCredentialsTestMoto($storeId);
                 }
@@ -164,9 +164,9 @@ class Allopass_Hipay_Model_Api_Api
         }
     }
 
-    protected function isTestMode()
+    protected function isTestMode($storeId)
     {
-        return (bool)$this->_methodInstance->getConfigData('is_test_mode');
+        return (bool)$this->_methodInstance->getConfigData('is_test_mode', $storeId);
     }
 
     protected function getConfig()
@@ -182,14 +182,14 @@ class Allopass_Hipay_Model_Api_Api
     protected function getProxyConfig()
     {
         $proxy = array();
-        $proxyHost = Mage::getStoreConfig('hipay/hipay_api/proxy_host', Mage::app()->getStore());
+        $proxyHost = Mage::getStoreConfig('hipay/hipay_api/proxy_host', $this->getStoreId());
         // if host not empty, we use the proxy parameters
         if (!empty($proxyHost)) {
             $proxy = array(
                 "host" => $proxyHost,
-                "port" => Mage::getStoreConfig('hipay/hipay_api/proxy_port', Mage::app()->getStore()),
-                "user" => Mage::getStoreConfig('hipay/hipay_api/proxy_user', Mage::app()->getStore()),
-                "password" => Mage::getStoreConfig('hipay/hipay_api/proxy_pass', Mage::app()->getStore())
+                "port" => Mage::getStoreConfig('hipay/hipay_api/proxy_port', $this->getStoreId()),
+                "user" => Mage::getStoreConfig('hipay/hipay_api/proxy_user', $this->getStoreId()),
+                "password" => Mage::getStoreConfig('hipay/hipay_api/proxy_pass', $this->getStoreId())
             );
         }
 
@@ -200,5 +200,9 @@ class Allopass_Hipay_Model_Api_Api
     {
         $serializer = new RequestSerializer($orderRequest);
         $this->_methodInstance->debugData($serializer->toArray());
+    }
+
+    private function getStoreId(){
+        return $this->_payment->getOrder()->getStoreId();
     }
 }
