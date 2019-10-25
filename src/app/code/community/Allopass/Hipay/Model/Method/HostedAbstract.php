@@ -30,7 +30,7 @@ abstract class Allopass_Hipay_Model_Method_HostedAbstract extends Allopass_Hipay
     /**
      * Assign data to info model instance
      *
-     * @param   mixed $data
+     * @param mixed $data
      * @return  Mage_Payment_Model_Info
      */
     public function assignData($data)
@@ -62,6 +62,17 @@ abstract class Allopass_Hipay_Model_Method_HostedAbstract extends Allopass_Hipay
         );
 
         return $response->getForwardUrl();
+    }
+
+    protected function getAdditionalParameters($payment)
+    {
+        $authenticationIndicator = Mage::helper('hipay')->is3dSecure(
+            $this->getConfigData('use_3d_secure'),
+            $this->getConfigData('config_3ds_rules'),
+            $payment
+        );
+
+        return array("authentication_indicator" => $authenticationIndicator);
     }
 
     public function getPaymentProductList($payment)
