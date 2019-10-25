@@ -62,5 +62,9 @@ class Allopass_Hipay_Model_Api_Formatter_Request_HostedPayment extends Allopass_
         if ($this->_payment->getAdditionalInformation('create_oneclick')) {
             $order->multi_use = 1;
         }
+
+        if (isset($this->_additionalParameters["authentication_indicator"])) {
+            $order->authentication_indicator = $this->_additionalParameters["authentication_indicator"];
+        }
     }
 }

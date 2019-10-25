@@ -13,6 +13,7 @@
 
 use HiPay\Fullservice\Enum\ThreeDSTwo\DeviceChannel;
 use HiPay\Fullservice\Enum\Transaction\ECI;
+
 require_once(dirname(__FILE__) . '/../../../../Helper/Enum/CardPaymentProduct.php');
 
 /**
@@ -65,20 +66,21 @@ abstract class Allopass_Hipay_Model_Api_Formatter_Request_OrderRequestAbstract e
 
             // If split payment exists, it means we are at least on the second payment of the split
             $_helper = Mage::helper('hipay');
-            if($_helper->splitPaymentsExists($this->_payment->getOrder()->getId())) {
+            if ($_helper->splitPaymentsExists($this->_payment->getOrder()->getId())) {
                 $orderRequest->device_channel = DeviceChannel::THREE_DS_REQUESTOR_INITIATED;
             } else {
                 $orderRequest->device_channel = DeviceChannel::BROWSER;
             }
         }
 
-        Mage::dispatchEvent('hipay_order_before_request', array("OrderRequest" => &$orderRequest, "Cart" => $this->_payment->getOrder()->getAllItems()));
+        Mage::dispatchEvent(
+            'hipay_order_before_request',
+            array("OrderRequest" => &$orderRequest, "Cart" => $this->_payment->getOrder()->getAllItems())
+        );
 
         $orderRequest->orderid = $this->_payment->getOrder()->getIncrementId();
 
-        if ($this->_paymentMethod->getConfigData('payment_action') !==
-            Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE
-        ) {
+        if ($this->_paymentMethod->getConfigPaymentAction() !== Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE) {
             $orderRequest->operation = "Sale";
         } else {
             $orderRequest->operation = "Authorization";
@@ -252,8 +254,8 @@ abstract class Allopass_Hipay_Model_Api_Formatter_Request_OrderRequestAbstract e
         }
 
         $spCollection = Mage::getModel('hipay/splitPayment')
-                            ->getCollection()
-                            ->addFieldToFilter('order_id', $this->_payment->getOrder()->getId());
+            ->getCollection()
+            ->addFieldToFilter('order_id', $this->_payment->getOrder()->getId());
 
         if (!$spCollection->count()) {
             return Mage::Helper('hipay')->splitPayment((int)$profile, $this->_amount, $taxAmount);

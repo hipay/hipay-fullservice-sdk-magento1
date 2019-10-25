@@ -22,8 +22,13 @@ abstract class Allopass_Hipay_Model_Api_Formatter_ApiFormatterAbstract implement
 
     protected $_cartFormatterClass = '';
 
+    /**
+     * @var Mage_Payment_Model_Method_Abstract
+     */
     protected $_paymentMethod;
+
     protected $_payment;
+
     protected $_amount;
 
     public function __construct($args)
