@@ -1,6 +1,7 @@
 # Version 1.13.3
   - Fix: Wrong credentials used on refund and capture (multi-store)
   - Fix: issue [149](https://github.com/hipay/hipay-fullservice-sdk-magento1/issues/149)
+  - Fix: authentication indicator on hosted payment
   
 # Version 1.13.2
   - Fix: Save oneclick cards on 116 and 118 notification

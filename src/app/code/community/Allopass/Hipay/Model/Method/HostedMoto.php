@@ -35,6 +35,6 @@ class Allopass_Hipay_Model_Method_HostedMoto extends Allopass_Hipay_Model_Method
 
     protected function getAdditionalParameters($payment)
     {
-        return array("isMoto" => true);
+        return array_merge(array("isMoto" => true), parent::getAdditionalParameters($payment));
     }
 }
