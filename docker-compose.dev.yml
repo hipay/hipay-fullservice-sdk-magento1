@@ -18,9 +18,9 @@ web:
     - ./web:/var/www/htdocs
     - ./log:/var/www/htdocs/var/log
   links:
-    - mysql
+    - database
 #    - smtp
-mysql:
+database:
   image: mysql:5.7
   ports:
     - "3307:3306"
