@@ -23,6 +23,7 @@
 class Allopass_Hipay_Block_Adminhtml_System_Config_Updatenotif extends Mage_Adminhtml_Block_Template
 {
     const HIPAY_GITHUB_MAGENTO_LATEST = "https://api.github.com/repos/hipay/hipay-fullservice-sdk-magento1/releases/latest";
+    const HIPAY_GITHUB_RATE = "https://api.github.com/rate_limit";
 
     /**
      * @var DateTime $lastGithubPoll Last time gitHub API was called
@@ -75,22 +76,26 @@ class Allopass_Hipay_Block_Adminhtml_System_Config_Updatenotif extends Mage_Admi
                 ]
             ];
             $context = stream_context_create($opts);
-            $gitHubInfo = json_decode(file_get_contents(self::HIPAY_GITHUB_MAGENTO_LATEST, false, $context));
-            // If call is successful, reading from call
-            if ($gitHubInfo) {
-                $this->newVersion = $gitHubInfo->tag_name;
-                $this->newVersionDate = $gitHubInfo->published_at;
-                $this->readMeUrl = $gitHubInfo->html_url;
-                $this->lastGithubPoll = $curdate;
+            $rateInfo = json_decode(file_get_contents(self::HIPAY_GITHUB_RATE, false, $context));
 
-                $infoFormatted = new stdClass();
-                $infoFormatted->newVersion = $this->newVersion;
-                $infoFormatted->newVersionDate = $this->newVersionDate;
-                $infoFormatted->readMeUrl = $this->readMeUrl;
-                $infoFormatted->lastCall = $curdate->format('d/m/Y H:i:s');
+            if($rateInfo && $rateInfo->rate->remaining > 0) {
+                $gitHubInfo = json_decode(file_get_contents(self::HIPAY_GITHUB_MAGENTO_LATEST, false, $context));
+                // If call is successful, reading from call
+                if ($gitHubInfo) {
+                    $this->newVersion = $gitHubInfo->tag_name;
+                    $this->newVersionDate = $gitHubInfo->published_at;
+                    $this->readMeUrl = $gitHubInfo->html_url;
+                    $this->lastGithubPoll = $curdate;
 
-                $config = Mage::getSingleton('hipay/config');
-                $config->setConfigData('version_info', json_encode($infoFormatted));
+                    $infoFormatted = new stdClass();
+                    $infoFormatted->newVersion = $this->newVersion;
+                    $infoFormatted->newVersionDate = $this->newVersionDate;
+                    $infoFormatted->readMeUrl = $this->readMeUrl;
+                    $infoFormatted->lastCall = $curdate->format('d/m/Y H:i:s');
+
+                    $config = Mage::getSingleton('hipay/config');
+                    $config->setConfigData('version_info', json_encode($infoFormatted));
+                }
             }
         }
     }
