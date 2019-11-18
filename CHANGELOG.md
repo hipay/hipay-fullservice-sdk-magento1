@@ -1,3 +1,6 @@
+# Version 1.13.4
+  - Fix: Check GitHub API rate before polling GitHub for new versions 
+
 # Version 1.13.3
   - Fix: Wrong credentials used on refund and capture (multi-store)
   - Fix: issue [149](https://github.com/hipay/hipay-fullservice-sdk-magento1/issues/149)
