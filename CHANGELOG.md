@@ -1,3 +1,6 @@
+# Version 1.13.5
+  - **Fix**: Switch ING to API order 
+  
 # Version 1.13.4
   - Fix: Check GitHub API rate before polling GitHub for new versions 
 
