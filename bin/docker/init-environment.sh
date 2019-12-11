@@ -28,11 +28,13 @@ if [ "$3" != '' ]; then
 
     cat docker-compose.test-magento18.yml
 
-    docker-compose  -p $PROJECT_NAME_TEST -f docker-compose.test-magento18.yml build
-    docker-compose  -p $PROJECT_NAME_TEST -f docker-compose.test-magento18.yml up -d
+    docker-compose -f docker-compose.test-magento18.yml build
+    docker-compose -f docker-compose.test-magento18.yml up -d
+    docker-compose -f docker-compose.test-magento18.yml push
 else
   echo "Build and start Magento latest and PHP : $PHP_VERSION "
-  docker-compose   -p $PROJECT_NAME_TEST -f docker-compose.test$PHP_VERSION.yml build 
+  docker-compose  -f docker-compose.test$PHP_VERSION.yml build 
+  docker-compose  -f docker-compose.test$PHP_VERSION.yml push
 fi
 
 

@@ -39,9 +39,14 @@ casper.test.begin('Test Magento With Device Fingerprint', function(test) {
     .then(function() {
         this.echo("Checking 'ioBB' field inside checkout page...", "INFO");
         this.waitUntilVisible('#checkout-step-payment', function success() {
-            ioBB = this.getElementAttribute('input.ioBB_fingerprint', 'value');
-            test.assert(this.exists('input.ioBB_fingerprint') && ioBB != "", "'ioBB' field is present and not empty !");
-            this.fillStepPayment();
+            this.wait(1000, function() {
+                ioBB = this.getElementAttribute('#realFingerprint', 'value');
+                test.info(ioBB);
+                ioBB = ioBB == "" ? this.getElementAttribute('input.ioBB_fingerprint', 'value') : ioBB;
+                test.info(ioBB);
+                test.assert(this.exists('input.ioBB_fingerprint') && ioBB != "", "'ioBB' field is present and not empty !");
+                this.fillStepPayment();
+            });
         }, function fail() {
             test.assertVisible("#checkout-step-payment", "'Payment Information' formular exists");
         }, 10000);

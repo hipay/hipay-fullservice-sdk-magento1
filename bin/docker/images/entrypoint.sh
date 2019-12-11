@@ -228,7 +228,15 @@ if [ "$ENVIRONMENT" = "$ENV_DEVELOPMENT" ] || [ "$ENVIRONMENT" = "$ENV_STAGE" ] 
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
 
     echo -e "Order deny,allow\nAllow from all" > /var/www/htdocs/var/.htaccess
+
+    printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+    printf "\n${COLOR_SUCCESS}      Apply error_log settings           ${NC}\n"
+    printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
+
+    sed -i $'s/<?php/<?php\\\nerror_reporting(E_ALL);\\\nini_set("display_errors", 1);/' /var/www/htdocs/index.php
 fi
+
+
 
 chown -R www-data:www-data /var/www/htdocs
 

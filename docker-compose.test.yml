@@ -1,20 +1,8 @@
 version: "3.3"
 
-networks:
-  magento:
-    internal: true
-  outside:
-    external: true
-
 services:
   web:
-    image: ${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
-    container_name: mg1-${CI_JOB_ID}_web
-    networks:
-      magento:
-      outside:
-         aliases:
-           - ${DOCKER_SERVICE}-${CI_JOB_ID}-web
+    image: gcr.io/pi-dev-sandbox/test-jobs-${DOCKER_STACK}-${DOCKER_SERVICE}_web:${CI_COMMIT_REF_SLUG}
     depends_on:
       - database
     build:
@@ -27,9 +15,10 @@ services:
       - ./bin/docker/conf/test/hipay.env.sample
       - ./bin/docker/conf/test/mage.env.sample
       - ./bin/docker/conf/test/mysql.env.sample
+    ports:
+      - "80:80"
 
   database:
-    container_name: mg1-${CI_JOB_ID}_database
     image: mysql:5.7
     env_file:
        - ./bin/docker/conf/test/mysql.env.sample
@@ -37,9 +26,5 @@ services:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 20s
       retries: 10
-    networks:
-      magento:
-      outside:
-        aliases:
-          - ${DOCKER_SERVICE}-${CI_JOB_ID}-database
-
+    ports:
+      - "3307:3306"
