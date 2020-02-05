@@ -219,7 +219,9 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_AccountInfoFormatter implements
                 /**
                  * @var Mage_Sales_Model_Order $order
                  */
-                if ($this->_order->getShippingAddress()->getName() == $order->getShippingAddress()->getName() &&
+                if ($this->_order->getShippingAddress() && 
+                    $order->getShippingAddress() &&
+                    $this->_order->getShippingAddress()->getName() == $order->getShippingAddress()->getName() &&
                     $this->_order->getShippingAddress()->getCompany() == $order->getShippingAddress()->getCompany() &&
                     $this->_order->getShippingAddress()->getStreetFull() == $order->getShippingAddress()->getStreetFull() &&
                     $this->_order->getShippingAddress()->getCity() == $order->getShippingAddress()->getCity() &&
