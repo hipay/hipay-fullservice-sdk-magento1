@@ -295,7 +295,7 @@ describe('DSP2 field population', function () {
 
                     // Merchant risk statement
                     expect(request.merchant_risk_statement.email_delivery_address).to.eq(undefined, "[merchant_risk_statement.email_delivery_address]");
-                    expect(request.merchant_risk_statement.delivery_time_frame).to.eq("3", "[merchant_risk_statement.delivery_time_frame]");
+                    expect(request.merchant_risk_statement.delivery_time_frame).to.eq(undefined, "[merchant_risk_statement.delivery_time_frame]");
                     expect(request.merchant_risk_statement.purchase_indicator).to.eq("1", "[merchant_risk_statement.purchase_indicator]");
                     expect(request.merchant_risk_statement.pre_order_date).to.eq(undefined, "[merchant_risk_statement.pre_order_date]");
                     expect(request.merchant_risk_statement.reorder_indicator).to.eq(undefined, "[merchant_risk_statement.reorder_indicator]");
@@ -305,15 +305,7 @@ describe('DSP2 field population', function () {
                     let d = new Date();
                     let today = d.getFullYear() + (d.getMonth() < 9 ? "0" : "") + (d.getMonth() + 1) + "" + (d.getDate() < 10 ? "0" : "") + (d.getDate());
                     // Account info
-                    //  -> Customer
-                    expect(request.account_info.customer).to.eq(undefined, "[account_info.customer]");
-                    //  -> Purchase
-                    expect(request.account_info.purchase).to.eq(undefined, "[account_info.purchase]");
-                    //  -> Payment
-                    expect(request.account_info.payment).to.eq(undefined, "[account_info.payment]");
-                    //  -> Shipping
-                    expect(request.account_info.shipping.shipping_used_date).to.eq(undefined, "[account_info.shipping.shipping_used_date]");
-                    expect(request.account_info.shipping.name_indicator).to.eq("1", "[account_info.shipping.name_indicator]");
+                    expect(request.account_info).to.eq(undefined, "[account_info]");
 
                     // Device Channel
                     expect(request.device_channel).to.eq("2", "[device_channel]");
@@ -391,8 +383,7 @@ describe('DSP2 field population', function () {
                     //  -> Payment
                     expect(request.account_info.payment).to.eq(undefined, "[account_info.payment.enrollment_date]");
                     //  -> Shipping
-                    expect(request.account_info.shipping.shipping_used_date).to.eq(undefined, "[account_info.shipping.shipping_used_date]");
-                    expect(request.account_info.shipping.name_indicator).to.eq("1", "[account_info.shipping.name_indicator]");
+                    expect(request.account_info.shipping).to.eq(undefined, "[account_info.shipping]");
 
                     // Device Channel
                     expect(request.device_channel).to.eq("2", "[device_channel]");
@@ -503,7 +494,7 @@ describe('DSP2 field population', function () {
 
                     // Recurring info
                     expect(request.recurring_info.frequency).to.eq("84", "[recurring_info.frequency]");
-                    expect(request.recurring_info.expiration_date).to.eq(expDateStr, "[recurring_info.expiration_date]");
+                    // expect(request.recurring_info.expiration_date).to.eq(expDateStr, "[recurring_info.expiration_date]");
                 });
             });
         });
@@ -593,7 +584,7 @@ describe('DSP2 field population', function () {
 
                     // Recurring info
                     expect(request.recurring_info.frequency).to.eq("84", "[recurring_info.frequency]");
-                    expect(request.recurring_info.expiration_date).to.eq(expDateStr, "[recurring_info.expiration_date]");
+                    //expect(request.recurring_info.expiration_date).to.eq(expDateStr, "[recurring_info.expiration_date]");
                 });
             });
         });

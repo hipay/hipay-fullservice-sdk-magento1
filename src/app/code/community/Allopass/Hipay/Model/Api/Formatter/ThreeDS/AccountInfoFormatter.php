@@ -195,7 +195,7 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_AccountInfoFormatter implements
     {
         $info = new \HiPay\Fullservice\Gateway\Model\Request\ThreeDSTwo\AccountInfo\Shipping();
 
-        if(!$this->_order->getCustomerIsGuest()) {
+        if(!$this->_order->getCustomerIsGuest() && $this->_order->getShippingAddress()) {
             $shippingAddress = $this->_order->getShippingAddress();
 
             $allOrders = Mage::getResourceModel('sales/order_collection')
@@ -219,8 +219,7 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_AccountInfoFormatter implements
                 /**
                  * @var Mage_Sales_Model_Order $order
                  */
-                if ($this->_order->getShippingAddress() && 
-                    $order->getShippingAddress() &&
+                if ($order->getShippingAddress() &&
                     $this->_order->getShippingAddress()->getName() == $order->getShippingAddress()->getName() &&
                     $this->_order->getShippingAddress()->getCompany() == $order->getShippingAddress()->getCompany() &&
                     $this->_order->getShippingAddress()->getStreetFull() == $order->getShippingAddress()->getStreetFull() &&
@@ -229,7 +228,8 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_AccountInfoFormatter implements
                     $this->_order->getShippingAddress()->getPostcode() == $order->getShippingAddress()->getPostcode() &&
                     $this->_order->getShippingAddress()->getCountryId() == $order->getShippingAddress()->getCountryId() &&
                     $this->_order->getShippingAddress()->getTelephone() == $order->getShippingAddress()->getTelephone() &&
-                    $this->_order->getShippingAddress()->getFax() == $order->getShippingAddress()->getFax()) {
+                    $this->_order->getShippingAddress()->getFax() == $order->getShippingAddress()->getFax()
+                ) {
                     $info->shipping_used_date = (int)(DateTime::createFromFormat('Y-m-d H:i:s', $order->getCreatedAt())->format('Ymd'));
                     break;
                 }
@@ -244,7 +244,8 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_AccountInfoFormatter implements
             if(!$shippingAddress ||
                 empty($shippingAddress->getName()) ||
                 empty($customer->getName()) ||
-                strtoupper($customer->getName()) == strtoupper($shippingAddress->getName())){
+                strtoupper($customer->getName()) == strtoupper($shippingAddress->getName())
+            ){
                 $info->name_indicator = NameIndicator::IDENTICAL;
             } else {
                 $info->name_indicator = NameIndicator::DIFFERENT;
