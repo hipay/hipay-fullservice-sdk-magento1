@@ -1,3 +1,6 @@
+# Version 1.13.6
+  - **Fix**: Fix fatal error on order when only virtual products
+   
 # Version 1.13.5
   - **Fix**: Switch ING to API order 
   
