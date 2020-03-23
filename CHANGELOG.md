@@ -1,3 +1,6 @@
+# Version 1.14.0
+  - **New**: Added Multibanco Payment Method
+
 # Version 1.13.6
   - **Fix**: Fix fatal error on order when only virtual products
    
