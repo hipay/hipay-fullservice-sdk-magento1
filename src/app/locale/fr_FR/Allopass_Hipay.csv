@@ -361,3 +361,7 @@ Automatic,Automatique
 "HiPay enterprise %s available!","HiPay enterprise %s est disponible !"
 "We advise you to update the extension if you wish to get the latest fixes and evolutions. To update the extension, please click here : %s","Nous vous conseillons d'installer la mise à jour si vous souhaitez disposer des dernières corrections et évolutions. Pour mettre à jour l'extension, cliquez ici : %s"
 "HiPay enterprise %s available! We advise you to update the extension if you wish to get the latest fixes and evolutions. To update the extension, <a href='%s' target='_blank'>please click here</a>.","HiPay enterprise %s est disponible ! Nous vous conseillons d'installer la mise à jour si vous souhaitez disposer des dernières corrections et évolutions. Pour mettre à jour l'extension, <a href='%s' target='_blank'>cliquez ici</a>."
+3 days,3 jours
+30 days,30 jours
+90 days,90 jours
+Order expiration delay,Délai d'expiration de la commande

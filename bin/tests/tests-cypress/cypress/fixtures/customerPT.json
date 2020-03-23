@@ -1,0 +1,11 @@
+{
+  "firstName": "Didier",
+  "lastName": "Denis",
+  "email": "d.denis@hipay.com",
+  "streetAddress": "10 rue Cornulier",
+  "city": "Braga",
+  "zipCode": "4704-532",
+  "country": "PT",
+  "phone": "0210236596",
+  "password": "password123"
+}
