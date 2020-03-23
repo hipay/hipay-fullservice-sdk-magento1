@@ -66,6 +66,19 @@ Cypress.Commands.add("activatePaymentMethods", (method) => {
     });
 });
 
+Cypress.Commands.add("configurePaymentMethods", (method, field, value) => {
+    cy.get('#payment_hipay_' + method + '_active').then(($selectActive) => {
+        if(!$selectActive.is(":visible")) {
+            cy.get('#payment_hipay_' + method + '-head').click();
+        }
+
+        cy.get('#payment_hipay_' + method + '_' + field).select(value);
+        cy.get('.content-header-floating *[title="Save Config"]').click();
+
+        cy.get('.success-msg').contains('The configuration has been saved');
+    })
+});
+
 Cypress.Commands.add("activateOneClick", (method) => {
     cy.get('#payment_hipay_' + method + '_active').then(($selectActive) => {
         if(!$selectActive.is(":visible")) {
@@ -189,32 +202,3 @@ Cypress.Commands.add("deleteClients", () => {
         }
     });
 });
-
-/*
-Cypress.Commands.add("changeProductStock", (productId, stock, preorderDate) => {
-    cy.visit("/admin-hipay/index.php/sell/catalog/products/" + productId);
-    cy.get('.btn-outline-danger').click();
-    cy.get('#tab_step3').click();
-
-    cy.get('body').then(($body) => {
-        // synchronously query from body
-        // to find which element was created
-        if ($body.find('#form_step3_qty_0').is(':visible')) {
-            cy.get('#form_step3_qty_0').clear().type(stock);
-
-            if(preorderDate !== undefined) {
-                cy.get('#form_step3_out_of_stock_1').click();
-                cy.get('#form_step3_available_date').clear().type(preorderDate);
-            } else {
-                cy.get('#form_step3_available_date').clear();
-            }
-        } else {
-            cy.get('.attribute-quantity input').each(($input, idx, $inputs) => {
-                cy.wrap($input).clear().type(stock);
-            });
-        }
-
-        cy.get('.product-footer button.js-btn-save').click({force: true});
-        cy.get('#growls-default div').should('be.visible');
-    });
-});*/

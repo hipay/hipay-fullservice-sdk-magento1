@@ -141,3 +141,7 @@
 "HiPay enterprise %s available!","HiPay enterprise %s available!"
 "We advise you to update the extension if you wish to get the latest fixes and evolutions. To update the extension, please click here : %s","We advise you to update the extension if you wish to get the latest fixes and evolutions. To update the extension, please click here : %s"
 "HiPay enterprise %s available! We advise you to update the extension if you wish to get the latest fixes and evolutions. To update the extension, <a href='%s' target='_blank'>please click here</a>.","HiPay enterprise %s available! We advise you to update the extension if you wish to get the latest fixes and evolutions. To update the extension, <a href='%s' target='_blank'>please click here</a>."
+3 days,3 days
+30 days,30 days
+90 days,90 days
+Order expiration delay,Order expiration delay

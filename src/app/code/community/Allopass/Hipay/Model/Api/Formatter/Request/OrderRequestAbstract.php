@@ -182,10 +182,12 @@ abstract class Allopass_Hipay_Model_Api_Formatter_Request_OrderRequestAbstract e
             $orderRequest->payment_product_parameters = $this->_additionalParameters["payment_product_parameters"];
         }
 
-        if (isset($this->_additionalParameters["isMoto"]) && $this->_additionalParameters["isMoto"]) {
-            // for hosted page MO/TO transaction
-            $orderRequest->eci = ECI::MOTO;
+        $expiration_delay = $this->_paymentMethod->getConfigData('expiration_delay');
+        if (!is_null($expiration_delay)) {
+            $orderRequest->expiration_limit = $expiration_delay;
         }
+
+
     }
 
     protected function initSplitPayment(&$orderRequest)
