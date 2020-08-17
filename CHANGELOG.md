@@ -1,3 +1,7 @@
+# Version 1.15.0
+ - **Fix**: Fixed deprecated code
+ - **Fix**:Corrected split payment date calculation method
+
 # Version 1.14.0
   - **New**: Added Multibanco Payment Method
 
