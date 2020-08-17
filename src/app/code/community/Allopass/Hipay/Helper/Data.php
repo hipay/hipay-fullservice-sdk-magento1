@@ -156,7 +156,7 @@ class Allopass_Hipay_Helper_Data extends Mage_Core_Helper_Abstract
             $fmod = fmod($amount, $maxCycles);
 
             for ($i = 0; $i < $maxCycles; $i++) {
-                $todayClone = clone $todayDate;
+                $todayClone = new Zend_Date($todayDate->toString('yyyy-MM-dd'));
                 switch ($periodUnit) {
                     case Allopass_Hipay_Model_PaymentProfile::PERIOD_UNIT_MONTH:
                         {
