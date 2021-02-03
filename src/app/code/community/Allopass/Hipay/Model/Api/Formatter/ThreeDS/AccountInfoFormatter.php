@@ -129,8 +129,8 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_AccountInfoFormatter implements
 
             // Substracting 1 to remove current order from the count
             $info->count = (int)($orders6Months->count() -1);
-            $info->payment_attempts_1y = (int)($orders1Year->count() -1);
-            $info->payment_attempts_24h = (int)($orders24Hours->count() -1);
+            $info->payment_attempts_1y = min((int)($orders1Year->count() -1), 999);
+            $info->payment_attempts_24h = min((int)($orders24Hours->count() -1), 999);
 
             $info->card_stored_24h = 0;
 
