@@ -793,7 +793,7 @@
             </hipay_przelewy24api>
             <hipay_sisalapi>
                 <active>0</active> <!-- Activé ou non -->
-                <title>HiPay Enterprise Sisal</title> <!-- Titre par défaut modifiable en admin -->
+                <title>HiPay Enterprise Mooney</title> <!-- Titre par défaut modifiable en admin -->
                 <payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
                 <cctypes>sisal</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
                 <order_status_payment_accepted>processing</order_status_payment_accepted><!-- valeur par défaut du statut quand le paiement est accepté -->
