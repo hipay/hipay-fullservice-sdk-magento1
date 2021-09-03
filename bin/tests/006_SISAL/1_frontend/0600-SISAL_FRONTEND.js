@@ -6,7 +6,7 @@
  *
 /**********************************************************************************************/
 
-var paymentType = "HiPay Enterprise Sisal";
+var paymentType = "HiPay Enterprise Mooney";
 
 casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(test) {
     phantom.clearCookies();
