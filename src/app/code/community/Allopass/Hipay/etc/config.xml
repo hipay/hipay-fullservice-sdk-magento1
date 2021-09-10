@@ -168,13 +168,27 @@
             <order>
                 <statuses>
                     <!-- retained for backwards compatibility, not used after version 1.4.2 -->
-                    <pending_capture translate="label"><label>Pending Capture</label></pending_capture>
-                    <capture_requested translate="label"><label>Capture Requested</label></capture_requested>
-                    <refund_requested translate="label"><label>Refund Requested</label></refund_requested>
-                    <authorization_requested translate="label"><label>Authorization Requested</label></authorization_requested>
-                    <expired translate="label"><label>Transaction Expired</label></expired>
-                    <partial_refund translate="label"><label>Partial Refund</label></partial_refund>
-                    <partial_capture translate="label"><label>Partial capture</label></partial_capture>
+                    <pending_capture translate="label">
+                        <label>Pending Capture</label>
+                    </pending_capture>
+                    <capture_requested translate="label">
+                        <label>Capture Requested</label>
+                    </capture_requested>
+                    <refund_requested translate="label">
+                        <label>Refund Requested</label>
+                    </refund_requested>
+                    <authorization_requested translate="label">
+                        <label>Authorization Requested</label>
+                    </authorization_requested>
+                    <expired translate="label">
+                        <label>Transaction Expired</label>
+                    </expired>
+                    <partial_refund translate="label">
+                        <label>Partial Refund</label>
+                    </partial_refund>
+                    <partial_capture translate="label">
+                        <label>Partial capture</label>
+                    </partial_capture>
                 </statuses>
             </order>
         </sales>
@@ -357,6 +371,7 @@
                 <secret_passphrase_test backend_model="adminhtml/system_config_backend_encrypted"/>
                 <gateway_endpoint_stage>https://stage-secure-gateway.hipay-tpp.com/rest/</gateway_endpoint_stage>
                 <gateway_endpoint_production>https://secure-gateway.hipay-tpp.com/rest/</gateway_endpoint_production>
+                <hostedpage_version>hpv2</hostedpage_version>
                 <currency_transaction>0</currency_transaction>
                 <fingerprint>1</fingerprint>
                 <fingerprint_js_url>https://mpsnare.iesnare.com/snare.js</fingerprint_js_url>
@@ -620,347 +635,347 @@
                 <send_fraud_payment_email>0</send_fraud_payment_email>
             </hipay_hostedxtimes>
             <hipay_sofortapi>
-                <active>0</active> <!-- Activé ou non -->
-                <title>HiPay Enterprise Sofort</title> <!-- Titre par défaut modifiable en admin -->
-                <payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
-                <cctypes>sofort-uberweisung</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
-                <order_status_payment_accepted>processing</order_status_payment_accepted><!-- valeur par défaut du statut quand le paiement est accepté -->
-                <order_status_payment_refused>canceled</order_status_payment_refused><!-- valeur par défaut du statut quand le paiement est refusé -->
-                <order_status_payment_canceled>canceled</order_status_payment_canceled><!-- valeur par défaut du statut quand le paiement est annulé -->
-                <hipay_status_validate_order>118</hipay_status_validate_order><!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
-                <pending_redirect_page>hipay/checkout/pending</pending_redirect_page><!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
-                <allow_use_oneclick>0</allow_use_oneclick><!-- valeur par défaut de l'utilisation du oneclick -->
-                <invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
-                <re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
-                <cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
+                <active>0</active>                <!-- Activé ou non -->
+                <title>HiPay Enterprise Sofort</title>                <!-- Titre par défaut modifiable en admin -->
+                <payment_action>authorize_capture</payment_action>                <!-- Type d'action de paiement (authorize_capture ou authorize) -->
+                <cctypes>sofort-uberweisung</cctypes>                <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
+                <order_status_payment_accepted>processing</order_status_payment_accepted>                <!-- valeur par défaut du statut quand le paiement est accepté -->
+                <order_status_payment_refused>canceled</order_status_payment_refused>                <!-- valeur par défaut du statut quand le paiement est refusé -->
+                <order_status_payment_canceled>canceled</order_status_payment_canceled>                <!-- valeur par défaut du statut quand le paiement est annulé -->
+                <hipay_status_validate_order>118</hipay_status_validate_order>                <!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
+                <pending_redirect_page>hipay/checkout/pending</pending_redirect_page>                <!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
+                <allow_use_oneclick>0</allow_use_oneclick>                <!-- valeur par défaut de l'utilisation du oneclick -->
+                <invoice_create>1</invoice_create>                <!-- valeur par défaut de la création de la facture -->
+                <re_add_to_cart>0</re_add_to_cart>                <!-- valeur par défaut du re-remplissage du panier -->
+                <cancel_pending_order>1</cancel_pending_order>                <!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
                 <delay_cancel_pending_order>0.5</delay_cancel_pending_order>
-                <display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
-                <is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
-                <debug>0</debug><!-- valeur par défaut du mode debug -->
-                <model>hipay/method_sofortApi</model><!-- Classe model de la méthode -->
-                <accept_url>hipay/sofortapi/accept</accept_url><!-- Url accept de la méthode -->
-                <pending_url>hipay/sofortapi/pending</pending_url><!-- Url pending de la méthode -->
-                <decline_url>hipay/sofortapi/decline</decline_url><!-- Url decline de la méthode -->
-                <exception_url>hipay/sofortapi/exception</exception_url><!-- Url execption de la méthode -->
-                <cancel_url>hipay/sofortapi/cancel</cancel_url><!-- Url cancel de la méthode -->
-                <use_3d_secure>0</use_3d_secure><!-- valeur par défaut pour activer le 3ds -->
-                <send_fraud_payment_email>0</send_fraud_payment_email> <!-- Envoi le mail de fraud au client final -->
+                <display_iframe>0</display_iframe>                <!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
+                <is_test_mode>0</is_test_mode>                <!-- valeur par défaut du mode test -->
+                <debug>0</debug>                <!-- valeur par défaut du mode debug -->
+                <model>hipay/method_sofortApi</model>                <!-- Classe model de la méthode -->
+                <accept_url>hipay/sofortapi/accept</accept_url>                <!-- Url accept de la méthode -->
+                <pending_url>hipay/sofortapi/pending</pending_url>                <!-- Url pending de la méthode -->
+                <decline_url>hipay/sofortapi/decline</decline_url>                <!-- Url decline de la méthode -->
+                <exception_url>hipay/sofortapi/exception</exception_url>                <!-- Url execption de la méthode -->
+                <cancel_url>hipay/sofortapi/cancel</cancel_url>                <!-- Url cancel de la méthode -->
+                <use_3d_secure>0</use_3d_secure>                <!-- valeur par défaut pour activer le 3ds -->
+                <send_fraud_payment_email>0</send_fraud_payment_email>                <!-- Envoi le mail de fraud au client final -->
             </hipay_sofortapi>
             <hipay_ideal>
-                <active>0</active> <!-- Activé ou non -->
-                <title>HiPay Enterprise iDeal</title> <!-- Titre par défaut modifiable en admin -->
-                <payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
-                <cctypes>ideal</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
-                <order_status_payment_accepted>processing</order_status_payment_accepted><!-- valeur par défaut du statut quand le paiement est accepté -->
-                <order_status_payment_refused>canceled</order_status_payment_refused><!-- valeur par défaut du statut quand le paiement est refusé -->
-                <order_status_payment_canceled>canceled</order_status_payment_canceled><!-- valeur par défaut du statut quand le paiement est annulé -->
-                <hipay_status_validate_order>118</hipay_status_validate_order><!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
-                <pending_redirect_page>hipay/checkout/pending</pending_redirect_page><!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
-                <display_selector>0</display_selector><!-- valeur par défaut l'affichage du selecteur de carte (uniquement en mode Hosted)-->
-                <template>basic-js</template><!-- valeur par défaut du template de la page hénergé (uniquement en mode Hosted)-->
-                <allow_use_oneclick>0</allow_use_oneclick><!-- valeur par défaut de l'utilisation du oneclick -->
-                <invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
-                <re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
-                <cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
+                <active>0</active>                <!-- Activé ou non -->
+                <title>HiPay Enterprise iDeal</title>                <!-- Titre par défaut modifiable en admin -->
+                <payment_action>authorize_capture</payment_action>                <!-- Type d'action de paiement (authorize_capture ou authorize) -->
+                <cctypes>ideal</cctypes>                <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
+                <order_status_payment_accepted>processing</order_status_payment_accepted>                <!-- valeur par défaut du statut quand le paiement est accepté -->
+                <order_status_payment_refused>canceled</order_status_payment_refused>                <!-- valeur par défaut du statut quand le paiement est refusé -->
+                <order_status_payment_canceled>canceled</order_status_payment_canceled>                <!-- valeur par défaut du statut quand le paiement est annulé -->
+                <hipay_status_validate_order>118</hipay_status_validate_order>                <!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
+                <pending_redirect_page>hipay/checkout/pending</pending_redirect_page>                <!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
+                <display_selector>0</display_selector>                <!-- valeur par défaut l'affichage du selecteur de carte (uniquement en mode Hosted)-->
+                <template>basic-js</template>                <!-- valeur par défaut du template de la page hénergé (uniquement en mode Hosted)-->
+                <allow_use_oneclick>0</allow_use_oneclick>                <!-- valeur par défaut de l'utilisation du oneclick -->
+                <invoice_create>1</invoice_create>                <!-- valeur par défaut de la création de la facture -->
+                <re_add_to_cart>0</re_add_to_cart>                <!-- valeur par défaut du re-remplissage du panier -->
+                <cancel_pending_order>1</cancel_pending_order>                <!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
                 <delay_cancel_pending_order>0.5</delay_cancel_pending_order>
-                <display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
-                <is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
-                <debug>0</debug><!-- valeur par défaut du mode debug -->
-                <model>hipay/method_ideal</model><!-- Classe model de la méthode -->
-                <accept_url>hipay/ideal/accept</accept_url><!-- Url accept de la méthode -->
-                <pending_url>hipay/ideal/pending</pending_url><!-- Url pending de la méthode -->
-                <decline_url>hipay/ideal/decline</decline_url><!-- Url decline de la méthode -->
-                <exception_url>hipay/ideal/exception</exception_url><!-- Url execption de la méthode -->
-                <cancel_url>hipay/ideal/cancel</cancel_url><!-- Url cancel de la méthode -->
-                <use_3d_secure>0</use_3d_secure><!-- valeur par défaut pour activer le 3ds -->
-                <send_fraud_payment_email>0</send_fraud_payment_email> <!-- Envoi le mail de fraud au client final -->
+                <display_iframe>0</display_iframe>                <!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
+                <is_test_mode>0</is_test_mode>                <!-- valeur par défaut du mode test -->
+                <debug>0</debug>                <!-- valeur par défaut du mode debug -->
+                <model>hipay/method_ideal</model>                <!-- Classe model de la méthode -->
+                <accept_url>hipay/ideal/accept</accept_url>                <!-- Url accept de la méthode -->
+                <pending_url>hipay/ideal/pending</pending_url>                <!-- Url pending de la méthode -->
+                <decline_url>hipay/ideal/decline</decline_url>                <!-- Url decline de la méthode -->
+                <exception_url>hipay/ideal/exception</exception_url>                <!-- Url execption de la méthode -->
+                <cancel_url>hipay/ideal/cancel</cancel_url>                <!-- Url cancel de la méthode -->
+                <use_3d_secure>0</use_3d_secure>                <!-- valeur par défaut pour activer le 3ds -->
+                <send_fraud_payment_email>0</send_fraud_payment_email>                <!-- Envoi le mail de fraud au client final -->
             </hipay_ideal>
             <hipay_ing>
-                <active>0</active> <!-- Activé ou non -->
-                <title>HiPay ING Home'Pay</title> <!-- Titre par défaut modifiable en admin -->
-                <payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
-                <cctypes>ing-homepay</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
-                <order_status_payment_accepted>processing</order_status_payment_accepted><!-- valeur par défaut du statut quand le paiement est accepté -->
-                <order_status_payment_refused>canceled</order_status_payment_refused><!-- valeur par défaut du statut quand le paiement est refusé -->
-                <order_status_payment_canceled>canceled</order_status_payment_canceled><!-- valeur par défaut du statut quand le paiement est annulé -->
-                <hipay_status_validate_order>118</hipay_status_validate_order><!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
-                <pending_redirect_page>hipay/checkout/pending</pending_redirect_page><!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
-                <display_selector>0</display_selector><!-- valeur par défaut l'affichage du selecteur de carte (uniquement en mode Hosted)-->
-                <template>basic-js</template><!-- valeur par défaut du template de la page hénergé (uniquement en mode Hosted)-->
-                <allow_use_oneclick>0</allow_use_oneclick><!-- valeur par défaut de l'utilisation du oneclick -->
-                <invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
-                <re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
-                <cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
+                <active>0</active>                <!-- Activé ou non -->
+                <title>HiPay ING Home'Pay</title>                <!-- Titre par défaut modifiable en admin -->
+                <payment_action>authorize_capture</payment_action>                <!-- Type d'action de paiement (authorize_capture ou authorize) -->
+                <cctypes>ing-homepay</cctypes>                <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
+                <order_status_payment_accepted>processing</order_status_payment_accepted>                <!-- valeur par défaut du statut quand le paiement est accepté -->
+                <order_status_payment_refused>canceled</order_status_payment_refused>                <!-- valeur par défaut du statut quand le paiement est refusé -->
+                <order_status_payment_canceled>canceled</order_status_payment_canceled>                <!-- valeur par défaut du statut quand le paiement est annulé -->
+                <hipay_status_validate_order>118</hipay_status_validate_order>                <!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
+                <pending_redirect_page>hipay/checkout/pending</pending_redirect_page>                <!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
+                <display_selector>0</display_selector>                <!-- valeur par défaut l'affichage du selecteur de carte (uniquement en mode Hosted)-->
+                <template>basic-js</template>                <!-- valeur par défaut du template de la page hénergé (uniquement en mode Hosted)-->
+                <allow_use_oneclick>0</allow_use_oneclick>                <!-- valeur par défaut de l'utilisation du oneclick -->
+                <invoice_create>1</invoice_create>                <!-- valeur par défaut de la création de la facture -->
+                <re_add_to_cart>0</re_add_to_cart>                <!-- valeur par défaut du re-remplissage du panier -->
+                <cancel_pending_order>1</cancel_pending_order>                <!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
                 <delay_cancel_pending_order>0.5</delay_cancel_pending_order>
-                <display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
-                <is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
-                <debug>0</debug><!-- valeur par défaut du mode debug -->
-                <model>hipay/method_ing</model><!-- Classe model de la méthode -->
-                <accept_url>hipay/ing/accept</accept_url><!-- Url accept de la méthode -->
-                <pending_url>hipay/ing/pending</pending_url><!-- Url pending de la méthode -->
-                <decline_url>hipay/ing/decline</decline_url><!-- Url decline de la méthode -->
-                <exception_url>hipay/ing/exception</exception_url><!-- Url execption de la méthode -->
-                <cancel_url>hipay/ing/cancel</cancel_url><!-- Url cancel de la méthode -->
-                <use_3d_secure>0</use_3d_secure><!-- valeur par défaut pour activer le 3ds -->
-                <send_fraud_payment_email>0</send_fraud_payment_email> <!-- Envoi le mail de fraud au client final -->
+                <display_iframe>0</display_iframe>                <!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
+                <is_test_mode>0</is_test_mode>                <!-- valeur par défaut du mode test -->
+                <debug>0</debug>                <!-- valeur par défaut du mode debug -->
+                <model>hipay/method_ing</model>                <!-- Classe model de la méthode -->
+                <accept_url>hipay/ing/accept</accept_url>                <!-- Url accept de la méthode -->
+                <pending_url>hipay/ing/pending</pending_url>                <!-- Url pending de la méthode -->
+                <decline_url>hipay/ing/decline</decline_url>                <!-- Url decline de la méthode -->
+                <exception_url>hipay/ing/exception</exception_url>                <!-- Url execption de la méthode -->
+                <cancel_url>hipay/ing/cancel</cancel_url>                <!-- Url cancel de la méthode -->
+                <use_3d_secure>0</use_3d_secure>                <!-- valeur par défaut pour activer le 3ds -->
+                <send_fraud_payment_email>0</send_fraud_payment_email>                <!-- Envoi le mail de fraud au client final -->
             </hipay_ing>
             <hipay_dexia>
-                <active>0</active> <!-- Activé ou non -->
-                <title>HiPay Enterprise  Belfius / Dexia Direct Net</title> <!-- Titre par défaut modifiable en admin -->
-                <payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
-                <cctypes>dexia-directnet</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
-                <order_status_payment_accepted>processing</order_status_payment_accepted><!-- valeur par défaut du statut quand le paiement est accepté -->
-                <order_status_payment_refused>canceled</order_status_payment_refused><!-- valeur par défaut du statut quand le paiement est refusé -->
-                <order_status_payment_canceled>canceled</order_status_payment_canceled><!-- valeur par défaut du statut quand le paiement est annulé -->
-                <hipay_status_validate_order>118</hipay_status_validate_order><!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
-                <pending_redirect_page>hipay/checkout/pending</pending_redirect_page><!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
-                <display_selector>0</display_selector><!-- valeur par défaut l'affichage du selecteur de carte (uniquement en mode Hosted)-->
-                <template>basic-js</template><!-- valeur par défaut du template de la page hénergé (uniquement en mode Hosted)-->
-                <allow_use_oneclick>0</allow_use_oneclick><!-- valeur par défaut de l'utilisation du oneclick -->
-                <invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
-                <re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
-                <cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
+                <active>0</active>                <!-- Activé ou non -->
+                <title>HiPay Enterprise  Belfius / Dexia Direct Net</title>                <!-- Titre par défaut modifiable en admin -->
+                <payment_action>authorize_capture</payment_action>                <!-- Type d'action de paiement (authorize_capture ou authorize) -->
+                <cctypes>dexia-directnet</cctypes>                <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
+                <order_status_payment_accepted>processing</order_status_payment_accepted>                <!-- valeur par défaut du statut quand le paiement est accepté -->
+                <order_status_payment_refused>canceled</order_status_payment_refused>                <!-- valeur par défaut du statut quand le paiement est refusé -->
+                <order_status_payment_canceled>canceled</order_status_payment_canceled>                <!-- valeur par défaut du statut quand le paiement est annulé -->
+                <hipay_status_validate_order>118</hipay_status_validate_order>                <!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
+                <pending_redirect_page>hipay/checkout/pending</pending_redirect_page>                <!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
+                <display_selector>0</display_selector>                <!-- valeur par défaut l'affichage du selecteur de carte (uniquement en mode Hosted)-->
+                <template>basic-js</template>                <!-- valeur par défaut du template de la page hénergé (uniquement en mode Hosted)-->
+                <allow_use_oneclick>0</allow_use_oneclick>                <!-- valeur par défaut de l'utilisation du oneclick -->
+                <invoice_create>1</invoice_create>                <!-- valeur par défaut de la création de la facture -->
+                <re_add_to_cart>0</re_add_to_cart>                <!-- valeur par défaut du re-remplissage du panier -->
+                <cancel_pending_order>1</cancel_pending_order>                <!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
                 <delay_cancel_pending_order>0.5</delay_cancel_pending_order>
-                <display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
-                <is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
-                <debug>0</debug><!-- valeur par défaut du mode debug -->
-                <model>hipay/method_dexia</model><!-- Classe model de la méthode -->
-                <accept_url>hipay/dexia/accept</accept_url><!-- Url accept de la méthode -->
-                <pending_url>hipay/dexia/pending</pending_url><!-- Url pending de la méthode -->
-                <decline_url>hipay/dexia/decline</decline_url><!-- Url decline de la méthode -->
-                <exception_url>hipay/dexia/exception</exception_url><!-- Url execption de la méthode -->
-                <cancel_url>hipay/dexia/cancel</cancel_url><!-- Url cancel de la méthode -->
-                <use_3d_secure>0</use_3d_secure><!-- valeur par défaut pour activer le 3ds -->
-                <send_fraud_payment_email>0</send_fraud_payment_email> <!-- Envoi le mail de fraud au client final -->
+                <display_iframe>0</display_iframe>                <!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
+                <is_test_mode>0</is_test_mode>                <!-- valeur par défaut du mode test -->
+                <debug>0</debug>                <!-- valeur par défaut du mode debug -->
+                <model>hipay/method_dexia</model>                <!-- Classe model de la méthode -->
+                <accept_url>hipay/dexia/accept</accept_url>                <!-- Url accept de la méthode -->
+                <pending_url>hipay/dexia/pending</pending_url>                <!-- Url pending de la méthode -->
+                <decline_url>hipay/dexia/decline</decline_url>                <!-- Url decline de la méthode -->
+                <exception_url>hipay/dexia/exception</exception_url>                <!-- Url execption de la méthode -->
+                <cancel_url>hipay/dexia/cancel</cancel_url>                <!-- Url cancel de la méthode -->
+                <use_3d_secure>0</use_3d_secure>                <!-- valeur par défaut pour activer le 3ds -->
+                <send_fraud_payment_email>0</send_fraud_payment_email>                <!-- Envoi le mail de fraud au client final -->
             </hipay_dexia>
             <hipay_giropay>
-                <active>0</active> <!-- Activé ou non -->
-                <title>HiPay Enterprise  Giropay</title> <!-- Titre par défaut modifiable en admin -->
-                <payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
-                <cctypes>giropay</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
-                <order_status_payment_accepted>processing</order_status_payment_accepted><!-- valeur par défaut du statut quand le paiement est accepté -->
-                <order_status_payment_refused>canceled</order_status_payment_refused><!-- valeur par défaut du statut quand le paiement est refusé -->
-                <order_status_payment_canceled>canceled</order_status_payment_canceled><!-- valeur par défaut du statut quand le paiement est annulé -->
-                <hipay_status_validate_order>118</hipay_status_validate_order><!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
-                <pending_redirect_page>hipay/checkout/pending</pending_redirect_page><!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
-                <display_selector>0</display_selector><!-- valeur par défaut l'affichage du selecteur de carte (uniquement en mode Hosted)-->
-                <template>basic-js</template><!-- valeur par défaut du template de la page hénergé (uniquement en mode Hosted)-->
-                <allow_use_oneclick>0</allow_use_oneclick><!-- valeur par défaut de l'utilisation du oneclick -->
-                <invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
-                <re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
-                <cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
+                <active>0</active>                <!-- Activé ou non -->
+                <title>HiPay Enterprise  Giropay</title>                <!-- Titre par défaut modifiable en admin -->
+                <payment_action>authorize_capture</payment_action>                <!-- Type d'action de paiement (authorize_capture ou authorize) -->
+                <cctypes>giropay</cctypes>                <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
+                <order_status_payment_accepted>processing</order_status_payment_accepted>                <!-- valeur par défaut du statut quand le paiement est accepté -->
+                <order_status_payment_refused>canceled</order_status_payment_refused>                <!-- valeur par défaut du statut quand le paiement est refusé -->
+                <order_status_payment_canceled>canceled</order_status_payment_canceled>                <!-- valeur par défaut du statut quand le paiement est annulé -->
+                <hipay_status_validate_order>118</hipay_status_validate_order>                <!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
+                <pending_redirect_page>hipay/checkout/pending</pending_redirect_page>                <!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
+                <display_selector>0</display_selector>                <!-- valeur par défaut l'affichage du selecteur de carte (uniquement en mode Hosted)-->
+                <template>basic-js</template>                <!-- valeur par défaut du template de la page hénergé (uniquement en mode Hosted)-->
+                <allow_use_oneclick>0</allow_use_oneclick>                <!-- valeur par défaut de l'utilisation du oneclick -->
+                <invoice_create>1</invoice_create>                <!-- valeur par défaut de la création de la facture -->
+                <re_add_to_cart>0</re_add_to_cart>                <!-- valeur par défaut du re-remplissage du panier -->
+                <cancel_pending_order>1</cancel_pending_order>                <!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
                 <delay_cancel_pending_order>0.5</delay_cancel_pending_order>
-                <display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
-                <is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
-                <debug>0</debug><!-- valeur par défaut du mode debug -->
-                <model>hipay/method_giropay</model><!-- Classe model de la méthode -->
-                <accept_url>hipay/giropay/accept</accept_url><!-- Url accept de la méthode -->
-                <pending_url>hipay/giropay/pending</pending_url><!-- Url pending de la méthode -->
-                <decline_url>hipay/giropay/decline</decline_url><!-- Url decline de la méthode -->
-                <exception_url>hipay/giropay/exception</exception_url><!-- Url execption de la méthode -->
-                <cancel_url>hipay/giropay/cancel</cancel_url><!-- Url cancel de la méthode -->
-                <use_3d_secure>0</use_3d_secure><!-- valeur par défaut pour activer le 3ds -->
-                <send_fraud_payment_email>0</send_fraud_payment_email> <!-- Envoi le mail de fraud au client final -->
+                <display_iframe>0</display_iframe>                <!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
+                <is_test_mode>0</is_test_mode>                <!-- valeur par défaut du mode test -->
+                <debug>0</debug>                <!-- valeur par défaut du mode debug -->
+                <model>hipay/method_giropay</model>                <!-- Classe model de la méthode -->
+                <accept_url>hipay/giropay/accept</accept_url>                <!-- Url accept de la méthode -->
+                <pending_url>hipay/giropay/pending</pending_url>                <!-- Url pending de la méthode -->
+                <decline_url>hipay/giropay/decline</decline_url>                <!-- Url decline de la méthode -->
+                <exception_url>hipay/giropay/exception</exception_url>                <!-- Url execption de la méthode -->
+                <cancel_url>hipay/giropay/cancel</cancel_url>                <!-- Url cancel de la méthode -->
+                <use_3d_secure>0</use_3d_secure>                <!-- valeur par défaut pour activer le 3ds -->
+                <send_fraud_payment_email>0</send_fraud_payment_email>                <!-- Envoi le mail de fraud au client final -->
             </hipay_giropay>
             <hipay_przelewy24api>
-                <active>0</active> <!-- Activé ou non -->
-                <title>HiPay Enterprise Przelewy24</title> <!-- Titre par défaut modifiable en admin -->
-                <payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
-                <cctypes>przelewy24</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
-                <order_status_payment_accepted>processing</order_status_payment_accepted><!-- valeur par défaut du statut quand le paiement est accepté -->
-                <order_status_payment_refused>canceled</order_status_payment_refused><!-- valeur par défaut du statut quand le paiement est refusé -->
-                <order_status_payment_canceled>canceled</order_status_payment_canceled><!-- valeur par défaut du statut quand le paiement est annulé -->
-                <hipay_status_validate_order>118</hipay_status_validate_order><!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
-                <pending_redirect_page>hipay/checkout/pending</pending_redirect_page><!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
-                <display_selector>0</display_selector><!-- valeur par défaut l'affichage du selecteur de carte (uniquement en mode Hosted)-->
-                <template>basic-js</template><!-- valeur par défaut du template de la page hénergé (uniquement en mode Hosted)-->
-                <allow_use_oneclick>0</allow_use_oneclick><!-- valeur par défaut de l'utilisation du oneclick -->
-                <invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
-                <re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
-                <cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
+                <active>0</active>                <!-- Activé ou non -->
+                <title>HiPay Enterprise Przelewy24</title>                <!-- Titre par défaut modifiable en admin -->
+                <payment_action>authorize_capture</payment_action>                <!-- Type d'action de paiement (authorize_capture ou authorize) -->
+                <cctypes>przelewy24</cctypes>                <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
+                <order_status_payment_accepted>processing</order_status_payment_accepted>                <!-- valeur par défaut du statut quand le paiement est accepté -->
+                <order_status_payment_refused>canceled</order_status_payment_refused>                <!-- valeur par défaut du statut quand le paiement est refusé -->
+                <order_status_payment_canceled>canceled</order_status_payment_canceled>                <!-- valeur par défaut du statut quand le paiement est annulé -->
+                <hipay_status_validate_order>118</hipay_status_validate_order>                <!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
+                <pending_redirect_page>hipay/checkout/pending</pending_redirect_page>                <!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
+                <display_selector>0</display_selector>                <!-- valeur par défaut l'affichage du selecteur de carte (uniquement en mode Hosted)-->
+                <template>basic-js</template>                <!-- valeur par défaut du template de la page hénergé (uniquement en mode Hosted)-->
+                <allow_use_oneclick>0</allow_use_oneclick>                <!-- valeur par défaut de l'utilisation du oneclick -->
+                <invoice_create>1</invoice_create>                <!-- valeur par défaut de la création de la facture -->
+                <re_add_to_cart>0</re_add_to_cart>                <!-- valeur par défaut du re-remplissage du panier -->
+                <cancel_pending_order>1</cancel_pending_order>                <!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
                 <delay_cancel_pending_order>0.5</delay_cancel_pending_order>
-                <display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
-                <is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
-                <debug>0</debug><!-- valeur par défaut du mode debug -->
-                <model>hipay/method_przelewy24Api</model><!-- Classe model de la méthode -->
-                <accept_url>hipay/przelewy24api/accept</accept_url><!-- Url accept de la méthode -->
-                <pending_url>hipay/przelewy24api/pending</pending_url><!-- Url pending de la méthode -->
-                <decline_url>hipay/przelewy24api/decline</decline_url><!-- Url decline de la méthode -->
-                <exception_url>hipay/przelewy24api/exception</exception_url><!-- Url execption de la méthode -->
-                <cancel_url>hipay/przelewy24api/cancel</cancel_url><!-- Url cancel de la méthode -->
-                <use_3d_secure>0</use_3d_secure><!-- valeur par défaut pour activer le 3ds -->
-                <send_fraud_payment_email>0</send_fraud_payment_email> <!-- Envoi le mail de fraud au client final -->
+                <display_iframe>0</display_iframe>                <!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
+                <is_test_mode>0</is_test_mode>                <!-- valeur par défaut du mode test -->
+                <debug>0</debug>                <!-- valeur par défaut du mode debug -->
+                <model>hipay/method_przelewy24Api</model>                <!-- Classe model de la méthode -->
+                <accept_url>hipay/przelewy24api/accept</accept_url>                <!-- Url accept de la méthode -->
+                <pending_url>hipay/przelewy24api/pending</pending_url>                <!-- Url pending de la méthode -->
+                <decline_url>hipay/przelewy24api/decline</decline_url>                <!-- Url decline de la méthode -->
+                <exception_url>hipay/przelewy24api/exception</exception_url>                <!-- Url execption de la méthode -->
+                <cancel_url>hipay/przelewy24api/cancel</cancel_url>                <!-- Url cancel de la méthode -->
+                <use_3d_secure>0</use_3d_secure>                <!-- valeur par défaut pour activer le 3ds -->
+                <send_fraud_payment_email>0</send_fraud_payment_email>                <!-- Envoi le mail de fraud au client final -->
             </hipay_przelewy24api>
             <hipay_sisalapi>
-                <active>0</active> <!-- Activé ou non -->
-                <title>HiPay Enterprise Sisal</title> <!-- Titre par défaut modifiable en admin -->
-                <payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
-                <cctypes>sisal</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
-                <order_status_payment_accepted>processing</order_status_payment_accepted><!-- valeur par défaut du statut quand le paiement est accepté -->
-                <order_status_payment_refused>canceled</order_status_payment_refused><!-- valeur par défaut du statut quand le paiement est refusé -->
-                <order_status_payment_canceled>canceled</order_status_payment_canceled><!-- valeur par défaut du statut quand le paiement est annulé -->
-                <hipay_status_validate_order>118</hipay_status_validate_order><!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
-                <pending_redirect_page>hipay/checkout/pending</pending_redirect_page><!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
-                <allow_use_oneclick>0</allow_use_oneclick><!-- valeur par défaut de l'utilisation du oneclick -->
-                <invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
-                <re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
-                <cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
+                <active>0</active>                <!-- Activé ou non -->
+                <title>HiPay Enterprise Mooney</title>                <!-- Titre par défaut modifiable en admin -->
+                <payment_action>authorize_capture</payment_action>                <!-- Type d'action de paiement (authorize_capture ou authorize) -->
+                <cctypes>sisal</cctypes>                <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
+                <order_status_payment_accepted>processing</order_status_payment_accepted>                <!-- valeur par défaut du statut quand le paiement est accepté -->
+                <order_status_payment_refused>canceled</order_status_payment_refused>                <!-- valeur par défaut du statut quand le paiement est refusé -->
+                <order_status_payment_canceled>canceled</order_status_payment_canceled>                <!-- valeur par défaut du statut quand le paiement est annulé -->
+                <hipay_status_validate_order>118</hipay_status_validate_order>                <!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
+                <pending_redirect_page>hipay/checkout/pending</pending_redirect_page>                <!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
+                <allow_use_oneclick>0</allow_use_oneclick>                <!-- valeur par défaut de l'utilisation du oneclick -->
+                <invoice_create>1</invoice_create>                <!-- valeur par défaut de la création de la facture -->
+                <re_add_to_cart>0</re_add_to_cart>                <!-- valeur par défaut du re-remplissage du panier -->
+                <cancel_pending_order>1</cancel_pending_order>                <!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
                 <delay_cancel_pending_order>0.5</delay_cancel_pending_order>
-                <display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
-                <is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
-                <debug>0</debug><!-- valeur par défaut du mode debug -->
-                <model>hipay/method_sisalApi</model><!-- Classe model de la méthode -->
-                <accept_url>hipay/sisalapi/accept</accept_url><!-- Url accept de la méthode -->
-                <pending_url>hipay/sisalapi/pending</pending_url><!-- Url pending de la méthode -->
-                <decline_url>hipay/sisalapi/decline</decline_url><!-- Url decline de la méthode -->
-                <exception_url>hipay/sisalapi/exception</exception_url><!-- Url execption de la méthode -->
-                <cancel_url>hipay/sisalapi/cancel</cancel_url><!-- Url cancel de la méthode -->
-                <use_3d_secure>0</use_3d_secure><!-- valeur par défaut pour activer le 3ds -->
-                <send_fraud_payment_email>0</send_fraud_payment_email> <!-- Envoi le mail de fraud au client final -->
+                <display_iframe>0</display_iframe>                <!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
+                <is_test_mode>0</is_test_mode>                <!-- valeur par défaut du mode test -->
+                <debug>0</debug>                <!-- valeur par défaut du mode debug -->
+                <model>hipay/method_sisalApi</model>                <!-- Classe model de la méthode -->
+                <accept_url>hipay/sisalapi/accept</accept_url>                <!-- Url accept de la méthode -->
+                <pending_url>hipay/sisalapi/pending</pending_url>                <!-- Url pending de la méthode -->
+                <decline_url>hipay/sisalapi/decline</decline_url>                <!-- Url decline de la méthode -->
+                <exception_url>hipay/sisalapi/exception</exception_url>                <!-- Url execption de la méthode -->
+                <cancel_url>hipay/sisalapi/cancel</cancel_url>                <!-- Url cancel de la méthode -->
+                <use_3d_secure>0</use_3d_secure>                <!-- valeur par défaut pour activer le 3ds -->
+                <send_fraud_payment_email>0</send_fraud_payment_email>                <!-- Envoi le mail de fraud au client final -->
             </hipay_sisalapi>
             <hipay_mybankapi>
-                <active>0</active> <!-- Activé ou non -->
-                <title>HiPay Enterprise MyBank</title> <!-- Titre par défaut modifiable en admin -->
-                <payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
-                <cctypes>mybank</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
-                <order_status_payment_accepted>processing</order_status_payment_accepted><!-- valeur par défaut du statut quand le paiement est accepté -->
-                <order_status_payment_refused>canceled</order_status_payment_refused><!-- valeur par défaut du statut quand le paiement est refusé -->
-                <order_status_payment_canceled>canceled</order_status_payment_canceled><!-- valeur par défaut du statut quand le paiement est annulé -->
-                <hipay_status_validate_order>118</hipay_status_validate_order><!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
-                <pending_redirect_page>hipay/checkout/pending</pending_redirect_page><!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
-                <allow_use_oneclick>0</allow_use_oneclick><!-- valeur par défaut de l'utilisation du oneclick -->
-                <invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
-                <re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
-                <cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
+                <active>0</active>                <!-- Activé ou non -->
+                <title>HiPay Enterprise MyBank</title>                <!-- Titre par défaut modifiable en admin -->
+                <payment_action>authorize_capture</payment_action>                <!-- Type d'action de paiement (authorize_capture ou authorize) -->
+                <cctypes>mybank</cctypes>                <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
+                <order_status_payment_accepted>processing</order_status_payment_accepted>                <!-- valeur par défaut du statut quand le paiement est accepté -->
+                <order_status_payment_refused>canceled</order_status_payment_refused>                <!-- valeur par défaut du statut quand le paiement est refusé -->
+                <order_status_payment_canceled>canceled</order_status_payment_canceled>                <!-- valeur par défaut du statut quand le paiement est annulé -->
+                <hipay_status_validate_order>118</hipay_status_validate_order>                <!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
+                <pending_redirect_page>hipay/checkout/pending</pending_redirect_page>                <!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
+                <allow_use_oneclick>0</allow_use_oneclick>                <!-- valeur par défaut de l'utilisation du oneclick -->
+                <invoice_create>1</invoice_create>                <!-- valeur par défaut de la création de la facture -->
+                <re_add_to_cart>0</re_add_to_cart>                <!-- valeur par défaut du re-remplissage du panier -->
+                <cancel_pending_order>1</cancel_pending_order>                <!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
                 <delay_cancel_pending_order>0.5</delay_cancel_pending_order>
-                <display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
-                <is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
-                <debug>0</debug><!-- valeur par défaut du mode debug -->
-                <model>hipay/method_mybankApi</model><!-- Classe model de la méthode -->
-                <accept_url>hipay/mybankapi/accept</accept_url><!-- Url accept de la méthode -->
-                <pending_url>hipay/mybankapi/pending</pending_url><!-- Url pending de la méthode -->
-                <decline_url>hipay/mybankapi/decline</decline_url><!-- Url decline de la méthode -->
-                <exception_url>hipay/mybankapi/exception</exception_url><!-- Url execption de la méthode -->
-                <cancel_url>hipay/mybankapi/cancel</cancel_url><!-- Url cancel de la méthode -->
-                <use_3d_secure>0</use_3d_secure><!-- valeur par défaut pour activer le 3ds -->
-                <send_fraud_payment_email>0</send_fraud_payment_email> <!-- Envoi le mail de fraud au client final -->
+                <display_iframe>0</display_iframe>                <!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
+                <is_test_mode>0</is_test_mode>                <!-- valeur par défaut du mode test -->
+                <debug>0</debug>                <!-- valeur par défaut du mode debug -->
+                <model>hipay/method_mybankApi</model>                <!-- Classe model de la méthode -->
+                <accept_url>hipay/mybankapi/accept</accept_url>                <!-- Url accept de la méthode -->
+                <pending_url>hipay/mybankapi/pending</pending_url>                <!-- Url pending de la méthode -->
+                <decline_url>hipay/mybankapi/decline</decline_url>                <!-- Url decline de la méthode -->
+                <exception_url>hipay/mybankapi/exception</exception_url>                <!-- Url execption de la méthode -->
+                <cancel_url>hipay/mybankapi/cancel</cancel_url>                <!-- Url cancel de la méthode -->
+                <use_3d_secure>0</use_3d_secure>                <!-- valeur par défaut pour activer le 3ds -->
+                <send_fraud_payment_email>0</send_fraud_payment_email>                <!-- Envoi le mail de fraud au client final -->
                 <allowspecific>1</allowspecific>
                 <specificcountry>IT</specificcountry>
                 <currency>EUR</currency>
             </hipay_mybankapi>
             <hipay_qiwi>
-                <active>0</active> <!-- Activé ou non -->
-                <title>HiPay Enterprise Visa Qiwi Wallet</title> <!-- Titre par défaut modifiable en admin -->
-                <payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
-                <cctypes>qiwi-wallet</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
-                <order_status_payment_accepted>processing</order_status_payment_accepted><!-- valeur par défaut du statut quand le paiement est accepté -->
-                <order_status_payment_refused>canceled</order_status_payment_refused><!-- valeur par défaut du statut quand le paiement est refusé -->
-                <order_status_payment_canceled>canceled</order_status_payment_canceled><!-- valeur par défaut du statut quand le paiement est annulé -->
-                <hipay_status_validate_order>118</hipay_status_validate_order><!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
-                <pending_redirect_page>hipay/checkout/pending</pending_redirect_page><!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
-                <display_selector>0</display_selector><!-- valeur par défaut l'affichage du selecteur de carte (uniquement en mode Hosted)-->
-                <template>basic-js</template><!-- valeur par défaut du template de la page hénergé (uniquement en mode Hosted)-->
-                <allow_use_oneclick>0</allow_use_oneclick><!-- valeur par défaut de l'utilisation du oneclick -->
-                <invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
-                <re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
-                <cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
+                <active>0</active>                <!-- Activé ou non -->
+                <title>HiPay Enterprise Visa Qiwi Wallet</title>                <!-- Titre par défaut modifiable en admin -->
+                <payment_action>authorize_capture</payment_action>                <!-- Type d'action de paiement (authorize_capture ou authorize) -->
+                <cctypes>qiwi-wallet</cctypes>                <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
+                <order_status_payment_accepted>processing</order_status_payment_accepted>                <!-- valeur par défaut du statut quand le paiement est accepté -->
+                <order_status_payment_refused>canceled</order_status_payment_refused>                <!-- valeur par défaut du statut quand le paiement est refusé -->
+                <order_status_payment_canceled>canceled</order_status_payment_canceled>                <!-- valeur par défaut du statut quand le paiement est annulé -->
+                <hipay_status_validate_order>118</hipay_status_validate_order>                <!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
+                <pending_redirect_page>hipay/checkout/pending</pending_redirect_page>                <!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
+                <display_selector>0</display_selector>                <!-- valeur par défaut l'affichage du selecteur de carte (uniquement en mode Hosted)-->
+                <template>basic-js</template>                <!-- valeur par défaut du template de la page hénergé (uniquement en mode Hosted)-->
+                <allow_use_oneclick>0</allow_use_oneclick>                <!-- valeur par défaut de l'utilisation du oneclick -->
+                <invoice_create>1</invoice_create>                <!-- valeur par défaut de la création de la facture -->
+                <re_add_to_cart>0</re_add_to_cart>                <!-- valeur par défaut du re-remplissage du panier -->
+                <cancel_pending_order>1</cancel_pending_order>                <!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
                 <delay_cancel_pending_order>0.5</delay_cancel_pending_order>
-                <display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
-                <is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
-                <debug>0</debug><!-- valeur par défaut du mode debug -->
-                <model>hipay/method_qiwi</model><!-- Classe model de la méthode -->
-                <accept_url>hipay/qiwi/accept</accept_url><!-- Url accept de la méthode -->
-                <pending_url>hipay/qiwi/pending</pending_url><!-- Url pending de la méthode -->
-                <decline_url>hipay/qiwi/decline</decline_url><!-- Url decline de la méthode -->
-                <exception_url>hipay/qiwi/exception</exception_url><!-- Url execption de la méthode -->
-                <cancel_url>hipay/qiwi/cancel</cancel_url><!-- Url cancel de la méthode -->
-                <use_3d_secure>0</use_3d_secure><!-- valeur par défaut pour activer le 3ds -->
-                <send_fraud_payment_email>0</send_fraud_payment_email> <!-- Envoi le mail de fraud au client final -->
+                <display_iframe>0</display_iframe>                <!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
+                <is_test_mode>0</is_test_mode>                <!-- valeur par défaut du mode test -->
+                <debug>0</debug>                <!-- valeur par défaut du mode debug -->
+                <model>hipay/method_qiwi</model>                <!-- Classe model de la méthode -->
+                <accept_url>hipay/qiwi/accept</accept_url>                <!-- Url accept de la méthode -->
+                <pending_url>hipay/qiwi/pending</pending_url>                <!-- Url pending de la méthode -->
+                <decline_url>hipay/qiwi/decline</decline_url>                <!-- Url decline de la méthode -->
+                <exception_url>hipay/qiwi/exception</exception_url>                <!-- Url execption de la méthode -->
+                <cancel_url>hipay/qiwi/cancel</cancel_url>                <!-- Url cancel de la méthode -->
+                <use_3d_secure>0</use_3d_secure>                <!-- valeur par défaut pour activer le 3ds -->
+                <send_fraud_payment_email>0</send_fraud_payment_email>                <!-- Envoi le mail de fraud au client final -->
             </hipay_qiwi>
             <hipay_webmoneyapi>
-                <active>0</active> <!-- Activé ou non -->
-                <title>HiPay Enterprise WebMoney Transfer</title> <!-- Titre par défaut modifiable en admin -->
-                <payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
-                <cctypes>webmoney-transfer</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
-                <order_status_payment_accepted>processing</order_status_payment_accepted><!-- valeur par défaut du statut quand le paiement est accepté -->
-                <order_status_payment_refused>canceled</order_status_payment_refused><!-- valeur par défaut du statut quand le paiement est refusé -->
-                <order_status_payment_canceled>canceled</order_status_payment_canceled><!-- valeur par défaut du statut quand le paiement est annulé -->
-                <hipay_status_validate_order>118</hipay_status_validate_order><!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
-                <pending_redirect_page>hipay/checkout/pending</pending_redirect_page><!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
-                <display_selector>0</display_selector><!-- valeur par défaut l'affichage du selecteur de carte (uniquement en mode Hosted)-->
-                <template>basic-js</template><!-- valeur par défaut du template de la page hénergé (uniquement en mode Hosted)-->
-                <allow_use_oneclick>0</allow_use_oneclick><!-- valeur par défaut de l'utilisation du oneclick -->
-                <invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
-                <re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
-                <cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
+                <active>0</active>                <!-- Activé ou non -->
+                <title>HiPay Enterprise WebMoney Transfer</title>                <!-- Titre par défaut modifiable en admin -->
+                <payment_action>authorize_capture</payment_action>                <!-- Type d'action de paiement (authorize_capture ou authorize) -->
+                <cctypes>webmoney-transfer</cctypes>                <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
+                <order_status_payment_accepted>processing</order_status_payment_accepted>                <!-- valeur par défaut du statut quand le paiement est accepté -->
+                <order_status_payment_refused>canceled</order_status_payment_refused>                <!-- valeur par défaut du statut quand le paiement est refusé -->
+                <order_status_payment_canceled>canceled</order_status_payment_canceled>                <!-- valeur par défaut du statut quand le paiement est annulé -->
+                <hipay_status_validate_order>118</hipay_status_validate_order>                <!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
+                <pending_redirect_page>hipay/checkout/pending</pending_redirect_page>                <!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
+                <display_selector>0</display_selector>                <!-- valeur par défaut l'affichage du selecteur de carte (uniquement en mode Hosted)-->
+                <template>basic-js</template>                <!-- valeur par défaut du template de la page hénergé (uniquement en mode Hosted)-->
+                <allow_use_oneclick>0</allow_use_oneclick>                <!-- valeur par défaut de l'utilisation du oneclick -->
+                <invoice_create>1</invoice_create>                <!-- valeur par défaut de la création de la facture -->
+                <re_add_to_cart>0</re_add_to_cart>                <!-- valeur par défaut du re-remplissage du panier -->
+                <cancel_pending_order>1</cancel_pending_order>                <!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
                 <delay_cancel_pending_order>0.5</delay_cancel_pending_order>
-                <display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
-                <is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
-                <debug>0</debug><!-- valeur par défaut du mode debug -->
-                <model>hipay/method_webmoneyApi</model><!-- Classe model de la méthode -->
-                <accept_url>hipay/webmoneyapi/accept</accept_url><!-- Url accept de la méthode -->
-                <pending_url>hipay/webmoneyapi/pending</pending_url><!-- Url pending de la méthode -->
-                <decline_url>hipay/webmoneyapi/decline</decline_url><!-- Url decline de la méthode -->
-                <exception_url>hipay/webmoneyapi/exception</exception_url><!-- Url execption de la méthode -->
-                <cancel_url>hipay/webmoneyapi/cancel</cancel_url><!-- Url cancel de la méthode -->
-                <use_3d_secure>0</use_3d_secure><!-- valeur par défaut pour activer le 3ds -->
-                <send_fraud_payment_email>0</send_fraud_payment_email> <!-- Envoi le mail de fraud au client final -->
+                <display_iframe>0</display_iframe>                <!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
+                <is_test_mode>0</is_test_mode>                <!-- valeur par défaut du mode test -->
+                <debug>0</debug>                <!-- valeur par défaut du mode debug -->
+                <model>hipay/method_webmoneyApi</model>                <!-- Classe model de la méthode -->
+                <accept_url>hipay/webmoneyapi/accept</accept_url>                <!-- Url accept de la méthode -->
+                <pending_url>hipay/webmoneyapi/pending</pending_url>                <!-- Url pending de la méthode -->
+                <decline_url>hipay/webmoneyapi/decline</decline_url>                <!-- Url decline de la méthode -->
+                <exception_url>hipay/webmoneyapi/exception</exception_url>                <!-- Url execption de la méthode -->
+                <cancel_url>hipay/webmoneyapi/cancel</cancel_url>                <!-- Url cancel de la méthode -->
+                <use_3d_secure>0</use_3d_secure>                <!-- valeur par défaut pour activer le 3ds -->
+                <send_fraud_payment_email>0</send_fraud_payment_email>                <!-- Envoi le mail de fraud au client final -->
             </hipay_webmoneyapi>
             <hipay_yandexapi>
-                <active>0</active> <!-- Activé ou non -->
-                <title>HiPay Enterprise Yandex.Money</title> <!-- Titre par défaut modifiable en admin -->
-                <payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
-                <cctypes>yandex</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
-                <order_status_payment_accepted>processing</order_status_payment_accepted><!-- valeur par défaut du statut quand le paiement est accepté -->
-                <order_status_payment_refused>canceled</order_status_payment_refused><!-- valeur par défaut du statut quand le paiement est refusé -->
-                <order_status_payment_canceled>canceled</order_status_payment_canceled><!-- valeur par défaut du statut quand le paiement est annulé -->
-                <hipay_status_validate_order>118</hipay_status_validate_order><!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
-                <pending_redirect_page>hipay/checkout/pending</pending_redirect_page><!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
-                <display_selector>0</display_selector><!-- valeur par défaut l'affichage du selecteur de carte (uniquement en mode Hosted)-->
-                <template>basic-js</template><!-- valeur par défaut du template de la page hénergé (uniquement en mode Hosted)-->
-                <allow_use_oneclick>0</allow_use_oneclick><!-- valeur par défaut de l'utilisation du oneclick -->
-                <invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
-                <re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
-                <cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
+                <active>0</active>                <!-- Activé ou non -->
+                <title>HiPay Enterprise Yandex.Money</title>                <!-- Titre par défaut modifiable en admin -->
+                <payment_action>authorize_capture</payment_action>                <!-- Type d'action de paiement (authorize_capture ou authorize) -->
+                <cctypes>yandex</cctypes>                <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
+                <order_status_payment_accepted>processing</order_status_payment_accepted>                <!-- valeur par défaut du statut quand le paiement est accepté -->
+                <order_status_payment_refused>canceled</order_status_payment_refused>                <!-- valeur par défaut du statut quand le paiement est refusé -->
+                <order_status_payment_canceled>canceled</order_status_payment_canceled>                <!-- valeur par défaut du statut quand le paiement est annulé -->
+                <hipay_status_validate_order>118</hipay_status_validate_order>                <!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
+                <pending_redirect_page>hipay/checkout/pending</pending_redirect_page>                <!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
+                <display_selector>0</display_selector>                <!-- valeur par défaut l'affichage du selecteur de carte (uniquement en mode Hosted)-->
+                <template>basic-js</template>                <!-- valeur par défaut du template de la page hénergé (uniquement en mode Hosted)-->
+                <allow_use_oneclick>0</allow_use_oneclick>                <!-- valeur par défaut de l'utilisation du oneclick -->
+                <invoice_create>1</invoice_create>                <!-- valeur par défaut de la création de la facture -->
+                <re_add_to_cart>0</re_add_to_cart>                <!-- valeur par défaut du re-remplissage du panier -->
+                <cancel_pending_order>1</cancel_pending_order>                <!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
                 <delay_cancel_pending_order>0.5</delay_cancel_pending_order>
-                <display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
-                <is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
-                <debug>0</debug><!-- valeur par défaut du mode debug -->
-                <model>hipay/method_yandexApi</model><!-- Classe model de la méthode -->
-                <accept_url>hipay/yandexapi/accept</accept_url><!-- Url accept de la méthode -->
-                <pending_url>hipay/yandexapi/pending</pending_url><!-- Url pending de la méthode -->
-                <decline_url>hipay/yandexapi/decline</decline_url><!-- Url decline de la méthode -->
-                <exception_url>hipay/yandexapi/exception</exception_url><!-- Url execption de la méthode -->
-                <cancel_url>hipay/yandexapi/cancel</cancel_url><!-- Url cancel de la méthode -->
-                <use_3d_secure>0</use_3d_secure><!-- valeur par défaut pour activer le 3ds -->
-                <send_fraud_payment_email>0</send_fraud_payment_email> <!-- Envoi le mail de fraud au client final -->
+                <display_iframe>0</display_iframe>                <!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
+                <is_test_mode>0</is_test_mode>                <!-- valeur par défaut du mode test -->
+                <debug>0</debug>                <!-- valeur par défaut du mode debug -->
+                <model>hipay/method_yandexApi</model>                <!-- Classe model de la méthode -->
+                <accept_url>hipay/yandexapi/accept</accept_url>                <!-- Url accept de la méthode -->
+                <pending_url>hipay/yandexapi/pending</pending_url>                <!-- Url pending de la méthode -->
+                <decline_url>hipay/yandexapi/decline</decline_url>                <!-- Url decline de la méthode -->
+                <exception_url>hipay/yandexapi/exception</exception_url>                <!-- Url execption de la méthode -->
+                <cancel_url>hipay/yandexapi/cancel</cancel_url>                <!-- Url cancel de la méthode -->
+                <use_3d_secure>0</use_3d_secure>                <!-- valeur par défaut pour activer le 3ds -->
+                <send_fraud_payment_email>0</send_fraud_payment_email>                <!-- Envoi le mail de fraud au client final -->
             </hipay_yandexapi>
             <hipay_paypalapi>
-                <active>0</active> <!-- Activé ou non -->
-                <title>HiPay Enterprise PayPal</title> <!-- Titre par défaut modifiable en admin -->
-                <payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
-                <cctypes>paypal</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
-                <order_status_payment_accepted>processing</order_status_payment_accepted><!-- valeur par défaut du statut quand le paiement est accepté -->
-                <order_status_payment_refused>canceled</order_status_payment_refused><!-- valeur par défaut du statut quand le paiement est refusé -->
-                <order_status_payment_canceled>canceled</order_status_payment_canceled><!-- valeur par défaut du statut quand le paiement est annulé -->
-                <hipay_status_validate_order>118</hipay_status_validate_order><!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
-                <pending_redirect_page>hipay/checkout/pending</pending_redirect_page><!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
-                <allow_use_oneclick>0</allow_use_oneclick><!-- valeur par défaut de l'utilisation du oneclick -->
-                <invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
-                <re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
-                <cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
+                <active>0</active>                <!-- Activé ou non -->
+                <title>HiPay Enterprise PayPal</title>                <!-- Titre par défaut modifiable en admin -->
+                <payment_action>authorize_capture</payment_action>                <!-- Type d'action de paiement (authorize_capture ou authorize) -->
+                <cctypes>paypal</cctypes>                <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
+                <order_status_payment_accepted>processing</order_status_payment_accepted>                <!-- valeur par défaut du statut quand le paiement est accepté -->
+                <order_status_payment_refused>canceled</order_status_payment_refused>                <!-- valeur par défaut du statut quand le paiement est refusé -->
+                <order_status_payment_canceled>canceled</order_status_payment_canceled>                <!-- valeur par défaut du statut quand le paiement est annulé -->
+                <hipay_status_validate_order>118</hipay_status_validate_order>                <!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
+                <pending_redirect_page>hipay/checkout/pending</pending_redirect_page>                <!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
+                <allow_use_oneclick>0</allow_use_oneclick>                <!-- valeur par défaut de l'utilisation du oneclick -->
+                <invoice_create>1</invoice_create>                <!-- valeur par défaut de la création de la facture -->
+                <re_add_to_cart>0</re_add_to_cart>                <!-- valeur par défaut du re-remplissage du panier -->
+                <cancel_pending_order>1</cancel_pending_order>                <!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
                 <delay_cancel_pending_order>0.5</delay_cancel_pending_order>
-                <display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
-                <is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
-                <debug>0</debug><!-- valeur par défaut du mode debug -->
-                <model>hipay/method_paypalApi</model><!-- Classe model de la méthode -->
-                <accept_url>hipay/paypalapi/accept</accept_url><!-- Url accept de la méthode -->
-                <pending_url>hipay/paypalapi/pending</pending_url><!-- Url pending de la méthode -->
-                <decline_url>hipay/paypalapi/decline</decline_url><!-- Url decline de la méthode -->
-                <exception_url>hipay/paypalapi/exception</exception_url><!-- Url execption de la méthode -->
-                <cancel_url>hipay/paypalapi/cancel</cancel_url><!-- Url cancel de la méthode -->
-                <use_3d_secure>0</use_3d_secure><!-- valeur par défaut pour activer le 3ds -->
-                <send_fraud_payment_email>0</send_fraud_payment_email> <!-- Envoi le mail de fraud au client final -->
+                <display_iframe>0</display_iframe>                <!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
+                <is_test_mode>0</is_test_mode>                <!-- valeur par défaut du mode test -->
+                <debug>0</debug>                <!-- valeur par défaut du mode debug -->
+                <model>hipay/method_paypalApi</model>                <!-- Classe model de la méthode -->
+                <accept_url>hipay/paypalapi/accept</accept_url>                <!-- Url accept de la méthode -->
+                <pending_url>hipay/paypalapi/pending</pending_url>                <!-- Url pending de la méthode -->
+                <decline_url>hipay/paypalapi/decline</decline_url>                <!-- Url decline de la méthode -->
+                <exception_url>hipay/paypalapi/exception</exception_url>                <!-- Url execption de la méthode -->
+                <cancel_url>hipay/paypalapi/cancel</cancel_url>                <!-- Url cancel de la méthode -->
+                <use_3d_secure>0</use_3d_secure>                <!-- valeur par défaut pour activer le 3ds -->
+                <send_fraud_payment_email>0</send_fraud_payment_email>                <!-- Envoi le mail de fraud au client final -->
             </hipay_paypalapi>
             <hipay_sdd>
                 <active>0</active>
@@ -989,58 +1004,58 @@
                 <send_fraud_payment_email>0</send_fraud_payment_email>
             </hipay_sdd>
             <hipay_postfinancecardapi>
-                <active>0</active> <!-- Activé ou non -->
-                <title>HiPay Enterprise PostFinance Card</title> <!-- Titre par défaut modifiable en admin -->
-                <payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
-                <cctypes>postfinance-card</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
-                <order_status_payment_accepted>processing</order_status_payment_accepted><!-- valeur par défaut du statut quand le paiement est accepté -->
-                <order_status_payment_refused>canceled</order_status_payment_refused><!-- valeur par défaut du statut quand le paiement est refusé -->
-                <order_status_payment_canceled>canceled</order_status_payment_canceled><!-- valeur par défaut du statut quand le paiement est annulé -->
-                <hipay_status_validate_order>118</hipay_status_validate_order><!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
-                <pending_redirect_page>hipay/checkout/pending</pending_redirect_page><!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
-                <allow_use_oneclick>0</allow_use_oneclick><!-- valeur par défaut de l'utilisation du oneclick -->
-                <invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
-                <re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
-                <cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
+                <active>0</active>                <!-- Activé ou non -->
+                <title>HiPay Enterprise PostFinance Card</title>                <!-- Titre par défaut modifiable en admin -->
+                <payment_action>authorize_capture</payment_action>                <!-- Type d'action de paiement (authorize_capture ou authorize) -->
+                <cctypes>postfinance-card</cctypes>                <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
+                <order_status_payment_accepted>processing</order_status_payment_accepted>                <!-- valeur par défaut du statut quand le paiement est accepté -->
+                <order_status_payment_refused>canceled</order_status_payment_refused>                <!-- valeur par défaut du statut quand le paiement est refusé -->
+                <order_status_payment_canceled>canceled</order_status_payment_canceled>                <!-- valeur par défaut du statut quand le paiement est annulé -->
+                <hipay_status_validate_order>118</hipay_status_validate_order>                <!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
+                <pending_redirect_page>hipay/checkout/pending</pending_redirect_page>                <!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
+                <allow_use_oneclick>0</allow_use_oneclick>                <!-- valeur par défaut de l'utilisation du oneclick -->
+                <invoice_create>1</invoice_create>                <!-- valeur par défaut de la création de la facture -->
+                <re_add_to_cart>0</re_add_to_cart>                <!-- valeur par défaut du re-remplissage du panier -->
+                <cancel_pending_order>1</cancel_pending_order>                <!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
                 <delay_cancel_pending_order>0.5</delay_cancel_pending_order>
-                <display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
-                <is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
-                <debug>0</debug><!-- valeur par défaut du mode debug -->
-                <model>hipay/method_postfinancecardApi</model><!-- Classe model de la méthode -->
-                <accept_url>hipay/postfinancecardapi/accept</accept_url><!-- Url accept de la méthode -->
-                <pending_url>hipay/postfinancecardapi/pending</pending_url><!-- Url pending de la méthode -->
-                <decline_url>hipay/postfinancecardapi/decline</decline_url><!-- Url decline de la méthode -->
-                <exception_url>hipay/postfinancecardapi/exception</exception_url><!-- Url execption de la méthode -->
-                <cancel_url>hipay/postfinancecardapi/cancel</cancel_url><!-- Url cancel de la méthode -->
-                <use_3d_secure>0</use_3d_secure><!-- valeur par défaut pour activer le 3ds -->
-                <send_fraud_payment_email>0</send_fraud_payment_email> <!-- Envoi le mail de fraud au client final -->
+                <display_iframe>0</display_iframe>                <!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
+                <is_test_mode>0</is_test_mode>                <!-- valeur par défaut du mode test -->
+                <debug>0</debug>                <!-- valeur par défaut du mode debug -->
+                <model>hipay/method_postfinancecardApi</model>                <!-- Classe model de la méthode -->
+                <accept_url>hipay/postfinancecardapi/accept</accept_url>                <!-- Url accept de la méthode -->
+                <pending_url>hipay/postfinancecardapi/pending</pending_url>                <!-- Url pending de la méthode -->
+                <decline_url>hipay/postfinancecardapi/decline</decline_url>                <!-- Url decline de la méthode -->
+                <exception_url>hipay/postfinancecardapi/exception</exception_url>                <!-- Url execption de la méthode -->
+                <cancel_url>hipay/postfinancecardapi/cancel</cancel_url>                <!-- Url cancel de la méthode -->
+                <use_3d_secure>0</use_3d_secure>                <!-- valeur par défaut pour activer le 3ds -->
+                <send_fraud_payment_email>0</send_fraud_payment_email>                <!-- Envoi le mail de fraud au client final -->
             </hipay_postfinancecardapi>
             <hipay_postfinanceefinanceapi>
-                <active>0</active> <!-- Activé ou non -->
-                <title>HiPay Enterprise PostFinance E-Finance</title> <!-- Titre par défaut modifiable en admin -->
-                <payment_action>authorize_capture</payment_action> <!-- Type d'action de paiement (authorize_capture ou authorize) -->
-                <cctypes>postfinance-efinance</cctypes> <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
-                <order_status_payment_accepted>processing</order_status_payment_accepted><!-- valeur par défaut du statut quand le paiement est accepté -->
-                <order_status_payment_refused>canceled</order_status_payment_refused><!-- valeur par défaut du statut quand le paiement est refusé -->
-                <order_status_payment_canceled>canceled</order_status_payment_canceled><!-- valeur par défaut du statut quand le paiement est annulé -->
-                <hipay_status_validate_order>118</hipay_status_validate_order><!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
-                <pending_redirect_page>hipay/checkout/pending</pending_redirect_page><!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
-                <allow_use_oneclick>0</allow_use_oneclick><!-- valeur par défaut de l'utilisation du oneclick -->
-                <invoice_create>1</invoice_create><!-- valeur par défaut de la création de la facture -->
-                <re_add_to_cart>0</re_add_to_cart><!-- valeur par défaut du re-remplissage du panier -->
-                <cancel_pending_order>1</cancel_pending_order><!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
+                <active>0</active>                <!-- Activé ou non -->
+                <title>HiPay Enterprise PostFinance E-Finance</title>                <!-- Titre par défaut modifiable en admin -->
+                <payment_action>authorize_capture</payment_action>                <!-- Type d'action de paiement (authorize_capture ou authorize) -->
+                <cctypes>postfinance-efinance</cctypes>                <!-- Types de carte disponibles (valeur Hipay pour le mode hosted, valeur Magento pour le mode API) -->
+                <order_status_payment_accepted>processing</order_status_payment_accepted>                <!-- valeur par défaut du statut quand le paiement est accepté -->
+                <order_status_payment_refused>canceled</order_status_payment_refused>                <!-- valeur par défaut du statut quand le paiement est refusé -->
+                <order_status_payment_canceled>canceled</order_status_payment_canceled>                <!-- valeur par défaut du statut quand le paiement est annulé -->
+                <hipay_status_validate_order>118</hipay_status_validate_order>                <!-- valeur par défaut du statut hipay qui valide la commande (118 ou 117)-->
+                <pending_redirect_page>hipay/checkout/pending</pending_redirect_page>                <!-- valeur par défaut pour la page de redirection en cas de state "pending"-->
+                <allow_use_oneclick>0</allow_use_oneclick>                <!-- valeur par défaut de l'utilisation du oneclick -->
+                <invoice_create>1</invoice_create>                <!-- valeur par défaut de la création de la facture -->
+                <re_add_to_cart>0</re_add_to_cart>                <!-- valeur par défaut du re-remplissage du panier -->
+                <cancel_pending_order>1</cancel_pending_order>                <!-- valeur par défaut des annulation de commande "en attente" depuis 30 minutes -->
                 <delay_cancel_pending_order>0.5</delay_cancel_pending_order>
-                <display_iframe>0</display_iframe><!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
-                <is_test_mode>0</is_test_mode><!-- valeur par défaut du mode test -->
-                <debug>0</debug><!-- valeur par défaut du mode debug -->
-                <model>hipay/method_postfinanceefinanceApi</model><!-- Classe model de la méthode -->
-                <accept_url>hipay/postfinanceefinanceapi/accept</accept_url><!-- Url accept de la méthode -->
-                <pending_url>hipay/postfinanceefinanceapi/pending</pending_url><!-- Url pending de la méthode -->
-                <decline_url>hipay/postfinanceefinanceapi/decline</decline_url><!-- Url decline de la méthode -->
-                <exception_url>hipay/postfinanceefinanceapi/exception</exception_url><!-- Url execption de la méthode -->
-                <cancel_url>hipay/postfinanceefinanceapi/cancel</cancel_url><!-- Url cancel de la méthode -->
-                <use_3d_secure>0</use_3d_secure><!-- valeur par défaut pour activer le 3ds -->
-                <send_fraud_payment_email>0</send_fraud_payment_email> <!-- Envoi le mail de fraud au client final -->
+                <display_iframe>0</display_iframe>                <!-- valeur par défaut mode Iframe (uniquement en mode Hosted)-->
+                <is_test_mode>0</is_test_mode>                <!-- valeur par défaut du mode test -->
+                <debug>0</debug>                <!-- valeur par défaut du mode debug -->
+                <model>hipay/method_postfinanceefinanceApi</model>                <!-- Classe model de la méthode -->
+                <accept_url>hipay/postfinanceefinanceapi/accept</accept_url>                <!-- Url accept de la méthode -->
+                <pending_url>hipay/postfinanceefinanceapi/pending</pending_url>                <!-- Url pending de la méthode -->
+                <decline_url>hipay/postfinanceefinanceapi/decline</decline_url>                <!-- Url decline de la méthode -->
+                <exception_url>hipay/postfinanceefinanceapi/exception</exception_url>                <!-- Url execption de la méthode -->
+                <cancel_url>hipay/postfinanceefinanceapi/cancel</cancel_url>                <!-- Url cancel de la méthode -->
+                <use_3d_secure>0</use_3d_secure>                <!-- valeur par défaut pour activer le 3ds -->
+                <send_fraud_payment_email>0</send_fraud_payment_email>                <!-- Envoi le mail de fraud au client final -->
             </hipay_postfinanceefinanceapi>
             <hipay_klarna>
                 <active>0</active>
@@ -1626,12 +1641,20 @@
     <crontab>
         <jobs>
             <hipay_pay_split_payment>
-                <schedule><cron_expr>*/5 * * * *</cron_expr></schedule>
-                <run><model>hipay/observer::paySplitPayments</model></run>
+                <schedule>
+                    <cron_expr>*/5 * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>hipay/observer::paySplitPayments</model>
+                </run>
             </hipay_pay_split_payment>
             <clean_orders_hipay_in_pending>
-                <schedule><cron_expr>*/15 * * * *</cron_expr></schedule>
-                <run><model>hipay/observer::cancelOrdersInPending</model></run>
+                <schedule>
+                    <cron_expr>*/15 * * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>hipay/observer::cancelOrdersInPending</model>
+                </run>
             </clean_orders_hipay_in_pending>
         </jobs>
     </crontab>

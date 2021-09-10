@@ -33,52 +33,17 @@ setPaypalCredentials() {
             read -p "LOGIN_PAYPAL variable is empty. Insert your PayPal login here : " login
             LOGIN_PAYPAL=$login
             export LOGIN_PAYPAL=$login
-            echo  "Please execute export LOGIN_PAYPAL=$login to avoid the question the next time"
+            echo "Please execute export LOGIN_PAYPAL=$login to avoid the question the next time"
         done
         while [ "$PASS_PAYPAL" = "" ]; do
             read -p "PASS_PAYPAL variable is empty. Insert your PayPal password here : " pass
             PASS_PAYPAL=$pass
             export PASS_PAYPAL=$pass
-            echo  "Please execute export PASS_PAYPAL=$pass to avoid the question the next time"
+            echo "Please execute export PASS_PAYPAL=$pass to avoid the question the next time"
         done
         printf "\n"
     fi
 }
-
-manageComposerForData() {
-    COMPOSER_JSON_FILE="src/lib/Hipay/composer.json"
-
-    echo "Setting up git pre-commit hook..."
-
-    echo "#!/bin/bash" > .git/hooks/pre-commit
-    echo "COMPOSER_JSON_FILE='"$COMPOSER_JSON_FILE"'" >> .git/hooks/pre-commit
-    echo "git status --porcelain -uno | grep \$COMPOSER_JSON_FILE" >> .git/hooks/pre-commit
-    echo "if [ $? -eq 0 ]" >> .git/hooks/pre-commit
-    echo "then" >> .git/hooks/pre-commit
-    echo "    cp \$COMPOSER_JSON_FILE \$COMPOSER_JSON_FILE.bak" >> .git/hooks/pre-commit
-    echo "    cat \$COMPOSER_JSON_FILE.bak | python -c \"import sys, json; composerObj=json.load(sys.stdin); composerObj['scripts'] = None; del composerObj['scripts']; print json.dumps(composerObj, False, True, True, True, None, 2);\" > \$COMPOSER_JSON_FILE" >> .git/hooks/pre-commit
-    echo "    git add \$COMPOSER_JSON_FILE" >> .git/hooks/pre-commit
-    echo "fi" >> .git/hooks/pre-commit
-    echo "exit 0" >> .git/hooks/pre-commit
-
-    chmod 775 .git/hooks/pre-commit
-
-
-    echo "Setting up git post-commit hook..."
-
-    echo "#!/bin/bash" > .git/hooks/post-commit
-    echo "COMPOSER_JSON_FILE='"$COMPOSER_JSON_FILE"'" >> .git/hooks/post-commit
-    echo "if [ -f \$COMPOSER_JSON_FILE.bak ]" >> .git/hooks/post-commit
-    echo "then" >> .git/hooks/post-commit
-    echo "    cp \$COMPOSER_JSON_FILE.bak \$COMPOSER_JSON_FILE" >> .git/hooks/post-commit
-    echo "    rm \$COMPOSER_JSON_FILE.bak" >> .git/hooks/post-commit
-    echo "fi" >> .git/hooks/post-commit
-    echo "exit 0" >> .git/hooks/post-commit
-
-    chmod 775 .git/hooks/post-commit
-}
-
-manageComposerForData
 
 if [ "$1" = '' ] || [ "$1" = '--help' ]; then
     echo " ==================================================== "
@@ -97,22 +62,23 @@ elif [ "$1" = 'init' ]; then
         docker-compose -f docker-compose.dev.yml rm -fv
         sudo rm -Rf data/ log/ web/
 
-        docker-compose -f docker-compose.dev.yml build --no-cache
-        docker-compose -f docker-compose.dev.yml up
+        docker-compose -f docker-compose.dev.yml build
+        COMPOSE_HTTP_TIMEOUT=200 docker-compose -f docker-compose.dev.yml up -d
     else
         echo "Put your credentials in auth.env and hipay.env before start update the docker-compose.dev to link this files"
     fi
 elif [ "$1" = 'restart' ]; then
-    docker-compose -f docker-compose.dev.yml up
+    docker-compose -f docker-compose.dev.yml stop
+    docker-compose -f docker-compose.dev.yml up -d
 elif [ "$1" = 'logs' ]; then
-    docker-compose logs -f
+    docker-compose -f docker-compose.dev.yml logs -f
 elif [ "$1" = 'test' ]; then
     #setBackendCredentials
     #setPaypalCredentials
 
     cd bin/tests/000_lib
-  #  bower install hipay-casperjs-lib#develop --allow-root --force
-    cd ../../../;
+    #  bower install hipay-casperjs-lib#develop --allow-root --force
+    cd ../../../
 
     if [ "$(ls -A ~/.local/share/Ofi\ Labs/PhantomJS/)" ]; then
         rm -rf ~/.local/share/Ofi\ Labs/PhantomJS/*
