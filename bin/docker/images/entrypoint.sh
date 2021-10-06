@@ -13,16 +13,16 @@ PREFIX_STORE3=$RANDOM
 printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
 printf "\n${COLOR_SUCCESS}       CHECK MAGENTO INSTALLATION        ${NC}\n"
 printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
- if [ ! -f /var/www/htdocs/index.php ]; then
+if [ ! -f /var/www/htdocs/index.php ]; then
 
     if [ "$PHP_VERSION" = 'php7.2' ]; then
-      echo "Install mcrypt from PECL"
-      pecl install mcrypt-1.0.1
-      docker-php-ext-enable mcrypt
+        echo "Install mcrypt from PECL"
+        pecl install mcrypt-1.0.1
+        docker-php-ext-enable mcrypt
     else
-      echo "Install mcrypt from PHP"
-      docker-php-ext-configure mcrypt
-      docker-php-ext-install mcrypt
+        echo "Install mcrypt from PHP"
+        docker-php-ext-configure mcrypt
+        docker-php-ext-install mcrypt
     fi
 
     cp -f /tmp/apache2/mpm_prefork.conf /etc/apache2/mods-available/
@@ -45,7 +45,7 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
 
     chown -R www-data:www-data /var/www/htdocs
     chmod -R a+rw /var/www/htdocs
-    rm -f  /var/www/htdocs/install.php
+    rm -f /var/www/htdocs/install.php
 
     ################################################################################
     # INSTALLING HIPAY'S FILES
@@ -65,10 +65,6 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     cd /var/www/htdocs/lib/Hipay/
 
-    cp composer.json composer.json.bak
-    cat composer.json.bak | python -c "import sys, json; composerObj=json.load(sys.stdin); composerObj['scripts'] = {'post-install-cmd': ['@managePiDataURLDev'], 'post-update-cmd': ['@managePiDataURLDev'], 'managePiDataURLDev': [\"sed -i 's@https://stage-data.hipay.com@"$PI_DATA_URL"@g' hipay-fullservice-sdk-php/hipay/hipay-fullservice-sdk-php/lib/HiPay/Fullservice/HTTP/Configuration/Configuration.php\", \"sed -i 's@https://data.hipay.com@"$PI_DATA_URL"@g' hipay-fullservice-sdk-php/hipay/hipay-fullservice-sdk-php/lib/HiPay/Fullservice/HTTP/Configuration/Configuration.php\"]}; print json.dumps(composerObj, False, True, True, True, None, 2);" > composer.json
-    rm composer.json.bak
-
     composer install
     cd /tmp
 
@@ -82,21 +78,21 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     printf "\n${COLOR_SUCCESS}          UPDATE TRANSACTION PREFIX      ${NC}\n"
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
 
-    n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT"  db:query "INSERT INTO eav_entity_store values (9,5,2,1,2);"
+    n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" db:query "INSERT INTO eav_entity_store values (9,5,2,1,2);"
 
-    n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT"  db:query "UPDATE eav_entity_store
+    n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" db:query "UPDATE eav_entity_store
                                INNER JOIN eav_entity_type ON eav_entity_type.entity_type_id = eav_entity_store.entity_type_id
                                SET eav_entity_store.increment_prefix='$PREFIX_STORE1'
                                WHERE eav_entity_type.entity_type_code='order' and eav_entity_store.store_id = 1 ;"
     echo " Prefix STORE 1 for order id : $PREFIX_STORE1"
 
-    n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT"  db:query "UPDATE eav_entity_store
+    n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" db:query "UPDATE eav_entity_store
                                INNER JOIN eav_entity_type ON eav_entity_type.entity_type_id = eav_entity_store.entity_type_id
                                SET eav_entity_store.increment_prefix='$PREFIX_STORE2'
                                WHERE eav_entity_type.entity_type_code='order' and eav_entity_store.store_id = 2 ;"
     echo " Prefix STORE 2 for order id : $PREFIX_STORE2"
 
-    n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT"  db:query "UPDATE eav_entity_store
+    n98-magerun.phar --skip-root-check --root-dir="$MAGENTO_ROOT" db:query "UPDATE eav_entity_store
                                INNER JOIN eav_entity_type ON eav_entity_type.entity_type_id = eav_entity_store.entity_type_id
                                SET eav_entity_store.increment_prefix='$PREFIX_STORE3'
                                WHERE eav_entity_type.entity_type_code='order' and eav_entity_store.store_id = 3 ;"
@@ -116,11 +112,11 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set hipay/hipay_api/api_tokenjs_username_test $HIPAY_TOKENJS_USERNAME_TEST
     n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set payment/hipay_cc/cctypes "VI,MC,AE,CB,SM,BCMC"
 
-    if [ "$ENVIRONMENT" = "$ENV_PROD" ];then
+    if [ "$ENVIRONMENT" = "$ENV_PROD" ]; then
         n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set hipay/hipay_api/send_notification_url 1
     fi
 
-    if [ "$ENVIRONMENT" != "$ENV_DEVELOPMENT" ];then
+    if [ "$ENVIRONMENT" != "$ENV_DEVELOPMENT" ]; then
         n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set hipay/hipay_hash_algorithm/test 'SHA512'
     fi
 
@@ -143,9 +139,8 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     printf "\n${COLOR_SUCCESS}         ACTIVATE PAYMENT METHODS        ${NC}\n"
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
 
-    methods=$(echo $ACTIVE_METHODS| tr "," "\n")
-    for code in $methods
-    do
+    methods=$(echo $ACTIVE_METHODS | tr "," "\n")
+    for code in $methods; do
         printf "\n"
         n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set payment/$code/active 1
         n98-magerun.phar -q --skip-root-check --root-dir="$MAGENTO_ROOT" config:set payment/$code/debug 1
@@ -156,7 +151,7 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     ################################################################################
     # CONFIGURATION PER ENVIRONMENT
     ################################################################################
-    if [ "$ENVIRONMENT" = "$ENV_DEVELOPMENT" ];then
+    if [ "$ENVIRONMENT" = "$ENV_DEVELOPMENT" ]; then
 
         printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
         printf "\n${COLOR_SUCCESS} APPLY CONFIGURATION :   $ENV_DEVELOPMENT ${NC}\n"
@@ -168,9 +163,9 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
 
         # INSTALL X DEBUG
         echo '' | pecl install xdebug-2.5.0
-        echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini
-        echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini
-        echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini
+        echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" >/usr/local/etc/php/conf.d/xdebug.ini
+        echo "xdebug.remote_enable=on" >>/usr/local/etc/php/conf.d/xdebug.ini
+        echo "xdebug.remote_autostart=off" >>/usr/local/etc/php/conf.d/xdebug.ini
 
         printf "\n"
         echo "XDebug installation : YES "
@@ -192,20 +187,20 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     ################################################################################
     # SEPCIFIC PORT CONFIGURATION
     ################################################################################
-     if [ "$PORT_WEB" != "80" ] && [ "$ENVIRONMENT" = "development" ];then
-         sed -i -e "s/80/$PORT_WEB/" /etc/apache2/sites-available/000-default.conf
+    if [ "$PORT_WEB" != "80" ] && [ "$ENVIRONMENT" = "development" ]; then
+        sed -i -e "s/80/$PORT_WEB/" /etc/apache2/sites-available/000-default.conf
 
-         echo "Listen $PORT_WEB" >> /etc/apache2/ports.conf
+        echo "Listen $PORT_WEB" >>/etc/apache2/ports.conf
 
-         if [ "$PHP_VERSION" = "5.4" ];then
-           echo "Listen $PORT_WEB" >> /etc/apache2/apache2.conf
-         fi
-     fi
+        if [ "$PHP_VERSION" = "5.4" ]; then
+            echo "Listen $PORT_WEB" >>/etc/apache2/apache2.conf
+        fi
+    fi
 
     ################################################################################
     # CHANGE MAGENTO'S SOURCE FOR PHP7 SUPPORT
     ################################################################################
-    if [ "$PHP_VERSION" = "7.0" ];then
+    if [ "$PHP_VERSION" = "7.0" ]; then
         sed -i -e "555s/\$callback\[0\])->\$callback\[1\]();/\$callback\[0\])->\{\$callback\[1\]\}();/" /var/www/htdocs/app/code/core/Mage/Core/Model/Layout.php
     fi
 
@@ -216,18 +211,21 @@ printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     printf "\n${COLOR_SUCCESS}            CRON CONGIGURATION           ${NC}\n"
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     chmod u+x $MAGENTO_ROOT/cron.sh
-    crontab -l | { cat; echo "*/5 * * * * su www-data -s /bin/bash -c 'sh "$MAGENTO_ROOT"cron.sh' >> /var/log/cron.log"; } | crontab -
+    crontab -l | {
+        cat
+        echo "*/5 * * * * su www-data -s /bin/bash -c 'sh "$MAGENTO_ROOT"cron.sh' >> /var/log/cron.log"
+    } | crontab -
 else
     printf "\n${COLOR_SUCCESS}  => MAGENTO IS ALREADY INSTALLED IN THE CONTAINER ${NC}\n"
 fi
 
-if [ "$ENVIRONMENT" = "$ENV_DEVELOPMENT" ] || [ "$ENVIRONMENT" = "$ENV_STAGE" ] ;then
+if [ "$ENVIRONMENT" = "$ENV_DEVELOPMENT" ] || [ "$ENVIRONMENT" = "$ENV_STAGE" ]; then
 
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     printf "\n${COLOR_SUCCESS}      Apply htaccess for logs ${NC}\n"
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
 
-    echo -e "Order deny,allow\nAllow from all" > /var/www/htdocs/var/.htaccess
+    echo -e "Order deny,allow\nAllow from all" >/var/www/htdocs/var/.htaccess
 
     printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
     printf "\n${COLOR_SUCCESS}      Apply error_log settings           ${NC}\n"
@@ -236,21 +234,16 @@ if [ "$ENVIRONMENT" = "$ENV_DEVELOPMENT" ] || [ "$ENVIRONMENT" = "$ENV_STAGE" ] 
     sed -i $'s/<?php/<?php\\\nerror_reporting(E_ALL);\\\nini_set("display_errors", 1);/' /var/www/htdocs/index.php
 fi
 
-
-
 chown -R www-data:www-data /var/www/htdocs
 
 printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
 printf "\n${COLOR_SUCCESS}           HOSTS CONGIGURATION           ${NC}\n"
 printf "\n${COLOR_SUCCESS} ======================================= ${NC}\n"
-cp /etc/hosts ~/hosts.bak
-sed -i 's/^127\.0\.0\.1\s*localhost/127.0.0.1    localhost    data.hipay.com    stage-data.hipay.com/g' ~/hosts.bak
-cp  ~/hosts.bak /etc/hosts
 
 ################################################################################
 # IF CONTAINER IS KILLED, REMOVE PID
 ################################################################################
-if [ -f /var/run/apache2/apache2.pid  ]; then
+if [ -f /var/run/apache2/apache2.pid ]; then
     rm -f /var/run/apache2/apache2.pid
 fi
 
@@ -273,7 +266,7 @@ printf "${COLOR_SUCCESS}    |   MAGENTO VERSION : $MAGENTO_VERSION              
 printf "${COLOR_SUCCESS}    |   SAMPLE_DATA_VERSION: $SAMPLE_DATA_VERSION                          ${NC}\n"
 printf "${COLOR_SUCCESS}    |======================================================================${NC}\n"
 
-if [ -f /var/run/apache2/apache2.pid  ]; then
+if [ -f /var/run/apache2/apache2.pid ]; then
     rm -f /var/run/apache2/apache2.pid
 fi
 

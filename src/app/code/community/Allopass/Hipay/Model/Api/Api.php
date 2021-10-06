@@ -15,6 +15,7 @@ use HiPay\Fullservice\HTTP\Configuration\Configuration;
 use HiPay\Fullservice\HTTP\SimpleHTTPClient;
 use HiPay\Fullservice\Gateway\Client\GatewayClient;
 use HiPay\Fullservice\Request\RequestSerializer;
+use Allopass_Hipay_Model_Source_HostedpageVersion;
 
 /**
  *
@@ -128,12 +129,15 @@ class Allopass_Hipay_Model_Api_Api
         $credentials = $this->getApiCredentials($this->getStoreId());
 
         $env = ($sandbox) ? Configuration::API_ENV_STAGE : Configuration::API_ENV_PRODUCTION;
+        
+        $hostedpagev2 = $this->getHostedpageVersion() === Allopass_Hipay_Model_Source_HostedpageVersion::V2 ? true : false;
 
         $config = new Configuration(array(
             "apiUsername" => $credentials["username"],
             "apiPassword" => $credentials["password"],
             "apiEnv" => $env,
-            "proxy" => $proxy
+            "proxy" => $proxy,
+            "hostedPageV2" => $hostedpagev2
         ));
 
         //Instantiate client provider with configuration object
@@ -194,6 +198,12 @@ class Allopass_Hipay_Model_Api_Api
         }
 
         return $proxy;
+    }
+
+    protected function getHostedpageVersion()
+    {
+        $hostedpageVersion = Mage::getStoreConfig('hipay/hipay_api/hostedpage_version', $this->getStoreId());
+        return $hostedpageVersion;
     }
 
     protected function logRequest($orderRequest)

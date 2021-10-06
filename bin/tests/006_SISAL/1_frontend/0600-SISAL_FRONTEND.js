@@ -6,45 +6,49 @@
  *
 /**********************************************************************************************/
 
-var paymentType = "HiPay Enterprise Sisal";
+var paymentType = 'HiPay Enterprise Mooney';
 
-casper.test.begin('Test Checkout ' + paymentType + ' with ' + typeCC, function(test) {
+casper.test.begin(
+  'Test Checkout ' + paymentType + ' with ' + typeCC,
+  function (test) {
     phantom.clearCookies();
 
-    casper.start(baseURL + "admin/")
-    .then(function() {
+    casper
+      .start(baseURL + 'admin/')
+      .then(function () {
         this.logToBackend();
-        method.proceed(test, paymentType, "sisalapi");
-    })
-    .thenOpen(baseURL, function() {
+        method.proceed(test, paymentType, 'sisalapi');
+      })
+      .thenOpen(baseURL, function () {
         this.selectItemAndOptions();
-    })
-    .then(function() {
+      })
+      .then(function () {
         this.addItemGoCheckout();
-    })
-    .then(function() {
+      })
+      .then(function () {
         this.checkoutMethod();
-    })
-    .then(function() {
+      })
+      .then(function () {
         this.billingInformation();
-    })
-    .then(function() {
+      })
+      .then(function () {
         this.shippingMethod();
-    })
-    .then(function() {
+      })
+      .then(function () {
         this.choosingPaymentMethod('method_hipay_sisalapi');
-    })
-    .then(function() {
+      })
+      .then(function () {
         this.orderReview(paymentType);
-    })
-    /* Fill Sisal formular */
-    .then(function() {
-        this.fillPaymentFormularByPaymentProduct("sisal");
-    })
-    .then(function() {
+      })
+      /* Fill Sisal formular */
+      .then(function () {
+        this.fillPaymentFormularByPaymentProduct('sisal');
+      })
+      .then(function () {
         this.orderResult(paymentType);
-    })
-    .run(function() {
+      })
+      .run(function () {
         test.done();
-    });
-});
+      });
+  }
+);
