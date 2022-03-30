@@ -92,40 +92,9 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_AccountInfoFormatter implements
             $oneYearAgo = new \DateTime('1 years ago');
             $oneYearAgo = $oneYearAgo->format('Y-m-d H:i:s');
 
-            $orders = Mage::getResourceModel('sales/order_collection')
-                ->addAttributeToSelect('*')
-                ->addAttributeToFilter(
-                    'customer_id',
-                    $this->_order->getCustomerId()
-                )
-                ->addAttributeToFilter(
-                    'state',
-                    array('in' => Mage::getSingleton('sales/order_config')->getVisibleOnFrontStates())
-                );
-
-            $orders6Months = $orders
-                ->addAttributeToFilter(
-                    'created_at',
-                    array('gt' => $sixMonthAgo)
-                )
-                ->addAttributeToSort('created_at', 'desc')
-                ->load();
-
-            $orders24Hours = $orders
-                ->addAttributeToFilter(
-                    'created_at',
-                    array('gt' => $twentyFourHoursAgo)
-                )
-                ->addAttributeToSort('created_at', 'desc')
-                ->load();
-
-            $orders1Year = $orders
-                ->addAttributeToFilter(
-                    'created_at',
-                    array('gt' => $oneYearAgo)
-                )
-                ->addAttributeToSort('created_at', 'desc')
-                ->load();
+            $orders6Months = $this->getOrdersSince($sixMonthAgo);
+            $orders24Hours = $this->getOrdersSince($twentyFourHoursAgo);
+            $orders1Year = $this->getOrdersSince($oneYearAgo);
 
             // Substracting 1 to remove current order from the count
             $info->count = (int)($orders6Months->count() -1);
@@ -255,4 +224,28 @@ class Allopass_Hipay_Model_Api_Formatter_ThreeDS_AccountInfoFormatter implements
         return $info;
     }
 
+    /**
+     * @param string $sinceDate
+     * @return Mage_Sales_Model_Resource_Order_Collection
+     */
+    private function getOrdersSince(string $sinceDate)
+    {
+        return Mage::getResourceModel('sales/order_collection')
+            ->addAttributeToSelect('*')
+            ->addAttributeToFilter(
+                'customer_id',
+                $this->_order->getCustomerId()
+            )
+            ->addAttributeToFilter(
+                'state',
+                array('in' => Mage::getSingleton('sales/order_config')->getVisibleOnFrontStates())
+            )
+            ->addAttributeToFilter(
+                'created_at',
+                array('gt' => $sinceDate)
+            )
+            ->addAttributeToSort('created_at', 'desc')
+            ->load()
+        ;
+    }
 }
