@@ -1,4 +1,4 @@
-image: $REGISTRY_CI/gitlab-ci-base:deployment
+image: $REGISTRY_CI/gitlab-ci-base:buster
 
 variables:
   GIT_DEPTH: 10
@@ -9,6 +9,7 @@ stages:
 package:
   stage: package
   before_script:
+    - apt-get install -y jq
     - apt-get install -y zip libapache2-mod-php php-curl php-xml
   script:
     - echo " Package module $CI_COMMIT_REF_SLUG"
