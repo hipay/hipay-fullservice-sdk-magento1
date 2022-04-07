@@ -1,4 +1,4 @@
-image: $REGISTRY_CI/gitlab-ci-base:buster
+image: $REGISTRY_CI/gitlab-ci-base:deployment
 
 variables:
   GIT_DEPTH: 10
