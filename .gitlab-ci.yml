@@ -9,8 +9,7 @@ stages:
 package:
   stage: package
   before_script:
-    - apt update
-    - apt install -y zip libapache2-mod-php php-curl php-xml
+    - apt-get install -y zip libapache2-mod-php php-curl php-xml
   script:
     - echo " Package module $CI_COMMIT_REF_SLUG"
     - cd src/lib/Hipay && composer install && cd ../../..
