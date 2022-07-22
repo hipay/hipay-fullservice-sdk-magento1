@@ -49,7 +49,7 @@ class Allopass_Hipay_Model_Observer
             }
 
             $collection = Mage::getResourceModel('sales/order_collection');
-            $collection->addFieldToSelect(array('entity_id', 'increment_id', 'store_id', 'state'))
+            $collection
                 ->addFieldToFilter('main_table.state', Mage_Sales_Model_Order::STATE_NEW)
                 ->addFieldToFilter('op.method', array('eq' => $key))
                 ->addAttributeToFilter(
