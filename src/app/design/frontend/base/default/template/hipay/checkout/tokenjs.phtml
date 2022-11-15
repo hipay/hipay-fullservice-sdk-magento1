@@ -183,7 +183,7 @@ if ($this->hasPublicCredentials()):
 
             function isOneClick(paymentData, method) {
                 return method === "hipay_ccxtimes"
-                    || typeof paymentData["payment[" + method + "_oneclick]"] !== 'undefined';
+                    || paymentData["payment[" + method + "_oneclick]"] === 'create_oneclick';
             }
         }
     </script>
