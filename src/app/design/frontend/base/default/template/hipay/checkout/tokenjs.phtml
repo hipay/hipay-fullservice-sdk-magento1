@@ -62,6 +62,7 @@ if ($this->hasPublicCredentials()):
                 if (method.search('hipay_cc') > -1 && paymentData["payment[" + method + "_cc_number]"]) {
                     tokenizeDirectPost(paymentData, method, Form);
                 } else if (method.search('hipay_hostedfields') > -1 && hipayHF && paymentData["payment[" + method + "_oneclick]"] !== "use_oneclick") {
+                    hipayHF.setMultiUse(isOneClick(paymentData, method));
                     tokenizeHostedFields(method, Form);
                 } else {
                     savePayment(this);
@@ -182,7 +183,7 @@ if ($this->hasPublicCredentials()):
 
             function isOneClick(paymentData, method) {
                 return method === "hipay_ccxtimes"
-                    || typeof paymentData["payment[" + method + "_oneclick]"] !== 'undefined';
+                    || paymentData["payment[" + method + "_oneclick]"] === 'create_oneclick';
             }
         }
     </script>
